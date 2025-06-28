@@ -19,4 +19,3 @@ struct Slice: Hashable, Codable {
     var category: SliceType
     var transcript: String?
 }
-

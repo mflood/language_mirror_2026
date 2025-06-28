@@ -5,32 +5,51 @@
 //  Created by Matthew Flood on 6/28/25.
 //
 
+//  ArrangementListViewController.swift
+//  LanguageMirror
+//  -------------------------------------------------------------
+//  Lists all arrangements for a given AudioTrack.
+//  -------------------------------------------------------------
+
 import UIKit
 
 final class ArrangementListViewController: UIViewController {
+
+    // MARK: - Types
     private enum Section { case main }
 
+    // MARK: - Dependencies
     private let track: AudioTrack
     private var arrangements: [Arrangement] = []
-    private var tableView = UITableView(frame: .zero, style: .insetGrouped)
+
+    // MARK: - UI
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private var dataSource: UITableViewDiffableDataSource<Section, Arrangement>!
 
+    // MARK: - Init
     init(track: AudioTrack) {
         self.track = track
         super.init(nibName: nil, bundle: nil)
     }
-    required init?(coder: NSCoder) { fatalError() }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = track.title
-        view.backgroundColor = .systemBackground
-        configureTable()
+        configureView()
+        configureTableView()
         configureDataSource()
-        loadMockArrangements()
+        loadArrangements()
+        applySnapshot()
     }
 
-    private func configureTable() {
+    // MARK: - View Setup
+    private func configureView() {
+        title = track.title
+        view.backgroundColor = .systemBackground
+    }
+
+    private func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -43,37 +62,40 @@ final class ArrangementListViewController: UIViewController {
     }
 
     private func configureDataSource() {
-        
-        dataSource = UITableViewDiffableDataSource<Section, Arrangement>(tableView: tableView) { tableView, indexPath, arrangement in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ArrCell") ?? UITableViewCell(style: .default, reuseIdentifier: "ArrCell")
+        dataSource = UITableViewDiffableDataSource<Section, Arrangement>(tableView: tableView) { tableView, _, arrangement in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ArrangementCell")
+                ?? UITableViewCell(style: .default, reuseIdentifier: "ArrangementCell")
+
             cell.textLabel?.text = arrangement.name
-            cell.accessoryType = .disclosureIndicator
+            cell.accessoryType   = .disclosureIndicator
             return cell
         }
     }
 
-    
-    private func loadMockArrangements() {
-        arrangements = [
-            Arrangement(id: UUID(), name: "Sentence-Level"),
-            Arrangement(id: UUID(), name: "Word-Level"),
-            Arrangement(id: UUID(), name: "Full Track")
-        ]
-        var snap = NSDiffableDataSourceSnapshot<Section, Arrangement>()
-        snap.appendSections([.main])
-        snap.appendItems(arrangements)
-        dataSource.apply(snap, animatingDifferences: true)
+    // MARK: - Data Loading
+    private func loadArrangements() {
+        arrangements = DataManager.shared.arrangements(for: track.id)
+    }
+
+    private func applySnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Arrangement>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(arrangements)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
 
+// MARK: - UITableViewDelegate
 extension ArrangementListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // TODO: push StudyPlayerVC here
-        
-        guard let arr = dataSource.itemIdentifier(for: indexPath) else { return }
-        let vc = SliceListViewController(track: track, arrangement: arr)
-        navigationController?.pushViewController(vc, animated: true)
 
+        guard let arrangement = dataSource.itemIdentifier(for: indexPath) else { return }
+        let slices = DataManager.shared.slices(for: arrangement.id)
+
+        let sliceVC = SliceListViewController(track: track,
+                                              arrangement: arrangement,
+                                              slices: slices)
+        navigationController?.pushViewController(sliceVC, animated: true)
     }
 }

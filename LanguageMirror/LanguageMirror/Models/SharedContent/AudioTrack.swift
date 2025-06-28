@@ -7,10 +7,12 @@
 
 import Foundation
 
-struct AudioTrack: Hashable, Codable {
+
+struct AudioTrack: Codable, Hashable {
     let id: UUID
     var title: String
     var sourceType: AudioSourceType
-    var fileURL: URL
+    var fileURL: String
     var duration: TimeInterval
+    var tags: [String]
 }

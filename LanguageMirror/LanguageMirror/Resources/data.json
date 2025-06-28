@@ -1,0 +1,19 @@
+[
+   {
+     "track": {
+       "id": "B3E5F5E4",  "title": "Morning Dialogue",
+       "sourceType": "textbook", "fileURL": "sample.mp3",
+       "duration": 12.5
+     },
+     "arrangements": [
+       {
+         "arrangement": { "id": "8C4", "name": "Sentence-Level" },
+         "slices": [
+           { "id":"1", "start":0.0, "end":2.5, "category":"learnable", "transcript":"안녕하세요?" },
+           { "id":"2", "start":2.5, "end":3.0, "category":"noise" },
+           { "id":"3", "start":3.0, "end":6.0, "category":"learnable", "transcript":"잘 지냈어요?" }
+         ]
+       }
+     ]
+   }
+ ]

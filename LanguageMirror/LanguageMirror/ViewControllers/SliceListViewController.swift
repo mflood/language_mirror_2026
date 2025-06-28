@@ -6,68 +6,96 @@
 //
 import UIKit
 
+import UIKit
+
 final class SliceListViewController: UIViewController {
+
+    // MARK: - Types
     private enum Section { case main }
+
+    // MARK: - Dependencies
     private let track: AudioTrack
     private let arrangement: Arrangement
-    private var slices: [Slice] = []
+    private let slices: [Slice]
 
-    private var tableView = UITableView(frame: .zero, style: .insetGrouped)
+    // MARK: - UI Elements
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private var dataSource: UITableViewDiffableDataSource<Section, Slice>!
 
-    init(track: AudioTrack, arrangement: Arrangement) {
-        self.track = track;
-        self.arrangement = arrangement;
-        super.init(nibName:nil,bundle:nil)
+    // MARK: - Init
+    init(track: AudioTrack, arrangement: Arrangement, slices: [Slice]) {
+        self.track = track
+        self.arrangement = arrangement
+        self.slices = slices
+        super.init(nibName: nil, bundle: nil)
     }
-    required init?(coder:NSCoder){ fatalError() }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
-        super.viewDidLoad();
-        title = arrangement.name;
-        view.backgroundColor = .systemBackground
-        configureTable();
-        configureDataSource();
-        loadSlices()
-        
-        navigationItem.rightBarButtonItem=UIBarButtonItem(systemItem:.play, primaryAction:UIAction{[weak self]_ in self?.playAll()})
-        
+        super.viewDidLoad()
+        configureView()
+        configureTableView()
+        configureDataSource()
+        applyInitialSnapshot()
     }
 
-    private func configureTable() {
-        view.addSubview(tableView); tableView.translatesAutoresizingMaskIntoConstraints=false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo:view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo:view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo:view.bottomAnchor)
-        ])
+    // MARK: - View Setup
+    private func configureView() {
+        title = arrangement.name
+        view.backgroundColor = .systemBackground
     }
+
+    private func configureTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        tableView.delegate = self
+    }
+
     private func configureDataSource() {
-        dataSource = UITableViewDiffableDataSource<Section, Slice>(tableView: tableView) { tv, _, slice in
-            let cell = tv.dequeueReusableCell(withIdentifier:"SliceCell") ?? UITableViewCell(style:.subtitle, reuseIdentifier:"SliceCell")
-            let idx = tv.indexPath(for: cell)?.row ?? 0
-            cell.textLabel?.text = "Slice \(idx + 1): " + (slice.transcript ?? "<noise>")
-            let time = String(format: "%.2f–%.2f s", slice.start, slice.end)
-            cell.detailTextLabel?.text = time
+        dataSource = UITableViewDiffableDataSource<Section, Slice>(tableView: tableView) { tableView, _, slice in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SliceCell") ??
+                UITableViewCell(style: .subtitle, reuseIdentifier: "SliceCell")
+
+            // Main title — time range
+            cell.textLabel?.text = String(format: "%.2f – %.2f sec", slice.start, slice.end)
+
+            // Subtitle — category
+            if slice.category == .noise {
+                cell.detailTextLabel?.text = "(Skip / Noise)"
+                cell.textLabel?.textColor = .secondaryLabel
+            } else {
+                cell.detailTextLabel?.text = slice.transcript ?? "(learnable)"
+                cell.textLabel?.textColor = .label
+            }
             cell.selectionStyle = .none
-            if slice.category == .noise { cell.textLabel?.textColor = .secondaryLabel }
             return cell
         }
     }
-    private func loadSlices() {
-        slices = DataManager.shared.mockSlices()
-        var snap = NSDiffableDataSourceSnapshot<Section, Slice>()
-        snap.appendSections([.main]); snap.appendItems(slices)
-        dataSource.apply(snap, animatingDifferences: true)
-    }
-    
-    
 
-    private func playAll(){
-        let learnable=slices.filter{ $0.category == .learnable};
-        let vc=StudyPlayerViewController(track:track, slices:learnable);
-        navigationController?.pushViewController(vc, animated:true)
+    private func applyInitialSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Slice>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(slices)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
-    
+}
+
+// MARK: - UITableViewDelegate (optional)
+extension SliceListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let slice = dataSource.itemIdentifier(for: indexPath) else { return }
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        if slice.category == .learnable {
+            // TODO: preview playback if desired
+            print("Preview slice", slice.start, slice.end)
+        }
+    }
 }

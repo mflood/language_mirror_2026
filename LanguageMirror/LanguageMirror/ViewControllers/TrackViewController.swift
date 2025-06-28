@@ -20,7 +20,7 @@ final class TrackViewController: UIViewController {
         view.backgroundColor = .systemBackground
         configureTable()
         configureDataSource()
-        tracks = DataManager.shared.loadTracks()
+        // tracks = DataManager.shared.loadTracks()
         applySnapshot()
     }
 

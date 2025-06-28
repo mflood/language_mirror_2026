@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -21,9 +23,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = scene as? UIWindowScene else { return }
 
+        
+       
+        // Select the project file in the Navigator (the one with the blue icon).
+        // Select your target under the “Targets” section.
+        // Go to the Build Settings tab.
+        // In the search bar, type Swift Compiler - Custom Flags.
+        // Under the section “Swift Compiler - Custom Flags”, you will find a field named Other Swift Flags.
+        // This is where you can add custom flags that will be passed to the Swift compiler.
+        
+        // If it is not already there, add"
+        // -D DEBUG
+        
+        // #if DEBUG
+        //     DataManager.shared.loadMock()
+        //     UserDataManager.shared.loadMock()
+        // #else
+        //     try? DataManager.shared.load()
+        //     try? UserDataManager.shared.load()
+        // #endif
+        
+        
+        DataManager.shared.loadMock()
+        UserDataManager.shared.loadMock()
+        
+        
         // Library tab
-        let trackVC = TrackViewController()
-        let nav = UINavigationController(rootViewController: trackVC)
+        let rootViewController = CollectionListViewController()
+        let nav = UINavigationController(rootViewController: rootViewController)
         nav.tabBarItem = UITabBarItem(title: "Library",
                                       image: UIImage(systemName: "book"),
                                       tag: 0)

@@ -1,30 +1,40 @@
-//
-//  StudyPlayerViewController.swift
-//  LanguageMirror
-//
-//  Created by Matthew Flood on 6/28/25.
-//
 import UIKit
 
-// MARK: - StudyPlayerViewController
+import UIKit
+import AVFoundation
 
 final class StudyPlayerViewController: UIViewController {
 
-    // MARK: - Properties
-
+    // MARK: - Dependencies
     private let track: AudioTrack
+    private let arrangement: Arrangement
     private let slices: [Slice]
-    private let player = SlicePlayer()
-    private var loopCount: Int = 4
 
-    private let transcriptLabel = UILabel()
-    private let playBtn = UIButton(type: .system)
-    private let slider = UISlider()
+    // MARK: - AVAudio
+    private var audioPlayer: AVAudioPlayer?
 
-    // MARK: - Initializers
+    // MARK: - Progress
+    private var currentSliceIndex: Int = 0
+    private var loopsRemaining: Int = 0
+    private var loopCount: Int {
+        currentProgress.customLoopCount ?? UserDataManager.shared.profile.defaultLoopCount
+    }
 
-    init(track: AudioTrack, slices: [Slice]) {
+    private var currentProgress: TrackProgress {
+        get {
+            UserDataManager.shared.progress(for: track.id)
+                ?? TrackProgress(trackId: track.id, arrangementId: arrangement.id, currentSliceIndex: 0, loopsCompleted: 0, customLoopCount: nil, lastUpdated: Date())
+        }
+    }
+
+    // MARK: - UI
+    private let sliceLabel = UILabel()
+    private let playButton = UIButton(type: .system)
+
+    // MARK: - Init
+    init(track: AudioTrack, arrangement: Arrangement, slices: [Slice]) {
         self.track = track
+        self.arrangement = arrangement
         self.slices = slices
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,70 +44,97 @@ final class StudyPlayerViewController: UIViewController {
     }
 
     // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Player"
         view.backgroundColor = .systemBackground
+        title = "Study Mode"
         setupUI()
-        layoutUI()
+        loadProgress()
     }
 
-    // MARK: - Setup
-
+    // MARK: - UI Setup
     private func setupUI() {
-        // Transcript Label
-        transcriptLabel.translatesAutoresizingMaskIntoConstraints = false
-        transcriptLabel.font = UIFont.preferredFont(forTextStyle: .title2)
-        transcriptLabel.textAlignment = .center
-        transcriptLabel.text = slices.first?.transcript
+        sliceLabel.font = .monospacedSystemFont(ofSize: 20, weight: .medium)
+        sliceLabel.textAlignment = .center
+        sliceLabel.text = "Ready"
 
-        // Play Button
-        playBtn.translatesAutoresizingMaskIntoConstraints = false
-        playBtn.setTitle("Play", for: .normal)
-        playBtn.addTarget(self, action: #selector(togglePlay), for: .touchUpInside)
+        playButton.setTitle("Play", for: .normal)
+        playButton.addTarget(self, action: #selector(playCurrentSlice), for: .touchUpInside)
 
-        // Slider
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        slider.minimumValue = 1
-        slider.maximumValue = 100
-        slider.value = Float(loopCount)
-        slider.addTarget(self, action: #selector(sliderChanged), for: .valueChanged)
+        view.addSubview(sliceLabel)
+        view.addSubview(playButton)
+        sliceLabel.translatesAutoresizingMaskIntoConstraints = false
+        playButton.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(transcriptLabel)
-        view.addSubview(playBtn)
-        view.addSubview(slider)
-    }
-
-    private func layoutUI() {
         NSLayoutConstraint.activate([
-            transcriptLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            transcriptLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            transcriptLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
-            playBtn.topAnchor.constraint(equalTo: transcriptLabel.bottomAnchor, constant: 40),
-            playBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            slider.topAnchor.constraint(equalTo: playBtn.bottomAnchor, constant: 40),
-            slider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            slider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            sliceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sliceLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40),
+            playButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            playButton.topAnchor.constraint(equalTo: sliceLabel.bottomAnchor, constant: 20)
         ])
     }
 
-    // MARK: - Actions
+    private func loadProgress() {
+        let progress = currentProgress
+        currentSliceIndex = progress.currentSliceIndex
+        loopsRemaining = loopCount - progress.loopsCompleted
+        updateUI()
+    }
 
-    @objc private func togglePlay() {
-        let isPlaying = playBtn.currentTitle == "Play"
-        playBtn.setTitle(isPlaying ? "Pause" : "Play", for: .normal)
+    private func updateUI() {
+        let slice = slices[currentSliceIndex]
+        sliceLabel.text = String(format: "Slice %d (%.2f–%.2f)", currentSliceIndex + 1, slice.start, slice.end)
+    }
 
-        if isPlaying {
-            player.play(trackURL: track.fileURL, slices: slices, loops: loopCount)
-        } else {
-            player.pause()
+    // MARK: - Audio
+    @objc private func playCurrentSlice() {
+        let slice = slices[currentSliceIndex]
+        let url = DataManager.shared.url(for: track)
+
+        do {
+            let data = try Data(contentsOf: url)
+            audioPlayer = try AVAudioPlayer(data: data)
+            audioPlayer?.currentTime = slice.start
+            audioPlayer?.play()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + (slice.end - slice.start)) { [weak self] in
+                self?.audioPlayer?.stop()
+                self?.handlePlaybackEnd()
+            }
+
+        } catch {
+            print("Audio error: \(error)")
         }
     }
 
-    @objc private func sliderChanged() {
-        loopCount = Int(slider.value)
+    private func handlePlaybackEnd() {
+        loopsRemaining -= 1
+
+        if loopsRemaining > 0 {
+            playCurrentSlice()
+        } else {
+            advanceToNextSlice()
+        }
+    }
+
+    private func advanceToNextSlice() {
+        currentSliceIndex += 1
+        if currentSliceIndex >= slices.count {
+            sliceLabel.text = "Done!"
+            saveProgress(final: true)
+            return
+        }
+        loopsRemaining = loopCount
+        saveProgress()
+        updateUI()
+    }
+
+    private func saveProgress(final: Bool = false) {
+        var progress = currentProgress
+        progress.arrangementId = arrangement.id
+        progress.currentSliceIndex = final ? 0 : currentSliceIndex
+        progress.loopsCompleted = final ? 0 : loopCount - loopsRemaining
+        progress.lastUpdated = Date()
+        UserDataManager.shared.save(progress)
     }
 }
