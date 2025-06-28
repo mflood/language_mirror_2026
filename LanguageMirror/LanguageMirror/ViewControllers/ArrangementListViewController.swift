@@ -70,5 +70,10 @@ extension ArrangementListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         // TODO: push StudyPlayerVC here
+        
+        guard let arr = dataSource.itemIdentifier(for: indexPath) else { return }
+        let vc = SliceListViewController(track: track, arrangement: arr)
+        navigationController?.pushViewController(vc, animated: true)
+
     }
 }
