@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6FAB0ED62E1067B300D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */ = {
+		6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -43,7 +43,7 @@
 		6FAB0EAD2E1067B100D3B9C4 /* LanguageMirror */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				6FAB0ED62E1067B300D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */,
+				6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */,
 			);
 			path = LanguageMirror;
 			sourceTree = "<group>";
@@ -292,6 +292,7 @@
 				DEVELOPMENT_TEAM = L8695SQ572;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Language Mirror";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -320,6 +321,7 @@
 				DEVELOPMENT_TEAM = L8695SQ572;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Language Mirror";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
