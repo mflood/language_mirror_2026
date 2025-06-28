@@ -30,10 +30,29 @@ final class ArrangementListViewController: UIViewController {
         loadMockArrangements()
     }
 
-    private func configureTable() { /* same pattern as above */ }
+    private func configureTable() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        tableView.delegate = self
+    }
 
-    private func configureDataSource() { /* similar */ }
+    private func configureDataSource() {
+        
+        dataSource = UITableViewDiffableDataSource<Section, Arrangement>(tableView: tableView) { tableView, indexPath, arrangement in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ArrCell") ?? UITableViewCell(style: .default, reuseIdentifier: "ArrCell")
+            cell.textLabel?.text = arrangement.name
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        }
+    }
 
+    
     private func loadMockArrangements() {
         arrangements = [
             Arrangement(id: UUID(), name: "Sentence-Level"),
@@ -44,5 +63,12 @@ final class ArrangementListViewController: UIViewController {
         snap.appendSections([.main])
         snap.appendItems(arrangements)
         dataSource.apply(snap, animatingDifferences: true)
+    }
+}
+
+extension ArrangementListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        // TODO: push StudyPlayerVC here
     }
 }
