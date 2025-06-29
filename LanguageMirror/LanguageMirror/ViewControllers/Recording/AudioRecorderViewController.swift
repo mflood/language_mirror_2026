@@ -43,7 +43,7 @@ final class RecorderViewController: UIViewController {
             waveformView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             waveformView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             waveformView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            waveformView.heightAnchor.constraint(equalToConstant: 120),
+            waveformView.heightAnchor.constraint(equalToConstant: 200),
 
             statusLabel.topAnchor.constraint(equalTo: waveformView.bottomAnchor, constant: 16),
             statusLabel.leadingAnchor.constraint(equalTo: waveformView.leadingAnchor),

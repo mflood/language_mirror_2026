@@ -178,6 +178,10 @@ final class AudioRecorderManager: NSObject {
 // MARK: - WaveformView.swift (unchanged)
 import UIKit
 final class WaveformView: UIView {
+    
+    var amplitudeScale: CGFloat = 1.5
+    
+    
     private let shapeLayer = CAShapeLayer()
     private var levels: [Float] = []
     private let maxSamples = 300
@@ -188,8 +192,10 @@ final class WaveformView: UIView {
     private func commonInit() {
         layer.addSublayer(shapeLayer)
         shapeLayer.lineWidth = 2
-        shapeLayer.fillColor = UIColor.clear.cgColor
+        // shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.fillColor = UIColor.yellow.cgColor
         shapeLayer.strokeColor = tintColor.cgColor
+
     }
 
     func update(with newLevels: [Float]) {
@@ -207,7 +213,8 @@ final class WaveformView: UIView {
         let step = bounds.width / CGFloat(max(levels.count - 1, 1))
         for (i, lv) in levels.enumerated() {
             let x = CGFloat(i) * step
-            let y = midY - CGFloat(lv) * midY
+            let scaled = min(CGFloat(lv) * amplitudeScale, 1.0)
+            let y = midY - CGFloat(scaled) * midY
             i == 0 ? path.move(to: CGPoint(x: x, y: y)) : path.addLine(to: CGPoint(x: x, y: y))
         }
         shapeLayer.path = path.cgPath
