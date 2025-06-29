@@ -34,16 +34,28 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Resources/data_2.json,
 			);
 			target = 6FAB0EAA2E1067B100D3B9C4 /* LanguageMirror */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		6FAB0FFE2E10E06E00D3B9C4 /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirror" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 6FAB0EA72E1067B100D3B9C4 /* Sources */;
+			membershipExceptions = (
+				Resources/data_2.json,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6FAB0EAD2E1067B100D3B9C4 /* LanguageMirror */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */,
+				6FAB0FFE2E10E06E00D3B9C4 /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirror" target */,
 			);
 			path = LanguageMirror;
 			sourceTree = "<group>";

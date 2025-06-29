@@ -1,0 +1,462 @@
+    [
+      {
+        "collection": {
+          "id": "58afe302-fd26-41e9-b200-885868a82f23",
+          "name": "Integrated Korean: Beginning 1, Third Edition",
+          "groupOrder": [
+            "Chapter 1",
+            "Chapter 2"
+          ]
+        },
+        "memberships": [
+          {
+            "trackId": "71b8ee61-f11e-4ee6-8323-e846d1c6bea5",
+            "group": "Chapter 1"
+          },
+          {
+            "trackId": "378b2890-a27b-4129-a47d-17c03cfcc6d7",
+            "group": "Chapter 1"
+          },
+          {
+            "trackId": "0bd55009-d4b1-4791-bffd-5db90ac0e1ea",
+            "group": "Chapter 2"
+          },
+          {
+            "trackId": "90c4813c-374d-4bf7-b283-30a148b18770",
+            "group": "Chapter 2"
+          }
+        ],
+        "tracks": [
+          {
+            "track": {
+              "id": "71b8ee61-f11e-4ee6-8323-e846d1c6bea5",
+              "name": "Hello",
+              "fileURL": "hello.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "3787b61e-0c05-49c3-a60e-80e7b59c625a",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "e3cf7e3b-b58e-4652-b671-bc1c28920db2",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "378b2890-a27b-4129-a47d-17c03cfcc6d7",
+              "name": "What is your name?",
+              "fileURL": "what_is_your_name?.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "b1a5a2ff-08d0-4784-a4b5-2b7da30db9fc",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "ef45333f-e811-43f2-843a-729b4ea7bd8c",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "0bd55009-d4b1-4791-bffd-5db90ac0e1ea",
+              "name": "Where are you from?",
+              "fileURL": "where_are_you_from?.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "38e548a2-9440-40a5-9d93-6531392564ca",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "bd941061-3b11-4744-8c8f-33a30e0761aa",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "90c4813c-374d-4bf7-b283-30a148b18770",
+              "name": "Family",
+              "fileURL": "family.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "3bc38b39-599a-44c0-ad39-1bcfc3fa9dc8",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "aa011836-7c33-4d4b-8298-7e2d0d5831a6",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "collection": {
+          "id": "ff48b2e2-39bf-4a13-8792-a1b20d42a129",
+          "name": "HSK Standard Course 1",
+          "groupOrder": [
+            "Lesson 1",
+            "Lesson 2"
+          ]
+        },
+        "memberships": [
+          {
+            "trackId": "81e68613-4bcb-4db1-a0ea-e20e2abe068c",
+            "group": "Lesson 1"
+          },
+          {
+            "trackId": "0621920f-a0dd-45cd-8810-3e5ab13f9906",
+            "group": "Lesson 1"
+          },
+          {
+            "trackId": "b1f1b0a0-951a-45de-a20f-aa6ddeca3c56",
+            "group": "Lesson 2"
+          },
+          {
+            "trackId": "4fd6c96f-cc86-46a5-8ea5-7f7042501ba8",
+            "group": "Lesson 2"
+          }
+        ],
+        "tracks": [
+          {
+            "track": {
+              "id": "81e68613-4bcb-4db1-a0ea-e20e2abe068c",
+              "name": "Greetings",
+              "fileURL": "greetings.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "f8ad8241-5b9e-4e7b-9bcf-c7dca52a7ba9",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "3021d138-ded6-4f98-ad1f-59c74b28ea0e",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "0621920f-a0dd-45cd-8810-3e5ab13f9906",
+              "name": "Thank you",
+              "fileURL": "thank_you.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "d4b2010b-5942-497d-af0b-680b5a516c20",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "a094a4fd-e6bc-4a7a-92fa-81b38bcef03e",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "b1f1b0a0-951a-45de-a20f-aa6ddeca3c56",
+              "name": "Who is that?",
+              "fileURL": "who_is_that?.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "e641c5f2-bf38-4253-861b-a7338fff235b",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "f09dddfa-76e9-4158-8c89-4dbcbcab1351",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "4fd6c96f-cc86-46a5-8ea5-7f7042501ba8",
+              "name": "What do you do?",
+              "fileURL": "what_do_you_do?.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "60bd0b73-9c8b-4a3f-84e6-dedafc7040fe",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "522f3503-72e2-4179-b016-69f7084dc6d7",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "collection": {
+          "id": "af988964-2d1f-48b7-9750-7fb7e7c89c75",
+          "name": "Mandarin Chinese for Kids Set 1",
+          "groupOrder": [
+            "Track Group 1"
+          ]
+        },
+        "memberships": [
+          {
+            "trackId": "d038b57f-8c42-4591-9712-f3ffb1be0a78",
+            "group": "Track Group 1"
+          },
+          {
+            "trackId": "d5f746b2-0f1b-4782-8340-a04eca84899a",
+            "group": "Track Group 1"
+          },
+          {
+            "trackId": "466118fd-0cdf-4480-8050-c90b706194b4",
+            "group": "Track Group 1"
+          }
+        ],
+        "tracks": [
+          {
+            "track": {
+              "id": "d038b57f-8c42-4591-9712-f3ffb1be0a78",
+              "name": "Colors",
+              "fileURL": "colors.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "803ca5a0-12af-45c1-985b-d7f041f35bbb",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "a48b8dd0-c991-4ebb-aaa2-63129ce4af59",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "d5f746b2-0f1b-4782-8340-a04eca84899a",
+              "name": "Numbers",
+              "fileURL": "numbers.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "a9cb359c-3810-4b67-871a-632a60d02064",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "46ef2422-7430-4f0a-8b49-9b5e82be35fe",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "466118fd-0cdf-4480-8050-c90b706194b4",
+              "name": "Animals",
+              "fileURL": "animals.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "7dcfea96-fa88-4fa3-bfed-05467c752347",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "846988b0-a6be-4f7b-bd72-95b8fa10c827",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "collection": {
+          "id": "4855f927-84d2-4076-9423-7b6b1d77c394",
+          "name": "Mandarin Chinese for Kids Set 2",
+          "groupOrder": [
+            "Track Group 1"
+          ]
+        },
+        "memberships": [
+          {
+            "trackId": "7a8b6694-d88a-4258-bc16-0c3f53514ab3",
+            "group": "Track Group 1"
+          },
+          {
+            "trackId": "5cb7b494-9fef-4a1b-b594-7d8a02e86833",
+            "group": "Track Group 1"
+          },
+          {
+            "trackId": "1b7d9d86-a501-44a6-9e0a-845724b7d473",
+            "group": "Track Group 1"
+          }
+        ],
+        "tracks": [
+          {
+            "track": {
+              "id": "7a8b6694-d88a-4258-bc16-0c3f53514ab3",
+              "name": "Family",
+              "fileURL": "family.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "a646945e-8550-4575-9ab7-fa7b752ff0be",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "385c2e39-3820-4245-9dd7-0971d41995f6",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "5cb7b494-9fef-4a1b-b594-7d8a02e86833",
+              "name": "Food",
+              "fileURL": "food.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "915443d8-3515-4149-8728-37d97b4de45a",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "515d90e0-5067-4e46-b47e-3616127fcaa6",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "track": {
+              "id": "1b7d9d86-a501-44a6-9e0a-845724b7d473",
+              "name": "Weather",
+              "fileURL": "weather.mp3"
+            },
+            "arrangements": [
+              {
+                "arrangement": {
+                  "id": "1de4f21b-adf5-4b03-a1c7-4567761357a7",
+                  "title": "Default",
+                  "type": "sentence"
+                },
+                "slices": [
+                  {
+                    "id": "938f0315-7ae0-4ba6-aa2d-03f9dfaaee1c",
+                    "startTime": 0.0,
+                    "endTime": 2.5,
+                    "category": "learn",
+                    "transcript": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]

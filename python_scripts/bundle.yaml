@@ -1,0 +1,77 @@
+collections:
+  - name: "Integrated Korean: Beginning 1, 3rd Ed."
+    groups:
+    - name: Chapter 1
+      tracks: 
+        - Textbook_Lesson1_C1_3rd_Edition.mp3
+        - Textbook_Lesson1_C2_3rd_Edition.mp3
+        - Textbook_Lesson1_N_3rd_Edition.mp3
+    - name: Chapter 2
+      tracks: 
+        - Textbook_Lesson2_C1_3rd_Edition.mp3
+        - Textbook_Lesson2_C2_3rd_Edition.mp3
+        - Textbook_Lesson2_N_3rd_Edition.mp3
+    - name: Chapter 3
+      tracks: 
+        - Textbook_Lesson3_C1_3rd_Edition.mp3
+        - Textbook_Lesson3_C2_3rd_Edition.mp3
+        - Textbook_Lesson3_N_3rd_Edition.mp3
+    - name: Chapter 4
+      tracks: 
+        - Textbook_Lesson4_C1_3rd_Edition.mp3
+        - Textbook_Lesson4_C2_3rd_Edition.mp3
+        - Textbook_Lesson4_N_3rd_Edition.mp3
+    - name: Chapter 5
+      tracks: 
+        - Textbook_Lesson5_C1_3rd_Edition.mp3
+        - Textbook_Lesson5_C2_3rd_Edition.mp3
+        - Textbook_Lesson5_N_3rd_Edition.mp3
+    - name: Chapter 6
+      tracks: 
+        - Textbook_Lesson6_C1_3rd_Edition.mp3
+        - Textbook_Lesson6_C2_3rd_Edition.mp3
+        - Textbook_Lesson6_N_3rd_Edition.mp3
+    - name: Chapter 7
+      tracks: 
+        - Textbook_Lesson7_C1_3rd_Edition.mp3
+        - Textbook_Lesson7_C2_3rd_Edition.mp3
+        - Textbook_Lesson7_N_3rd_Edition.mp3
+  - name: "Integrated Korean: Beginning 2, 3rd Ed."
+    groups:
+    - name: Chapter 1
+      tracks: 
+        - Textbook_Lesson1_C1_3rd_Edition.mp3
+        - Textbook_Lesson1_C2_3rd_Edition.mp3
+        - Textbook_Lesson1_N_3rd_Edition.mp3
+    - name: Chapter 2
+      tracks: 
+        - Textbook_Lesson2_C1_3rd_Edition.mp3
+        - Textbook_Lesson2_C2_3rd_Edition.mp3
+        - Textbook_Lesson2_N_3rd_Edition.mp3
+    - name: Chapter 3
+      tracks: 
+        - Textbook_Lesson3_C1_3rd_Edition.mp3
+        - Textbook_Lesson3_C2_3rd_Edition.mp3
+        - Textbook_Lesson3_N_3rd_Edition.mp3
+    - name: Chapter 4
+      tracks: 
+        - Textbook_Lesson4_C1_3rd_Edition.mp3
+        - Textbook_Lesson4_C2_3rd_Edition.mp3
+        - Textbook_Lesson4_N_3rd_Edition.mp3
+    - name: Chapter 5
+      tracks: 
+        - Textbook_Lesson5_C1_3rd_Edition.mp3
+        - Textbook_Lesson5_C2_3rd_Edition.mp3
+        - Textbook_Lesson5_N_3rd_Edition.mp3
+    - name: Chapter 6
+      tracks: 
+        - Textbook_Lesson6_C1_3rd_Edition.mp3
+        - Textbook_Lesson6_C2_3rd_Edition.mp3
+        - Textbook_Lesson6_N_3rd_Edition.mp3
+    - name: Chapter 7
+      tracks: 
+        - Textbook_Lesson7_C1_3rd_Edition.mp3
+        - Textbook_Lesson7_C2_3rd_Edition.mp3
+        - Textbook_Lesson7_N_3rd_Edition.mp3
+
+

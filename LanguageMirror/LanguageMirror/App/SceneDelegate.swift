@@ -44,13 +44,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // #endif
         
         
-        DataManager.shared.loadMock()
-        UserDataManager.shared.loadMock()
-        
+        if false {
+            DataManager.shared.loadMock()
+            UserDataManager.shared.loadMock()
+        } else {
+            
+            do {
+                try DataManager.shared.load()
+                try UserDataManager.shared.load()
+            } catch {
+                // You decide how to react: assert, alert, or fall back to mock data.
+                fatalError("❌ Startup data load failed: \(error)")
+            }
+        }
         
         // Library tab
         let rootViewController = CollectionListViewController()
-        let nav = UINavigationController(rootViewController: rootViewController)
+        let audioRecorderViewController = RecorderViewController()
+        
+        let nav = UINavigationController(rootViewController: audioRecorderViewController)
         nav.tabBarItem = UITabBarItem(title: "Library",
                                       image: UIImage(systemName: "book"),
                                       tag: 0)
