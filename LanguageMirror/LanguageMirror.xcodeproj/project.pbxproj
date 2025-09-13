@@ -33,6 +33,7 @@
 		6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"2025-09-13/library_seed.json",
 				Info.plist,
 				Resources/data_2.json,
 			);
@@ -45,6 +46,7 @@
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 6FAB0EA72E1067B100D3B9C4 /* Sources */;
 			membershipExceptions = (
+				"2025-09-13/library_seed.json",
 				Resources/data_2.json,
 			);
 		};

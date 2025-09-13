@@ -7,10 +7,10 @@
 
 import Foundation
 
-/// Central place to construct and hold app-wide dependencies.
-/// Add concrete services later (e.g., LibraryServiceJSON, PlayerEngineImpl, etc.)
 struct AppContainer {
-    // let libraryService: LibraryService
-    // let importService: ImportService
-    // init() { self.libraryService = LibraryServiceJSON(); ... }
+    let libraryService: LibraryService
+
+    init() {
+        self.libraryService = LibraryServiceJSON()
+    }
 }

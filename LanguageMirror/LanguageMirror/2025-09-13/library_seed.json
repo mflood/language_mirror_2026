@@ -1,0 +1,21 @@
+//
+//  library_seed.swift
+//  LanguageMirror
+//
+//  Created by Matthew Flood on 9/13/25.
+//
+
+{
+  "packs": [
+    {
+      "id": "demo-pack",
+      "title": "Demo Pack",
+      "languageHint": "en-US",
+      "tracks": [
+        { "id": "t1", "title": "Greetings 01", "filename": "sample.mp3", "durationMs": 30000 },
+        { "id": "t2", "title": "Greetings 02", "filename": "sample.mp3", "durationMs": 42000 },
+        { "id": "t3", "title": "Dialog A",    "filename": "sample.mp3", "durationMs": 51000 }
+      ]
+    }
+  ]
+}
