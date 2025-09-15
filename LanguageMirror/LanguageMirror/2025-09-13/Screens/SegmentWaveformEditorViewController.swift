@@ -22,6 +22,18 @@ final class SegmentWaveformEditorViewController: UIViewController {
 
     var onSaved: ((SegmentMap) -> Void)?   // caller can refresh its UI
 
+    // A) Add properties
+    private let meter = LevelMeterView()                // NEW
+    private var levelWork: DispatchWorkItem?            // NEW
+    private var analyzer: SelectionLevelAnalyzer?       // NEW
+
+    // B) Add nudge buttons
+    private let startPrevBtn = UIButton(type: .system)  // NEW
+    private let startNextBtn = UIButton(type: .system)  // NEW
+    private let endPrevBtn = UIButton(type: .system)    // NEW
+    private let endNextBtn = UIButton(type: .system)    // NEW
+    
+    
     // UI
     private let scroll = UIScrollView()
     private let waveform = WaveformPlaceholderView()
@@ -157,6 +169,36 @@ final class SegmentWaveformEditorViewController: UIViewController {
         [startLabel, endLabel, durationLabel, kindSeg, detailsButton, zoomLabel, zoomSlider, snapLabel, snapSwitch, playButton, loopSeg].forEach {
             view.addSubview($0)
         }
+        
+        [startPrevBtn, startNextBtn, endPrevBtn, endNextBtn].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.titleLabel?.font = .systemFont(ofSize: 12, weight: .semibold)
+            $0.setTitleColor(view.tintColor, for: .normal)
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
+            $0.layer.cornerRadius = 6
+            $0.backgroundColor = UIColor.secondarySystemBackground
+        }
+        startPrevBtn.setTitle("◀︎0", for: .normal)
+        startNextBtn.setTitle("0▶︎", for: .normal)
+        endPrevBtn.setTitle("◀︎0", for: .normal)
+        endNextBtn.setTitle("0▶︎", for: .normal)
+        
+        startPrevBtn.addTarget(self, action: #selector(nudgeStartPrev), for: .touchUpInside)
+        startNextBtn.addTarget(self, action: #selector(nudgeStartNext), for: .touchUpInside)
+        endPrevBtn.addTarget(self, action: #selector(nudgeEndPrev), for: .touchUpInside)
+        endNextBtn.addTarget(self, action: #selector(nudgeEndNext), for: .touchUpInside)
+
+        // --- Meter
+        meter.translatesAutoresizingMaskIntoConstraints = false
+        meter.reset()
+        
+        // Add subviews
+        view.addSubview(meter)
+        view.addSubview(startPrevBtn)
+        view.addSubview(startNextBtn)
+        view.addSubview(endPrevBtn)
+        view.addSubview(endNextBtn)
+        
 
         // Layout
         let g = view.safeAreaLayoutGuide
@@ -216,11 +258,28 @@ final class SegmentWaveformEditorViewController: UIViewController {
             playButton.topAnchor.constraint(equalTo: loopSeg.bottomAnchor, constant: 12),
             playButton.leadingAnchor.constraint(equalTo: loopSeg.leadingAnchor),
 
+            // place nudge buttons under the labels (left/right aligned)
+            startPrevBtn.topAnchor.constraint(equalTo: startLabel.bottomAnchor, constant: 6),
+            startPrevBtn.leadingAnchor.constraint(equalTo: startLabel.leadingAnchor),
+            startNextBtn.centerYAnchor.constraint(equalTo: startPrevBtn.centerYAnchor),
+            startNextBtn.leadingAnchor.constraint(equalTo: startPrevBtn.trailingAnchor, constant: 6),
+
+            endNextBtn.topAnchor.constraint(equalTo: endLabel.bottomAnchor, constant: 6),
+            endNextBtn.trailingAnchor.constraint(equalTo: endLabel.trailingAnchor),
+            endPrevBtn.centerYAnchor.constraint(equalTo: endNextBtn.centerYAnchor),
+            endPrevBtn.trailingAnchor.constraint(equalTo: endNextBtn.leadingAnchor, constant: -6),
+
+            // Put meter below Play button
+            meter.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 16),
+            meter.leadingAnchor.constraint(equalTo: playButton.leadingAnchor),
+            meter.trailingAnchor.constraint(equalTo: zoomSlider.trailingAnchor)
+
 
         ])
 
         waveform.onSelectionChanged = { [weak self] s, e in
             self?.renderTimes(s: s, e: e)
+            self?.scheduleLevelAnalysis()    // NEW
         }
     }
 
@@ -240,6 +299,25 @@ final class SegmentWaveformEditorViewController: UIViewController {
         }
     }
 
+    
+    private func scheduleLevelAnalysis() {
+        levelWork?.cancel()
+        guard let analyzer else { meter.reset(); return }
+
+        let s = waveform.startMs, e = waveform.endMs
+        // Debounce a bit so drags don't thrash the reader
+        let work = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            let result = analyzer.analyze(startMs: s, endMs: e)
+            DispatchQueue.main.async {
+                if let r = result { self.meter.update(rms: r.rms, peak: r.peak) }
+                else { self.meter.reset() }
+            }
+        }
+        levelWork = work
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.12, execute: work)
+    }
+    
     private func configure(durationMs: Int) {
         self.durationMs = durationMs
         waveform.durationMs = durationMs
@@ -264,6 +342,17 @@ final class SegmentWaveformEditorViewController: UIViewController {
         zoom = 1.0
         zoomSlider.value = 1.0
         waveform.snapEnabled = snapSwitch.isOn
+        
+        if let url = AudioLocator.resolveURL(for: track) {
+            waveform.zeroCrossingSource = AVAssetZeroCrossingSource(url: url)
+            analyzer = SelectionLevelAnalyzer(url: url)               // NEW
+        } else {
+            analyzer = nil
+        }
+
+        // Trigger an initial analysis for the initial selection
+        scheduleLevelAnalysis()
+        
     }
 
     private func applyZoom() {
@@ -452,4 +541,45 @@ final class SegmentWaveformEditorViewController: UIViewController {
         a.addAction(UIAlertAction(title: "OK", style: .default))
         present(a, animated: true)
     }
+    
+    @objc private func nudgeStartPrev() { nudge(.start, dir: .prev) }
+    @objc private func nudgeStartNext() { nudge(.start, dir: .next) }
+    @objc private func nudgeEndPrev()   { nudge(.end,   dir: .prev) }
+    @objc private func nudgeEndNext()   { nudge(.end,   dir: .next) }
+
+    private enum Edge { case start, end }
+    private enum Dir { case prev, next }
+
+    private func nudge(_ edge: Edge, dir: Dir) {
+        guard let zc = waveform.zeroCrossingSource else { return }
+        let window = max(60, waveform.zeroCrossWindowMs) // a bit wider for nudges
+        var s = waveform.startMs, e = waveform.endMs
+        let duration = waveform.durationMs
+
+        let haptic = UIImpactFeedbackGenerator(style: .light); haptic.impactOccurred()
+
+        switch (edge, dir) {
+        case (.start, .prev):
+            if let t = zc.previousZeroCrossing(before: s, maxWindowMs: window, durationMs: duration) {
+                s = min(t, e - waveform.minSpanMs)
+            }
+        case (.start, .next):
+            if let t = zc.nextZeroCrossing(after: s, maxWindowMs: window, durationMs: duration) {
+                s = min(t, e - waveform.minSpanMs)
+            }
+        case (.end, .prev):
+            if let t = zc.previousZeroCrossing(before: e, maxWindowMs: window, durationMs: duration) {
+                e = max(t, s + waveform.minSpanMs)
+            }
+        case (.end, .next):
+            if let t = zc.nextZeroCrossing(after: e, maxWindowMs: window, durationMs: duration) {
+                e = max(t, s + waveform.minSpanMs)
+            }
+        }
+
+        waveform.setSelection(start: s, end: e)
+        renderTimes(s: s, e: e)
+        scheduleLevelAnalysis()
+    }
+    
 }

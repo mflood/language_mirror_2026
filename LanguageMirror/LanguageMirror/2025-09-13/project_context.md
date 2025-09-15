@@ -407,6 +407,10 @@ Transcript default model: per Segment vs. per Track (+timecodes). (We can suppor
 Server ASR vendor/pricing (later; protocol allows swapping).
 
 18) Decision Log (append newest at top)
+
+- 2025-09-15 — Waveform editor polish: added Selection Level Meter (RMS/Peak via AVAssetReader) and directional zero-crossing nudges (◀︎0 / 0▶︎ for Start/End). Extended ZeroCrossingSource with next/previous APIs; Synthetic and AVAsset-backed implementations updated. Debounced background analysis keeps UI fluid.
+
+
 - 2025-09-15 — Waveform editor: added “Loop until Stop” toggle (∞). Play Selection now supports 1×, N× (from Settings), or ∞ looping with Settings.gapSeconds and Settings.prerollMs.
 
 

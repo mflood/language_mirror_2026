@@ -268,44 +268,67 @@ private final class TimeRuler: UIView {
 // MARK: - Zero-crossing source (pluggable)
 
 protocol ZeroCrossingSource {
-    /// Return nearest zero-crossing time (ms) near `around`, searching within ±windowMs.
+
+    /// Nearest (direction-agnostic) crossing within ±windowMs.
     func nearestZeroCrossing(around: Int, windowMs: Int, durationMs: Int) -> Int?
+
+    /// First crossing strictly AFTER `after` within [+0, maxWindowMs].
+    func nextZeroCrossing(after: Int, maxWindowMs: Int, durationMs: Int) -> Int?
+
+    /// Last crossing strictly BEFORE `before` within [-maxWindowMs, +0].
+    func previousZeroCrossing(before: Int, maxWindowMs: Int, durationMs: Int) -> Int?
+
 }
 
 /// Synthetic source derived from the same math used in draw(_:) so snapping "looks right"
 /// until we replace with a true audio-driven source.
+/// Synthetic source derived from the placeholder waveform until we swap to true audio.
 final class SyntheticZeroCrossingSource: ZeroCrossingSource {
     private let cycles: CGFloat
     private let jitter: CGFloat
 
     init(cycles: CGFloat, jitter: CGFloat) {
-        self.cycles = cycles
-        self.jitter = jitter
+        self.cycles = cycles; self.jitter = jitter
     }
 
     func nearestZeroCrossing(around: Int, windowMs: Int, durationMs: Int) -> Int? {
-        guard durationMs > 0 else { return nil }
-        let stepMs = 1 // 1ms resolution
-        var best: (ms: Int, dist: Int)?
-        let start = max(0, around - windowMs)
-        let end = min(durationMs, around + windowMs)
-
-        // Detect sign changes between consecutive ms samples
-        var prevVal = sample(ms: start, durationMs: durationMs)
-        for ms in stride(from: start + stepMs, through: end, by: stepMs) {
-            let v = sample(ms: ms, durationMs: durationMs)
-            if (prevVal <= 0 && v > 0) || (prevVal >= 0 && v < 0) {
-                // linear interpolation between ms-step for closer crossing (optional)
-                let dist = abs(ms - around)
-                if best == nil || dist < best!.dist { best = (ms, dist) }
-            }
-            prevVal = v
+        let a = previousZeroCrossing(before: around, maxWindowMs: windowMs, durationMs: durationMs)
+        let b = nextZeroCrossing(after: around, maxWindowMs: windowMs, durationMs: durationMs)
+        switch (a,b) {
+        case (nil, nil): return nil
+        case let (x?, nil): return x
+        case let (nil, y?): return y
+        case let (x?, y?):
+            return abs(x - around) <= abs(y - around) ? x : y
         }
-        return best?.ms
+    }
+
+    func nextZeroCrossing(after: Int, maxWindowMs: Int, durationMs: Int) -> Int? {
+        guard durationMs > 0 else { return nil }
+        let end = min(durationMs, after + maxWindowMs)
+        var prev = sample(ms: after, durationMs: durationMs)
+        for ms in (after+1)...end {
+            let v = sample(ms: ms, durationMs: durationMs)
+            if (prev <= 0 && v > 0) || (prev >= 0 && v < 0) { return ms }
+            prev = v
+        }
+        return nil
+    }
+
+    func previousZeroCrossing(before: Int, maxWindowMs: Int, durationMs: Int) -> Int? {
+        guard durationMs > 0 else { return nil }
+        let start = max(0, before - maxWindowMs)
+        var prev = sample(ms: start, durationMs: durationMs)
+        var lastCross: Int?
+        for ms in (start+1)...before {
+            let v = sample(ms: ms, durationMs: durationMs)
+            if (prev <= 0 && v > 0) || (prev >= 0 && v < 0) { lastCross = ms }
+            prev = v
+        }
+        return lastCross
     }
 
     private func sample(ms: Int, durationMs: Int) -> CGFloat {
-        // Map ms -> x:[0,1]
         let t = CGFloat(ms) / CGFloat(durationMs)
         let base = sin(t * .pi * 2 * cycles)
         let j = sin(t * .pi * 37) * jitter
