@@ -9,8 +9,10 @@ import Foundation
 
 struct AppContainer {
     let libraryService: LibraryService
+    let audioPlayer: AudioPlayerService
 
     init() {
         self.libraryService = LibraryServiceJSON()
+        self.audioPlayer = AudioPlayerServiceAVPlayer()
     }
 }

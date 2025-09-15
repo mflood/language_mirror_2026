@@ -10,7 +10,7 @@ import UIKit
 final class LibraryCoordinator: Coordinator {
     let navigationController = UINavigationController()
     private let container: AppContainer
-    private var viewController: LibraryViewController!
+    // private var viewController: LibraryViewController!
     
     init(container: AppContainer) {
         
@@ -20,7 +20,7 @@ final class LibraryCoordinator: Coordinator {
 
     func start() -> UINavigationController {
         let vc = LibraryViewController(service: container.libraryService)
-        self.viewController = vc
+        // self.viewController = vc
         vc.title = "Library"
         vc.delegate = self
         navigationController.viewControllers = [vc]
@@ -37,7 +37,7 @@ final class LibraryCoordinator: Coordinator {
 
 extension LibraryCoordinator: LibraryViewControllerDelegate {
     func libraryViewController(_ vc: LibraryViewController, didSelect track: Track) {
-        let detail = TrackDetailViewController(track: track)
+        let detail = TrackDetailViewController(track: track, audioPlayer: container.audioPlayer)
         navigationController.pushViewController(detail, animated: true)
     }
 }
