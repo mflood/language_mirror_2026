@@ -80,6 +80,7 @@ final class LibraryServiceJSON: LibraryService {
     }
 
     private static func loadOrSeed(at fileURL: URL) throws -> LibraryStore {
+        
         let fm = FileManager.default
         if !fm.fileExists(atPath: fileURL.path) {
             // Try to copy seed from bundle as "library_seed.json"
@@ -89,10 +90,11 @@ final class LibraryServiceJSON: LibraryService {
             } else {
                 // Write a default seed if none provided
                 let defaultStore = LibraryStore(packs: [
+
                     Pack(id: "demo-pack", title: "Demo Pack", languageHint: "en-US", tracks: [
                         Track(id: "t1", title: "Greetings 01", filename: "sample.mp3", durationMs: 30000),
-                        Track(id: "t2", title: "Greetings 02", filename: "sample.mp3", durationMs: 42000),
-                        Track(id: "t3", title: "Dialog A",    filename: "sample.mp3", durationMs: 51000),
+                        Track(id: "t2", title: "几点", filename: "Story 5 - 你几点吃晚饭？.mp3", durationMs: 42000),
+                        Track(id: "t3", title: "화화니니",    filename: "Textbook_Lesson6_C2_3rd_Edition.mp3", durationMs: 51000),
                     ])
                 ])
                 try fm.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)

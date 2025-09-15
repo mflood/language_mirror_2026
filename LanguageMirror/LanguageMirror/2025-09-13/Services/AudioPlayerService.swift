@@ -11,7 +11,9 @@ import Foundation
 
 protocol AudioPlayerService: AnyObject {
     var isPlaying: Bool { get }
-    func play(track: Track) throws
+    func play(track: Track, repeats: Int, gapSeconds: TimeInterval) throws
+    func pause()
+    func resume()
     func stop()
 }
 
@@ -25,3 +27,14 @@ enum AudioPlayerError: Error, LocalizedError {
     }
 }
 
+// Convenience default (single play)
+extension AudioPlayerService {
+    func play(track: Track) throws {
+        try play(track: track, repeats: 1, gapSeconds: 0)
+    }
+}
+
+public extension Notification.Name {
+    static let AudioPlayerDidStart = Notification.Name("AudioPlayerDidStart")
+    static let AudioPlayerDidStop  = Notification.Name("AudioPlayerDidStop")
+}
