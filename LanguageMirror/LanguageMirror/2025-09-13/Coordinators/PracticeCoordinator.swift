@@ -14,9 +14,16 @@ final class PracticeCoordinator: Coordinator {
     init(container: AppContainer) { self.container = container }
 
     func start() -> UINavigationController {
-        let vc = PracticeViewController()
+        let vc = PracticeViewController(
+            settings: container.settings,
+            libraryService: container.libraryService,
+            segmentService: container.segmentService,
+            audioPlayer: container.audioPlayer
+        )
         vc.title = "Practice"
         navigationController.viewControllers = [vc]
+        navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }
 }
+

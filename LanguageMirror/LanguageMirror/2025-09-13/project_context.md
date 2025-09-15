@@ -407,6 +407,7 @@ Transcript default model: per Segment vs. per Track (+timecodes). (We can suppor
 Server ASR vendor/pricing (later; protocol allows swapping).
 
 18) Decision Log (append newest at top)
+- 2025-09-15 — Practice tab now exposes quick controls for N, gap, inter-segment gap, and preroll, bound to SettingsService (UserDefaults). Added track picker and immediate “Play Drills” action using AudioPlayerService segments API. Practice remembers last selected track.
 
 - 2025-09-15 — Start Routine now plays only Drill segments in order. AudioPlayerService gained a segments API honoring per-segment repeats with a gap between repeats and between segments. Implemented via AVPlayer with a periodic time observer; whole-track play preserved for legacy/testing.
 - 2025-09-15 — Wired N repeats + gap using AVPlayer. Extended AudioPlayerService with play(track:repeats:gapSeconds:), pause(), resume(), stop(). Track Detail exposes Pause/Resume and Stop controls and listens for start/stop notifications to update UI.
