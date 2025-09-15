@@ -17,6 +17,8 @@ final class SegmentWaveformEditorViewController: UIViewController {
     private let track: Track
     private let segmentService: SegmentService
     private var segment: Segment? // editing target (optional)
+    private let audioPlayer: AudioPlayerService          // NEW
+    private let settings: SettingsService                // NEW
 
     var onSaved: ((SegmentMap) -> Void)?   // caller can refresh its UI
 
@@ -38,6 +40,9 @@ final class SegmentWaveformEditorViewController: UIViewController {
     private let snapSwitch = UISwitch()
     private let snapLabel = UILabel()
 
+    // NEW: Play selection
+    private let playButton = UIButton(type: .system)     // NEW
+    
     // Cached details (title/repeats/lang)
     private var titleText: String?
     private var repeatsVal: Int?
@@ -46,10 +51,17 @@ final class SegmentWaveformEditorViewController: UIViewController {
     // State
     private var durationMs: Int = 60_000
     private var zoom: CGFloat = 1.0 { didSet { applyZoom() } }
+    private var isPlaying = false                        // NEW
+    private var isPaused  = false                        // NEW
 
-    init(track: Track, segment: Segment?, segmentService: SegmentService) {
+    init(track: Track, segment: Segment?, segmentService: SegmentService,
+         audioPlayer: AudioPlayerService,                // NEW
+                  settings: SettingsService
+    ) {
         self.track = track
         self.segment = segment
+        self.audioPlayer = audioPlayer
+                self.settings = settings
         self.segmentService = segmentService
         super.init(nibName: nil, bundle: nil)
         self.title = segment == nil ? "New Segment" : "Edit Segment"
@@ -62,8 +74,18 @@ final class SegmentWaveformEditorViewController: UIViewController {
         setupUI()
         loadDurationAndConfigure()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTapped))
+        
+        // NEW: observe playback notifications to toggle nav buttons
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStopped), name: .AudioPlayerDidStop, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStarted), name: .AudioPlayerDidStart, object: nil)
+ 
     }
 
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // Keep content width in sync with visible width * zoom on rotation/size change
@@ -108,9 +130,15 @@ final class SegmentWaveformEditorViewController: UIViewController {
         snapSwitch.isOn = true
         snapSwitch.addTarget(self, action: #selector(snapToggled), for: .valueChanged)
 
+        // NEW: Play button
+        playButton.setTitle("▶︎ Play Selection", for: .normal)
+        playButton.translatesAutoresizingMaskIntoConstraints = false
+        playButton.addTarget(self, action: #selector(playSelectionTapped), for: .touchUpInside)
+
+        
         view.addSubview(scroll)
         scroll.addSubview(waveform)
-        [startLabel, endLabel, durationLabel, kindSeg, detailsButton, zoomLabel, zoomSlider, snapLabel, snapSwitch].forEach {
+        [startLabel, endLabel, durationLabel, kindSeg, detailsButton, zoomLabel, zoomSlider, snapLabel, snapSwitch, playButton].forEach {
             view.addSubview($0)
         }
 
@@ -162,7 +190,13 @@ final class SegmentWaveformEditorViewController: UIViewController {
             snapLabel.leadingAnchor.constraint(equalTo: zoomLabel.leadingAnchor),
 
             snapSwitch.centerYAnchor.constraint(equalTo: snapLabel.centerYAnchor),
-            snapSwitch.leadingAnchor.constraint(equalTo: snapLabel.trailingAnchor, constant: 12)
+            snapSwitch.leadingAnchor.constraint(equalTo: snapLabel.trailingAnchor, constant: 12),
+        
+        
+            // NEW: Play button
+            playButton.topAnchor.constraint(equalTo: snapLabel.bottomAnchor, constant: 16),
+            playButton.leadingAnchor.constraint(equalTo: snapLabel.leadingAnchor)
+
         ])
 
         waveform.onSelectionChanged = { [weak self] s, e in
@@ -237,6 +271,92 @@ final class SegmentWaveformEditorViewController: UIViewController {
     @objc private func snapToggled() {
         waveform.snapEnabled = snapSwitch.isOn
     }
+    
+    // MARK: - NEW: Play selection
+
+     @objc private func playSelectionTapped() {
+         // Stop any ongoing playback first so we restart cleanly
+         audioPlayer.stop()
+
+         let s = waveform.startMs
+         let e = waveform.endMs
+         guard e > s else {
+             presentAlert("Invalid Range", "End must be greater than start.")
+             return
+         }
+
+         // Make a transient segment for audition (repeats: 1). We honor preroll from Settings.
+         let temp = Segment(id: UUID().uuidString,
+                            startMs: s,
+                            endMs: e,
+                            kind: .drill,
+                            title: nil,
+                            repeats: 1,
+                            languageCode: nil)
+
+         do {
+             try audioPlayer.play(
+                 track: track,
+                 segments: [temp],
+                 globalRepeats: 1,                             // one-shot audition
+                 gapSeconds: 0,
+                 interSegmentGapSeconds: 0,
+                 prerollMs: settings.prerollMs                 // honor preroll
+             )
+             isPlaying = true
+             isPaused = false
+             updatePlaybackButtons()
+         } catch {
+             presentAlert("Playback Error", error.localizedDescription)
+         }
+     }
+
+     // Playback UI (reuse the lightweight pattern used elsewhere)
+     private func updatePlaybackButtons() {
+         if isPlaying {
+             let pauseTitle = isPaused ? "Resume" : "Pause"
+             let pauseItem = UIBarButtonItem(title: pauseTitle, style: .plain, target: self, action: #selector(pauseResumeTapped))
+             let stopItem  = UIBarButtonItem(title: "Stop", style: .plain, target: self, action: #selector(stopTapped))
+             navigationItem.rightBarButtonItems = [stopItem, pauseItem, navigationItem.rightBarButtonItem].compactMap { $0 }
+         } else {
+             // Keep Save button as the sole right item
+             navigationItem.rightBarButtonItems = [navigationItem.rightBarButtonItem].compactMap { $0 }
+         }
+     }
+
+     @objc private func pauseResumeTapped() {
+         if isPaused {
+             audioPlayer.resume()
+             isPaused = false
+             isPlaying = true
+         } else {
+             audioPlayer.pause()
+             isPaused = true
+             isPlaying = false
+         }
+         updatePlaybackButtons()
+     }
+
+     @objc private func stopTapped() {
+         audioPlayer.stop()
+         isPaused = false
+         isPlaying = false
+         updatePlaybackButtons()
+     }
+
+     @objc private func handlePlaybackStopped() {
+         isPaused = false
+         isPlaying = false
+         updatePlaybackButtons()
+     }
+
+     @objc private func handlePlaybackStarted() {
+         isPaused = false
+         isPlaying = true
+         updatePlaybackButtons()
+     }
+
+     // ... existing saveTapped(), detailsTapped(), helpers ...
 
     @objc private func saveTapped() {
         let s = waveform.startMs

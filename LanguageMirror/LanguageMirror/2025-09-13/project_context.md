@@ -407,6 +407,12 @@ Transcript default model: per Segment vs. per Track (+timecodes). (We can suppor
 Server ASR vendor/pricing (later; protocol allows swapping).
 
 18) Decision Log (append newest at top)
+
+- 2025-09-15 — Segment Waveform Editor gained “Play Selection”. Uses AudioPlayerService segments API to audition the current range as a one-shot with preroll from Settings. UI shows Pause/Resume and Stop while playing. Wired audioPlayer + settings down through SegmentEditor → Waveform Editor.
+
+- 2025-09-15 — Added zoomable/pannable waveform to Segment Waveform Editor with a slider (1×–10×). Implemented snap-to-zero-crossing (toggleable) via a pluggable ZeroCrossingSource. Current source uses the synthetic waveform; ready to swap for true audio-based zero-crossing later.
+
+
 - 2025-09-15 — Added WaveformPlaceholderView with draggable start/end handles and time ruler. Introduced SegmentWaveformEditorViewController for visual editing of a single segment (create or edit). Segment Editor now pushes the waveform editor for add/edit. Duration derived from Track.durationMs or AVAsset if needed.
 
 - 2025-09-15 — Practice tab now exposes quick controls for N, gap, inter-segment gap, and preroll, bound to SettingsService (UserDefaults). Added track picker and immediate “Play Drills” action using AudioPlayerService segments API. Practice remembers last selected track.

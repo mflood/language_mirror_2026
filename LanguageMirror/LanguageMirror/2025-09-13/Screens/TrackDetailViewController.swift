@@ -218,7 +218,11 @@ final class TrackDetailViewController: UITableViewController {
                     presentError("Playback Error", error: error)
                 }
             case .editSegments:
-                let editor = SegmentEditorViewController(track: track, segmentService: segmentService)
+                let editor = SegmentEditorViewController(track: track, segmentService: segmentService,
+                
+                                                         audioPlayer: audioPlayer,          // NEW
+                                                         settings: settings                 // NEW
+                )
                 editor.onMapChanged = { [weak self] newMap in
                     self?.segmentMap = newMap
                     if let section = Section.allCases.firstIndex(of: .segments) {

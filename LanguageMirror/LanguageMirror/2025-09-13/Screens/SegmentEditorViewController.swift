@@ -16,14 +16,22 @@ final class SegmentEditorViewController: UITableViewController {
 
     private let track: Track
     private let segmentService: SegmentService
+    private let audioPlayer: AudioPlayerService           // NEW
+    private let settings: SettingsService                 // NEW
+    
     private var map: SegmentMap = .empty
 
     /// Called when the map changes so caller can refresh its UI.
     var onMapChanged: ((SegmentMap) -> Void)?
 
-    init(track: Track, segmentService: SegmentService) {
+    init(track: Track, segmentService: SegmentService,
+         audioPlayer: AudioPlayerService,                 // NEW
+         settings: SettingsService
+    ) {
         self.track = track
         self.segmentService = segmentService
+        self.audioPlayer = audioPlayer                       // NEW
+        self.settings = settings                             // NEW
         super.init(style: .insetGrouped)
         self.title = "Edit Segments"
     }
@@ -98,7 +106,10 @@ final class SegmentEditorViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         guard !map.segments.isEmpty else { return }
         let seg = map.segments[indexPath.row]
-        let editor = SegmentWaveformEditorViewController(track: track, segment: seg, segmentService: segmentService)
+        let editor = SegmentWaveformEditorViewController(track: track, segment: seg, segmentService: segmentService,
+                                                         audioPlayer: audioPlayer,                      // NEW
+                                                         settings: settings
+        )
         editor.onSaved = { [weak self] newMap in
             self?.map = newMap
             self?.tableView.reloadData()
@@ -178,7 +189,10 @@ final class SegmentEditorViewController: UITableViewController {
 
     // Replace addTapped() to open the waveform editor for a new segment:
     @objc private func addSegmentTapped() {
-        let editor = SegmentWaveformEditorViewController(track: track, segment: nil, segmentService: segmentService)
+        let editor = SegmentWaveformEditorViewController(track: track, segment: nil, segmentService: segmentService,
+                                                         audioPlayer: audioPlayer,                      // NEW
+                                                         settings: settings                             // NEW
+        )
         editor.onSaved = { [weak self] newMap in
             self?.map = newMap
             self?.tableView.reloadData()
