@@ -25,6 +25,8 @@ struct Track: Codable, Identifiable, Equatable {
 struct SegmentMap: Codable, Equatable {
     var version: Int
     var segments: [Segment]
+    
+    static let empty = SegmentMap(version: 1, segments: [])
 }
 
 enum SegmentKind: String, Codable { case drill, skip, noise }

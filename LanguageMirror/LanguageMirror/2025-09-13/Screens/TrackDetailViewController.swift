@@ -11,10 +11,14 @@ final class TrackDetailViewController: UITableViewController {
 
     private let track: Track
     private let audioPlayer: AudioPlayerService   // <— inject
-
-    init(track: Track, audioPlayer: AudioPlayerService) {
+    private let segmentService: SegmentService  // <- inject
+    private var segmentMap: SegmentMap = .empty
+    
+    
+    init(track: Track, audioPlayer: AudioPlayerService, segmentService: SegmentService) {
         self.track = track
         self.audioPlayer = audioPlayer
+        self.segmentService = segmentService
         super.init(style: .insetGrouped)
         self.title = track.title
     }
@@ -22,7 +26,7 @@ final class TrackDetailViewController: UITableViewController {
 
     // MARK: - Table model
 
-    private enum Section: Int, CaseIterable { case overview, actions }
+    private enum Section: Int, CaseIterable { case overview, actions, segments }
     private enum OverviewRow: CaseIterable { case filename, duration, language }
     private enum ActionRow: CaseIterable { case startRoutine, editSegments }
 
@@ -63,6 +67,7 @@ final class TrackDetailViewController: UITableViewController {
         switch Section(rawValue: section)! {
         case .overview: return "Overview"
         case .actions:  return "Actions"
+        case .segments: return "Segments"
         }
     }
 
@@ -70,6 +75,7 @@ final class TrackDetailViewController: UITableViewController {
         switch Section(rawValue: section)! {
         case .overview: return OverviewRow.allCases.count
         case .actions:  return ActionRow.allCases.count
+        case .segments: return max(segmentMap.segments.count, 1)
         }
     }
 
@@ -102,10 +108,36 @@ final class TrackDetailViewController: UITableViewController {
                 config.secondaryText = "Play this track once (stub)"
                 cell.accessoryType = .disclosureIndicator
             case .editSegments:
-                config.text = "Edit Segments"
-                config.secondaryText = "Open Segment Editor (placeholder)"
-                cell.accessoryType = .disclosureIndicator
+                let editor = SegmentEditorViewController(track: track, segmentService: segmentService)
+                editor.onMapChanged = { [weak self] newMap in
+                    self?.segmentMap = newMap
+                    // Refresh just the segments section for snappy UI
+                    if let section = Section.allCases.firstIndex(of: .segments) {
+                        self?.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+                    } else {
+                        self?.tableView.reloadData()
+                    }
+                }
+                navigationController?.pushViewController(editor, animated: true)
             }
+            
+        case .segments:
+                if segmentMap.segments.isEmpty {
+                    config.text = "No segments yet"
+                    config.secondaryText = "Tap “Edit Segments” to add"
+                    cell.selectionStyle = .none
+                    cell.accessoryType = .none
+                } else {
+                    let seg = segmentMap.segments[indexPath.row]
+                    let title = (seg.title?.isEmpty == false) ? seg.title! : "(Untitled)"
+                    config.text = "[\(formatTime(seg.startMs)) – \(formatTime(seg.endMs))] \(title)"
+                    var meta = seg.kind.rawValue
+                    if let r = seg.repeats { meta += " • repeats: \(r)" }
+                    if let lang = seg.languageCode, !lang.isEmpty { meta += " • \(lang)" }
+                    config.secondaryText = meta
+                    cell.accessoryType = .disclosureIndicator
+                }
+            
         }
 
         cell.contentConfiguration = config
@@ -152,6 +184,13 @@ final class TrackDetailViewController: UITableViewController {
         if let code = track.languageCode?.trimmingCharacters(in: .whitespacesAndNewlines),
            !code.isEmpty { return code }
         return "—"
+    }
+    
+    private func formatTime(_ ms: Int) -> String {
+        let totalSeconds = Double(ms) / 1000.0
+        let m = Int(totalSeconds / 60.0)
+        let s = Int(totalSeconds) % 60
+        return String(format: "%d:%02d", m, s)
     }
 }
 

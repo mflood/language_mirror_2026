@@ -37,7 +37,7 @@ final class LibraryCoordinator: Coordinator {
 
 extension LibraryCoordinator: LibraryViewControllerDelegate {
     func libraryViewController(_ vc: LibraryViewController, didSelect track: Track) {
-        let detail = TrackDetailViewController(track: track, audioPlayer: container.audioPlayer)
+        let detail = TrackDetailViewController(track: track, audioPlayer: container.audioPlayer, segmentService: container.segmentService)
         navigationController.pushViewController(detail, animated: true)
     }
 }
