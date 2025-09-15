@@ -407,6 +407,8 @@ Transcript default model: per Segment vs. per Track (+timecodes). (We can suppor
 Server ASR vendor/pricing (later; protocol allows swapping).
 
 18) Decision Log (append newest at top)
+- 2025-09-15 — Waveform editor: added “Loop until Stop” toggle (∞). Play Selection now supports 1×, N× (from Settings), or ∞ looping with Settings.gapSeconds and Settings.prerollMs.
+
 
 - 2025-09-15 — Waveform editor gained a tiny loop audition toggle (1× vs N× from Settings). Play Selection now repeats according to the toggle, using Settings.gapSeconds for inter-repeat gap and Settings.prerollMs for preroll.
 

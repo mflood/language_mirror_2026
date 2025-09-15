@@ -42,7 +42,7 @@ final class SegmentWaveformEditorViewController: UIViewController {
 
     // NEW: Play selection
     private let playButton = UIButton(type: .system)     // NEW
-    private let loopSeg = UISegmentedControl(items: ["1×", "N×"])
+    private let loopSeg = UISegmentedControl(items: ["1×", "N×", "∞"])
     
     
     // Cached details (title/repeats/lang)
@@ -93,8 +93,6 @@ final class SegmentWaveformEditorViewController: UIViewController {
         loopSeg.setTitle("N× (\(settings.globalRepeats))", forSegmentAt: 1)
     }
  
-
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // Keep content width in sync with visible width * zoom on rotation/size change
@@ -144,12 +142,15 @@ final class SegmentWaveformEditorViewController: UIViewController {
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.addTarget(self, action: #selector(playSelectionTapped), for: .touchUpInside)
 
+        // In setupUI(), after loopSeg initialization:
         loopSeg.translatesAutoresizingMaskIntoConstraints = false
         loopSeg.selectedSegmentIndex = 0
         loopSeg.setContentHuggingPriority(.required, for: .horizontal)
-        // Show N value from Settings
+        // Show current N in the second segment's title
         loopSeg.setTitle("N× (\(settings.globalRepeats))", forSegmentAt: 1)
-
+        
+        
+        
         view.addSubview(scroll)
         scroll.addSubview(waveform)
         
@@ -293,47 +294,57 @@ final class SegmentWaveformEditorViewController: UIViewController {
     
     // MARK: - NEW: Play selection
 
-     @objc private func playSelectionTapped() {
-         audioPlayer.stop()
+    @objc private func playSelectionTapped() {
+        audioPlayer.stop()
 
-         let s = waveform.startMs
-         let e = waveform.endMs
-         guard e > s else {
-             presentAlert("Invalid Range", "End must be greater than start.")
-             return
-         }
+        let s = waveform.startMs
+        let e = waveform.endMs
+        guard e > s else {
+            presentAlert("Invalid Range", "End must be greater than start.")
+            return
+        }
 
-         // Determine repeats & gap from toggle
-         let repeats = (loopSeg.selectedSegmentIndex == 1) ? max(1, settings.globalRepeats) : 1
-         let gap = (repeats > 1) ? settings.gapSeconds : 0.0
+        // Determine repeats & gap from toggle
+        let selected = loopSeg.selectedSegmentIndex
+        let repeats: Int
+        switch selected {
+        case 0: // 1×
+            repeats = 1
+        case 1: // N× (from Settings)
+            repeats = max(1, settings.globalRepeats)
+        default: // 2 => ∞
+            repeats = Int.max
+        }
+        let gap = (repeats == 1) ? 0.0 : settings.gapSeconds
 
-         // Build a transient segment (let’s explicitly set repeats to the chosen value)
-         let temp = Segment(
-             id: UUID().uuidString,
-             startMs: s,
-             endMs: e,
-             kind: .drill,
-             title: nil,
-             repeats: repeats,
-             languageCode: nil
-         )
+        // Transient segment for audition; set per-segment repeats to our chosen count
+        let temp = Segment(
+            id: UUID().uuidString,
+            startMs: s,
+            endMs: e,
+            kind: .drill,
+            title: nil,
+            repeats: repeats,
+            languageCode: nil
+        )
 
-         do {
-             try audioPlayer.play(
-                 track: track,
-                 segments: [temp],
-                 globalRepeats: repeats,            // aligns with temp.repeats
-                 gapSeconds: gap,                   // gap between repeats when looping
-                 interSegmentGapSeconds: 0,
-                 prerollMs: settings.prerollMs
-             )
-             isPlaying = true
-             isPaused = false
-             updatePlaybackButtons()
-         } catch {
-             presentAlert("Playback Error", error.localizedDescription)
-         }
-     }
+        do {
+            try audioPlayer.play(
+                track: track,
+                segments: [temp],
+                globalRepeats: repeats,               // aligns with temp.repeats
+                gapSeconds: gap,                      // repeat gap when looping
+                interSegmentGapSeconds: 0,
+                prerollMs: settings.prerollMs
+            )
+            isPlaying = true
+            isPaused = false
+            updatePlaybackButtons()
+        } catch {
+            presentAlert("Playback Error", error.localizedDescription)
+        }
+    }
+
 
      // Playback UI (reuse the lightweight pattern used elsewhere)
      private func updatePlaybackButtons() {
