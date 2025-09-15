@@ -12,6 +12,19 @@ import Foundation
 protocol AudioPlayerService: AnyObject {
     var isPlaying: Bool { get }
     func play(track: Track, repeats: Int, gapSeconds: TimeInterval) throws
+    
+    /// Play only specific segments (typically .drill) in order.
+    /// - Parameters:
+    ///   - segments: Segments to play; segment.repeats overrides globalRepeats when present.
+    ///   - globalRepeats: Fallback repeats if segment.repeats == nil (min 1).
+    ///   - gapSeconds: Gap between repeats of the **same** segment (>= 0).
+    ///   - interSegmentGapSeconds: Gap between **different** segments (>= 0).
+    func play(track: Track,
+              segments: [Segment],
+              globalRepeats: Int,
+              gapSeconds: TimeInterval,
+              interSegmentGapSeconds: TimeInterval) throws
+    
     func pause()
     func resume()
     func stop()

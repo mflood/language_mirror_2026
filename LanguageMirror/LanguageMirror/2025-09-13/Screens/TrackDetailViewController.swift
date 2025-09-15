@@ -20,6 +20,7 @@ final class TrackDetailViewController: UITableViewController {
     // Playback config (temporary defaults; later from Settings)
     private let defaultRepeats = 3
     private let defaultGap: TimeInterval = 0.5
+    private let defaultInterSegmentGap: TimeInterval = 0.5  // NEW
 
     // Local UI state
     private var isPlaying: Bool = false
@@ -141,8 +142,15 @@ final class TrackDetailViewController: UITableViewController {
         case .actions:
             switch ActionRow.allCases[indexPath.row] {
             case .startRoutine:
+                let drillCount = segmentMap.segments.filter { $0.kind == .drill }.count
                 config.text = "Start Routine"
-                config.secondaryText = "Play \(defaultRepeats)x with \(defaultGap)s gap (stub)"
+                
+                if drillCount > 0 {
+                    config.secondaryText = "Play \(drillCount) drills • \(defaultRepeats)x • gap \(defaultGap)s"
+                } else {
+                    config.secondaryText = "No drills defined (add segments)"
+                }
+                
                 cell.accessoryType = .disclosureIndicator
             case .editSegments:
                 config.text = "Edit Segments"
@@ -177,8 +185,18 @@ final class TrackDetailViewController: UITableViewController {
         case .actions:
             switch ActionRow.allCases[indexPath.row] {
             case .startRoutine:
+                let drills = segmentMap.segments.filter { $0.kind == .drill }
+                    guard !drills.isEmpty else {
+                        presentMessage("No Drills", "Add segments and mark some as Drill to practice.")
+                        return
+                    }
+                
                 do {
-                    try audioPlayer.play(track: track, repeats: defaultRepeats, gapSeconds: defaultGap)
+                    try audioPlayer.play(track: track,
+                                         segments: drills,
+                                         globalRepeats: defaultRepeats,
+                                         gapSeconds: defaultGap,
+                                         interSegmentGapSeconds: defaultInterSegmentGap)
                     isPlaying = true
                     isPaused = false
                     updatePlaybackButtons()

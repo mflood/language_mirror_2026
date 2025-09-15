@@ -408,9 +408,15 @@ Server ASR vendor/pricing (later; protocol allows swapping).
 
 18) Decision Log (append newest at top)
 
-2025-09-14 — Starter app (UIKit, no storyboard) with TabBar + coordinators retained strongly to keep delegates alive. JSON-first LibraryService loads library_seed.json or persists to Documents/LanguageMirror/library.json. Chose Drill/Skip/Noise for SegmentKind. Track has optional languageCode.
+- 2025-09-15 — Start Routine now plays only Drill segments in order. AudioPlayerService gained a segments API honoring per-segment repeats with a gap between repeats and between segments. Implemented via AVPlayer with a periodic time observer; whole-track play preserved for legacy/testing.
+- 2025-09-15 — Wired N repeats + gap using AVPlayer. Extended AudioPlayerService with play(track:repeats:gapSeconds:), pause(), resume(), stop(). Track Detail exposes Pause/Resume and Stop controls and listens for start/stop notifications to update UI.
+- 2025-09-15 — Added dedicated Segment Editor screen. Editor supports list, add/edit/delete, reorder, and quick kind cycle. Introduced SegmentService.update/moveSegment to persist edits and ordering. Track Detail now pushes the editor and refreshes its Segments section on return via callback.
+- 2025-09-15 — Added Segments section scaffold to Track Detail. Introduced Segment/SegmentKind/SegmentMap models and JSON-backed SegmentService that reads/writes Documents/LanguageMirror/library/tracks/<trackId>/track.json. Supports empty state, add dialog (start/end/title/kind), and swipe-to-delete.
 
-2025-09-13 — Initial architecture/IA defined; AVAudioEngine chosen for precise loops; Coordinators + Services to ensure low coupling.
+- 2025-09-14 — Starter app (UIKit, no storyboard) with TabBar + coordinators retained strongly to keep delegates alive. JSON-first LibraryService loads library_seed.json or persists to Documents/LanguageMirror/library.json. Chose Drill/Skip/Noise for SegmentKind. Track has optional languageCode.
+
+- 2025-09-13 — Initial architecture/IA defined; AVAudioEngine chosen for precise loops; Coordinators + Services to ensure low coupling.
+
 
 19) Quick “Patch Template” for LLM replies
 
@@ -431,22 +437,3 @@ Patches
 // <code here>
 
 
-Acceptance checks
-
-Build & Run → steps → expected result.
-
-Doc update
-
-“Add this bullet to Decision Log…” (include the exact markdown to append).
-
-20) Next Suggested Step
-
-Replace “Start Routine” alert with a playable stub (M2.B2.1):
-
-Add a tiny AudioPlayerService using AVPlayer that loads filename from bundle first, else from Documents.
-
-Wire to Track Detail’s “Start Routine”.
-
-Acceptance: Tap → audio plays; errors show a user-friendly alert.
-
-Say the word and I’ll provide the exact patch in the format above.
