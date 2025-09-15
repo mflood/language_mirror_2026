@@ -32,6 +32,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private var globalRepeats: Int = 1
     private var gapSeconds: TimeInterval = 0.5
     private var interSegmentGapSeconds: TimeInterval = 0.5
+    private var prerollSeconds: TimeInterval = 0.0
     private var currentSegmentStart: CMTime = .zero
     private var currentSegmentEnd: CMTime = .zero
     private let pollInterval = CMTime(seconds: 0.01, preferredTimescale: 600) // 10ms
@@ -48,12 +49,14 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
               segments: [Segment],
               globalRepeats: Int,
               gapSeconds: TimeInterval,
-              interSegmentGapSeconds: TimeInterval) throws {
+              interSegmentGapSeconds: TimeInterval,
+              prerollMs: Int) throws {
         try startSegments(track: track,
                           segments: segments,
                           globalRepeats: globalRepeats,
                           gap: gapSeconds,
-                          interGap: interSegmentGapSeconds)
+                          interGap: interSegmentGapSeconds,
+                          prerollMs: prerollMs)
     }
 
     func pause() {
@@ -130,7 +133,8 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                segments: [Segment],
                                globalRepeats: Int,
                                gap: TimeInterval,
-                               interGap: TimeInterval) throws {
+                               interGap: TimeInterval,
+                               prerollMs: Int) throws {
         stop() // cleanup
 
         guard let url = resolveURL(for: track) else {
@@ -144,6 +148,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         self.globalRepeats = max(1, globalRepeats)
         self.gapSeconds = max(0, gap)
         self.interSegmentGapSeconds = max(0, interGap)
+        self.prerollSeconds = max(0, Double(prerollMs) / 1000.0)
         currentSegmentIndex = 0
 
         let item = AVPlayerItem(url: url)
@@ -171,8 +176,11 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         currentSegmentStart = CMTime(seconds: Double(seg.startMs) / 1000.0, preferredTimescale: 600)
         currentSegmentEnd   = CMTime(seconds: Double(seg.endMs)   / 1000.0, preferredTimescale: 600)
 
+        let seekStart = max(0, currentSegmentStart.seconds - prerollSeconds)
+        let seekTime = CMTime(seconds: seekStart, preferredTimescale: 600)
+        
         // Seek precisely to start and play
-        player.seek(to: currentSegmentStart, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
+        player.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
             guard let self else { return }
             self.player?.play()
             self.isPlaying = true

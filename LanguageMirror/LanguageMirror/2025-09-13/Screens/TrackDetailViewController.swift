@@ -14,6 +14,7 @@ final class TrackDetailViewController: UITableViewController {
     private let track: Track
     private let audioPlayer: AudioPlayerService
     private let segmentService: SegmentService
+    private let settings: SettingsService
 
     private var segmentMap: SegmentMap = .empty
 
@@ -26,10 +27,11 @@ final class TrackDetailViewController: UITableViewController {
     private var isPlaying: Bool = false
     private var isPaused: Bool = false
 
-    init(track: Track, audioPlayer: AudioPlayerService, segmentService: SegmentService) {
+    init(track: Track, audioPlayer: AudioPlayerService, segmentService: SegmentService, settings: SettingsService) {
         self.track = track
         self.audioPlayer = audioPlayer
         self.segmentService = segmentService
+        self.settings = settings
         super.init(style: .insetGrouped)
         self.title = track.title
     }
@@ -59,6 +61,14 @@ final class TrackDetailViewController: UITableViewController {
                                                object: nil)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Refresh Start Routine cell subtitle with current settings
+        if let actionsSection = Section.allCases.firstIndex(of: .actions) {
+            tableView.reloadSections(IndexSet(integer: actionsSection), with: .none)
+        }
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -142,15 +152,18 @@ final class TrackDetailViewController: UITableViewController {
         case .actions:
             switch ActionRow.allCases[indexPath.row] {
             case .startRoutine:
+                let n = settings.globalRepeats
+                let gap = settings.gapSeconds
+                let inter = settings.interSegmentGapSeconds
+                let pre = settings.prerollMs
                 let drillCount = segmentMap.segments.filter { $0.kind == .drill }.count
+
                 config.text = "Start Routine"
-                
                 if drillCount > 0 {
-                    config.secondaryText = "Play \(drillCount) drills • \(defaultRepeats)x • gap \(defaultGap)s"
+                    config.secondaryText = "Drills: \(drillCount) • \(n)x • gap \(String(format: "%.1f", gap))s • inter \(String(format: "%.1f", inter))s • preroll \(pre)ms"
                 } else {
                     config.secondaryText = "No drills defined (add segments)"
                 }
-                
                 cell.accessoryType = .disclosureIndicator
             case .editSegments:
                 config.text = "Edit Segments"
@@ -196,7 +209,8 @@ final class TrackDetailViewController: UITableViewController {
                                          segments: drills,
                                          globalRepeats: defaultRepeats,
                                          gapSeconds: defaultGap,
-                                         interSegmentGapSeconds: defaultInterSegmentGap)
+                                         interSegmentGapSeconds: defaultInterSegmentGap,
+                                         prerollMs: settings.prerollMs)
                     isPlaying = true
                     isPaused = false
                     updatePlaybackButtons()

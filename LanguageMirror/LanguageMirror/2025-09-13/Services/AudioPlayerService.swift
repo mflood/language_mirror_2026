@@ -23,7 +23,8 @@ protocol AudioPlayerService: AnyObject {
               segments: [Segment],
               globalRepeats: Int,
               gapSeconds: TimeInterval,
-              interSegmentGapSeconds: TimeInterval) throws
+              interSegmentGapSeconds: TimeInterval,
+              prerollMs: Int) throws
     
     func pause()
     func resume()
