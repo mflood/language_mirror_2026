@@ -42,6 +42,8 @@ final class SegmentWaveformEditorViewController: UIViewController {
 
     // NEW: Play selection
     private let playButton = UIButton(type: .system)     // NEW
+    private let loopSeg = UISegmentedControl(items: ["1×", "N×"])
+    
     
     // Cached details (title/repeats/lang)
     private var titleText: String?
@@ -85,6 +87,13 @@ final class SegmentWaveformEditorViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loopSeg.setTitle("N× (\(settings.globalRepeats))", forSegmentAt: 1)
+    }
+ 
+
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -135,10 +144,16 @@ final class SegmentWaveformEditorViewController: UIViewController {
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.addTarget(self, action: #selector(playSelectionTapped), for: .touchUpInside)
 
-        
+        loopSeg.translatesAutoresizingMaskIntoConstraints = false
+        loopSeg.selectedSegmentIndex = 0
+        loopSeg.setContentHuggingPriority(.required, for: .horizontal)
+        // Show N value from Settings
+        loopSeg.setTitle("N× (\(settings.globalRepeats))", forSegmentAt: 1)
+
         view.addSubview(scroll)
         scroll.addSubview(waveform)
-        [startLabel, endLabel, durationLabel, kindSeg, detailsButton, zoomLabel, zoomSlider, snapLabel, snapSwitch, playButton].forEach {
+        
+        [startLabel, endLabel, durationLabel, kindSeg, detailsButton, zoomLabel, zoomSlider, snapLabel, snapSwitch, playButton, loopSeg].forEach {
             view.addSubview($0)
         }
 
@@ -192,10 +207,14 @@ final class SegmentWaveformEditorViewController: UIViewController {
             snapSwitch.centerYAnchor.constraint(equalTo: snapLabel.centerYAnchor),
             snapSwitch.leadingAnchor.constraint(equalTo: snapLabel.trailingAnchor, constant: 12),
         
-        
-            // NEW: Play button
-            playButton.topAnchor.constraint(equalTo: snapLabel.bottomAnchor, constant: 16),
-            playButton.leadingAnchor.constraint(equalTo: snapLabel.leadingAnchor)
+            // Place loopSeg under the Snap row
+            loopSeg.topAnchor.constraint(equalTo: snapLabel.bottomAnchor, constant: 16),
+            loopSeg.leadingAnchor.constraint(equalTo: snapLabel.leadingAnchor),
+
+            // Move Play button below the loop toggle
+            playButton.topAnchor.constraint(equalTo: loopSeg.bottomAnchor, constant: 12),
+            playButton.leadingAnchor.constraint(equalTo: loopSeg.leadingAnchor),
+
 
         ])
 
@@ -275,7 +294,6 @@ final class SegmentWaveformEditorViewController: UIViewController {
     // MARK: - NEW: Play selection
 
      @objc private func playSelectionTapped() {
-         // Stop any ongoing playback first so we restart cleanly
          audioPlayer.stop()
 
          let s = waveform.startMs
@@ -285,23 +303,29 @@ final class SegmentWaveformEditorViewController: UIViewController {
              return
          }
 
-         // Make a transient segment for audition (repeats: 1). We honor preroll from Settings.
-         let temp = Segment(id: UUID().uuidString,
-                            startMs: s,
-                            endMs: e,
-                            kind: .drill,
-                            title: nil,
-                            repeats: 1,
-                            languageCode: nil)
+         // Determine repeats & gap from toggle
+         let repeats = (loopSeg.selectedSegmentIndex == 1) ? max(1, settings.globalRepeats) : 1
+         let gap = (repeats > 1) ? settings.gapSeconds : 0.0
+
+         // Build a transient segment (let’s explicitly set repeats to the chosen value)
+         let temp = Segment(
+             id: UUID().uuidString,
+             startMs: s,
+             endMs: e,
+             kind: .drill,
+             title: nil,
+             repeats: repeats,
+             languageCode: nil
+         )
 
          do {
              try audioPlayer.play(
                  track: track,
                  segments: [temp],
-                 globalRepeats: 1,                             // one-shot audition
-                 gapSeconds: 0,
+                 globalRepeats: repeats,            // aligns with temp.repeats
+                 gapSeconds: gap,                   // gap between repeats when looping
                  interSegmentGapSeconds: 0,
-                 prerollMs: settings.prerollMs                 // honor preroll
+                 prerollMs: settings.prerollMs
              )
              isPlaying = true
              isPaused = false

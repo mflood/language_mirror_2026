@@ -408,6 +408,9 @@ Server ASR vendor/pricing (later; protocol allows swapping).
 
 18) Decision Log (append newest at top)
 
+- 2025-09-15 — Waveform editor gained a tiny loop audition toggle (1× vs N× from Settings). Play Selection now repeats according to the toggle, using Settings.gapSeconds for inter-repeat gap and Settings.prerollMs for preroll.
+
+
 - 2025-09-15 — Segment Waveform Editor gained “Play Selection”. Uses AudioPlayerService segments API to audition the current range as a one-shot with preroll from Settings. UI shows Pause/Resume and Stop while playing. Wired audioPlayer + settings down through SegmentEditor → Waveform Editor.
 
 - 2025-09-15 — Added zoomable/pannable waveform to Segment Waveform Editor with a slider (1×–10×). Implemented snap-to-zero-crossing (toggleable) via a pluggable ZeroCrossingSource. Current source uses the synthetic waveform; ready to swap for true audio-based zero-crossing later.
