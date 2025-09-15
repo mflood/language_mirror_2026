@@ -29,7 +29,17 @@ struct SegmentMap: Codable, Equatable {
     static let empty = SegmentMap(version: 1, segments: [])
 }
 
-enum SegmentKind: String, Codable { case drill, skip, noise }
+enum SegmentKind: String, Codable, CaseIterable { case drill, skip, noise }
+
+extension SegmentKind {
+    var label: String {
+        switch self {
+        case .drill:  return "Drill"
+        case .skip: return "Skip"
+        case .noise: return "Noise"
+        }
+    }
+}
 
 struct Segment: Codable, Identifiable, Equatable {
     let id: String

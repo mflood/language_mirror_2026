@@ -34,7 +34,7 @@ final class SegmentEditorViewController: UITableViewController {
         view.backgroundColor = .systemBackground
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped)),
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addSegmentTapped)),
             UIBarButtonItem(title: "Reorder", style: .plain, target: self, action: #selector(toggleReorder))
         ]
         load()
@@ -85,11 +85,26 @@ final class SegmentEditorViewController: UITableViewController {
         return cell
     }
 
+    /*
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard !map.segments.isEmpty else { return }
         let seg = map.segments[indexPath.row]
         presentEditForm(for: seg)
+    }
+     */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard !map.segments.isEmpty else { return }
+        let seg = map.segments[indexPath.row]
+        let editor = SegmentWaveformEditorViewController(track: track, segment: seg, segmentService: segmentService)
+        editor.onSaved = { [weak self] newMap in
+            self?.map = newMap
+            self?.tableView.reloadData()
+            self?.onMapChanged?(newMap)
+        }
+        navigationController?.pushViewController(editor, animated: true)
     }
 
     // Swipe actions
@@ -161,6 +176,17 @@ final class SegmentEditorViewController: UITableViewController {
         navigationItem.rightBarButtonItems?.last?.title = tableView.isEditing ? "Done" : "Reorder"
     }
 
+    // Replace addTapped() to open the waveform editor for a new segment:
+    @objc private func addSegmentTapped() {
+        let editor = SegmentWaveformEditorViewController(track: track, segment: nil, segmentService: segmentService)
+        editor.onSaved = { [weak self] newMap in
+            self?.map = newMap
+            self?.tableView.reloadData()
+            self?.onMapChanged?(newMap)
+        }
+        navigationController?.pushViewController(editor, animated: true)
+    }
+    
     @objc private func addTapped() {
         presentEditForm(for: nil)
     }
