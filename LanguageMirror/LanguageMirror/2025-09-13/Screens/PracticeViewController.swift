@@ -21,8 +21,11 @@ final class PracticeViewController: UITableViewController {
             if let t = selectedTrack {
                 UserDefaults.standard.set(t.id, forKey: "practice.lastTrackId")
             }
-            refreshDrillCount()
-            reloadAll()
+            // Reflect the new title immediately
+            reload(.target)
+            reload(.actions)
+            // Refresh drill count asynchronously
+            refreshDrillCountAsync()
         }
     }
 
@@ -120,6 +123,40 @@ final class PracticeViewController: UITableViewController {
         }
     }
 
+    // New async version
+    private func refreshDrillCountAsync() {
+        guard let t = selectedTrack else {
+            drillCount = 0
+            reload(.target); reload(.actions)
+            return
+        }
+
+        let currentId = t.id
+        // optimistic UI while counting
+        // (keeps the UI responsive; optional)
+        // drillCount = 0
+        // reload(.target); reload(.actions)
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self else { return }
+            let count: Int = {
+                if let map = try? self.segments.loadMap(for: currentId) {
+                    return map.segments.lazy.filter { $0.kind == .drill }.count
+                }
+                return 0
+            }()
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                // Only apply if user hasn’t switched tracks meanwhile
+                guard self.selectedTrack?.id == currentId else { return }
+                self.drillCount = count
+                self.reload(.target)
+                self.reload(.actions)
+            }
+        }
+    }
+    
     // MARK: - Table
 
     override func numberOfSections(in tableView: UITableView) -> Int { Section.allCases.count }
@@ -234,29 +271,80 @@ final class PracticeViewController: UITableViewController {
         }
     }
 
+    
+    private func updateControlRow(_ row: ControlRow) {
+        let ip = IndexPath(row: row.rawValue, section: Section.controls.rawValue)
+        guard let cell = tableView.cellForRow(at: ip) else { return }
+        var cfg = cell.defaultContentConfiguration()
+        switch row {
+        case .repeats:
+            cfg.text = "Repeats (N)"
+            cfg.secondaryText = "\(settings.globalRepeats)x"
+            cell.accessoryView = repeatsStepper
+        case .gap:
+            cfg.text = "Gap between repeats"
+            cfg.secondaryText = String(format: "%.1fs", settings.gapSeconds)
+            cell.accessoryView = gapSlider
+        case .interGap:
+            cfg.text = "Gap between segments"
+            cfg.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
+            cell.accessoryView = interGapSlider
+        case .preroll:
+            cfg.text = "Preroll"
+            cfg.secondaryText = "\(settings.prerollMs) ms"
+            cell.accessoryView = prerollSeg
+        }
+        cell.contentConfiguration = cfg
+        cell.selectionStyle = .none
+    }
+
+    private func updateActionsSummaryRow() {
+        let ip = IndexPath(row: ActionRow.play.rawValue, section: Section.actions.rawValue)
+        guard let cell = tableView.cellForRow(at: ip) else { return }
+        var cfg = cell.defaultContentConfiguration()
+        cfg.text = "Play Drills"
+        if selectedTrack == nil {
+            cfg.secondaryText = "Select a track above"
+        } else if drillCount == 0 {
+            cfg.secondaryText = "No drills defined in this track"
+        } else {
+            cfg.secondaryText = "N=\(settings.globalRepeats) • gap \(String(format: "%.1f", settings.gapSeconds))s • inter \(String(format: "%.1f", settings.interSegmentGapSeconds))s • preroll \(settings.prerollMs)ms"
+        }
+        cell.contentConfiguration = cfg
+        cell.accessoryType = .disclosureIndicator
+    }
+    
+    
     // MARK: - Control callbacks (persist to Settings)
 
     @objc private func repeatsChanged() {
+        //settings.globalRepeats = Int(repeatsStepper.value)
+        //reload(.controls)
+        
+        
         settings.globalRepeats = Int(repeatsStepper.value)
-        reload(.controls)
+        updateControlRow(.repeats)
+        updateActionsSummaryRow()
     }
     @objc private func gapChanged() {
         let stepped = Double(round(gapSlider.value * 10) / 10)
         gapSlider.value = Float(stepped)
         settings.gapSeconds = Double(gapSlider.value)
-        reload(.controls)
+        updateControlRow(.gap)
+        updateActionsSummaryRow()
     }
     @objc private func interGapChanged() {
         let stepped = Double(round(interGapSlider.value * 10) / 10)
         interGapSlider.value = Float(stepped)
         settings.interSegmentGapSeconds = Double(interGapSlider.value)
-        reload(.controls)
+        updateControlRow(.interGap)
+        updateActionsSummaryRow()
     }
     @objc private func prerollChanged() {
         let values = [0,100,200,300]
-        let ms = values[prerollSeg.selectedSegmentIndex]
-        settings.prerollMs = ms
-        reload(.controls)
+        settings.prerollMs = values[prerollSeg.selectedSegmentIndex]
+        updateControlRow(.preroll)
+        updateActionsSummaryRow()
     }
 
     // MARK: - Playback UI
@@ -286,22 +374,29 @@ final class PracticeViewController: UITableViewController {
     }
 
     @objc private func stopTapped() {
-        player.stop()
-        isPaused = false
-        isPlaying = false
-        updatePlaybackButtons()
+        DispatchQueue.main.async {
+            self.player.stop()
+            self.isPaused = false
+            self.isPlaying = false
+            self.updatePlaybackButtons()
+        }
     }
 
     @objc private func handlePlaybackStopped() {
-        isPaused = false
-        isPlaying = false
-        updatePlaybackButtons()
+        DispatchQueue.main.async {
+            self.isPaused = false
+            self.isPlaying = false
+            self.updatePlaybackButtons()
+        }
     }
 
     @objc private func handlePlaybackStarted() {
-        isPaused = false
-        isPlaying = true
-        updatePlaybackButtons()
+        DispatchQueue.main.async {
+            self.isPaused = false
+            self.isPlaying = true
+            self.updatePlaybackButtons()
+        }
+
     }
 
     // MARK: - Helpers

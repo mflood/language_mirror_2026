@@ -44,7 +44,17 @@ final class PracticeTrackPickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        onPick?(tracks[indexPath.row])
-        navigationController?.popViewController(animated: true)
+        let chosen = tracks[indexPath.row]
+        
+        if let nav = navigationController {
+            CATransaction.begin()
+            CATransaction.setCompletionBlock { [weak self] in
+                self?.onPick?(chosen)
+            }
+            nav.popViewController(animated: true)
+            CATransaction.commit()
+        } else {
+            onPick?(chosen)
+        }
     }
 }
