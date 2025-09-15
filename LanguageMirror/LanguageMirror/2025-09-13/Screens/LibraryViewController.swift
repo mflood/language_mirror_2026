@@ -4,12 +4,16 @@
 //
 //  Created by Matthew Flood on 9/13/25.
 //
-
 import UIKit
+
+protocol LibraryViewControllerDelegate: AnyObject {
+    func libraryViewController(_ vc: LibraryViewController, didSelect track: Track)
+}
 
 final class LibraryViewController: UIViewController {
     private let service: LibraryService
     private var tracks: [Track] = []
+    weak var delegate: LibraryViewControllerDelegate?
 
     init(service: LibraryService) {
         self.service = service
@@ -30,6 +34,7 @@ final class LibraryViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
 
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
@@ -53,7 +58,8 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
         tracks.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let track = tracks[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var config = cell.defaultContentConfiguration()
@@ -66,6 +72,9 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+         delegate?.libraryViewController(self, didSelect: tracks[indexPath.row])
+        
+        /*
         let track = tracks[indexPath.row]
         let alert = UIAlertController(
             title: track.title,
@@ -74,5 +83,8 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
         )
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+         */
+
+
     }
 }

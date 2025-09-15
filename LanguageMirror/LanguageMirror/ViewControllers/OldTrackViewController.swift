@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackViewController: UIViewController {
+final class OldTrackViewController: UIViewController {
     private enum Section { case main }
 
     private var tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -56,7 +56,7 @@ final class TrackViewController: UIViewController {
     }
 }
 
-extension TrackViewController: UITableViewDelegate {
+extension OldTrackViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let track = dataSource.itemIdentifier(for: indexPath) else { return }
         let vc = ArrangementListViewController(track: track)

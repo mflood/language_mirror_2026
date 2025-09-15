@@ -12,6 +12,8 @@ final class AppCoordinator {
     private let container: AppContainer
     private let tabBarController = UITabBarController()
 
+    private var coordinators: [Coordinator] = []
+    
     init(window: UIWindow, container: AppContainer) {
         self.window = window
         self.container = container
@@ -19,27 +21,36 @@ final class AppCoordinator {
 
     func start() {
         // Child coordinators
-        let libraryNav  = LibraryCoordinator(container: container).start()
+        
+        let libraryCoordinator = LibraryCoordinator(container: container)
+        let importCoordinator  = ImportCoordinator(container: container)
+        let practiceCoordinator = PracticeCoordinator(container: container)
+        let settingsCoordinator = SettingsCoordinator(container: container)
+        
+        self.coordinators = [libraryCoordinator, importCoordinator, practiceCoordinator, settingsCoordinator]
+        
+        let libraryNav  = libraryCoordinator.start()
         libraryNav.tabBarItem  = UITabBarItem(title: "Library",
                                               image: UIImage(systemName: "books.vertical"),
                                               tag: 0)
 
-        let importNav   = ImportCoordinator(container: container).start()
+        let importNav   = importCoordinator.start()
         importNav.tabBarItem   = UITabBarItem(title: "Import",
                                               image: UIImage(systemName: "square.and.arrow.down"),
                                               tag: 1)
 
-        let practiceNav = PracticeCoordinator(container: container).start()
+        let practiceNav = practiceCoordinator.start()
         practiceNav.tabBarItem = UITabBarItem(title: "Practice",
                                               image: UIImage(systemName: "repeat"),
                                               tag: 2)
 
-        let settingsNav = SettingsCoordinator(container: container).start()
+        let settingsNav = settingsCoordinator.start()
         settingsNav.tabBarItem = UITabBarItem(title: "Settings",
                                               image: UIImage(systemName: "gearshape"),
                                               tag: 3)
 
         tabBarController.viewControllers = [libraryNav, importNav, practiceNav, settingsNav]
+        
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
     }

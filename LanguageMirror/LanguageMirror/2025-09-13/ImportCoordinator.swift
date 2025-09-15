@@ -19,4 +19,9 @@ final class ImportCoordinator: Coordinator {
         navigationController.viewControllers = [vc]
         return navigationController
     }
+    
+    deinit {
+        
+        
+        print("ImportCoordinator deinit") }
 }
