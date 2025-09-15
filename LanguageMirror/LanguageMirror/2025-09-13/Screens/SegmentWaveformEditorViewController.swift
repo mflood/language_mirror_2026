@@ -5,7 +5,8 @@
 //  Created by Matthew Flood on 9/15/25.
 //
 
-// path: Screens/SegmentWaveformEditorViewController.swift
+
+// REPLACE the whole file with this updated version (adds UIScrollView, zoom slider, snap toggle).
 import UIKit
 import AVFoundation
 
@@ -20,17 +21,31 @@ final class SegmentWaveformEditorViewController: UIViewController {
     var onSaved: ((SegmentMap) -> Void)?   // caller can refresh its UI
 
     // UI
+    private let scroll = UIScrollView()
     private let waveform = WaveformPlaceholderView()
+    private var waveformWidthConstraint: NSLayoutConstraint?
+
     private let startLabel = UILabel()
     private let endLabel = UILabel()
     private let durationLabel = UILabel()
+
     private let kindSeg = UISegmentedControl(items: SegmentKind.allCases.map { $0.rawValue })
     private let detailsButton = UIButton(type: .system)
+
+    // Zoom + Snap controls
+    private let zoomLabel = UILabel()
+    private let zoomSlider = UISlider()
+    private let snapSwitch = UISwitch()
+    private let snapLabel = UILabel()
 
     // Cached details (title/repeats/lang)
     private var titleText: String?
     private var repeatsVal: Int?
     private var langCode: String?
+
+    // State
+    private var durationMs: Int = 60_000
+    private var zoom: CGFloat = 1.0 { didSet { applyZoom() } }
 
     init(track: Track, segment: Segment?, segmentService: SegmentService) {
         self.track = track
@@ -49,53 +64,106 @@ final class SegmentWaveformEditorViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTapped))
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // Keep content width in sync with visible width * zoom on rotation/size change
+        applyZoom()
+    }
+
     private func setupUI() {
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.showsHorizontalScrollIndicator = true
+        scroll.alwaysBounceHorizontal = true
+
         waveform.translatesAutoresizingMaskIntoConstraints = false
+
         startLabel.translatesAutoresizingMaskIntoConstraints = false
         endLabel.translatesAutoresizingMaskIntoConstraints = false
         durationLabel.translatesAutoresizingMaskIntoConstraints = false
-        kindSeg.translatesAutoresizingMaskIntoConstraints = false
-        detailsButton.translatesAutoresizingMaskIntoConstraints = false
-
-        startLabel.font = .monospacedDigitSystemFont(ofSize: 14, weight: .medium)
-        endLabel.font = .monospacedDigitSystemFont(ofSize: 14, weight: .medium)
+        [startLabel, endLabel].forEach {
+            $0.font = .monospacedDigitSystemFont(ofSize: 14, weight: .medium)
+        }
         durationLabel.font = .systemFont(ofSize: 13)
         durationLabel.textColor = .secondaryLabel
 
         detailsButton.setTitle("Details…", for: .normal)
+        detailsButton.translatesAutoresizingMaskIntoConstraints = false
         detailsButton.addTarget(self, action: #selector(detailsTapped), for: .touchUpInside)
 
-        view.addSubview(waveform)
-        view.addSubview(startLabel)
-        view.addSubview(endLabel)
-        view.addSubview(durationLabel)
-        view.addSubview(kindSeg)
-        view.addSubview(detailsButton)
+        kindSeg.translatesAutoresizingMaskIntoConstraints = false
+        kindSeg.selectedSegmentIndex = SegmentKind.allCases.firstIndex(of: segment?.kind ?? .drill) ?? 0
+
+        // Zoom + Snap
+        zoomLabel.text = "Zoom 1.0×"
+        zoomLabel.translatesAutoresizingMaskIntoConstraints = false
+        zoomSlider.translatesAutoresizingMaskIntoConstraints = false
+        zoomSlider.minimumValue = 1.0
+        zoomSlider.maximumValue = 10.0
+        zoomSlider.value = 1.0
+        zoomSlider.addTarget(self, action: #selector(zoomChanged), for: .valueChanged)
+
+        snapLabel.text = "Snap to zero-crossing"
+        snapLabel.translatesAutoresizingMaskIntoConstraints = false
+        snapSwitch.translatesAutoresizingMaskIntoConstraints = false
+        snapSwitch.isOn = true
+        snapSwitch.addTarget(self, action: #selector(snapToggled), for: .valueChanged)
+
+        view.addSubview(scroll)
+        scroll.addSubview(waveform)
+        [startLabel, endLabel, durationLabel, kindSeg, detailsButton, zoomLabel, zoomSlider, snapLabel, snapSwitch].forEach {
+            view.addSubview($0)
+        }
+
+        // Layout
+        let g = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            scroll.topAnchor.constraint(equalTo: g.topAnchor, constant: 12),
+            scroll.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 12),
+            scroll.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: -12),
+            scroll.heightAnchor.constraint(equalToConstant: 200),
+
+            waveform.topAnchor.constraint(equalTo: scroll.topAnchor),
+            waveform.leadingAnchor.constraint(equalTo: scroll.leadingAnchor),
+            waveform.bottomAnchor.constraint(equalTo: scroll.bottomAnchor),
+            waveform.heightAnchor.constraint(equalTo: scroll.heightAnchor),
+
+            // Width is dynamic (visible width * zoom)
+            // We'll set an initial constraint now; update in applyZoom()
+        ])
+        waveformWidthConstraint = waveform.widthAnchor.constraint(equalToConstant: 600)
+        waveformWidthConstraint?.isActive = true
+        scroll.contentSize = CGSize(width: CGFloat(600), height: 200)
 
         NSLayoutConstraint.activate([
-            waveform.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            waveform.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            waveform.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            waveform.heightAnchor.constraint(equalToConstant: 180),
+            startLabel.topAnchor.constraint(equalTo: scroll.bottomAnchor, constant: 8),
+            startLabel.leadingAnchor.constraint(equalTo: scroll.leadingAnchor),
 
-            startLabel.topAnchor.constraint(equalTo: waveform.bottomAnchor, constant: 8),
-            startLabel.leadingAnchor.constraint(equalTo: waveform.leadingAnchor),
-
-            endLabel.topAnchor.constraint(equalTo: waveform.bottomAnchor, constant: 8),
-            endLabel.trailingAnchor.constraint(equalTo: waveform.trailingAnchor),
+            endLabel.topAnchor.constraint(equalTo: scroll.bottomAnchor, constant: 8),
+            endLabel.trailingAnchor.constraint(equalTo: scroll.trailingAnchor),
 
             durationLabel.topAnchor.constraint(equalTo: startLabel.bottomAnchor, constant: 4),
             durationLabel.leadingAnchor.constraint(equalTo: startLabel.leadingAnchor),
 
-            kindSeg.topAnchor.constraint(equalTo: durationLabel.bottomAnchor, constant: 16),
-            kindSeg.leadingAnchor.constraint(equalTo: waveform.leadingAnchor),
-            kindSeg.trailingAnchor.constraint(equalTo: waveform.trailingAnchor),
+            kindSeg.topAnchor.constraint(equalTo: durationLabel.bottomAnchor, constant: 12),
+            kindSeg.leadingAnchor.constraint(equalTo: scroll.leadingAnchor),
+            kindSeg.trailingAnchor.constraint(equalTo: scroll.trailingAnchor),
 
-            detailsButton.topAnchor.constraint(equalTo: kindSeg.bottomAnchor, constant: 12),
-            detailsButton.leadingAnchor.constraint(equalTo: kindSeg.leadingAnchor)
+            detailsButton.topAnchor.constraint(equalTo: kindSeg.bottomAnchor, constant: 8),
+            detailsButton.leadingAnchor.constraint(equalTo: kindSeg.leadingAnchor),
+
+            zoomLabel.topAnchor.constraint(equalTo: detailsButton.bottomAnchor, constant: 16),
+            zoomLabel.leadingAnchor.constraint(equalTo: detailsButton.leadingAnchor),
+
+            zoomSlider.centerYAnchor.constraint(equalTo: zoomLabel.centerYAnchor),
+            zoomSlider.leadingAnchor.constraint(equalTo: zoomLabel.trailingAnchor, constant: 12),
+            zoomSlider.trailingAnchor.constraint(equalTo: scroll.trailingAnchor),
+
+            snapLabel.topAnchor.constraint(equalTo: zoomLabel.bottomAnchor, constant: 12),
+            snapLabel.leadingAnchor.constraint(equalTo: zoomLabel.leadingAnchor),
+
+            snapSwitch.centerYAnchor.constraint(equalTo: snapLabel.centerYAnchor),
+            snapSwitch.leadingAnchor.constraint(equalTo: snapLabel.trailingAnchor, constant: 12)
         ])
-
-        kindSeg.selectedSegmentIndex = SegmentKind.allCases.firstIndex(of: segment?.kind ?? .drill) ?? 0
 
         waveform.onSelectionChanged = { [weak self] s, e in
             self?.renderTimes(s: s, e: e)
@@ -103,45 +171,71 @@ final class SegmentWaveformEditorViewController: UIViewController {
     }
 
     private func loadDurationAndConfigure() {
-        // Determine duration: prefer Track.durationMs else read via AVAsset
         if let ms = track.durationMs {
             configure(durationMs: ms)
             return
         }
-        guard let url = AudioLocator.resolveURL(for: track) else {
-            presentAlert("Audio Missing", "Could not locate audio file \(track.filename).")
-            // pick a default duration to allow UI anyway
+        if let url = AudioLocator.resolveURL(for: track) {
+            let asset = AVAsset(url: url)
+            let seconds = CMTimeGetSeconds(asset.duration)
+            let ms = Int((seconds.isFinite ? seconds : 60.0) * 1000.0)
+            configure(durationMs: max(ms, 1000))
+        } else {
+            // Audio missing — still let the editor work
             configure(durationMs: 60_000)
-            return
         }
-        let asset = AVAsset(url: url)
-        let seconds = CMTimeGetSeconds(asset.duration)
-        let ms = Int((seconds.isFinite ? seconds : 60.0) * 1000.0)
-        configure(durationMs: max(ms, 1000))
     }
 
     private func configure(durationMs: Int) {
+        self.durationMs = durationMs
         waveform.durationMs = durationMs
 
         if let seg = segment {
             waveform.setSelection(start: seg.startMs, end: seg.endMs)
-            self.titleText = seg.title
-            self.repeatsVal = seg.repeats
-            self.langCode = seg.languageCode
+            titleText = seg.title
+            repeatsVal = seg.repeats
+            langCode = seg.languageCode
+            kindSeg.selectedSegmentIndex = SegmentKind.allCases.firstIndex(of: seg.kind) ?? 0
         } else {
-            // default selection: middle 3 seconds
+            // default selection: middle
             let mid = durationMs / 2
             let half = min(1500, durationMs / 4)
             waveform.setSelection(start: max(0, mid - half), end: min(durationMs, mid + half))
         }
 
         renderTimes(s: waveform.startMs, e: waveform.endMs)
-        durationLabel.text = "Track duration: \(fmt(waveform.durationMs))"
+        durationLabel.text = "Track duration: \(fmt(durationMs))"
+
+        // Initial zoom fit
+        zoom = 1.0
+        zoomSlider.value = 1.0
+        waveform.snapEnabled = snapSwitch.isOn
+    }
+
+    private func applyZoom() {
+        // Make content width = visible width * zoom
+        let visibleWidth = view.bounds.width - 24 // account for leading/trailing constraints
+        let newWidth = max(visibleWidth, visibleWidth * zoom)
+        waveformWidthConstraint?.constant = newWidth
+        scroll.contentSize = CGSize(width: newWidth, height: 200)
+        zoomLabel.text = String(format: "Zoom %.1f×", zoom)
+        view.layoutIfNeeded()
     }
 
     private func renderTimes(s: Int, e: Int) {
         startLabel.text = "Start: \(fmt(s))"
         endLabel.text = "End: \(fmt(e))"
+    }
+
+    @objc private func zoomChanged() {
+        // snap to 0.1x increments for stable label values
+        let stepped = round(zoomSlider.value * 10) / 10
+        zoomSlider.value = stepped
+        zoom = CGFloat(stepped)
+    }
+
+    @objc private func snapToggled() {
+        waveform.snapEnabled = snapSwitch.isOn
     }
 
     @objc private func saveTapped() {
@@ -162,11 +256,8 @@ final class SegmentWaveformEditorViewController: UIViewController {
 
         do {
             let map: SegmentMap
-            if segment == nil {
-                map = try segmentService.add(seg, to: track.id)
-            } else {
-                map = try segmentService.update(seg, in: track.id)
-            }
+            if segment == nil { map = try segmentService.add(seg, to: track.id) }
+            else { map = try segmentService.update(seg, in: track.id) }
             onSaved?(map)
             navigationController?.popViewController(animated: true)
         } catch {
@@ -177,14 +268,8 @@ final class SegmentWaveformEditorViewController: UIViewController {
     @objc private func detailsTapped() {
         let alert = UIAlertController(title: "Details", message: "Optional metadata", preferredStyle: .alert)
         alert.addTextField { tf in tf.placeholder = "Title"; tf.text = self.titleText }
-        alert.addTextField { tf in
-            tf.placeholder = "Repeats (e.g., 3)"; tf.keyboardType = .numberPad
-            tf.text = self.repeatsVal.map(String.init)
-        }
-        alert.addTextField { tf in
-            tf.placeholder = "Language (e.g., en-US)"; tf.autocapitalizationType = .none
-            tf.text = self.langCode
-        }
+        alert.addTextField { tf in tf.placeholder = "Repeats (e.g., 3)"; tf.keyboardType = .numberPad; tf.text = self.repeatsVal.map(String.init) }
+        alert.addTextField { tf in tf.placeholder = "Language (e.g., en-US)"; tf.autocapitalizationType = .none; tf.text = self.langCode }
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
             guard let self else { return }
@@ -199,7 +284,6 @@ final class SegmentWaveformEditorViewController: UIViewController {
     }
 
     // MARK: - Helpers
-
     private func fmt(_ ms: Int) -> String {
         let sec = Double(ms) / 1000.0
         let m = Int(sec / 60.0)

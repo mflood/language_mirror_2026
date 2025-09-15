@@ -4,22 +4,32 @@
 //
 //  Created by Matthew Flood on 9/15/25.
 //
-
 // path: Views/WaveformPlaceholderView.swift
+// REPLACE the whole file with this updated version (adds snap + zero-crossing + minor refactors).
 import UIKit
 
 /// A lightweight, synthetic waveform placeholder with draggable start/end handles.
-/// Selection is reported in milliseconds via `onSelectionChanged`.
+/// - Reports selection in ms via `onSelectionChanged`.
+/// - Optional zero-crossing snapping (using a synthetic source for now).
 final class WaveformPlaceholderView: UIView {
 
-    // Public configuration
+    // MARK: Public configuration
     var durationMs: Int = 60_000 { didSet { setNeedsLayout(); setNeedsDisplay() } }
     var startMs: Int = 1_000 { didSet { clampSelection(); syncUI() } }
-    var endMs: Int = 4_000 { didSet { clampSelection(); syncUI() } }
+    var endMs: Int = 4_000   { didSet { clampSelection(); syncUI() } }
     var minSpanMs: Int = 150
+
+    /// Snap handles to nearest zero-crossing when gesture ends.
+    var snapEnabled: Bool = true
+    /// How far to search around the handle (in ms) for a zero crossing.
+    var zeroCrossWindowMs: Int = 40
+
+    /// Source that can return a zero crossing near a given time (ms).
+    var zeroCrossingSource: ZeroCrossingSource?
+
     var onSelectionChanged: ((Int, Int) -> Void)?
 
-    // Subviews
+    // MARK: Subviews
     private let leftHandle = HandleView()
     private let rightHandle = HandleView()
     private let selectionOverlay = UIView()
@@ -43,13 +53,13 @@ final class WaveformPlaceholderView: UIView {
 
         leftHandle.addGestureRecognizer(leftPan)
         rightHandle.addGestureRecognizer(rightPan)
-
         leftHandle.isUserInteractionEnabled = true
         rightHandle.isUserInteractionEnabled = true
-
-        // Accessibility hints
         leftHandle.accessibilityLabel = "Segment start"
         rightHandle.accessibilityLabel = "Segment end"
+
+        // default zero-crossing source matches our synthetic draw function
+        zeroCrossingSource = SyntheticZeroCrossingSource(cycles: 6, jitter: 0.15)
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -60,7 +70,6 @@ final class WaveformPlaceholderView: UIView {
         topRuler.frame = CGRect(x: 0, y: 0, width: bounds.width, height: rulerH)
         topRuler.durationMs = durationMs
 
-        // Handles are 24pt wide hit areas with a 2pt center bar
         let handleW: CGFloat = 24
         let handleH: CGFloat = bounds.height - rulerH
         leftHandle.frame = CGRect(x: xFor(ms: startMs) - handleW/2, y: rulerH, width: handleW, height: handleH)
@@ -79,7 +88,7 @@ final class WaveformPlaceholderView: UIView {
         let rulerH: CGFloat = topRuler.bounds.height
         let h = rect.height - rulerH
 
-        // Background gradient-ish bands
+        // Background bands
         ctx.saveGState()
         let bg = UIBezierPath(rect: CGRect(x: 0, y: rulerH, width: rect.width, height: h))
         UIColor.systemBackground.setFill()
@@ -99,7 +108,7 @@ final class WaveformPlaceholderView: UIView {
         while x <= rect.width {
             let t = x / rect.width
             let base = sin(t * .pi * 2 * cycles)
-            let j = sin(t * .pi * 37) * jitter // little detail
+            let j = sin(t * .pi * 37) * jitter
             let y = midY - (base + j) * amp
             if x == 0 { path.move(to: CGPoint(x: x, y: y)) } else { path.addLine(to: CGPoint(x: x, y: y)) }
             x += step
@@ -110,7 +119,6 @@ final class WaveformPlaceholderView: UIView {
     }
 
     // MARK: - Public
-
     func setSelection(start: Int, end: Int) {
         startMs = start
         endMs = end
@@ -118,11 +126,9 @@ final class WaveformPlaceholderView: UIView {
     }
 
     // MARK: - Gestures
-
     @objc private func handlePan(_ gr: UIPanGestureRecognizer) {
         let translation = gr.translation(in: self)
         gr.setTranslation(.zero, in: self)
-
         guard durationMs > 0 else { return }
 
         if gr.view === leftHandle {
@@ -139,13 +145,25 @@ final class WaveformPlaceholderView: UIView {
 
         syncUI()
         onSelectionChanged?(startMs, endMs)
+
+        if gr.state == .ended, snapEnabled {
+            // Snap whichever handle moved last
+            if gr.view === leftHandle {
+                if let snapped = zeroCrossingSource?.nearestZeroCrossing(around: startMs, windowMs: zeroCrossWindowMs, durationMs: durationMs) {
+                    startMs = min(snapped, endMs - minSpanMs)
+                }
+            } else if gr.view === rightHandle {
+                if let snapped = zeroCrossingSource?.nearestZeroCrossing(around: endMs, windowMs: zeroCrossWindowMs, durationMs: durationMs) {
+                    endMs = max(snapped, startMs + minSpanMs)
+                }
+            }
+            syncUI()
+            onSelectionChanged?(startMs, endMs)
+        }
     }
 
     // MARK: - Helpers
-
-    private func syncUI() {
-        setNeedsLayout()
-    }
+    private func syncUI() { setNeedsLayout() }
 
     private func clampSelection() {
         if startMs < 0 { startMs = 0 }
@@ -200,26 +218,21 @@ private final class TimeRuler: UIView {
         ctx.setLineWidth(1)
 
         let totalSec = max(1, Double(durationMs) / 1000.0)
-        // choose tick every 1s (coarse) with half ticks
         let pixelsPerSec = rect.width / CGFloat(totalSec)
-        let major: Double = 1
-        let minor: Double = 0.5
+        let majorEvery: Double = pickMajorTick(pixelsPerSec: pixelsPerSec)
+        let minorEvery = majorEvery / 2
 
         // baseline
         ctx.move(to: CGPoint(x: 0, y: h-1)); ctx.addLine(to: CGPoint(x: rect.width, y: h-1)); ctx.strokePath()
 
-        // ticks
-        var t: Double = 0
-        while t <= totalSec + 0.0001 {
+        func drawTick(at t: Double, major: Bool) {
             let x = CGFloat(t / totalSec) * rect.width
-            let isMajor = (abs((t/major).rounded() - (t/major)) < 0.001)
-            let length: CGFloat = isMajor ? h-2 : h-8
+            let length: CGFloat = major ? h-2 : h-8
             ctx.move(to: CGPoint(x: x, y: h-1))
             ctx.addLine(to: CGPoint(x: x, y: h-length))
             ctx.strokePath()
-
-            if isMajor {
-                let label = String(format: "%.0fs", t)
+            if major {
+                let label: String = t < 60 ? String(format: "%.0fs", t) : String(format: "%.0f:%02.0f", floor(t/60), t.truncatingRemainder(dividingBy: 60))
                 let attrs: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 10, weight: .regular),
                     .foregroundColor: UIColor.secondaryLabel
@@ -227,7 +240,75 @@ private final class TimeRuler: UIView {
                 let size = (label as NSString).size(withAttributes: attrs)
                 (label as NSString).draw(at: CGPoint(x: x+2, y: h-size.height-2), withAttributes: attrs)
             }
-            t += minor
         }
+
+        // ticks
+        var t: Double = 0
+        while t <= totalSec + 0.0001 {
+            drawTick(at: t, major: true)
+            if minorEvery > 0 {
+                let mid = t + minorEvery
+                if mid < totalSec { drawTick(at: mid, major: false) }
+            }
+            t += majorEvery
+        }
+    }
+
+    private func pickMajorTick(pixelsPerSec: CGFloat) -> Double {
+        // Aim for ~70–120px between major ticks
+        if pixelsPerSec >= 200 { return 0.5 }
+        if pixelsPerSec >= 120 { return 1.0 }
+        if pixelsPerSec >= 70  { return 2.0 }
+        if pixelsPerSec >= 40  { return 5.0 }
+        if pixelsPerSec >= 20  { return 10.0 }
+        return 15.0
+    }
+}
+
+// MARK: - Zero-crossing source (pluggable)
+
+protocol ZeroCrossingSource {
+    /// Return nearest zero-crossing time (ms) near `around`, searching within ±windowMs.
+    func nearestZeroCrossing(around: Int, windowMs: Int, durationMs: Int) -> Int?
+}
+
+/// Synthetic source derived from the same math used in draw(_:) so snapping "looks right"
+/// until we replace with a true audio-driven source.
+final class SyntheticZeroCrossingSource: ZeroCrossingSource {
+    private let cycles: CGFloat
+    private let jitter: CGFloat
+
+    init(cycles: CGFloat, jitter: CGFloat) {
+        self.cycles = cycles
+        self.jitter = jitter
+    }
+
+    func nearestZeroCrossing(around: Int, windowMs: Int, durationMs: Int) -> Int? {
+        guard durationMs > 0 else { return nil }
+        let stepMs = 1 // 1ms resolution
+        var best: (ms: Int, dist: Int)?
+        let start = max(0, around - windowMs)
+        let end = min(durationMs, around + windowMs)
+
+        // Detect sign changes between consecutive ms samples
+        var prevVal = sample(ms: start, durationMs: durationMs)
+        for ms in stride(from: start + stepMs, through: end, by: stepMs) {
+            let v = sample(ms: ms, durationMs: durationMs)
+            if (prevVal <= 0 && v > 0) || (prevVal >= 0 && v < 0) {
+                // linear interpolation between ms-step for closer crossing (optional)
+                let dist = abs(ms - around)
+                if best == nil || dist < best!.dist { best = (ms, dist) }
+            }
+            prevVal = v
+        }
+        return best?.ms
+    }
+
+    private func sample(ms: Int, durationMs: Int) -> CGFloat {
+        // Map ms -> x:[0,1]
+        let t = CGFloat(ms) / CGFloat(durationMs)
+        let base = sin(t * .pi * 2 * cycles)
+        let j = sin(t * .pi * 37) * jitter
+        return base + j
     }
 }

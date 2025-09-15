@@ -184,7 +184,7 @@ final class SegmentEditorViewController: UITableViewController {
             self?.tableView.reloadData()
             self?.onMapChanged?(newMap)
         }
-        navigationController?.pushViewController(editor, animated: true)
+        navigationController?.pushViewController(editor, animated: true)        
     }
     
     @objc private func addTapped() {
