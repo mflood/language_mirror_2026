@@ -13,6 +13,7 @@ protocol SettingsService: AnyObject {
     var gapSeconds: TimeInterval { get set }           // between repeats of same segment
     var interSegmentGapSeconds: TimeInterval { get set } // between different segments
     var prerollMs: Int { get set }                     // 0..300 typical
+    var duckOthers: Bool { get set }                     // duck other audio when playing
 }
 
 final class SettingsServiceUserDefaults: SettingsService {
@@ -23,6 +24,7 @@ final class SettingsServiceUserDefaults: SettingsService {
         case gap = "settings.gapSeconds"
         case interGap = "settings.interSegmentGapSeconds"
         case preroll = "settings.prerollMs"
+        case duckOthers = "settings.duckOthers"
     }
 
     // Defaults
@@ -30,6 +32,7 @@ final class SettingsServiceUserDefaults: SettingsService {
     private let defaultGap: TimeInterval = 0.5
     private let defaultInterGap: TimeInterval = 0.5
     private let defaultPrerollMs = 0
+    private let defaultDuck = false
 
     var globalRepeats: Int {
         get { max(1, d.integer(forKey: Key.repeats.rawValue) == 0 ? defaultRepeats : d.integer(forKey: Key.repeats.rawValue)) }
@@ -58,5 +61,10 @@ final class SettingsServiceUserDefaults: SettingsService {
             return v ?? defaultPrerollMs
         }
         set { d.set(max(0, min(newValue, 1000)), forKey: Key.preroll.rawValue) }
+    }
+    
+    var duckOthers: Bool {
+        get { d.object(forKey: Key.duckOthers.rawValue) as? Bool ?? defaultDuck }
+        set { d.set(newValue, forKey: Key.duckOthers.rawValue) }
     }
 }
