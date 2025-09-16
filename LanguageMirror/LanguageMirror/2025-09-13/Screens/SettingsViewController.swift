@@ -19,7 +19,7 @@ final class SettingsViewController: UITableViewController {
     private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
 
     private enum Row: Int, CaseIterable {
-        case repeats, gap, interGap, preroll
+        case repeats, gap, interGap, preroll, duck
     }
 
     init(settings: SettingsService) {
@@ -99,6 +99,14 @@ final class SettingsViewController: UITableViewController {
             config.text = "Preroll"
             config.secondaryText = "\(settings.prerollMs) ms"
             cell.accessoryView = prerollSeg
+            
+            // cellForRowAt:
+        case .duck:
+            config.text = "Duck other audio"
+            let sw = UISwitch()
+            sw.isOn = settings.duckOthers
+            sw.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
+            cell.accessoryView = sw
         }
 
         cell.selectionStyle = .none
@@ -116,6 +124,7 @@ final class SettingsViewController: UITableViewController {
         case .gap:       cfg.secondaryText = String(format: "%.1fs", settings.gapSeconds)
         case .interGap:  cfg.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
         case .preroll:   cfg.secondaryText = "\(settings.prerollMs) ms"
+        case .duck:      break // no secondary text to update
         }
         cell.contentConfiguration = cfg
     }
@@ -148,6 +157,11 @@ final class SettingsViewController: UITableViewController {
         updateSecondary(.preroll)
     }
 
+    
+    @objc private func duckToggled(_ sw: UISwitch) {
+        settings.duckOthers = sw.isOn
+    }
+    
     private func reload(_ row: Row) {
         // This was originally called, and caused to hang
         // guard let idx = Row.allCases.firstIndex(of: row) else { return }
@@ -159,6 +173,6 @@ final class SettingsViewController: UITableViewController {
             guard let self = self else { return }
             self.tableView.reloadRows(at: [IndexPath(row: row.rawValue, section: 0)], with: .none)
         }
-
     }
+
 }
