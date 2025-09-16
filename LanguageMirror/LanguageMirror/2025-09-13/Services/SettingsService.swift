@@ -14,6 +14,7 @@ protocol SettingsService: AnyObject {
     var interSegmentGapSeconds: TimeInterval { get set } // between different segments
     var prerollMs: Int { get set }                     // 0..300 typical
     var duckOthers: Bool { get set }                     // duck other audio when playing
+    // With duck ON, other audio dips under yours; with duck OFF, other audio keeps normal volume (but still mixed).
 }
 
 final class SettingsServiceUserDefaults: SettingsService {
