@@ -12,11 +12,13 @@ struct AppContainer {
     let audioPlayer: AudioPlayerService
     let segmentService: SegmentService
     let settings: SettingsService
+    let importService: ImportService 
 
     init() {
         self.settings = SettingsServiceUserDefaults()
         self.libraryService = LibraryServiceJSON()
         self.audioPlayer = AudioPlayerServiceAVPlayer()
         self.segmentService = SegmentServiceJSON()
+        self.importService = ImportServiceDefault(library: libraryService, segments: segmentService)
     }
 }
