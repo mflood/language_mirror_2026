@@ -99,11 +99,3 @@ final class SegmentServiceJSON: SegmentService {
 }
 
 
-// path: Services/SegmentServiceJSON.swift
-extension SegmentServiceJSON {
-    /// Save/replace the whole map (used by bundle imports)
-    func replaceMap(_ map: SegmentMap, for trackId: String) throws -> SegmentMap {
-        let _ = try saveMap(map, for: trackId) // reuse your existing writer
-        return map
-    }
-}

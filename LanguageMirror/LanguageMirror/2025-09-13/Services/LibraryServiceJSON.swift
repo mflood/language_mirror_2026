@@ -4,109 +4,72 @@
 //
 //  Created by Matthew Flood on 9/13/25.
 //
-
+// path: Services/LibraryServiceJSON.swift
 import Foundation
-
-private struct LibraryStore: Codable {
-    var packs: [Pack]
-}
+import AVFoundation
 
 final class LibraryServiceJSON: LibraryService {
-    private let fileURL: URL
-    private var store: LibraryStore
+    private let fm = FileManager.default
+    private let base: URL
+    private let indexURL: URL
+
+    private struct Index: Codable { var tracks: [Track] = [] }
+
+    private var cache: Index = .init()
 
     init() {
-        // Documents/LanguageMirror/library.json
-        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let dir  = docs.appendingPathComponent("LanguageMirror", isDirectory: true)
-        self.fileURL = dir.appendingPathComponent("library.json")
+        let docs = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
+        base = docs.appendingPathComponent("LanguageMirror/library", isDirectory: true)
+        indexURL = base.appendingPathComponent("library.json")
 
+        try? fm.createDirectory(at: base, withIntermediateDirectories: true)
+        loadIndex()
+    }
+
+    private func loadIndex() {
+        if let data = try? Data(contentsOf: indexURL),
+           let idx = try? JSONDecoder().decode(Index.self, from: data) {
+            cache = idx
+        } else {
+            cache = .init()
+            saveIndex()
+        }
+    }
+
+    private func saveIndex() {
         do {
-            self.store = try Self.loadOrSeed(at: fileURL)
+            let data = try JSONEncoder().encode(cache)
+            try data.write(to: indexURL, options: .atomic)
         } catch {
-            // As a last resort, start with an in-memory default to keep the app running.
-            self.store = LibraryStore(packs: [
-                Pack(id: "demo-pack", title: "Demo Pack", languageHint: "en-US", tracks: [
-                    Track(id: "t1", title: "Greetings 01", filename: "sample.mp3", durationMs: 30000),
-                    Track(id: "t2", title: "Greetings 02", filename: "sample.mp3", durationMs: 42000),
-                    Track(id: "t3", title: "Dialog A",    filename: "sample.mp3", durationMs: 51000),
-                ])
-            ])
+            print("Library index save failed: \(error)")
         }
     }
 
-    func listPacks() -> [Pack] { store.packs }
-
-    func listTracks(in packId: String?) -> [Track] {
-        if let pid = packId, let pack = store.packs.first(where: { $0.id == pid }) {
-            return pack.tracks
-        }
-        return store.packs.flatMap { $0.tracks }
-    }
+    func listTracks(in group: String?) -> [Track] { cache.tracks }
 
     func loadTrack(id: String) throws -> Track {
-        for pack in store.packs {
-            if let t = pack.tracks.first(where: { $0.id == id }) { return t }
-        }
-        throw LibraryError.notFound
+        guard let t = cache.tracks.first(where: { $0.id == id }) else { throw LibraryError.notFound }
+        return t
     }
 
-    func saveTrack(_ track: Track) throws {
-        var saved = false
-        for i in store.packs.indices {
-            if let idx = store.packs[i].tracks.firstIndex(where: { $0.id == track.id }) {
-                store.packs[i].tracks[idx] = track
-                saved = true
-                break
-            }
+    func addTrack(_ track: Track) throws {
+        guard !cache.tracks.contains(where: { $0.id == track.id }) else {
+            try updateTrack(track); return
         }
-        if !saved, !store.packs.isEmpty {
-            store.packs[0].tracks.append(track)
-        }
-        try persist()
+        cache.tracks.append(track)
+        saveIndex()
+        NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
     }
 
-    // MARK: - I/O
-
-    private func persist() throws {
-        do {
-            try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(),
-                                                    withIntermediateDirectories: true)
-            let data = try JSONEncoder().encode(store)
-            try data.write(to: fileURL, options: .atomic)
-        } catch {
-            throw LibraryError.encodeError(error)
-        }
+    func updateTrack(_ track: Track) throws {
+        guard let idx = cache.tracks.firstIndex(where: { $0.id == track.id }) else { throw LibraryError.notFound }
+        cache.tracks[idx] = track
+        saveIndex()
+        NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
     }
 
-    private static func loadOrSeed(at fileURL: URL) throws -> LibraryStore {
-        
-        let fm = FileManager.default
-        if !fm.fileExists(atPath: fileURL.path) {
-            // Try to copy seed from bundle as "library_seed.json"
-            if let seedURL = Bundle.main.url(forResource: "library_seed", withExtension: "json") {
-                try fm.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-                try fm.copyItem(at: seedURL, to: fileURL)
-            } else {
-                // Write a default seed if none provided
-                let defaultStore = LibraryStore(packs: [
-
-                    Pack(id: "demo-pack", title: "Demo Pack", languageHint: "en-US", tracks: [
-                        Track(id: "t1", title: "Greetings 01", filename: "sample.mp3", durationMs: 30000),
-                        Track(id: "t2", title: "几点", filename: "Story 5 - 你几点吃晚饭？.mp3", durationMs: 42000),
-                        Track(id: "t3", title: "화화니니",    filename: "Textbook_Lesson6_C2_3rd_Edition.mp3", durationMs: 51000),
-                    ])
-                ])
-                try fm.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-                let data = try JSONEncoder().encode(defaultStore)
-                try data.write(to: fileURL, options: .atomic)
-            }
-        }
-        do {
-            let data = try Data(contentsOf: fileURL)
-            return try JSONDecoder().decode(LibraryStore.self, from: data)
-        } catch {
-            throw LibraryError.decodeError(error)
-        }
+    // Utilities to help importers (public static helpers are OK too)
+    func trackFolder(for id: String) -> URL {
+        base.appendingPathComponent("tracks/\(id)", isDirectory: true)
     }
 }

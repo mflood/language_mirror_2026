@@ -1,0 +1,22 @@
+//
+//  sample_bundle.json.swift
+//  LanguageMirror
+//
+//  Created by Matthew Flood on 9/18/25.
+//
+
+{
+  "title": "Free Sample",
+  "tracks": [
+    {
+      "title": "Sample Track",
+      "filename": "sample.mp3",
+      "segments": {
+        "segments": [
+          {"id":"s1","startMs": 500,"endMs": 1800,"kind":"drill","title":"Hello"},
+          {"id":"s2","startMs": 2100,"endMs": 3500,"kind":"drill","title":"World"}
+        ]
+      }
+    }
+  ]
+}

@@ -36,3 +36,13 @@ enum SegmentStoreError: Error, LocalizedError {
         }
     }
 }
+
+
+// path: Services/SegmentService.swift
+extension SegmentService {
+    /// Save/replace the whole map (used by bundle imports)
+    func replaceMap(_ map: SegmentMap, for trackId: String) throws -> SegmentMap {
+        let _ = try saveMap(map, for: trackId) // reuse your existing writer
+        return map
+    }
+}

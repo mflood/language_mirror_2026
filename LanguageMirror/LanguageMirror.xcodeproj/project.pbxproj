@@ -6,11 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		6F932BC12E7635F800CB038A /* library_seed.json in Sources */ = {isa = PBXBuildFile; fileRef = 6F932B2E2E7635F800CB038A /* library_seed.json */; };
-		6F932BF52E7843E800CB038A /* library_seed.json in Resources */ = {isa = PBXBuildFile; fileRef = 6F932B2E2E7635F800CB038A /* library_seed.json */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		6FAB0EC52E1067B300D3B9C4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,16 +24,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6F932B2E2E7635F800CB038A /* library_seed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = library_seed.json; sourceTree = "<group>"; };
 		6FAB0EAB2E1067B100D3B9C4 /* LanguageMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LanguageMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAB0EC42E1067B300D3B9C4 /* LanguageMirrorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LanguageMirrorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAB0ECE2E1067B300D3B9C4 /* LanguageMirrorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LanguageMirrorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6F137C932E7C4D67007D0F0E /* Exceptions for "LanguageMirror" folder in "LanguageMirrorTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"2025-09-13/Resources/library_seed.json",
+			);
+			target = 6FAB0EC32E1067B300D3B9C4 /* LanguageMirrorTests */;
+		};
 		6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"2025-09-13/Resources/library_seed.json",
+				"2025-09-13/Resources/sample_bundle.json",
 				Info.plist,
 				Resources/data_2.json,
 			);
@@ -47,10 +50,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		6F137C982E7C4D8D007D0F0E /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirrorTests" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 6FAB0EC02E1067B300D3B9C4 /* Sources */;
+			membershipExceptions = (
+				"2025-09-13/Resources/sample_bundle.json",
+			);
+		};
 		6FAB0FFE2E10E06E00D3B9C4 /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirror" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 6FAB0EA72E1067B100D3B9C4 /* Sources */;
 			membershipExceptions = (
+				"2025-09-13/Resources/library_seed.json",
+				"2025-09-13/Resources/sample_bundle.json",
 				Resources/data_2.json,
 			);
 		};
@@ -62,6 +74,8 @@
 			exceptions = (
 				6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */,
 				6FAB0FFE2E10E06E00D3B9C4 /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirror" target */,
+				6F137C932E7C4D67007D0F0E /* Exceptions for "LanguageMirror" folder in "LanguageMirrorTests" target */,
+				6F137C982E7C4D8D007D0F0E /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirrorTests" target */,
 			);
 			path = LanguageMirror;
 			sourceTree = "<group>";
@@ -106,7 +120,6 @@
 		6FAB0EA22E1067B100D3B9C4 = {
 			isa = PBXGroup;
 			children = (
-				6F932B2E2E7635F800CB038A /* library_seed.json */,
 				6FAB0EAD2E1067B100D3B9C4 /* LanguageMirror */,
 				6FAB0EC72E1067B300D3B9C4 /* LanguageMirrorTests */,
 				6FAB0ED12E1067B300D3B9C4 /* LanguageMirrorUITests */,
@@ -251,7 +264,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F932BF52E7843E800CB038A /* library_seed.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +281,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F932BC12E7635F800CB038A /* library_seed.json in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -408,6 +408,10 @@ Server ASR vendor/pricing (later; protocol allows swapping).
 
 18) Decision Log (append newest at top)
 
+
+- 2025-09-16 — Import system added: ImportServiceDefault supporting audio from Files (incl. Voice Memos via Files), video→audio extraction (M4A), direct recording (AVAudioRecorder), direct URL downloads, S3 JSON bundles, and embedded sample bundle. Import tab UI added with the six sources; Library updates broadcast via LibraryDidChange.
+
+
 - 2025-09-15 — Waveform editor polish: added Selection Level Meter (RMS/Peak via AVAssetReader) and directional zero-crossing nudges (◀︎0 / 0▶︎ for Start/End). Extended ZeroCrossingSource with next/previous APIs; Synthetic and AVAsset-backed implementations updated. Debounced background analysis keeps UI fluid.
 
 

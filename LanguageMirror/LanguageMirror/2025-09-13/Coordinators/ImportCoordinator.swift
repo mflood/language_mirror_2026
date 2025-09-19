@@ -14,9 +14,10 @@ final class ImportCoordinator: Coordinator {
     init(container: AppContainer) { self.container = container }
 
     func start() -> UINavigationController {
-        let vc = ImportViewController()
+        let vc = ImportViewController(importService: container.importService)
         vc.title = "Import"
         navigationController.viewControllers = [vc]
+        navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }
     
