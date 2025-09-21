@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 final class PracticeCoordinator: Coordinator {
     let navigationController = UINavigationController()
     private let container: AppContainer

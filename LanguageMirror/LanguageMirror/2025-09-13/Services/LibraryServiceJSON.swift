@@ -58,7 +58,10 @@ final class LibraryServiceJSON: LibraryService {
         }
         cache.tracks.append(track)
         saveIndex()
-        NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
+        NotificationCenter.default.post(
+            name: .libraryDidAddTrack,
+            object: nil,
+            userInfo: ["trackID": track.id])
     }
 
     func updateTrack(_ track: Track) throws {

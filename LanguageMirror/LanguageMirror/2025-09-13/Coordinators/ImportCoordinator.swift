@@ -7,11 +7,14 @@
 
 import UIKit
 
+@MainActor
 final class ImportCoordinator: Coordinator {
     let navigationController = UINavigationController()
     private let container: AppContainer
 
-    init(container: AppContainer) { self.container = container }
+    init(container: AppContainer) {
+        self.container = container
+    }
 
     func start() -> UINavigationController {
         let vc = ImportViewController(importService: container.importService)

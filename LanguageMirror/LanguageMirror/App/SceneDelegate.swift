@@ -19,13 +19,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        let window = UIWindow(windowScene: windowScene)
-        let container = AppContainer() // Dependency container (services, configs)
-        let coordinator = AppCoordinator(window: window, container: container)
-
-        self.window = window
-        self.appCoordinator = coordinator
-        coordinator.start() // sets the root VC and makes key & visible
+        Task { @MainActor in
+            let window = UIWindow(windowScene: windowScene)
+            let container = AppContainer()
+            let coordinator = AppCoordinator(window: window, container: container)
+            self.window = window
+            self.appCoordinator = coordinator
+            coordinator.start()
+        }
     }
     
 

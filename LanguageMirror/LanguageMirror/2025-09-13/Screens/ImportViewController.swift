@@ -10,10 +10,12 @@ import PhotosUI
 import UniformTypeIdentifiers
 import AVFoundation
 
+@MainActor
 final class ImportViewController: UITableViewController, UIDocumentPickerDelegate {
 
     private let importer: ImportService
-
+    private var currentImportTask: Task<Void, Never>?
+    
     init(importService: ImportService) {
         self.importer = importService
         super.init(style: .insetGrouped)
@@ -31,6 +33,12 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Help", style: .plain, target: self, action: #selector(helpTapped))
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        currentImportTask?.cancel()
+        currentImportTask = nil
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { Row.allCases.count }
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { "Sources" }
 
@@ -94,26 +102,55 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     }
 
     private func presentRecorder() {
+        
         let vc = AudioRecorderViewController()
         vc.onFinished = { [weak self] url in
-            self?.runImport(.recordedFile(url: url))
+            guard let self = self else { return }
+            // cancel any in-flight import
+            self.currentImportTask?.cancel()
+            self.currentImportTask = Task { @MainActor in
+                await self.runImport(.recordedFile(url: url))
+            }
         }
         navigationController?.pushViewController(vc, animated: true)
     }
 
     private func promptForURL() {
-        let a = UIAlertController(title: "Download from URL", message: "Enter a direct link to an audio file.", preferredStyle: .alert)
-        a.addTextField { tf in tf.placeholder = "https://…/file.mp3" ; tf.keyboardType = .URL ; tf.autocapitalizationType = .none }
+        let a = UIAlertController(
+            title: "Download from URL",
+            message: "Enter a direct link to an audio file.",
+            preferredStyle: .alert
+        )
+        a.addTextField { tf in
+            tf.placeholder = "https://…/file.mp3"
+            tf.keyboardType = .URL
+            tf.autocapitalizationType = .none
+            tf.text = "https://www.blcup.com/File/Res3/6d99a4e6-ac1a-420d-ac1b-fa0ac889a530.mp3"
+        }
         a.addTextField { tf in tf.placeholder = "Optional title" }
+
         a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
         a.addAction(UIAlertAction(title: "Download", style: .default, handler: { [weak self] _ in
-            guard let s = a.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  let u = URL(string: s) else { return }
+            guard
+                let self,
+                let s = a.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+                let u = URL(string: s)
+            else { return }
+
             let title = a.textFields?[1].text
-            self?.runImport(.remoteURL(url: u, suggestedTitle: title?.isEmpty == false ? title : nil))
+            let suggested = (title?.isEmpty == false) ? title : nil
+
+            // cancel any prior import and start a new async task
+            self.currentImportTask?.cancel()
+            self.currentImportTask = Task { @MainActor in
+                await self.runImport(.remoteURL(url: u, suggestedTitle: suggested))
+            }
         }))
+
         present(a, animated: true)
     }
+
 
     private func promptForS3Manifest() {
         let a = UIAlertController(title: "S3 Bundle Manifest", message: "Enter the URL of a JSON manifest.", preferredStyle: .alert)
@@ -122,18 +159,23 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         a.addAction(UIAlertAction(title: "Install", style: .default, handler: { [weak self] _ in
             guard let s = a.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                   let u = URL(string: s) else { return }
-            self?.runImport(.bundleManifest(url: u))
+            // self?.runImport(.bundleManifest(url: u))
         }))
         present(a, animated: true)
     }
 
     private func runEmbeddedSample() {
-        runImport(.embeddedSample)
+        currentImportTask?.cancel()
+        currentImportTask = Task { [weak self] in
+            guard let self = self else { return }
+            await self.runImport(.embeddedSample)
+        }
     }
 
     // MARK: - Import runner w/ simple spinner
 
-    private func runImport(_ src: ImportSource) {
+    private func runImport(_ src: ImportSource) async {
+        // Build and present spinner sheet
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.startAnimating()
         let host = UIViewController()
@@ -147,15 +189,17 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         host.modalPresentationStyle = .formSheet
         present(host, animated: true)
 
-        importer.import(source: src) { [weak self] result in
-            host.dismiss(animated: true) {
-                switch result {
-                case .failure(let e):
-                    self?.alert("Import Failed", e.localizedDescription)
-                case .success(let tracks):
-                    let msg = tracks.isEmpty ? "No tracks imported." : "Imported \(tracks.count) track(s)."
-                    self?.alert("Done", msg)
-                }
+        do {
+            let tracks = try await importer.performImport(source: src)
+            host.dismiss(animated: true) { [weak self] in
+                let msg = tracks.isEmpty ? "No tracks imported." : "Imported \(tracks.count) track(s)."
+                self?.alert("Done", msg)
+            }
+        } catch is CancellationError {
+            host.dismiss(animated: true) // cancelled—no alert needed
+        } catch {
+            host.dismiss(animated: true) { [weak self] in
+                self?.alert("Import Failed", error.localizedDescription)
             }
         }
     }
@@ -177,29 +221,66 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     }
 
     // MARK: - UIDocumentPickerDelegate
-
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController,
+                        didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
-        // Security-scoped
-        let needs = url.startAccessingSecurityScopedResource()
-        defer { if needs { url.stopAccessingSecurityScopedResource() } }
-        runImport(.audioFile(url: url))
+
+        // cancel any in-flight import
+        currentImportTask?.cancel()
+        currentImportTask = Task { @MainActor in
+            // keep the security scope for the entire async import
+            let needs = url.startAccessingSecurityScopedResource()
+            defer { if needs { url.stopAccessingSecurityScopedResource() } }
+            await runImport(.audioFile(url: url))
+            
+        }
     }
+
 }
 
 
 extension ImportViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         dismiss(animated: true)
-        guard let item = results.first else { return }
-        if item.itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
-            item.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { [weak self] url, err in
-                if let url = url {
-                    self?.runImport(.videoFile(url: url))
-                } else if let err = err {
-                    DispatchQueue.main.async { self?.alert("Pick Failed", err.localizedDescription) }
-                }
+        guard
+            let item = results.first?.itemProvider,
+            item.hasItemConformingToTypeIdentifier(UTType.movie.identifier)
+        else { return }
+
+        // Cancel any prior import task
+        currentImportTask?.cancel()
+
+        currentImportTask = Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                // 1) Get the temp movie file URL from the picker
+                let movieURL = try await item.loadMovieFileURL()
+
+                // 2) Run the import (shows spinner, awaits importer, alerts on completion)
+                await self.runImport(.videoFile(url: movieURL))
+            } catch is CancellationError {
+                // user navigated away / task cancelled — silently ignore or show a tiny notice
+            } catch {
+                self.alert("Pick Failed", error.localizedDescription)
             }
         }
     }
 }
+
+
+
+private extension NSItemProvider {
+    func loadMovieFileURL() async throws -> URL {
+        try await withCheckedThrowingContinuation { cont in
+            self.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { url, err in
+                if let err = err { cont.resume(throwing: err); return }
+                guard let url else {
+                    cont.resume(throwing: URLError(.fileDoesNotExist)); return
+                }
+                cont.resume(returning: url)
+            }
+        }
+    }
+}
+

@@ -15,7 +15,7 @@ final class SegmentServiceJSON: SegmentService {
         let url = mapURL(trackId: trackId)
         if !fm.fileExists(atPath: url.path) {
             try persist(.empty, to: url)
-            return .empty
+            return SegmentMap.empty // factory for an empty segment map
         }
         do {
             let data = try Data(contentsOf: url)

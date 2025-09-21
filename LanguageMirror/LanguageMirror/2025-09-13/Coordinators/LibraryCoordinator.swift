@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 final class LibraryCoordinator: Coordinator {
     let navigationController = UINavigationController()
     private let container: AppContainer

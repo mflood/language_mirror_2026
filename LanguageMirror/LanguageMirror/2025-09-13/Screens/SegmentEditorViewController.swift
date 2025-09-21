@@ -106,9 +106,12 @@ final class SegmentEditorViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         guard !map.segments.isEmpty else { return }
         let seg = map.segments[indexPath.row]
-        let editor = SegmentWaveformEditorViewController(track: track, segment: seg, segmentService: segmentService,
-                                                         audioPlayer: audioPlayer,                      // NEW
-                                                         settings: settings
+        let editor = SegmentWaveformEditorViewController(
+            track: track,
+            segment: seg,
+            segmentService: segmentService,
+            audioPlayer: audioPlayer,                      // NEW
+            settings: settings
         )
         editor.onSaved = { [weak self] newMap in
             self?.map = newMap

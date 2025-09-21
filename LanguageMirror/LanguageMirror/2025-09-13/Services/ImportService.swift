@@ -30,3 +30,14 @@ struct BundleTrack: Codable {
     let durationMs: Int?
     let segments: SegmentMap?      // optional built-in segments
 }
+
+protocol OldImportService: AnyObject {
+    /// Import a source. Returns created/updated Track ids.
+    func performImport(
+            source: ImportSource,
+            completion: @escaping (Result<[Track], Error>) -> Void)
+}
+
+protocol ImportService: AnyObject {
+    func performImport(source: ImportSource) async throws -> [Track]
+}

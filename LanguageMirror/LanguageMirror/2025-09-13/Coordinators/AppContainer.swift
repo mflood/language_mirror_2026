@@ -19,6 +19,6 @@ struct AppContainer {
         self.libraryService = LibraryServiceJSON()
         self.audioPlayer = AudioPlayerServiceAVPlayer()
         self.segmentService = SegmentServiceJSON()
-        self.importService = ImportServiceDefault(library: libraryService, segments: segmentService)
+        self.importService = ImportServiceLite(library: libraryService, segments: segmentService, useMock: true)
     }
 }
