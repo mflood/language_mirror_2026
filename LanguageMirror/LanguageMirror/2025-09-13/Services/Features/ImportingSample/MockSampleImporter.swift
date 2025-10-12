@@ -28,12 +28,21 @@ public final class MockSampleImporter: SampleImporting {
         self.errorMode = errorMode
     }
 
-    public func loadEmbeddedSample() async throws -> (audioURL: URL, manifestURL: URL?) {
+    public func loadEmbeddedSample() async throws -> EmbeddedBundleManifest {
+        
         switch errorMode {
         case .immediate(let e): throw e
         case .none, .afterDelay: break
         }
 
+        let title: String
+        let packs: [EmbeddedBundlePack]
+        
+        let embeddedBundleManfiest = EmbeddedBundleManifest(
+            title: "Sample Audio",
+            packs: []
+        )
+        
         if totalDuration > 0 {
             var elapsed: TimeInterval = 0
             while elapsed < totalDuration {
@@ -46,10 +55,6 @@ public final class MockSampleImporter: SampleImporting {
 
         if case .afterDelay(let e) = errorMode { throw e }
 
-        guard let audio = Bundle.main.url(forResource: "sample", withExtension: "mp3") else {
-            throw SampleImportError.notFound
-        }
-        let manifest = Bundle.main.url(forResource: "sample_bundle", withExtension: "json")
-        return (audioURL: audio, manifestURL: manifest)
+        return embeddedBundleManfiest
     }
 }

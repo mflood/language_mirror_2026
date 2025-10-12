@@ -9,7 +9,7 @@
 @preconcurrency import AVFoundation
 import Foundation
 
-public final class ImportSampleUseCase {
+final class ImportSampleUseCase {
     private let engine: SampleImporting
     private let library: LibraryService
     private let segments: SegmentService
@@ -23,38 +23,54 @@ public final class ImportSampleUseCase {
 
     func run() async throws -> [Track] {
         try Task.checkCancellation()
-
-        // 1) Locate embedded assets
-        let (audioURL, manifestURL) = try await engine.loadEmbeddedSample()
-
-        // 2) Persist into library
-        let id = UUID().uuidString
-        guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
-        let folder = lib.trackFolder(for: id)
-        try fm.createDirectory(at: folder, withIntermediateDirectories: true)
-
-        let filename = "sample.\(audioURL.pathExtension.isEmpty ? "mp3" : audioURL.pathExtension)"
-        let dest = folder.appendingPathComponent(filename)
-        if fm.fileExists(atPath: dest.path) { try fm.removeItem(at: dest) }
-        try fm.copyItem(at: audioURL, to: dest)
-
-        // 3) Duration (iOS 18 async load)
-        let dur = try await AVAsset(url: dest).load(.duration).seconds
-        let ms = Int((dur.isFinite ? dur : 0) * 1000.0)
-
-        var track = Track(id: id, title: "Sample Track", filename: filename, durationMs: ms)
-        try library.addTrack(track)
-
-        // 4) Optional segments via manifest (same shape you already used)
-        if let murl = manifestURL,
-           let data = try? Data(contentsOf: murl),
-           let mf = try? JSONDecoder().decode(BundleManifest.self, from: data),
-           let seg = mf.tracks.first?.segments {
-            _ = try? segments.replaceMap(seg, for: track.id)
-            // Reload canonical copy if your library mutates on update
-            if let reloaded = try? library.loadTrack(id: track.id) { track = reloaded }
+        
+        guard let lib = library as? LibraryServiceJSON else {
+            throw LibraryError.writeFailed
         }
+        
+        // 1) Locate embedded assets
+        let embeddedBundleManifest = try await engine.loadEmbeddedSample()
 
-        return [track]
+        var return_tracks: [Track] = []
+        
+        for bundlePack in embeddedBundleManifest.packs {
+            
+            let packId = UUID().uuidString
+            var tracks: [Track] = []
+            for bundleTrack in bundlePack.tracks {
+                
+                let (name, ext) = bundleTrack.splitFilename()
+                
+                guard let audioUrl = Bundle.main.url(forResource: name, withExtension: ext) else {
+                    throw SampleImportError.notFound
+                }
+                
+                // 2) Persist into library
+                let id = UUID().uuidString
+                let folder = lib.trackFolder(for: id)
+                try fm.createDirectory(at: folder, withIntermediateDirectories: true)
+                
+                let dest = folder.appendingPathComponent(bundleTrack.filename)
+        
+                // 3) Duration (iOS 18 async load)
+                let dur = try await AVURLAsset(url: audioUrl).load(.duration).seconds
+                let ms = Int((dur.isFinite ? dur : 0) * 1000.0)
+                
+                var track = Track(id: id, packId: packId, title: "Sample Track", filename: bundleTrack.filename,
+                                  localUrl: audioUrl, durationMs: ms, languageCode: nil, segmentMaps: [], transcripts: [])
+                
+                do {
+                    try library.addTrack(track)
+                    tracks.append(track)
+                    return_tracks.append(track)
+                } catch {
+                    print("Failed to add track to library: \(error)")
+                }
+                
+                let pack = Pack(id: packId, title: bundlePack.title, tracks: tracks)
+                
+            }
+        }
+        return return_tracks
     }
 }

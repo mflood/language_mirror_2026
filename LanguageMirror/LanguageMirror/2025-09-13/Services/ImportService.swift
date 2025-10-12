@@ -20,8 +20,18 @@ enum ImportSource {
 
 struct BundleManifest: Codable {
     let title: String
+    let packs: [BundlePack]
+}
+
+struct BundlePack: Codable {
+    let id: String?
+    let title: String
+    let author: String?
+    let coverUrl: String?         // remote image URL
+    let coverFilename: String?    // desired filename; default from url
     let tracks: [BundleTrack]
 }
+
 struct BundleTrack: Codable {
     let id: String?
     let title: String
@@ -29,6 +39,35 @@ struct BundleTrack: Codable {
     let filename: String?          // desired filename; default from url
     let durationMs: Int?
     let segments: SegmentMap?      // optional built-in segments
+}
+
+
+public struct EmbeddedBundleManifest: Codable {
+    let title: String
+    let packs: [EmbeddedBundlePack]
+}
+
+struct EmbeddedBundlePack: Codable {
+    let id: String?
+    let title: String
+    let author: String?
+    let filename: String?    // name of cover image in bundle
+    let tracks: [EmbeddedBundleTrack]
+}
+
+struct EmbeddedBundleTrack: Codable {
+    let id: String?
+    let title: String
+    let filename: String          // name of audio file in bundle
+    let durationMs: Int?
+    let segments: SegmentMap?      // optional built-in segments
+    
+    func splitFilename() -> (name: String, ext: String) {
+        let name = (filename as NSString).deletingPathExtension
+        var ext = (filename as NSString).pathExtension
+        if ext.isEmpty { ext = "m4a" }
+        return (name, ext)
+    }
 }
 
 protocol OldImportService: AnyObject {
@@ -41,3 +80,6 @@ protocol OldImportService: AnyObject {
 protocol ImportService: AnyObject {
     func performImport(source: ImportSource) async throws -> [Track]
 }
+
+
+

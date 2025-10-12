@@ -80,11 +80,8 @@ final class ImportServiceLite: ImportService {
             return try await audioUseCase.run(sourceURL: url, suggestedTitle: nil)
 
         case .embeddedSample:
-            let newTracks = try await sampleUseCase.run()
             
-            for track in self.library.listTracks(in: nil) {
-                print("Track: \(track.title) (\(track.filename))")
-            }
+            let newTracks = try await sampleUseCase.run()
             return newTracks
             
         case .recordedFile(let url):

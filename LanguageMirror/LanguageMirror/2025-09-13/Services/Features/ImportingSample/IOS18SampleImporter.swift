@@ -10,17 +10,29 @@ import Foundation
 
 public enum SampleImportError: Error {
     case notFound
+    case unreadable
 }
 
 public final class IOS18SampleImporter: SampleImporting {
     public init() {}
 
-    public func loadEmbeddedSample() async throws -> (audioURL: URL, manifestURL: URL?) {
-        guard let audio = Bundle.main.url(forResource: "sample", withExtension: "mp3") else {
-            throw SampleImportError.notFound
+    public func loadEmbeddedSample() async throws -> EmbeddedBundleManifest {
+
+        print("Loading embedded sample bundle manifest using IOS18SampleImporter...")
+        
+        guard let manifestUrl = Bundle.main.url(forResource: "sample_bundle", withExtension: "json") else {
+           throw SampleImportError.notFound
         }
-        // Optional companion manifest for segments
-        let manifest = Bundle.main.url(forResource: "sample_bundle", withExtension: "json")
-        return (audioURL: audio, manifestURL: manifest)
+        
+        if let data = try? Data(contentsOf: manifestUrl),
+           let mf = try? JSONDecoder().decode(EmbeddedBundleManifest.self, from: data) {
+            print("Found \(mf.packs .count) packs in manifest:")
+            for embeddedBundlePack in mf.packs {
+                print("Pack: \(embeddedBundlePack.title) with \(embeddedBundlePack.tracks.count) tracks")
+            }
+            return mf
+        }
+
+        throw SampleImportError.unreadable
     }
 }

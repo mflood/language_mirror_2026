@@ -10,5 +10,5 @@ import Foundation
 public protocol SampleImporting: Sendable {
     /// Locate the embedded sample assets in the main bundle.
     /// Returns the audio file URL, plus an optional manifest URL for segments.
-    func loadEmbeddedSample() async throws -> (audioURL: URL, manifestURL: URL?)
+    func loadEmbeddedSample() async throws -> EmbeddedBundleManifest
 }
