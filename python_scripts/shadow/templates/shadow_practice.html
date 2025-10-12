@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Practice - {{ filename }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <button class="back-button" onclick="goBack()">← Back</button>
+                <div>
+                    <h1>🎧 Shadow Practice</h1>
+                    <p class="subtitle">{{ filename }}</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="practice-content">
+            <!-- Audio Player Section -->
+            <section class="player-section">
+                <div class="player-card">
+                    <h2>🎵 Your Audio File</h2>
+                    <audio id="mainAudio" controls preload="metadata">
+                        <source src="/audio/{{ filename }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    
+                    <div class="player-controls">
+                        <button id="sliceButton" class="slice-btn" onclick="createSlice()">
+                            📍 Mark Practice Point
+                        </button>
+                        <div class="time-display">
+                            <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Global Controls -->
+                    <div class="global-controls">
+                        <div class="control-group">
+                            <label for="globalSpeed">🎚️ Speed</label>
+                            <select id="globalSpeed" onchange="updateGlobalSettings()">
+                                <option value="0.5">0.5x (Slow)</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1.0" selected>1.0x (Normal)</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x (Fast)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="globalLoops">🔄 Repeat Times</label>
+                            <input type="range" id="globalLoops" min="1" max="10" value="3" 
+                                   onchange="updateGlobalSettings()" class="slider">
+                            <span id="loopCountDisplay">3</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Slices List -->
+            <section class="slices-section">
+                <div class="slices-header">
+                    <h2>🎯 Your Practice Sections</h2>
+                    <p>Click any section to practice it with repeats!</p>
+                </div>
+                <div id="slicesList" class="slices-list">
+                    <!-- Slices will be populated here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const filename = "{{ filename }}";
+        let currentSlice = null;
+        let sliceAudio = null;
+        let currentTimeUpdateHandler = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSlices();
+            setupMainAudio();
+            loadGlobalSettings();
+        });
+
+        function setupMainAudio() {
+            const audio = document.getElementById('mainAudio');
+            
+            audio.addEventListener('timeupdate', function() {
+                document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
+            });
+            
+            audio.addEventListener('loadedmetadata', function() {
+                document.getElementById('duration').textContent = formatTime(audio.duration);
+            });
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function goBack() {
+            window.location.href = '/';
+        }
+
+        async function createSlice() {
+            const audio = document.getElementById('mainAudio');
+            const currentTime = audio.currentTime;
+            
+            const formData = new FormData();
+            formData.append('filename', filename);
+            formData.append('current_time', currentTime);
+            
+            try {
+                const response = await fetch('/api/slice', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    loadSlices();
+                } else {
+                    alert('Oops! Couldn\'t create practice point. Try again!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Oops! Something went wrong. Try again!');
+            }
+        }
+
+        async function loadGlobalSettings() {
+            try {
+                const response = await fetch('/api/settings');
+                const settings = await response.json();
+                
+                document.getElementById('globalSpeed').value = settings.playback_speed;
+                document.getElementById('globalLoops').value = settings.loop_count;
+                document.getElementById('loopCountDisplay').textContent = settings.loop_count;
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        async function updateGlobalSettings() {
+            const playbackSpeed = parseFloat(document.getElementById('globalSpeed').value);
+            const loopCount = parseInt(document.getElementById('globalLoops').value);
+            
+            document.getElementById('loopCountDisplay').textContent = loopCount;
+            
+            const formData = new FormData();
+            formData.append('playback_speed', playbackSpeed);
+            formData.append('loop_count', loopCount);
+            
+            try {
+                const response = await fetch('/api/settings', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    console.error('Error updating settings');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function loadSlices() {
+            try {
+                const response = await fetch(`/api/slices/${encodeURIComponent(filename)}`);
+                const slices = await response.json();
+                
+                const slicesList = document.getElementById('slicesList');
+                slicesList.innerHTML = '';
+                
+                if (slices.length === 0) {
+                    slicesList.innerHTML = '<div class="empty-slices">🎉 Ready to start? Click "Mark Practice Point" while listening to create your first practice section!</div>';
+                    return;
+                }
+                
+                // Sort slices by start time to ensure chronological order
+                const sortedSlices = slices.sort((a, b) => a.start_time - b.start_time);
+                
+                sortedSlices.forEach(slice => {
+                    const sliceElement = createSliceElement(slice);
+                    slicesList.appendChild(sliceElement);
+                });
+            } catch (error) {
+                console.error('Error loading slices:', error);
+            }
+        }
+
+        function createSliceElement(slice) {
+            const div = document.createElement('div');
+            div.className = 'slice-item';
+            const duration = slice.end_time === 999999 ? '∞' : `${slice.end_time - slice.start_time}s`;
+            const endTime = slice.end_time === 999999 ? 'end' : `${slice.end_time}s`;
+            
+            div.innerHTML = `
+                <div class="slice-info">
+                    <h4>${slice.id === 'full' ? '🎵 Full Audio' : `📍 Section ${slice.id.slice(-4)}`}</h4>
+                    <p>${slice.start_time}s - ${endTime} (${duration})</p>
+                </div>
+                <div class="slice-actions">
+                    <button class="play-slice-btn" onclick="playSlice('${slice.id}')">
+                        🎯 Practice This!
+                    </button>
+                    <button class="delete-slice-btn" onclick="deleteSlice('${slice.id}')">
+                        🗑️
+                    </button>
+                </div>
+            `;
+            return div;
+        }
+
+        async function proceedToNextSlice() {
+            try {
+                // Get current slices
+                const slicesResponse = await fetch(`/api/slices/${encodeURIComponent(filename)}`);
+                const slices = await slicesResponse.json();
+                
+                // Sort slices by start time
+                const sortedSlices = slices.sort((a, b) => a.start_time - b.start_time);
+                
+                // Find current slice index
+                const currentIndex = sortedSlices.findIndex(s => s.id === currentSlice);
+                
+                if (currentIndex >= 0 && currentIndex < sortedSlices.length - 1) {
+                    // There's a next slice - play it
+                    const nextSlice = sortedSlices[currentIndex + 1];
+                    console.log(`Proceeding to next slice: ${nextSlice.id} (${nextSlice.start_time}s - ${nextSlice.end_time}s)`);
+                    await playSlice(nextSlice.id);
+                } else {
+                    // No more slices - stop playback
+                    console.log('No more slices to play');
+                    currentSlice = null;
+                    sliceAudio = null;
+                    updatePlayingSlice(null);
+                }
+            } catch (error) {
+                console.error('Error proceeding to next slice:', error);
+                // Fallback: stop playback
+                currentSlice = null;
+                sliceAudio = null;
+                updatePlayingSlice(null);
+            }
+        }
+
+        async function playSlice(sliceId) {
+            try {
+                // Stop any currently playing slice
+                if (sliceAudio && currentTimeUpdateHandler) {
+                    sliceAudio.pause();
+                    sliceAudio.removeEventListener('timeupdate', currentTimeUpdateHandler);
+                    sliceAudio = null;
+                    currentTimeUpdateHandler = null;
+                }
+
+                // Get slice data and global settings
+                const [slicesResponse, settingsResponse] = await Promise.all([
+                    fetch(`/api/slices/${encodeURIComponent(filename)}`),
+                    fetch('/api/settings')
+                ]);
+
+                const slices = await slicesResponse.json();
+                const settings = await settingsResponse.json();
+                const slice = slices.find(s => s.id === sliceId);
+
+                if (!slice) {
+                    alert('Practice section not found!');
+                    return;
+                }
+                
+                // console.log('Playing slice:', slice);
+                // console.log('Global settings:', settings);
+                
+                // Use the main audio element for slice playback
+                sliceAudio = document.getElementById('mainAudio');
+                currentSlice = sliceId;
+                
+                let loopCount = settings.loop_count;
+                let currentLoop = 0;
+                
+                // Set up slice playback
+                function playSliceLoop() {
+                    // Set playback rate first
+                    sliceAudio.playbackRate = settings.playback_speed;
+                    
+                    let sliceStarted = false;
+                    
+                    // Set up time update listener to handle slice timing
+                    const timeUpdateHandler = function() {
+                        // Check if sliceAudio is still valid
+                        if (!sliceAudio) {
+                            return;
+                        }
+                        
+                        const currentTime = sliceAudio.currentTime;
+                        const endTime = slice.end_time === 999999 ? sliceAudio.duration : slice.end_time;
+                        
+                        // If we haven't started the slice yet, check if we've reached the start time
+                        if (!sliceStarted) {
+                            if (currentTime >= slice.start_time) {
+                                sliceStarted = true;
+                            } else {
+                                // Still waiting to reach start time
+                                return;
+                            }
+                        }
+                        
+                        // Now we're in the slice, check if we've reached the end
+                        if (currentTime >= endTime) {
+                            sliceAudio.pause();
+                            sliceAudio.removeEventListener('timeupdate', timeUpdateHandler);
+                            currentTimeUpdateHandler = null;
+                            
+                            currentLoop++;
+                            if (currentLoop < loopCount) {
+                                // Play again - reset sliceStarted for next loop
+                                sliceStarted = false;
+                                setTimeout(playSliceLoop, 100);
+                            } else {
+                                // Finished all loops - proceed to next slice
+                                proceedToNextSlice();
+                            }
+                        }
+                    };
+                    
+                    sliceAudio.addEventListener('timeupdate', timeUpdateHandler);
+                    currentTimeUpdateHandler = timeUpdateHandler;
+                    
+                    // Use canplaythrough event to ensure audio is ready before setting currentTime
+                    const canPlayHandler = function() {
+                        sliceAudio.removeEventListener('canplaythrough', canPlayHandler);
+                        sliceAudio.currentTime = slice.start_time;
+                        sliceAudio.play();
+                    };
+                    
+                    // Check if audio is already ready
+                    if (sliceAudio.readyState >= 3) { // HAVE_FUTURE_DATA or higher
+                        sliceAudio.currentTime = slice.start_time;
+                        sliceAudio.play();
+                    } else {
+                        // Wait for audio to be ready
+                        sliceAudio.addEventListener('canplaythrough', canPlayHandler);
+                    }
+                }
+                
+                // Start the first loop
+                playSliceLoop();
+                
+                // Update UI to show which slice is playing
+                updatePlayingSlice(sliceId);
+                
+            } catch (error) {
+                console.error('Error playing slice:', error);
+                alert('Oops! Couldn\'t play that section. Try again!');
+            }
+        }
+
+        function updatePlayingSlice(sliceId) {
+            // Remove playing class from all slices
+            document.querySelectorAll('.slice-item').forEach(item => {
+                item.classList.remove('playing');
+            });
+            
+            // Add playing class to current slice
+            if (sliceId) {
+                const currentSliceElement = document.querySelector(`[onclick*="${sliceId}"]`)?.closest('.slice-item');
+                if (currentSliceElement) {
+                    currentSliceElement.classList.add('playing');
+                }
+            }
+        }
+
+        async function deleteSlice(sliceId) {
+            if (!confirm('Delete this practice section? You can always recreate it!')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/slice/${encodeURIComponent(filename)}/${sliceId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    loadSlices();
+                } else {
+                    alert('Couldn\'t delete that section. Try again!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Oops! Couldn\'t delete that section. Try again!');
+            }
+        }
+    </script>
+</body>
+</html>

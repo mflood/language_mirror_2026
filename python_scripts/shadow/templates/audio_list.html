@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Shadow Practice - File Selection</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎧 Shadow Practice Studio</h1>
+            <p class="subtitle">Pick an audio file and let's start practicing!</p>
+        </header>
+
+        <main class="main-content">
+            {% if audio_files %}
+                <div class="audio-grid">
+                    {% for audio_file in audio_files %}
+                        <div class="audio-card" onclick="selectAudio('{{ audio_file.filename }}')">
+                            <div class="audio-icon">🎵</div>
+                            <h3 class="audio-title">{{ audio_file.filename }}</h3>
+                            {% if audio_file.duration %}
+                                <p class="audio-duration">{{ "%.1f"|format(audio_file.duration) }}s</p>
+                            {% endif %}
+                            <div class="play-button">
+                                <span>Let's Practice! 🚀</span>
+                                <span class="arrow">→</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">📁</div>
+                    <h2>🎵 No Audio Files Yet</h2>
+                    <p>Drop your audio files in the <code>audio_files</code> folder and refresh to get started!</p>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        function selectAudio(filename) {
+            window.location.href = `/practice/${encodeURIComponent(filename)}`;
+        }
+    </script>
+</body>
+</html>
+

@@ -14,9 +14,10 @@ import logging
 import subprocess
 import tempfile
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional, Tuple, List
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, parse_qs
 
 import requests
 from bs4 import BeautifulSoup
@@ -284,6 +285,59 @@ class KBSExtractorEnhanced:
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         })
+    
+    def extract_ncd_from_url(self, url: str) -> Optional[str]:
+        """
+        Extract the ncd value from a KBS news URL.
+        
+        Args:
+            url: KBS news article URL
+            
+        Returns:
+            ncd value if found, None otherwise
+        """
+        try:
+            parsed_url = urlparse(url)
+            query_params = parse_qs(parsed_url.query)
+            
+            # Look for ncd parameter
+            if 'ncd' in query_params:
+                ncd_value = query_params['ncd'][0]
+                logger.info(f"Extracted ncd value: {ncd_value}")
+                return ncd_value
+            
+            logger.warning("No ncd parameter found in URL")
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error extracting ncd from URL: {e}")
+            return None
+    
+    def generate_filename(self, url: str, title: str) -> str:
+        """
+        Generate filename using ncd value from URL, with fallback to datetime.
+        
+        Args:
+            url: KBS news article URL
+            title: Article title (used as fallback)
+            
+        Returns:
+            Safe filename string
+        """
+        # Try to extract ncd value first
+        ncd_value = self.extract_ncd_from_url(url)
+        
+        if ncd_value:
+            # Use ncd value as filename
+            filename = ncd_value
+            logger.info(f"Using ncd value for filename: {filename}")
+        else:
+            # Fallback to current datetime
+            now = datetime.now()
+            filename = now.strftime("%Y%m%d_%H%M%S")
+            logger.info(f"Using datetime for filename: {filename}")
+        
+        return filename
     
     def extract_page_content(self, url: str) -> Tuple[str, str, str]:
         """
@@ -663,10 +717,8 @@ class KBSExtractorEnhanced:
             # Extract page content
             title, video_url, transcript = self.extract_page_content(url)
             
-            # Clean title for filename
-            safe_title = re.sub(r'[^\w\s-]', '', title).strip()
-            safe_title = re.sub(r'[-\s]+', '-', safe_title)
-            filename = safe_title[:50]
+            # Generate filename using ncd value or datetime fallback
+            filename = self.generate_filename(url, title)
             
             # Save transcript
             transcript_path = self.output_dir / f"{filename}_transcript.txt"
