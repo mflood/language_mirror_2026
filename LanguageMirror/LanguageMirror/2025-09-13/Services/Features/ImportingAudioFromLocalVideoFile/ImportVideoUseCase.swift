@@ -43,8 +43,9 @@ public final class ImportVideoUseCase {
         let durationMs = Int((duration.isFinite ? duration : 0) * 1000.0)
 
         let title = suggestedTitle ?? videoURL.deletingPathExtension().lastPathComponent
-        let track = Track(id: id, title: title, filename: filename, durationMs: durationMs)
-        try library.addTrack(track)
-        return [track]
+        
+        // let track = Track(id: id, title: title, filename: filename, durationMs: durationMs)
+        // try library.addTrack(track)
+       return []
     }
 }

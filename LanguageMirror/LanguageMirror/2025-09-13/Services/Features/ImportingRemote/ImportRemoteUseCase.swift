@@ -44,8 +44,8 @@ public final class ImportRemoteUseCase {
 
         // 4) Save track
         let title = suggestedTitle ?? url.lastPathComponent
-        let track = Track(id: id, title: title, filename: filename, durationMs: ms)
-        try library.addTrack(track)
-        return [track]
+        // let track = Track(id: id, title: title, filename: filename, durationMs: ms)
+        // try library.addTrack(track)
+        return []
     }
 }

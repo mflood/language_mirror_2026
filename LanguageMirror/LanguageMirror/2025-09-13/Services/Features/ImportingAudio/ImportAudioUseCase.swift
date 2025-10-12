@@ -45,8 +45,8 @@ public final class ImportAudioUseCase {
         let ms = Int((seconds.isFinite ? seconds : 0) * 1000.0)
 
         let title = suggestedTitle ?? prepared.deletingPathExtension().lastPathComponent
-        let track = Track(id: id, title: title, filename: filename, durationMs: ms)
-        try library.addTrack(track)
-        return [track]
+        // let track = Track(id: id, title: title, filename: filename, durationMs: ms)
+        //try library.addTrack(track)
+        return []
     }
 }

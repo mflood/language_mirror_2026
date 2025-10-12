@@ -20,7 +20,7 @@ struct Track: Codable, Identifiable, Equatable {
     var title: String
     var filename: String         // e.g., "sample.mp3"
     var localUrl: URL      // local file URL as string
-    var durationMs: Int         // optional for now
+    var durationMs: Int?         // nice if you know it....
     var languageCode: String?    // e.g., "ko-KR" or "en-US"
     var segmentMaps: [SegmentMap] // Change to "Practice Sets" in UI
     var transcripts: [TranscriptSpan]
@@ -33,7 +33,7 @@ struct SegmentMap: Codable, Equatable {
     var title: String?
     var segments: [Segment]
     
-    func fullTrackFactory(trackId: String, displayOrder: Int) -> SegmentMap {
+    static func fullTrackFactory(trackId: String, displayOrder: Int) -> SegmentMap {
         return SegmentMap(
             id: UUID().uuidString,
             trackId: trackId,
@@ -67,6 +67,7 @@ struct Segment: Codable, Identifiable, Equatable {
     var repeats: Int?            // nil = use global N
     var startSpeed: Float?       // nil = use global 1.0
     var endSpeed: Float?         // nil = use global 1.0
+    var languageCode: String?    // e.g., "ko-KR" or "en-US"
 }
 
 // For now, the idea is that this is a sentence or phrase, possibly with a speaker label

@@ -18,9 +18,10 @@ final class SegmentEditorViewController: UITableViewController {
     private let segmentService: SegmentService
     private let audioPlayer: AudioPlayerService           // NEW
     private let settings: SettingsService                 // NEW
-    
-    private var map: SegmentMap = .empty
 
+    private var map: SegmentMap!
+    
+    
     /// Called when the map changes so caller can refresh its UI.
     var onMapChanged: ((SegmentMap) -> Void)?
 
@@ -29,6 +30,7 @@ final class SegmentEditorViewController: UITableViewController {
          settings: SettingsService
     ) {
         self.track = track
+        self.map = track.segmentMaps[0] // usually only one map
         self.segmentService = segmentService
         self.audioPlayer = audioPlayer                       // NEW
         self.settings = settings                             // NEW
@@ -53,7 +55,7 @@ final class SegmentEditorViewController: UITableViewController {
             map = try segmentService.loadMap(for: track.id)
             tableView.reloadData()
         } catch {
-            map = .empty
+            // map = .empty
             tableView.reloadData()
             presentAlert(title: "Could not load segments", message: error.localizedDescription)
         }

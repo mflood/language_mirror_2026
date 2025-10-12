@@ -9,13 +9,15 @@
 import Foundation
 
 final class SegmentServiceJSON: SegmentService {
+    
     private let fm = FileManager.default
 
     func loadMap(for trackId: String) throws -> SegmentMap {
         let url = mapURL(trackId: trackId)
         if !fm.fileExists(atPath: url.path) {
-            try persist(.empty, to: url)
-            return SegmentMap.empty // factory for an empty segment map
+            let emptyMap = SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0) 
+            try persist(emptyMap, to: url)
+            return emptyMap
         }
         do {
             let data = try Data(contentsOf: url)

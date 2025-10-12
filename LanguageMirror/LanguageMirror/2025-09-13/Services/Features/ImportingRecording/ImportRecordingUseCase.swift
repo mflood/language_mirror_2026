@@ -45,8 +45,8 @@ public final class ImportRecordingUseCase {
         let seconds = try await AVURLAsset(url: dest).load(.duration).seconds
         let ms = Int((seconds.isFinite ? seconds : 0) * 1000.0)
 
-        let track = Track(id: id, title: title, filename: filename, durationMs: ms)
-        try library.addTrack(track)
-        return [track]
+        // let track = Track(id: id, packId: nil, title: title, filename: filename, durationMs: ms)
+        // try library.addTrack(track)
+        return []
     }
 }

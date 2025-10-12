@@ -16,8 +16,8 @@ final class TrackDetailViewController: UITableViewController {
     private let segmentService: SegmentService
     private let settings: SettingsService
 
-    private var segmentMap: SegmentMap = .empty
-
+    private var segmentMap: SegmentMap!
+    
     // Playback config (temporary defaults; later from Settings)
     private let defaultRepeats = 3
     private let defaultGap: TimeInterval = 0.5
@@ -101,7 +101,7 @@ final class TrackDetailViewController: UITableViewController {
             segmentMap = try segmentService.loadMap(for: track.id)
             tableView.reloadData()
         } catch {
-            segmentMap = .empty
+            segmentMap = SegmentMap(id: UUID().uuidString, trackId: track.id, displayOrder: 0, segments: [])
             tableView.reloadData()
             presentError("Could not load segments", error: error)
         }
