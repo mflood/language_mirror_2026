@@ -1,12 +1,4 @@
-//
-//  sample_bundle.json.swift
-//  LanguageMirror
-//
-//  Created by Matthew Flood on 9/18/25.
-//
-
 {
-
   "title": "Embedded Sample Bundle",
   "packs": [
       {
@@ -16,26 +8,31 @@
             {
               "title": "8373739",
               "filename": "8373739.mp3",
-              "segments": {
-                "segments": [
-                  {"id":"s1","startMs": 0,"endMs": 6000,"kind":"drill","title":"Sentence 1 내일 서울"},
-                  {"id":"s2","startMs": 6000,"endMs": 999999,"kind":"drill","title":"The Rest of the Sentence"}
-                ]
-              }
+              "segment_maps": [
+                  {
+                      "title": "Full Track",
+                      "segments": [
+                          {"id":"s1","startMs": 0,"endMs": 999999,"kind":"drill","title":"Full track"}
+                       ]
+                  },
+                  {
+                      "title": "Sliced Track",
+                      "segments": [
+                          {"id":"s1","startMs": 0,"endMs": 6000,"kind":"drill","title":"Sentence 1 내일 서울"},
+                          {"id":"s2","startMs": 6000,"endMs": 999999,"kind":"drill","title":"The Rest of the Sentence"}
+                       ]
+                  }
+              ]
             },
             {
               "title": "8373839",
               "filename": "8373839.mp3",
-              "segments": {
-                "segments": []
-              }
+              "segment_maps": []
             },
             {
               "title": "법원-윤석열",
               "filename": "법원-윤석열-전-대통령-보석-기각권성동김상민-구속-기소.mp3",
-              "segments": {
-                "segments": []
-              }
+              "segment_maps": []
             }
           ]
       },
@@ -46,26 +43,19 @@
             {
               "title": "Culture 1-01",
               "filename": "culture_1_01.mp3",
-              "segments": {
-                "segments": []
-              }
+              "segment_maps": []
             },
             {
               "title": "Culture 1-02",
               "filename": "culture_1_02.mp3",
-              "segments": {
-                "segments": []
-              }
+              "segment_maps": []
             },
             {
               "title": "Culture 1-03",
               "filename": "culture_1_03.mp3",
-              "segments": {
-                "segments": []
-              }
-            },
+              "segment_maps": []
+            }
           ]
       }
   ]
-
 }

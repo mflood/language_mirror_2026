@@ -24,13 +24,18 @@ public final class IOS18SampleImporter: SampleImporting {
            throw SampleImportError.notFound
         }
         
-        if let data = try? Data(contentsOf: manifestUrl),
-           let mf = try? JSONDecoder().decode(EmbeddedBundleManifest.self, from: data) {
-            print("Found \(mf.packs .count) packs in manifest:")
-            for embeddedBundlePack in mf.packs {
-                print("Pack: \(embeddedBundlePack.title) with \(embeddedBundlePack.tracks.count) tracks")
+        if let data = try? Data(contentsOf: manifestUrl)
+        {
+            do {
+                let mf = try JSONDecoder().decode(EmbeddedBundleManifest.self, from: data)
+                print("Found \(mf.packs .count) packs in manifest:")
+                for embeddedBundlePack in mf.packs {
+                    print("Pack: \(embeddedBundlePack.title) with \(embeddedBundlePack.tracks.count) tracks")
+                }
+                    return mf
+            } catch {
+                print("Error decoding manifest: \(error)")
             }
-            return mf
         }
 
         throw SampleImportError.unreadable

@@ -56,11 +56,10 @@ struct EmbeddedBundlePack: Codable {
 }
 
 struct EmbeddedBundleTrack: Codable {
-    let id: String?
     let title: String
     let filename: String          // name of audio file in bundle
     let durationMs: Int?
-    let segments: SegmentMap?      // optional built-in segments
+    let segment_maps: [EmbeddedSegmentMap]      // built-in segments
     
     func splitFilename() -> (name: String, ext: String) {
         let name = (filename as NSString).deletingPathExtension
@@ -68,6 +67,11 @@ struct EmbeddedBundleTrack: Codable {
         if ext.isEmpty { ext = "m4a" }
         return (name, ext)
     }
+}
+
+struct EmbeddedSegmentMap: Codable, Equatable {
+    var title: String?
+    var segments: [Segment]
 }
 
 protocol OldImportService: AnyObject {
