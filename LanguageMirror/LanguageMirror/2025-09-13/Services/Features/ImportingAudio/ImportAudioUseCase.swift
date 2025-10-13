@@ -22,23 +22,19 @@ public final class ImportAudioUseCase {
     func run(sourceURL: URL, suggestedTitle: String?) async throws -> [Track] {
         try Task.checkCancellation()
 
-        // Use DNS namespace for deterministic UUID generation
-        let dnsNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
-        let packUUID = uuid5(namespace: dnsNamespace, name: norm("Downloaded Audio"))
-
         // 1) Let the engine validate / prep the URL
         let prepared = try await engine.prepareLocalAudio(from: sourceURL)
         try Task.checkCancellation()
 
         // 2) Persist to library
         //  id is UUID5 of the source URL
-        let id = uuid5(namespace: dnsNamespace, name: norm(sourceURL.absoluteString)).uuidString
+        let id = uuid5(namespace: UUID.namespaceFromMemo, name: norm(sourceURL.absoluteString)).uuidString
         
         let ext = prepared.pathExtension.isEmpty ? "m4a" : prepared.pathExtension
         let filename = "audio.\(ext)"
         guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
 
-        let folder = lib.trackFolder(forPackId: packUUID.uuidString, forTrackId: id)
+        let folder = lib.trackFolder(forPackId: UUID.namespaceFromMemo.uuidString, forTrackId: id)
         try fm.createDirectory(at: folder, withIntermediateDirectories: true)
         let dest = folder.appendingPathComponent(filename)
         if fm.fileExists(atPath: dest.path) { try fm.removeItem(at: dest) }

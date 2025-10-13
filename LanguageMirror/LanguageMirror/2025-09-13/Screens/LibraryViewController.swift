@@ -18,6 +18,7 @@ final class LibraryViewController: UIViewController {
     init(service: LibraryService) {
         self.service = service
         super.init(nibName: nil, bundle: nil)
+        createInternalUUIDs()
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 

@@ -26,9 +26,7 @@ public final class ImportVideoUseCase {
         // 1) Extract audio using the pluggable engine
         let audioTemp = try await engine.extractAudio(from: videoURL)
         
-        // Use DNS namespace for deterministic UUID generation
-        let dnsNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
-        let packUUID = uuid5(namespace: dnsNamespace, name: norm("Audio from Video"))
+        let packUUID = UUID.namespaceFromVideo
         
         // 2) Persist into library (same as your previous copy logic)
         let id = UUID().uuidString

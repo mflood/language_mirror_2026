@@ -27,3 +27,28 @@ func uuid5(namespace: UUID, name: String) -> UUID {
     }
     return UUID(uuid: tup)
 }
+
+extension UUID {
+    static let namespaceDNS = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")!
+    static let namespaceFromVideo = UUID(uuidString: "7A13F348-6A30-564F-B3D4-4FEE030A1A18")!
+    static let namespaceFromMemo = UUID(uuidString: "C0674F2C-FDBF-516B-BA29-593F3A20516D")!
+    static let namespaceFromRecording = UUID(uuidString: "721FC41D-3F41-5A3C-AE53-6DABDE5E84EC")!
+    static let namespaceDownloadedFile = UUID(uuidString: "1999F2D9-E717-59D7-B29C-A133AF2778C6")!
+}
+
+func createInternalUUIDs() {
+    // Utility function to generate and print internal UUIDs
+    let dnsNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
+    let namespaceFromVideo = uuid5(namespace: UUID.namespaceDNS, name: norm("Audio from Video"))
+    let namespaceFromMemo = uuid5(namespace: UUID.namespaceDNS, name: norm("Imported Local Audio"))
+    let namespaceFromRecording = uuid5(namespace: UUID.namespaceDNS, name: norm("Recorded Audio"))
+    let namespaceDownloadedFile = uuid5(namespace: UUID.namespaceDNS, name: norm("Downloaded Audio"))
+        
+    print("dnsNamespace: \(dnsNamespace)")
+    print("namespaceFromVideo: \(namespaceFromVideo)")
+    print("namespaceFromMemo: \(namespaceFromMemo)")
+    print("namespaceFromRecording: \(namespaceFromRecording)")
+    print("namespaceDownloadedFile: \(namespaceDownloadedFile)")
+
+}
+
