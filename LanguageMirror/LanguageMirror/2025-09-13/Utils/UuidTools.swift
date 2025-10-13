@@ -27,4 +27,3 @@ func uuid5(namespace: UUID, name: String) -> UUID {
     }
     return UUID(uuid: tup)
 }
-

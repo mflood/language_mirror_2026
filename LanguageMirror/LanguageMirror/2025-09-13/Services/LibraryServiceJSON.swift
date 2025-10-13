@@ -72,7 +72,7 @@ final class LibraryServiceJSON: LibraryService {
     }
 
     // Utilities to help importers (public static helpers are OK too)
-    func trackFolder(for id: String) -> URL {
-        base.appendingPathComponent("tracks/\(id)", isDirectory: true)
+    func trackFolder(forPackId packId: String, forTrackId trackId: String) -> URL {
+        base.appendingPathComponent("packs/\(packId)/tracks/\(trackId)", isDirectory: true)
     }
 }

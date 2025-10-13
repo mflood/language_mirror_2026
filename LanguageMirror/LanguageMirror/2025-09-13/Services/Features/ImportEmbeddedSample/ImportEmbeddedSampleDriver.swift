@@ -84,7 +84,7 @@ final class ImportEmbeddedSampleDriver {
                 }
                 
                 guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
-                let folder = lib.trackFolder(for: trackId)
+                let folder = lib.trackFolder(forPackId: packId, forTrackId: trackId)
                 try fm.createDirectory(at: folder, withIntermediateDirectories: true)
                 
                 let filename = "audio.\(audioUrl.pathExtension.isEmpty ? "mp3" : audioUrl.pathExtension)"

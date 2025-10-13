@@ -26,13 +26,21 @@ public final class ImportRemoteUseCase {
         let tempAudio = try await engine.downloadAudio(from: url)
         try Task.checkCancellation()
 
+        // Use DNS namespace for deterministic UUID generation
+        let dnsNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
+        let packUUID = uuid5(namespace: dnsNamespace, name: norm("Downloaded Audio"))
+
+        
         // 2) Persist
-        let id = UUID().uuidString
+
+        //  id is UUID5 of the source URL
+        let id = uuid5(namespace: dnsNamespace, name: norm(url.absoluteString)).uuidString
+        
         let ext = (tempAudio.pathExtension.isEmpty ? "m4a" : tempAudio.pathExtension)
         let filename = "audio.\(ext)"
         guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
 
-        let folder = lib.trackFolder(for: id)
+        let folder = lib.trackFolder(forPackId: packUUID.uuidString, forTrackId: id)
         try fm.createDirectory(at: folder, withIntermediateDirectories: true)
         let dest = folder.appendingPathComponent(filename)
         if fm.fileExists(atPath: dest.path) { try fm.removeItem(at: dest) }
