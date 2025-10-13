@@ -29,7 +29,7 @@ final class ImportServiceLite: ImportService {
     private let videoUseCase: ImportVideoUseCase
     private let remoteUseCase: ImportRemoteUseCase
     private let audioUseCase: ImportAudioUseCase
-    private let sampleUseCase: ImportSampleUseCase
+    private let importEmbeddedSampleDriver: ImportEmbeddedSampleDriver
     private let recordingUseCase: ImportRecordingUseCase
     
     /// Optional hook the VC can pass in to show alerts.
@@ -53,7 +53,8 @@ final class ImportServiceLite: ImportService {
             useMock: useMock),
                                                 library: library)
         
-        self.sampleUseCase  = ImportSampleUseCase(engine: SampleImporterFactory.make(),
+        self.importEmbeddedSampleDriver  = ImportEmbeddedSampleDriver(
+                                                  engine: SampleImporterFactory.make(),
                                                   library: library,
                                                   segments: segmentService)
         
@@ -81,7 +82,7 @@ final class ImportServiceLite: ImportService {
 
         case .embeddedSample:
             
-            let newTracks = try await sampleUseCase.run()
+            let newTracks = try await importEmbeddedSampleDriver.run()
             return newTracks
             
         case .recordedFile(let url):

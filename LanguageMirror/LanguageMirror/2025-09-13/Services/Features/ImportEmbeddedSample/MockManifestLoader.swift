@@ -1,14 +1,14 @@
 //
-//  MockSampleImporter.swift
+//  MockManifestLoader.swift
 //  LanguageMirror
 //
 //  Created by Matthew Flood on 9/20/25.
 //
 
-// Features/ImportingSample/MockSampleImporter.swift
+// Features/ImportingSample/MockManifestLoader.swift
 import Foundation
 
-public final class MockSampleImporter: SampleImporting {
+public final class MockManifestLoader: EmbeddedBundleManifestLoader {
 
     public enum ErrorMode: Sendable {
         case none

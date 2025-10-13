@@ -2,7 +2,7 @@
   "title": "Embedded Sample Bundle",
   "packs": [
       {
-          "id": "demo-pack-kbs-news",
+          "id": "urn:pack-app:com.six.wands.pack.kbs.news",
           "title": "Demo Pack - KBS Korean News",
           "tracks": [
             {
@@ -37,7 +37,7 @@
           ]
       },
       {
-          "id": "demo-pack-culture-1",
+          "id": "urn:pack-app:com.six.wands.pack.culture.1",
           "title": "Demo Pack - Korean Culture 1",
           "tracks": [
             {

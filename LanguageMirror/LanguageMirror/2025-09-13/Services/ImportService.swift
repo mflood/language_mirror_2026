@@ -48,7 +48,7 @@ public struct EmbeddedBundleManifest: Codable {
 }
 
 struct EmbeddedBundlePack: Codable {
-    let id: String?
+    let id: String
     let title: String
     let author: String?
     let filename: String?    // name of cover image in bundle
@@ -70,7 +70,7 @@ struct EmbeddedBundleTrack: Codable {
 }
 
 struct EmbeddedSegmentMap: Codable, Equatable {
-    var title: String?
+    var title: String
     var segments: [Segment]
 }
 

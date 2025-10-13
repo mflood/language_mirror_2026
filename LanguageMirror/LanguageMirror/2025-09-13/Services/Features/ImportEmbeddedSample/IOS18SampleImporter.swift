@@ -13,7 +13,7 @@ public enum SampleImportError: Error {
     case unreadable
 }
 
-public final class IOS18SampleImporter: SampleImporting {
+public final class IOS18SampleImporter: EmbeddedBundleManifestLoader {
     public init() {}
 
     public func loadEmbeddedSample() async throws -> EmbeddedBundleManifest {
