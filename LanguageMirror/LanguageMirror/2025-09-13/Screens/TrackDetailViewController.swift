@@ -47,8 +47,9 @@ final class TrackDetailViewController: UITableViewController {
         navigationItem.largeTitleDisplayMode = .never
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
-        buildHeader()
         loadSegments()
+        buildHeader()
+        
 
         // Observe playback end to reset buttons
         NotificationCenter.default.addObserver(self,
@@ -98,7 +99,12 @@ final class TrackDetailViewController: UITableViewController {
 
     private func loadSegments() {
         do {
-            segmentMap = try segmentService.loadMap(for: track.id)
+            
+            if track.segmentMaps.isEmpty {
+                segmentMap = SegmentMap.fullTrackFactory(trackId: track.id, displayOrder: 0)
+            } else {
+                segmentMap = track.segmentMaps[0]
+            }
             tableView.reloadData()
         } catch {
             segmentMap = SegmentMap(id: UUID().uuidString, trackId: track.id, displayOrder: 0, segments: [])

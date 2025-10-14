@@ -72,7 +72,7 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-         delegate?.libraryViewController(self, didSelect: tracks[indexPath.row])
+        delegate?.libraryViewController(self, didSelect: tracks[indexPath.row])
         
         /*
         let track = tracks[indexPath.row]
