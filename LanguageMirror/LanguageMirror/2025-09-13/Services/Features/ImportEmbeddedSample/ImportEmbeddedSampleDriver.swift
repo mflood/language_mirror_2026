@@ -96,7 +96,6 @@ final class ImportEmbeddedSampleDriver {
                 print("Copying \(audioUrl.path) to \(dest.path)")
                 try fm.copyItem(at: audioUrl, to: dest)
 
-             
                 let track = Track(
                     id: trackId,
                     packId: packId,
@@ -106,7 +105,9 @@ final class ImportEmbeddedSampleDriver {
                     durationMs: ms,
                     languageCode: nil,
                     segmentMaps: trackSegmentMaps,
-                    transcripts: [])
+                    transcripts: [],
+                    // createdAt: Date()
+                    )
                 
                 do {
                     try library.addTrack(track)

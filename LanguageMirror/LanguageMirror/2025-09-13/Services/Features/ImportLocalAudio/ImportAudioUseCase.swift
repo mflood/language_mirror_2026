@@ -27,14 +27,14 @@ public final class ImportAudioUseCase {
         try Task.checkCancellation()
 
         // 2) Persist to library
-        //  id is UUID5 of the source URL
-        let id = uuid5(namespace: UUID.namespaceFromMemo, name: norm(sourceURL.absoluteString)).uuidString
+        //  trackId is UUID5 of the source URL
+        let trackId = uuid5(namespace: UUID.namespaceFromMemo, name: norm(sourceURL.absoluteString)).uuidString
         
         let ext = prepared.pathExtension.isEmpty ? "m4a" : prepared.pathExtension
         let filename = "audio.\(ext)"
         guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
 
-        let folder = lib.trackFolder(forPackId: UUID.namespaceFromMemo.uuidString, forTrackId: id)
+        let folder = lib.trackFolder(forPackId: UUID.namespaceFromMemo.uuidString, forTrackId: trackId)
         try fm.createDirectory(at: folder, withIntermediateDirectories: true)
         let dest = folder.appendingPathComponent(filename)
         if fm.fileExists(atPath: dest.path) { try fm.removeItem(at: dest) }
@@ -43,12 +43,23 @@ public final class ImportAudioUseCase {
         try fm.copyItem(at: prepared, to: dest)
 
         // 3) Duration via async load (iOS 18)
-        let seconds = try await AVAsset(url: dest).load(.duration).seconds
+        let seconds = try await AVURLAsset(url: dest).load(.duration).seconds
         let ms = Int((seconds.isFinite ? seconds : 0) * 1000.0)
 
         let title = suggestedTitle ?? prepared.deletingPathExtension().lastPathComponent
-        // let track = Track(id: id, title: title, filename: filename, durationMs: ms)
-        //try library.addTrack(track)
-        return []
+        
+        let track = Track(
+            id: trackId,
+            packId: UUID.namespaceFromMemo.uuidString,
+            title: title,
+            filename: filename,
+            localUrl: dest,
+            durationMs: ms,
+            segmentMaps: [SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            transcripts: [],
+            // createdAt: Date(),
+        )
+        try library.addTrack(track)
+        return [track]
     }
 }

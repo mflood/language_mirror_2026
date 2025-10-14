@@ -195,6 +195,16 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
                 let msg = tracks.isEmpty ? "No tracks imported." : "Imported \(tracks.count) track(s)."
                 self?.alert("Done", msg)
             }
+            if !tracks.isEmpty {
+                    let trackId = tracks[0].id
+                    NotificationCenter.default.post(
+                        name: .libraryDidAddTrack,
+                        object: nil,
+                        userInfo: ["trackID": trackId])
+            }
+            
+
+            
         } catch is CancellationError {
             host.dismiss(animated: true) // cancelled—no alert needed
         } catch {

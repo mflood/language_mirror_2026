@@ -84,7 +84,10 @@ final class UserDataManager {
         )
         do {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
-            let data = try JSONEncoder().encode(container)
+            
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(container)
             try data.write(to: fileURL)
         } catch {
             print("❌ UserData persist error: \(error)")

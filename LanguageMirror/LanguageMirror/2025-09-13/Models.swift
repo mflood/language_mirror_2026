@@ -12,6 +12,7 @@ struct Pack: Codable, Identifiable, Equatable {
     var title: String
     var languageHint: String?
     var tracks: [Track]
+    // var createdAt: Date?      // Timestamp of when the track was imported
 }
 
 struct Track: Codable, Identifiable, Equatable {
@@ -19,11 +20,12 @@ struct Track: Codable, Identifiable, Equatable {
     let packId: String
     var title: String
     var filename: String         // e.g., "sample.mp3"
-    var localUrl: URL      // local file URL as string
+    var localUrl: URL?     // local file URL if downloaded or imported
     var durationMs: Int?         // nice if you know it....
     var languageCode: String?    // e.g., "ko-KR" or "en-US"
     var segmentMaps: [SegmentMap] // Change to "Practice Sets" in UI
     var transcripts: [TranscriptSpan]
+    // var createdAt: Date?      // Timestamp of when the track was imported
 }
 
 struct SegmentMap: Codable, Equatable {

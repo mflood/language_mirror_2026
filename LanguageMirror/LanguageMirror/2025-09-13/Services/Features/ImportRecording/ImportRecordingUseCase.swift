@@ -28,13 +28,13 @@ public final class ImportRecordingUseCase {
         try Task.checkCancellation()
         
         // 2) Persist to library
-        let id = uuid5(namespace: UUID.namespaceFromRecording, name: norm(title)).uuidString
+        let trackId = uuid5(namespace: UUID.namespaceFromRecording, name: norm(title)).uuidString
         
         let ext = prepared.pathExtension.isEmpty ? "m4a" : prepared.pathExtension
         let filename = "audio.\(ext)"
 
         guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
-        let folder = lib.trackFolder(forPackId: UUID.namespaceFromRecording.uuidString, forTrackId: id)
+        let folder = lib.trackFolder(forPackId: UUID.namespaceFromRecording.uuidString, forTrackId: trackId)
         try fm.createDirectory(at: folder, withIntermediateDirectories: true)
         let dest = folder.appendingPathComponent(filename)
         if fm.fileExists(atPath: dest.path) { try fm.removeItem(at: dest) }
@@ -45,9 +45,21 @@ public final class ImportRecordingUseCase {
         // 3) Duration (iOS 18 async load)
         let seconds = try await AVURLAsset(url: dest).load(.duration).seconds
         let ms = Int((seconds.isFinite ? seconds : 0) * 1000.0)
-
-        // let track = Track(id: id, packId: nil, title: title, filename: filename, durationMs: ms)
-        // try library.addTrack(track)
-        return []
+        
+        let track = Track(
+            id: trackId,
+            packId: UUID.namespaceDownloadedFile.uuidString,
+            title: title,
+            filename: filename,
+            localUrl: dest,
+            durationMs: ms,
+            segmentMaps: [SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            transcripts: [],
+            // createdAt: Date(),
+        )
+            
+        try library.addTrack(track)
+        return [track]
+        
     }
 }

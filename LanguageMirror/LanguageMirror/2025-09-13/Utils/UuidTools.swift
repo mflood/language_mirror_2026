@@ -36,6 +36,7 @@ extension UUID {
     static let namespaceDownloadedFile = UUID(uuidString: "1999F2D9-E717-59D7-B29C-A133AF2778C6")!
 }
 
+/*
 func createInternalUUIDs() {
     // Utility function to generate and print internal UUIDs
     let dnsNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
@@ -51,4 +52,4 @@ func createInternalUUIDs() {
     print("namespaceDownloadedFile: \(namespaceDownloadedFile)")
 
 }
-
+*/

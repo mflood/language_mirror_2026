@@ -27,10 +27,19 @@ final class LibraryServiceJSON: LibraryService {
     }
 
     private func loadIndex() {
-        if let data = try? Data(contentsOf: indexURL),
-           let idx = try? JSONDecoder().decode(Index.self, from: data) {
-            cache = idx
-        } else {
+        
+        do {
+            let data = try Data(contentsOf: indexURL)
+            do {
+                let idx = try JSONDecoder().decode(Index.self, from: data)
+                cache = idx
+            } catch {
+                print("Library index decode failed: \(error)")
+                cache = .init()
+                saveIndex()
+            }
+        } catch {
+            print("Library index load failed: \(error)")
             cache = .init()
             saveIndex()
         }
@@ -38,7 +47,10 @@ final class LibraryServiceJSON: LibraryService {
 
     private func saveIndex() {
         do {
-            let data = try JSONEncoder().encode(cache)
+            
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(cache)
             try data.write(to: indexURL, options: .atomic)
         } catch {
             print("Library index save failed: \(error)")
@@ -58,10 +70,7 @@ final class LibraryServiceJSON: LibraryService {
         }
         cache.tracks.append(track)
         saveIndex()
-        NotificationCenter.default.post(
-            name: .libraryDidAddTrack,
-            object: nil,
-            userInfo: ["trackID": track.id])
+        // Removed Notification from here and moved it into the importer view
     }
 
     func updateTrack(_ track: Track) throws {

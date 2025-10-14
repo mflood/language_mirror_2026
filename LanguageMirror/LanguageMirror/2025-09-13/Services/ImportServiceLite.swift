@@ -27,7 +27,7 @@ final class ImportServiceLite: ImportService {
     
     
     private let videoUseCase: ImportVideoUseCase
-    private let remoteUseCase: ImportRemoteUseCase
+    private let importAudioUrlDriver: ImportAudioUrlDriver
     private let audioUseCase: ImportAudioUseCase
     private let importEmbeddedSampleDriver: ImportEmbeddedSampleDriver
     private let recordingUseCase: ImportRecordingUseCase
@@ -44,8 +44,8 @@ final class ImportServiceLite: ImportService {
             library: library
         )
         
-        self.remoteUseCase = ImportRemoteUseCase(
-            engine: RemoteImporterFactory.make(useMock: useMock),
+        self.importAudioUrlDriver = ImportAudioUrlDriver(
+            urlDownloader: UrlDownloaderFactory.make(useMock: useMock),
             library: library
         )
         
@@ -75,7 +75,7 @@ final class ImportServiceLite: ImportService {
             return try await videoUseCase.run(videoURL: url, suggestedTitle: nil)
 
         case .remoteURL(let url, let suggestedTitle):
-            return try await remoteUseCase.run(url: url, suggestedTitle: suggestedTitle)
+            return try await importAudioUrlDriver.run(url: url, suggestedTitle: suggestedTitle)
             
         case .audioFile(let url):
             return try await audioUseCase.run(sourceURL: url, suggestedTitle: nil)

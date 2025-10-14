@@ -1,14 +1,14 @@
 //
-//  MockRemoteImporter.swift
+//  MockUrlDownloader.swift
 //  LanguageMirror
 //
 //  Created by Matthew Flood on 9/20/25.
 //
 
-// Features/ImportingRemote/MockRemoteImporter.swift
+// Features/ImportingRemote/MockUrlDownloader.swift
 import Foundation
 
-public final class MockRemoteImporter: RemoteImporting {
+public final class MockUrlDownloader: UrlDownloaderProtocol {
 
     public enum ErrorMode: Sendable {
         case none
@@ -28,7 +28,7 @@ public final class MockRemoteImporter: RemoteImporting {
         self.errorMode = errorMode
     }
 
-    public func downloadAudio(from url: URL) async throws -> URL {
+    public func downloadAudio(from url: URL) async throws -> (url: URL, suggestedFilename: String) {
         switch errorMode {
         case .immediate(let e): throw e
         case .none, .afterDelay: break
@@ -49,6 +49,6 @@ public final class MockRemoteImporter: RemoteImporting {
         guard let sample = Bundle.main.url(forResource: "sample", withExtension: "mp3") else {
             throw RemoteImportError.notAudio
         }
-        return sample
+        return (url: sample, suggestedFilename: "sample.mp3")
     }
 }

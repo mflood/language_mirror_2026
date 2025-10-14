@@ -26,15 +26,14 @@ public final class ImportVideoUseCase {
         // 1) Extract audio using the pluggable engine
         let audioTemp = try await engine.extractAudio(from: videoURL)
         
-        let packUUID = UUID.namespaceFromVideo
-        
         // 2) Persist into library (same as your previous copy logic)
-        let id = UUID().uuidString
+        let trackId = UUID().uuidString
+        
         let ext = audioTemp.pathExtension.isEmpty ? "m4a" : audioTemp.pathExtension
         let filename = "audio.\(ext)"
         guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
 
-        let folder = lib.trackFolder(forPackId: packUUID.uuidString, forTrackId: id)
+        let folder = lib.trackFolder(forPackId: UUID.namespaceFromVideo.uuidString, forTrackId: trackId)
         
         try fm.createDirectory(at: folder, withIntermediateDirectories: true)
         let dest = folder.appendingPathComponent(filename)
@@ -42,13 +41,23 @@ public final class ImportVideoUseCase {
         try fm.copyItem(at: audioTemp, to: dest)
 
         // 3) Compute duration (async load in iOS 18)
-        let duration = try await AVAsset(url: dest).load(.duration).seconds
+        let duration = try await AVURLAsset(url: dest).load(.duration).seconds
         let durationMs = Int((duration.isFinite ? duration : 0) * 1000.0)
 
         let title = suggestedTitle ?? videoURL.deletingPathExtension().lastPathComponent
         
-        // let track = Track(id: id, title: title, filename: filename, durationMs: durationMs)
-        // try library.addTrack(track)
-       return []
+        let track = Track(
+            id: trackId,
+            packId: UUID.namespaceFromVideo.uuidString,
+            title: title,
+            filename: filename,
+            localUrl: dest,
+            durationMs: durationMs,
+            segmentMaps: [SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            transcripts: [],
+            // createdAt: Date(),
+        )
+        try library.addTrack(track)
+        return [track]
     }
 }

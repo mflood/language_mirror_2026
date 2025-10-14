@@ -90,7 +90,11 @@ final class SegmentServiceJSON: SegmentService {
 
     private func persist(_ map: SegmentMap, to url: URL) throws {
         do {
-            let data = try JSONEncoder().encode(map)
+            
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            
+            let data = try encoder.encode(map)
             try data.write(to: url, options: .atomic)
         } catch let e as EncodingError {
             throw SegmentStoreError.encode(e)
