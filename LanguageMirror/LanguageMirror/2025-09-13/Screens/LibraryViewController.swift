@@ -4,6 +4,7 @@
 //
 //  Created by Matthew Flood on 9/13/25.
 //
+
 import UIKit
 
 protocol LibraryViewControllerDelegate: AnyObject {
@@ -40,8 +41,11 @@ final class LibraryViewController: UIViewController {
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.dataSource = self
         tv.delegate = self
-        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tv.register(TrackCell.self, forCellReuseIdentifier: "trackCell")
         tv.register(PackHeaderView.self, forHeaderFooterViewReuseIdentifier: "packHeader")
+        tv.backgroundColor = AppColors.primaryBackground
+        tv.separatorStyle = .none  // Custom cells handle their own spacing
+        tv.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         return tv
     }()
     
@@ -52,18 +56,20 @@ final class LibraryViewController: UIViewController {
         sc.searchBar.placeholder = "Search tracks"
         return sc
     }()
+    
+    private var emptyStateView: EmptyStateView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = AppColors.primaryBackground
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
-        // Sort button
+        // Sort button with better icon
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "arrow.up.arrow.down"),
+            image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
             target: self,
             action: #selector(sortTapped)
@@ -88,6 +94,11 @@ final class LibraryViewController: UIViewController {
             name: .LibraryDidChange,
             object: nil
         )
+        
+        // Add pull to refresh
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        tableView.refreshControl = refreshControl
     }
     
     deinit {
@@ -99,12 +110,26 @@ final class LibraryViewController: UIViewController {
             self?.loadData()
         }
     }
+    
+    @objc private func handleRefresh() {
+        loadData()
+        
+        // Add slight delay for visual feedback
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.tableView.refreshControl?.endRefreshing()
+            
+            // Haptic feedback
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        }
+    }
 
     private func loadData() {
         packs = service.listNonEmptyPacks()
         applySort()
         filteredPacks = packs
         tableView.reloadData()
+        updateEmptyState()
     }
     
     private func applySort() {
@@ -141,6 +166,10 @@ final class LibraryViewController: UIViewController {
                 self?.sortOrder = order
                 self?.saveSortOrder()
                 self?.loadData()
+                
+                // Haptic feedback
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.impactOccurred()
             })
         }
         
@@ -151,6 +180,59 @@ final class LibraryViewController: UIViewController {
         }
         
         present(alert, animated: true)
+    }
+    
+    // MARK: - Empty State
+    
+    private func updateEmptyState() {
+        let isEmpty = filteredPacks.isEmpty || filteredPacks.allSatisfy { $0.tracks.isEmpty }
+        
+        if isEmpty && !isSearching {
+            // Show empty library state
+            if emptyStateView == nil {
+                let empty = EmptyStateView.emptyLibrary { [weak self] in
+                    // Handle action - could navigate to import or pack selection
+                    self?.handleEmptyStateAction()
+                }
+                empty.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(empty)
+                NSLayoutConstraint.activate([
+                    empty.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    empty.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    empty.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    empty.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ])
+                emptyStateView = empty
+            }
+            emptyStateView?.isHidden = false
+            tableView.isHidden = true
+        } else if isEmpty && isSearching {
+            // Show no search results
+            if emptyStateView == nil {
+                let empty = EmptyStateView.noSearchResults()
+                empty.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(empty)
+                NSLayoutConstraint.activate([
+                    empty.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    empty.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    empty.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    empty.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ])
+                emptyStateView = empty
+            }
+            emptyStateView?.isHidden = false
+            tableView.isHidden = true
+        } else {
+            emptyStateView?.isHidden = true
+            tableView.isHidden = false
+        }
+    }
+    
+    private func handleEmptyStateAction() {
+        // Could notify coordinator to navigate to import/pack selection
+        // For now, just provide haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
     }
     
     // MARK: - Persistence
@@ -175,7 +257,21 @@ final class LibraryViewController: UIViewController {
     private func saveSortOrder() {
         UserDefaults.standard.set(sortOrder.rawValue, forKey: "LibrarySortOrder")
     }
+    
+    // MARK: - Trait Collection
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            // Update colors for dark mode transition
+            view.backgroundColor = AppColors.primaryBackground
+            tableView.backgroundColor = AppColors.primaryBackground
+        }
+    }
 }
+
+// MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -207,20 +303,31 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
         
         let pack = filteredPacks[section]
         let isExpanded = expandedPackIds.contains(pack.id)
-        header.configure(title: pack.title, trackCount: pack.tracks.count, isExpanded: isExpanded)
+        header.configure(
+            title: pack.title,
+            trackCount: pack.tracks.count,
+            isExpanded: isExpanded,
+            colorIndex: section
+        )
         header.onTap = { [weak self] in
-            self?.togglePackExpansion(pack.id)
+            self?.togglePackExpansion(packId: pack.id, section: section)
         }
         
         return header
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return isSearching ? 0 : 50
+        return isSearching ? 0 : UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return 56
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "trackCell", for: indexPath) as? TrackCell else {
+            return UITableViewCell()
+        }
         
         let track: Track
         if isSearching {
@@ -231,28 +338,13 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
             track = pack.tracks[indexPath.row]
         }
         
-        var config = cell.defaultContentConfiguration()
-        config.text = track.title
+        // Configure with mock progress (could track real progress later)
+        cell.configure(with: track, progress: 0.0)
         
-        // Build subtitle with duration and tags
-        var subtitle = ""
-        if let duration = track.durationMs {
-            subtitle += formatDuration(duration)
-        }
-        if !track.tags.isEmpty {
-            let tagString = track.tags.prefix(3).joined(separator: ", ")
-            subtitle += subtitle.isEmpty ? tagString : " • \(tagString)"
-        }
-        config.secondaryText = subtitle
-        
-        cell.contentConfiguration = config
-        cell.accessoryType = .disclosureIndicator
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
         let track: Track
         if isSearching {
             let allTracks = filteredPacks.flatMap(\.tracks)
@@ -265,23 +357,36 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
         delegate?.libraryViewController(self, didSelect: track)
     }
     
-    private func togglePackExpansion(_ packId: String) {
-        if expandedPackIds.contains(packId) {
-            expandedPackIds.remove(packId)
-        } else {
-            expandedPackIds.insert(packId)
-        }
-        saveExpansionState()
-        tableView.reloadData()
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
-    private func formatDuration(_ ms: Int) -> String {
-        let totalSeconds = ms / 1000
-        let minutes = totalSeconds / 60
-        let seconds = totalSeconds % 60
-        return String(format: "%d:%02d", minutes, seconds)
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    private func togglePackExpansion(packId: String, section: Int) {
+        let isExpanding = !expandedPackIds.contains(packId)
+        
+        if isExpanding {
+            expandedPackIds.insert(packId)
+        } else {
+            expandedPackIds.remove(packId)
+        }
+        saveExpansionState()
+        
+        // Smooth animated expansion
+        tableView.performBatchUpdates({
+            tableView.reloadSections(IndexSet(integer: section), with: .fade)
+        }, completion: nil)
+        
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
     }
 }
+
+// MARK: - UISearchResultsUpdating
 
 extension LibraryViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
@@ -289,6 +394,7 @@ extension LibraryViewController: UISearchResultsUpdating {
             isSearching = false
             filteredPacks = packs
             tableView.reloadData()
+            updateEmptyState()
             return
         }
         
@@ -310,15 +416,20 @@ extension LibraryViewController: UISearchResultsUpdating {
         }
         
         tableView.reloadData()
+        updateEmptyState()
     }
 }
 
-// MARK: - Pack Header View
+// MARK: - Pack Header View (Enhanced)
 
 final class PackHeaderView: UITableViewHeaderFooterView {
+    
+    private let containerView = UIView()
+    private let colorStripeView = UIView()
     private let titleLabel = UILabel()
     private let countBadge = UILabel()
     private let chevronImageView = UIImageView()
+    
     var onTap: (() -> Void)?
     
     override init(reuseIdentifier: String?) {
@@ -331,48 +442,131 @@ final class PackHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setupUI() {
-        contentView.backgroundColor = .secondarySystemGroupedBackground
+        contentView.backgroundColor = .clear
         
-        titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Container with card-like appearance
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = AppColors.cardBackground
+        containerView.layer.cornerRadius = 12
+        containerView.layer.cornerCurve = .continuous
+        contentView.addSubview(containerView)
         
-        countBadge.font = .systemFont(ofSize: 14, weight: .medium)
-        countBadge.textColor = .secondaryLabel
-        countBadge.translatesAutoresizingMaskIntoConstraints = false
+        // Color stripe (accent on the left)
+        colorStripeView.translatesAutoresizingMaskIntoConstraints = false
+        colorStripeView.layer.cornerRadius = 4
+        colorStripeView.layer.cornerCurve = .continuous
+        containerView.addSubview(colorStripeView)
         
-        chevronImageView.contentMode = .center
-        chevronImageView.tintColor = .secondaryLabel
+        // Chevron
         chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+        chevronImageView.contentMode = .scaleAspectFit
+        chevronImageView.tintColor = AppColors.secondaryText
+        containerView.addSubview(chevronImageView)
         
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(countBadge)
-        contentView.addSubview(chevronImageView)
+        // Title
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+        titleLabel.textColor = AppColors.primaryText
+        containerView.addSubview(titleLabel)
+        
+        // Count badge
+        countBadge.translatesAutoresizingMaskIntoConstraints = false
+        countBadge.font = .systemFont(ofSize: 14, weight: .medium)
+        countBadge.textColor = AppColors.secondaryText
+        countBadge.backgroundColor = AppColors.tertiaryBackground
+        countBadge.layer.cornerRadius = 10
+        countBadge.layer.cornerCurve = .continuous
+        countBadge.clipsToBounds = true
+        countBadge.textAlignment = .center
+        containerView.addSubview(countBadge)
         
         NSLayoutConstraint.activate([
-            chevronImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            chevronImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            chevronImageView.widthAnchor.constraint(equalToConstant: 24),
-            chevronImageView.heightAnchor.constraint(equalToConstant: 24),
+            // Container with margins
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
+            containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56),
             
-            titleLabel.leadingAnchor.constraint(equalTo: chevronImageView.trailingAnchor, constant: 8),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            // Color stripe
+            colorStripeView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            colorStripeView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            colorStripeView.widthAnchor.constraint(equalToConstant: 4),
+            colorStripeView.heightAnchor.constraint(equalToConstant: 32),
             
+            // Chevron
+            chevronImageView.leadingAnchor.constraint(equalTo: colorStripeView.trailingAnchor, constant: 12),
+            chevronImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 16),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 16),
+            
+            // Title
+            titleLabel.leadingAnchor.constraint(equalTo: chevronImageView.trailingAnchor, constant: 12),
+            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            
+            // Count badge
             countBadge.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 8),
-            countBadge.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            countBadge.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16)
+            countBadge.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            countBadge.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16),
+            countBadge.widthAnchor.constraint(greaterThanOrEqualToConstant: 32),
+            countBadge.heightAnchor.constraint(equalToConstant: 24)
         ])
         
+        // Apply shadow
+        containerView.applyAdaptiveShadow(radius: 6, opacity: 0.08)
+        
+        // Tap gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        contentView.addGestureRecognizer(tapGesture)
+        containerView.addGestureRecognizer(tapGesture)
     }
     
-    func configure(title: String, trackCount: Int, isExpanded: Bool) {
+    func configure(title: String, trackCount: Int, isExpanded: Bool, colorIndex: Int) {
         titleLabel.text = title
-        countBadge.text = "(\(trackCount))"
-        chevronImageView.image = UIImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
+        countBadge.text = "\(trackCount)"
+        
+        // Animate chevron rotation
+        let targetRotation: CGFloat = isExpanded ? .pi / 2 : 0
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.5,
+            options: [.beginFromCurrentState]
+        ) {
+            self.chevronImageView.transform = CGAffineTransform(rotationAngle: targetRotation)
+        }
+        
+        chevronImageView.image = UIImage(systemName: "chevron.right")
+        
+        // Set color stripe based on pack index
+        colorStripeView.backgroundColor = AppColors.packAccent(index: colorIndex)
+        
+        // Subtle background tint
+        containerView.backgroundColor = AppColors.packBackground(index: colorIndex)
     }
     
     @objc private func handleTap() {
+        // Animate press
+        UIView.animate(
+            withDuration: 0.1,
+            animations: {
+                self.containerView.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
+            },
+            completion: { _ in
+                UIView.animate(withDuration: 0.1) {
+                    self.containerView.transform = .identity
+                }
+            }
+        )
+        
         onTap?()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            containerView.updateAdaptiveShadowForAppearance()
+        }
     }
 }
