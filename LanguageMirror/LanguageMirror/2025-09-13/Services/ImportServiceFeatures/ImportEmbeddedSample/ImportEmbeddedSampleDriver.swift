@@ -69,6 +69,15 @@ final class ImportEmbeddedSampleDriver {
         let packUUID = uuid5(namespace: embeddingNamespace, name: norm(bundlePack.id))
         let packId = packUUID.uuidString
         
+        // Add the pack with its actual title before importing tracks
+        let pack = Pack(
+            id: packId,
+            title: bundlePack.title,
+            languageHint: bundlePack.tracks.first?.languageCode,
+            tracks: []
+        )
+        try library.addPack(pack)
+        
         var tracks: [Track] = []
         
         for bundleTrack in bundlePack.tracks {

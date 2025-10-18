@@ -95,7 +95,9 @@ final class LibraryViewController: UIViewController {
     }
     
     @objc private func handleLibraryChanged() {
-        loadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.loadData()
+        }
     }
 
     private func loadData() {
