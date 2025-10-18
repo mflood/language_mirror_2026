@@ -38,7 +38,7 @@ struct BundleTrack: Codable {
     let url: String?               // remote audio URL
     let filename: String?          // desired filename; default from url
     let durationMs: Int?
-    let segments: SegmentMap?      // optional built-in segments
+    let segments: Arrangement?      // optional built-in segments
 }
 
 

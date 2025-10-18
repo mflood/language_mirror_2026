@@ -70,7 +70,7 @@ public final class ImportAudioUrlDriver {
         // 4) Save track
         let title = suggestedTitle ?? url.lastPathComponent
         
-        let emptySegmentMap = SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0)
+        let emptySegmentMap = Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)
         
         let track = Track(
             id: trackId,
@@ -79,8 +79,10 @@ public final class ImportAudioUrlDriver {
             filename: suggestedFilename,
             localUrl: dest,
             durationMs: ms,
-            segmentMaps: [emptySegmentMap],
+            arrangements: [emptySegmentMap],
             transcripts: [],
+            tags: [],
+            sourceType: .localRecording
             // createdAt: Date(),
         )
             

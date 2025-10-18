@@ -70,8 +70,10 @@ public final class ImportVideoDriver {
             filename: filename,
             localUrl: audioLibraryUrl,
             durationMs: durationMs,
-            segmentMaps: [SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            arrangements: [Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)],
             transcripts: [],
+            tags: [],
+            sourceType: .textbook
             // createdAt: Date(),
         )
         try library.addTrack(track)

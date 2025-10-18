@@ -16,7 +16,7 @@ final class TrackDetailViewController: UITableViewController {
     private let segmentService: SegmentService
     private let settings: SettingsService
 
-    private var segmentMap: SegmentMap!
+    private var segmentMap: Arrangement!
     
     // Playback config (temporary defaults; later from Settings)
     private let defaultRepeats = 3
@@ -100,14 +100,14 @@ final class TrackDetailViewController: UITableViewController {
     private func loadSegments() {
         do {
             
-            if track.segmentMaps.isEmpty {
-                segmentMap = SegmentMap.fullTrackFactory(trackId: track.id, displayOrder: 0)
+            if track.arrangements.isEmpty {
+                segmentMap = Arrangement.fullTrackFactory(trackId: track.id, displayOrder: 0)
             } else {
-                segmentMap = track.segmentMaps[0]
+                segmentMap = track.arrangements[0]
             }
             tableView.reloadData()
         } catch {
-            segmentMap = SegmentMap(id: UUID().uuidString, trackId: track.id, displayOrder: 0, segments: [])
+            segmentMap = Arrangement(id: UUID().uuidString, trackId: track.id, displayOrder: 0, segments: [])
             tableView.reloadData()
             presentError("Could not load segments", error: error)
         }

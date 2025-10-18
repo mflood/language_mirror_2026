@@ -20,7 +20,7 @@ final class SegmentWaveformEditorViewController: UIViewController {
     private let audioPlayer: AudioPlayerService          // NEW
     private let settings: SettingsService                // NEW
 
-    var onSaved: ((SegmentMap) -> Void)?   // caller can refresh its UI
+    var onSaved: ((Arrangement) -> Void)?   // caller can refresh its UI
 
     // A) Add properties
     private let meter = LevelMeterView()                // NEW
@@ -499,7 +499,7 @@ final class SegmentWaveformEditorViewController: UIViewController {
         seg.languageCode = (langCode?.isEmpty == false) ? langCode : nil
 
         do {
-            let map: SegmentMap
+            let map: Arrangement
             if segment == nil { map = try segmentService.add(seg, to: track.id) }
             else { map = try segmentService.update(seg, in: track.id) }
             onSaved?(map)

@@ -133,7 +133,7 @@ struct Track: Codable, Identifiable, Equatable {
     var languageCode: String?   // e.g., "ko-KR" | "en-US"
 }
 
-struct SegmentMap: Codable, Equatable {
+struct Arrangement: Codable, Equatable {
     var version: Int
     var segments: [Segment]
 }
@@ -164,7 +164,7 @@ LanguageMirror/
     packs/<packId>/manifest.json
     tracks/<trackId>/
       audio.m4a | .mp3
-      track.json           # Track + optional SegmentMap
+      track.json           # Track + optional Arrangement
       transcript.json      # optional
   routines/
     <routineId>.json
@@ -433,7 +433,7 @@ Server ASR vendor/pricing (later; protocol allows swapping).
 - 2025-09-15 — Start Routine now plays only Drill segments in order. AudioPlayerService gained a segments API honoring per-segment repeats with a gap between repeats and between segments. Implemented via AVPlayer with a periodic time observer; whole-track play preserved for legacy/testing.
 - 2025-09-15 — Wired N repeats + gap using AVPlayer. Extended AudioPlayerService with play(track:repeats:gapSeconds:), pause(), resume(), stop(). Track Detail exposes Pause/Resume and Stop controls and listens for start/stop notifications to update UI.
 - 2025-09-15 — Added dedicated Segment Editor screen. Editor supports list, add/edit/delete, reorder, and quick kind cycle. Introduced SegmentService.update/moveSegment to persist edits and ordering. Track Detail now pushes the editor and refreshes its Segments section on return via callback.
-- 2025-09-15 — Added Segments section scaffold to Track Detail. Introduced Segment/SegmentKind/SegmentMap models and JSON-backed SegmentService that reads/writes Documents/LanguageMirror/library/tracks/<trackId>/track.json. Supports empty state, add dialog (start/end/title/kind), and swipe-to-delete.
+- 2025-09-15 — Added Segments section scaffold to Track Detail. Introduced Segment/SegmentKind/Arrangement models and JSON-backed SegmentService that reads/writes Documents/LanguageMirror/library/tracks/<trackId>/track.json. Supports empty state, add dialog (start/end/title/kind), and swipe-to-delete.
 
 - 2025-09-14 — Starter app (UIKit, no storyboard) with TabBar + coordinators retained strongly to keep delegates alive. JSON-first LibraryService loads library_seed.json or persists to Documents/LanguageMirror/library.json. Chose Drill/Skip/Noise for SegmentKind. Track has optional languageCode.
 

@@ -40,9 +40,32 @@
 		6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"2025-09-13/Info.plist",
 				"2025-09-13/Resources/library_seed.json",
+				Info.plist,
 				Resources/data_2.json,
+				"Utilities/audio-recorder-viewmodel.swift",
+				Utilities/AudioFileUtilities.swift,
+				Utilities/AudioRecorderManager.swift,
+				Utilities/SlicePlayer.swift,
+				ViewControllers/ArrangementListViewController.swift,
+				ViewControllers/CollectionListViewContoller.swift,
+				ViewControllers/DownloadFromUrl/DownloadFromURLViewController_Mockup.md,
+				ViewControllers/DownloadFromUrl/DownloadFromURLViewController_Setup_Guide.md,
+				ViewControllers/DownloadFromUrl/SiivDownloadFromURLDelegate.swift,
+				ViewControllers/DownloadFromUrl/SiivDownloadFromURLViewController.swift,
+				ViewControllers/DownloadFromUrl/SiivRecentDownloadCell.swift,
+				ViewControllers/DownloadFromUrl/SiivRecentDownloadCell.xib,
+				ViewControllers/GroupedTrackViewController.swift,
+				ViewControllers/OldTrackViewController.swift,
+				ViewControllers/Recording/AudioRecorderViewController_Mockup.md,
+				ViewControllers/Recording/AudioRecorderViewController_Setup_Guide.md,
+				ViewControllers/Recording/DeprecatedAudioRecorderViewController.swift,
+				ViewControllers/Recording/SiivAudioRecorderDelegate.swift,
+				ViewControllers/Recording/SiivAudioRecorderViewController.swift,
+				ViewControllers/Recording/SiivRecordingCell.swift,
+				ViewControllers/Recording/WaveformView.swift,
+				ViewControllers/SliceListViewController.swift,
+				ViewControllers/StudyPlayerViewController.swift,
 			);
 			target = 6FAB0EAA2E1067B100D3B9C4 /* LanguageMirror */;
 		};

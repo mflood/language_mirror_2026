@@ -12,16 +12,16 @@ final class SegmentServiceJSON: SegmentService {
     
     private let fm = FileManager.default
 
-    func loadMap(for trackId: String) throws -> SegmentMap {
+    func loadMap(for trackId: String) throws -> Arrangement {
         let url = mapURL(trackId: trackId)
         if !fm.fileExists(atPath: url.path) {
-            let emptyMap = SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0) 
+            let emptyMap = Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)
             try persist(emptyMap, to: url)
             return emptyMap
         }
         do {
             let data = try Data(contentsOf: url)
-            return try JSONDecoder().decode(SegmentMap.self, from: data)
+            return try JSONDecoder().decode(Arrangement.self, from: data)
         } catch let e as DecodingError {
             throw SegmentStoreError.decode(e)
         } catch {
@@ -29,11 +29,11 @@ final class SegmentServiceJSON: SegmentService {
         }
     }
 
-    func saveMap(_ map: SegmentMap, for trackId: String) throws {
+    func saveMap(_ map: Arrangement, for trackId: String) throws {
         try persist(map, to: mapURL(trackId: trackId))
     }
 
-    func add(_ segment: Segment, to trackId: String) throws -> SegmentMap {
+    func add(_ segment: Segment, to trackId: String) throws -> Arrangement {
         guard segment.startMs >= 0, segment.endMs > segment.startMs else { throw SegmentStoreError.invalidRange }
         var map = try loadMap(for: trackId)
         map.segments.append(segment)
@@ -43,7 +43,7 @@ final class SegmentServiceJSON: SegmentService {
         return map
     }
 
-    func delete(segmentId: String, from trackId: String) throws -> SegmentMap {
+    func delete(segmentId: String, from trackId: String) throws -> Arrangement {
         var map = try loadMap(for: trackId)
         let before = map.segments.count
         map.segments.removeAll { $0.id == segmentId }
@@ -52,7 +52,7 @@ final class SegmentServiceJSON: SegmentService {
         return map
     }
 
-    func update(_ segment: Segment, in trackId: String) throws -> SegmentMap {
+    func update(_ segment: Segment, in trackId: String) throws -> Arrangement {
         guard segment.startMs >= 0, segment.endMs > segment.startMs else { throw SegmentStoreError.invalidRange }
         var map = try loadMap(for: trackId)
         guard let idx = map.segments.firstIndex(where: { $0.id == segment.id }) else {
@@ -64,7 +64,7 @@ final class SegmentServiceJSON: SegmentService {
         return map
     }
 
-    func moveSegment(from sourceIndex: Int, to destinationIndex: Int, in trackId: String) throws -> SegmentMap {
+    func moveSegment(from sourceIndex: Int, to destinationIndex: Int, in trackId: String) throws -> Arrangement {
         var map = try loadMap(for: trackId)
         guard map.segments.indices.contains(sourceIndex),
               map.segments.indices.contains(destinationIndex) else { return map }
@@ -88,7 +88,7 @@ final class SegmentServiceJSON: SegmentService {
         return dir.appendingPathComponent("track.json")
     }
 
-    private func persist(_ map: SegmentMap, to url: URL) throws {
+    private func persist(_ map: Arrangement, to url: URL) throws {
         do {
             
             let encoder = JSONEncoder()

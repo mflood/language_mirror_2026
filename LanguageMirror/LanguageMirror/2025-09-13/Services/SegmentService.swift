@@ -9,14 +9,14 @@
 import Foundation
 
 protocol SegmentService {
-    func loadMap(for trackId: String) throws -> SegmentMap
-    func saveMap(_ map: SegmentMap, for trackId: String) throws
-    func add(_ segment: Segment, to trackId: String) throws -> SegmentMap
-    func delete(segmentId: String, from trackId: String) throws -> SegmentMap
+    func loadMap(for trackId: String) throws -> Arrangement
+    func saveMap(_ map: Arrangement, for trackId: String) throws
+    func add(_ segment: Segment, to trackId: String) throws -> Arrangement
+    func delete(segmentId: String, from trackId: String) throws -> Arrangement
 
     // NEW:
-    func update(_ segment: Segment, in trackId: String) throws -> SegmentMap
-    func moveSegment(from sourceIndex: Int, to destinationIndex: Int, in trackId: String) throws -> SegmentMap
+    func update(_ segment: Segment, in trackId: String) throws -> Arrangement
+    func moveSegment(from sourceIndex: Int, to destinationIndex: Int, in trackId: String) throws -> Arrangement
 }
 
 enum SegmentStoreError: Error, LocalizedError {
@@ -41,7 +41,7 @@ enum SegmentStoreError: Error, LocalizedError {
 // path: Services/SegmentService.swift
 extension SegmentService {
     /// Save/replace the whole map (used by bundle imports)
-    func replaceMap(_ map: SegmentMap, for trackId: String) throws -> SegmentMap {
+    func replaceMap(_ map: Arrangement, for trackId: String) throws -> Arrangement {
         let _ = try saveMap(map, for: trackId) // reuse your existing writer
         return map
     }

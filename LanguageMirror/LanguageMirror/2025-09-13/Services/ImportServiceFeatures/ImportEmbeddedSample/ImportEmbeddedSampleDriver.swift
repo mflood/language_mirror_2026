@@ -65,7 +65,7 @@ final class ImportEmbeddedSampleDriver {
                 let trackId = trackUUID.uuidString
                 
                 // Extract segment maps
-                var trackSegmentMaps: [SegmentMap] = []
+                var trackSegmentMaps: [Arrangement] = []
                 
                 for (idx, embeddedMap) in bundleTrack.segment_maps.enumerated() {
                     // Calculate deterministic UUID for segment map
@@ -73,7 +73,7 @@ final class ImportEmbeddedSampleDriver {
                     
                     print("Map UUID: \(mapUUID) for \(embeddedMap.title)")
                     
-                    let map = SegmentMap(
+                    let map = Arrangement(
                         id: mapUUID.uuidString,
                         trackId: trackId,
                         displayOrder: idx,
@@ -104,8 +104,11 @@ final class ImportEmbeddedSampleDriver {
                     localUrl: audioUrl,
                     durationMs: ms,
                     languageCode: nil,
-                    segmentMaps: trackSegmentMaps,
+                    arrangements: trackSegmentMaps,
                     transcripts: [],
+                    tags: [],
+                    sourceType: .localRecording
+                    
                     // createdAt: Date()
                     )
                 

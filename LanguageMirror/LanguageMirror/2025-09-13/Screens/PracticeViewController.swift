@@ -249,7 +249,7 @@ final class PracticeViewController: UITableViewController {
                 presentAlert("No Track", "Select a track first.")
                 return
             }
-            let map = (try? segments.loadMap(for: t.id)) ?? SegmentMap.fullTrackFactory(trackId: t.id, displayOrder: 0)
+            let map = (try? segments.loadMap(for: t.id)) ?? Arrangement.fullTrackFactory(trackId: t.id, displayOrder: 0)
             let drills = map.segments.filter { $0.kind == .drill }
             guard !drills.isEmpty else {
                 presentAlert("No Drills", "This track has no Drill segments.")

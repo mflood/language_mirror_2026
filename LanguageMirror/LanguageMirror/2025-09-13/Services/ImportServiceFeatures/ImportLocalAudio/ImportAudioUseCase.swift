@@ -55,8 +55,10 @@ public final class ImportAudioUseCase {
             filename: filename,
             localUrl: dest,
             durationMs: ms,
-            segmentMaps: [SegmentMap.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            arrangements: [Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)],
             transcripts: [],
+            tags: [],
+            sourceType: .textbook
             // createdAt: Date(),
         )
         try library.addTrack(track)

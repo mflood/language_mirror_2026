@@ -19,18 +19,18 @@ final class SegmentEditorViewController: UITableViewController {
     private let audioPlayer: AudioPlayerService           // NEW
     private let settings: SettingsService                 // NEW
 
-    private var map: SegmentMap!
+    private var map: Arrangement!
     
     
     /// Called when the map changes so caller can refresh its UI.
-    var onMapChanged: ((SegmentMap) -> Void)?
+    var onMapChanged: ((Arrangement) -> Void)?
 
     init(track: Track, segmentService: SegmentService,
          audioPlayer: AudioPlayerService,                 // NEW
          settings: SettingsService
     ) {
         self.track = track
-        self.map = track.segmentMaps[0] // usually only one map
+        self.map = track.arrangements[0] // usually only one map
         self.segmentService = segmentService
         self.audioPlayer = audioPlayer                       // NEW
         self.settings = settings                             // NEW
