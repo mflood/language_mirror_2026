@@ -15,7 +15,8 @@ enum ImportSource {
     case recordedFile(url: URL)                       // local recorder tmp
     case remoteURL(url: URL, suggestedTitle: String?) // direct URL download
     case bundleManifest(url: URL)                     // S3 manifest
-    case embeddedSample                                // free sample in app
+    case embeddedSample                                // free sample in app (deprecated - imports all packs)
+    case embeddedPack(packId: String)                  // import a single embedded pack
 }
 
 struct BundleManifest: Codable {
@@ -47,11 +48,27 @@ public struct EmbeddedBundleManifest: Codable {
     let packs: [EmbeddedBundlePack]
 }
 
+// Pack metadata for listing available packs
+struct EmbeddedPacksManifest: Codable {
+    let version: String
+    let packs: [EmbeddedPackMetadata]
+}
+
+struct EmbeddedPackMetadata: Codable, Identifiable {
+    let id: String
+    let title: String
+    let description: String
+    let filename: String
+    let trackCount: Int
+    let languageCode: String?
+}
+
 struct EmbeddedBundlePack: Codable {
     let id: String
     let title: String
     let author: String?
     let filename: String?    // name of cover image in bundle
+    let audioSubdirectory: String? // subdirectory where audio files are located
     let tracks: [EmbeddedBundleTrack]
 }
 

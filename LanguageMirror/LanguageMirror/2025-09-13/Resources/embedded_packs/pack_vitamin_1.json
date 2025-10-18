@@ -1,0 +1,1681 @@
+{
+  "id": "urn:pack-app:com.six.wands.pack.vitamin.1",
+  "title": "Vitamin 1",
+  "tracks": [
+    {
+      "title": "Vitamin 1 - 001",
+      "filename": "001.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 002",
+      "filename": "002.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 003",
+      "filename": "003.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 004",
+      "filename": "004.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 005",
+      "filename": "005.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 006",
+      "filename": "006.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 007",
+      "filename": "007.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 008",
+      "filename": "008.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 009",
+      "filename": "009.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 010",
+      "filename": "010.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 011",
+      "filename": "011.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 012",
+      "filename": "012.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 013",
+      "filename": "013.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 014",
+      "filename": "014.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 015",
+      "filename": "015.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 016",
+      "filename": "016.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 017",
+      "filename": "017.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 018",
+      "filename": "018.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 019",
+      "filename": "019.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 020",
+      "filename": "020.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 021",
+      "filename": "021.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 022",
+      "filename": "022.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 023",
+      "filename": "023.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 024",
+      "filename": "024.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 025",
+      "filename": "025.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 026",
+      "filename": "026.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 027",
+      "filename": "027.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 028",
+      "filename": "028.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 029",
+      "filename": "029.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 030",
+      "filename": "030.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 031",
+      "filename": "031.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 032",
+      "filename": "032.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 033",
+      "filename": "033.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 034",
+      "filename": "034.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 035",
+      "filename": "035.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 036",
+      "filename": "036.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 037",
+      "filename": "037.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 038",
+      "filename": "038.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 039",
+      "filename": "039.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 040",
+      "filename": "040.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 041",
+      "filename": "041.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 042",
+      "filename": "042.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 043",
+      "filename": "043.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 044",
+      "filename": "044.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 045",
+      "filename": "045.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 046",
+      "filename": "046.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 047",
+      "filename": "047.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 048",
+      "filename": "048.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 049",
+      "filename": "049.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 050",
+      "filename": "050.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 051",
+      "filename": "051.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 052",
+      "filename": "052.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 053",
+      "filename": "053.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 054",
+      "filename": "054.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 055",
+      "filename": "055.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 056",
+      "filename": "056.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 057",
+      "filename": "057.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 058",
+      "filename": "058.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 059",
+      "filename": "059.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 060",
+      "filename": "060.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 061",
+      "filename": "061.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 062",
+      "filename": "062.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 063",
+      "filename": "063.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 064",
+      "filename": "064.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 065",
+      "filename": "065.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 066",
+      "filename": "066.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 067",
+      "filename": "067.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 068",
+      "filename": "068.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 069",
+      "filename": "069.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 070",
+      "filename": "070.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 071",
+      "filename": "071.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 072",
+      "filename": "072.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 073",
+      "filename": "073.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 074",
+      "filename": "074.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 075",
+      "filename": "075.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 076",
+      "filename": "076.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 077",
+      "filename": "077.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 078",
+      "filename": "078.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 079",
+      "filename": "079.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 080",
+      "filename": "080.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 081",
+      "filename": "081.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 082",
+      "filename": "082.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 083",
+      "filename": "083.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 084",
+      "filename": "084.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 085",
+      "filename": "085.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 086",
+      "filename": "086.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 087",
+      "filename": "087.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 088",
+      "filename": "088.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 089",
+      "filename": "089.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 090",
+      "filename": "090.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 091",
+      "filename": "091.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 092",
+      "filename": "092.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vitamin 1 - 093",
+      "filename": "093.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "audioSubdirectory": "audio_files/vitamin_1"
+}

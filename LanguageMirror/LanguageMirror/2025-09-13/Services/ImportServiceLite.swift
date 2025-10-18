@@ -81,8 +81,11 @@ final class ImportServiceLite: ImportService {
             return try await audioUseCase.run(sourceURL: url, suggestedTitle: nil)
 
         case .embeddedSample:
-            
             let newTracks = try await importEmbeddedSampleDriver.run()
+            return newTracks
+        
+        case .embeddedPack(let packId):
+            let newTracks = try await importEmbeddedSampleDriver.runSinglePack(packId: packId)
             return newTracks
             
         case .recordedFile(let url):

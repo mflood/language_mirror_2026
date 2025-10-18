@@ -1,0 +1,727 @@
+{
+  "id": "urn:pack-app:com.six.wands.pack.culture.1",
+  "title": "Demo Pack - Korean Culture 1",
+  "tracks": [
+    {
+      "title": "Culture 1-01",
+      "filename": "culture_1_01.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-02",
+      "filename": "culture_1_02.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-03",
+      "filename": "culture_1_03.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-04",
+      "filename": "culture_1_04.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-05",
+      "filename": "culture_1_05.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-06",
+      "filename": "culture_1_06.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-07",
+      "filename": "culture_1_07.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-08",
+      "filename": "culture_1_08.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-09",
+      "filename": "culture_1_09.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-10",
+      "filename": "culture_1_10.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-11",
+      "filename": "culture_1_11.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-12",
+      "filename": "culture_1_12.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-13",
+      "filename": "culture_1_13.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-14",
+      "filename": "culture_1_14.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-15",
+      "filename": "culture_1_15.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-16",
+      "filename": "culture_1_16.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-17",
+      "filename": "culture_1_17.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-18",
+      "filename": "culture_1_18.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-19",
+      "filename": "culture_1_19.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-20",
+      "filename": "culture_1_20.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-21",
+      "filename": "culture_1_21.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-22",
+      "filename": "culture_1_22.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-23",
+      "filename": "culture_1_23.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-24",
+      "filename": "culture_1_24.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-25",
+      "filename": "culture_1_25.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-26",
+      "filename": "culture_1_26.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-27",
+      "filename": "culture_1_27.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-28",
+      "filename": "culture_1_28.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-29",
+      "filename": "culture_1_29.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-30",
+      "filename": "culture_1_30.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-31",
+      "filename": "culture_1_31.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-32",
+      "filename": "culture_1_32.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-33",
+      "filename": "culture_1_33.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-34",
+      "filename": "culture_1_34.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-35",
+      "filename": "culture_1_35.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-36",
+      "filename": "culture_1_36.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-37",
+      "filename": "culture_1_37.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-38",
+      "filename": "culture_1_38.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-39",
+      "filename": "culture_1_39.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Culture 1-40",
+      "filename": "culture_1_40.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "audioSubdirectory": "audio_files/culture_1"
+}

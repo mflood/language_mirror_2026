@@ -165,11 +165,21 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     }
 
     private func runEmbeddedSample() {
-        currentImportTask?.cancel()
-        currentImportTask = Task { [weak self] in
+        // Show pack selection screen
+        let manifestLoader = SampleImporterFactory.makeManifestLoader()
+        let packSelectionVC = PackSelectionViewController(manifestLoader: manifestLoader)
+        
+        packSelectionVC.onPackSelected = { [weak self] packId in
             guard let self = self else { return }
-            await self.runImport(.embeddedSample)
+            // Cancel any in-flight import
+            self.currentImportTask?.cancel()
+            self.currentImportTask = Task {
+                await self.runImport(.embeddedPack(packId: packId))
+            }
         }
+        
+        let nav = UINavigationController(rootViewController: packSelectionVC)
+        present(nav, animated: true)
     }
 
     // MARK: - Import runner w/ simple spinner

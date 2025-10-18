@@ -28,16 +28,72 @@ public final class MockManifestLoader: EmbeddedBundleManifestLoader {
         self.errorMode = errorMode
     }
 
-    public func loadEmbeddedSample() async throws -> EmbeddedBundleManifest {
+    public func loadAvailablePacks() async throws -> [EmbeddedPackMetadata] {
+        switch errorMode {
+        case .immediate(let e): throw e
+        case .none, .afterDelay: break
+        }
         
+        if totalDuration > 0 {
+            var elapsed: TimeInterval = 0
+            while elapsed < totalDuration {
+                try Task.checkCancellation()
+                let chunk = min(step, totalDuration - elapsed)
+                try await Task.sleep(nanoseconds: UInt64(chunk * 1_000_000_000))
+                elapsed += chunk
+            }
+        }
+        
+        if case .afterDelay(let e) = errorMode { throw e }
+        
+        // Return mock pack metadata
+        return [
+            EmbeddedPackMetadata(
+                id: "mock-pack-1",
+                title: "Mock Pack 1",
+                description: "A test pack",
+                filename: "mock_pack_1.json",
+                trackCount: 5,
+                languageCode: "ko"
+            )
+        ]
+    }
+    
+    public func loadPack(packId: String) async throws -> EmbeddedBundlePack {
+        switch errorMode {
+        case .immediate(let e): throw e
+        case .none, .afterDelay: break
+        }
+        
+        if totalDuration > 0 {
+            var elapsed: TimeInterval = 0
+            while elapsed < totalDuration {
+                try Task.checkCancellation()
+                let chunk = min(step, totalDuration - elapsed)
+                try await Task.sleep(nanoseconds: UInt64(chunk * 1_000_000_000))
+                elapsed += chunk
+            }
+        }
+        
+        if case .afterDelay(let e) = errorMode { throw e }
+        
+        // Return mock pack
+        return EmbeddedBundlePack(
+            id: packId,
+            title: "Mock Pack",
+            author: "Mock Author",
+            filename: nil,
+            audioSubdirectory: nil,
+            tracks: []
+        )
+    }
+    
+    public func loadEmbeddedSample() async throws -> EmbeddedBundleManifest {
         switch errorMode {
         case .immediate(let e): throw e
         case .none, .afterDelay: break
         }
 
-        let title: String
-        let packs: [EmbeddedBundlePack]
-        
         let embeddedBundleManfiest = EmbeddedBundleManifest(
             title: "Sample Audio",
             packs: []

@@ -19,6 +19,23 @@ final class ImportEmbeddedSampleDriver {
         self.library = library
         self.clips = clips
     }
+    
+    /// Import a single pack by its ID
+    func runSinglePack(packId: String) async throws -> [Track] {
+        try Task.checkCancellation()
+        
+        guard let lib = library as? LibraryServiceJSON else {
+            throw LibraryError.writeFailed
+        }
+        
+        // Load the specific pack
+        let bundlePack = try await engine.loadPack(packId: packId)
+        
+        // Import the pack
+        let tracks = try await importPack(bundlePack, library: lib)
+        
+        return tracks
+    }
 
     func run() async throws -> [Track] {
         try Task.checkCancellation()
@@ -32,21 +49,39 @@ final class ImportEmbeddedSampleDriver {
 
         var return_tracks: [Track] = []
         
+        for bundlePack in embeddedBundleManifest.packs {
+            let tracks = try await importPack(bundlePack, library: lib)
+            return_tracks.append(contentsOf: tracks)
+        }
+        
+        return return_tracks
+    }
+    
+    // MARK: - Private Helpers
+    
+    /// Import a single pack into the library
+    private func importPack(_ bundlePack: EmbeddedBundlePack, library lib: LibraryServiceJSON) async throws -> [Track] {
+        try Task.checkCancellation()
+        
         // Use DNS namespace for deterministic UUID generation
         let embeddingNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
         
-        for bundlePack in embeddedBundleManifest.packs {
-            
-            let packUUID = uuid5(namespace: embeddingNamespace, name: norm(bundlePack.id))
-            let packId = packUUID.uuidString
-            
-            var tracks: [Track] = []
-            for bundleTrack in bundlePack.tracks {
+        let packUUID = uuid5(namespace: embeddingNamespace, name: norm(bundlePack.id))
+        let packId = packUUID.uuidString
+        
+        var tracks: [Track] = []
+        
+        for bundleTrack in bundlePack.tracks {
                 
                 let (name, ext) = bundleTrack.splitFilename()
                 
-                guard let audioUrl = Bundle.main.url(forResource: name, withExtension: ext) else {
-                    print("Skipping missing embedded asset: \(bundleTrack.filename)")
+                // Try to find the audio file in the specified subdirectory
+                guard let audioUrl = Bundle.main.url(
+                    forResource: name,
+                    withExtension: ext,
+                    subdirectory: bundlePack.audioSubdirectory
+                ) else {
+                    print("Skipping missing embedded asset: \(bundleTrack.filename) in subdirectory: \(bundlePack.audioSubdirectory ?? "none")")
                     continue
                 }
                                 
@@ -116,12 +151,11 @@ final class ImportEmbeddedSampleDriver {
                 do {
                     try library.addTrack(track, to: packId)
                     tracks.append(track)
-                    return_tracks.append(track)
                 } catch {
                     print("Failed to add track to library: \(error)")
                 }
             }
-        }
-        return return_tracks
+        
+        return tracks
     }
 }

@@ -1,0 +1,385 @@
+{
+  "id": "urn:pack-app:com.six.wands.pack.integrated.korean.beg.1",
+  "title": "Integrated Korean Beginning 1 Textbook",
+  "tracks": [
+    {
+      "title": "Lesson 1 - C1",
+      "filename": "Textbook_Lesson1_C1_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 1 - C2",
+      "filename": "Textbook_Lesson1_C2_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 1 - N",
+      "filename": "Textbook_Lesson1_N_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 2 - C1",
+      "filename": "Textbook_Lesson2_C1_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 2 - C2",
+      "filename": "Textbook_Lesson2_C2_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 2 - N",
+      "filename": "Textbook_Lesson2_N_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 3 - C1",
+      "filename": "Textbook_Lesson3_C1_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 3 - C2",
+      "filename": "Textbook_Lesson3_C2_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 3 - N",
+      "filename": "Textbook_Lesson3_N_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 4 - C1",
+      "filename": "Textbook_Lesson4_C1_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 4 - C2",
+      "filename": "Textbook_Lesson4_C2_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 4 - N",
+      "filename": "Textbook_Lesson4_N_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 5 - C1",
+      "filename": "Textbook_Lesson5_C1_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 5 - C2",
+      "filename": "Textbook_Lesson5_C2_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 5 - N",
+      "filename": "Textbook_Lesson5_N_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 6 - C1",
+      "filename": "Textbook_Lesson6_C1_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 6 - C2",
+      "filename": "Textbook_Lesson6_C2_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 6 - N",
+      "filename": "Textbook_Lesson6_N_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 7 - C1",
+      "filename": "Textbook_Lesson7_C1_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 7 - C2",
+      "filename": "Textbook_Lesson7_C2_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Lesson 7 - N",
+      "filename": "Textbook_Lesson7_N_3rd_Edition.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "audioSubdirectory": "audio_files/integrated_korean_beg_1_textbook"
+}

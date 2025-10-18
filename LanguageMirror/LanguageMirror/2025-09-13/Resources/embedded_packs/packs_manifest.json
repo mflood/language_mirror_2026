@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "packs": [
+    {
+      "id": "urn:pack-app:com.six.wands.pack.kbs.news",
+      "title": "Demo Pack - KBS Korean News",
+      "description": "3 Korean news clips from KBS",
+      "filename": "pack_kbs_news.json",
+      "trackCount": 3,
+      "languageCode": "ko"
+    },
+    {
+      "id": "urn:pack-app:com.six.wands.pack.culture.1",
+      "title": "Demo Pack - Korean Culture 1",
+      "description": "40 Korean culture audio lessons",
+      "filename": "pack_culture_1.json",
+      "trackCount": 40,
+      "languageCode": "ko"
+    },
+    {
+      "id": "urn:pack-app:com.six.wands.pack.vitamin.1",
+      "title": "Vitamin 1",
+      "description": "93 Korean language learning tracks",
+      "filename": "pack_vitamin_1.json",
+      "trackCount": 93,
+      "languageCode": "ko"
+    },
+    {
+      "id": "urn:pack-app:com.six.wands.pack.integrated.korean.beg.1",
+      "title": "Integrated Korean Beginning 1 Textbook",
+      "description": "21 audio tracks from the Integrated Korean Beginning 1 textbook",
+      "filename": "pack_integrated_korean_beg_1.json",
+      "trackCount": 21,
+      "languageCode": "ko"
+    }
+  ]
+}
+

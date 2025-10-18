@@ -1,0 +1,80 @@
+{
+  "id": "urn:pack-app:com.six.wands.pack.kbs.news",
+  "title": "Demo Pack - KBS Korean News",
+  "tracks": [
+    {
+      "title": "8373739",
+      "filename": "8373739.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        },
+        {
+          "title": "Sliced Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 6000,
+              "kind": "drill",
+              "title": "Sentence 1 내일 서울"
+            },
+            {
+              "id": "s2",
+              "startMs": 6000,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "The Rest of the Sentence"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "8373839",
+      "filename": "8373839.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "법원-윤석열",
+      "filename": "법원-윤석열-전-대통령-보석-기각권성동김상민-구속-기소.mp3",
+      "segment_maps": [
+        {
+          "title": "Full Track",
+          "segments": [
+            {
+              "id": "s1",
+              "startMs": 0,
+              "endMs": 999999,
+              "kind": "drill",
+              "title": "Full track"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "audioSubdirectory": "audio_files/kbc"
+}
