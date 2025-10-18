@@ -38,7 +38,7 @@ struct BundleTrack: Codable {
     let url: String?               // remote audio URL
     let filename: String?          // desired filename; default from url
     let durationMs: Int?
-    let segments: Arrangement?      // optional built-in segments
+    let clips: PracticeSet?      // optional built-in clips
 }
 
 
@@ -59,7 +59,8 @@ struct EmbeddedBundleTrack: Codable {
     let title: String
     let filename: String          // name of audio file in bundle
     let durationMs: Int?
-    let segment_maps: [EmbeddedSegmentMap]      // built-in segments
+    let segment_maps: [EmbeddedClipMap]      // built-in clips
+    let languageCode: String?
     
     func splitFilename() -> (name: String, ext: String) {
         let name = (filename as NSString).deletingPathExtension
@@ -69,9 +70,9 @@ struct EmbeddedBundleTrack: Codable {
     }
 }
 
-struct EmbeddedSegmentMap: Codable, Equatable {
+struct EmbeddedClipMap: Codable, Equatable {
     var title: String
-    var segments: [Segment]
+    var segments: [Clip]
 }
 
 protocol OldImportService: AnyObject {

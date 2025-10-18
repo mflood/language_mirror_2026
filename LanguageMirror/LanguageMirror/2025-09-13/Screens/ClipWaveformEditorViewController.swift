@@ -1,5 +1,5 @@
 //
-//  SegmentWaveformEditorViewController.swift
+//  ClipWaveformEditorViewController.swift
 //  LanguageMirror
 //
 //  Created by Matthew Flood on 9/15/25.
@@ -10,17 +10,17 @@
 import UIKit
 import AVFoundation
 
-/// Visual editor for a single Segment using a waveform placeholder with draggable handles.
-/// If `segment` is nil, creates a new one on save.
-final class SegmentWaveformEditorViewController: UIViewController {
+/// Visual editor for a single Clip using a waveform placeholder with draggable handles.
+/// If `clip` is nil, creates a new one on save.
+final class ClipWaveformEditorViewController: UIViewController {
 
     private let track: Track
-    private let segmentService: SegmentService
-    private var segment: Segment? // editing target (optional)
+    private let clipService: ClipService
+    private var clip: Clip? // editing target (optional)
     private let audioPlayer: AudioPlayerService          // NEW
     private let settings: SettingsService                // NEW
 
-    var onSaved: ((Arrangement) -> Void)?   // caller can refresh its UI
+    var onSaved: ((PracticeSet) -> Void)?   // caller can refresh its UI
 
     // A) Add properties
     private let meter = LevelMeterView()                // NEW
@@ -43,7 +43,7 @@ final class SegmentWaveformEditorViewController: UIViewController {
     private let endLabel = UILabel()
     private let durationLabel = UILabel()
 
-    private let kindSeg = UISegmentedControl(items: SegmentKind.allCases.map { $0.rawValue })
+    private let kindSeg = UISegmentedControl(items: ClipKind.allCases.map { $0.rawValue })
     private let detailsButton = UIButton(type: .system)
 
     // Zoom + Snap controls
@@ -68,17 +68,17 @@ final class SegmentWaveformEditorViewController: UIViewController {
     private var isPlaying = false                        // NEW
     private var isPaused  = false                        // NEW
 
-    init(track: Track, segment: Segment?, segmentService: SegmentService,
+    init(track: Track, clip: Clip?, clipService: ClipService,
          audioPlayer: AudioPlayerService,                // NEW
                   settings: SettingsService
     ) {
         self.track = track
-        self.segment = segment
+        self.clip = clip
         self.audioPlayer = audioPlayer
                 self.settings = settings
-        self.segmentService = segmentService
+        self.clipService = clipService
         super.init(nibName: nil, bundle: nil)
-        self.title = segment == nil ? "New Segment" : "Edit Segment"
+        self.title = clip == nil ? "New Clip" : "Edit Clip"
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -132,7 +132,7 @@ final class SegmentWaveformEditorViewController: UIViewController {
         detailsButton.addTarget(self, action: #selector(detailsTapped), for: .touchUpInside)
 
         kindSeg.translatesAutoresizingMaskIntoConstraints = false
-        kindSeg.selectedSegmentIndex = SegmentKind.allCases.firstIndex(of: segment?.kind ?? .drill) ?? 0
+        kindSeg.selectedSegmentIndex = ClipKind.allCases.firstIndex(of: clip?.kind ?? .drill) ?? 0
 
         // Zoom + Snap
         zoomLabel.text = "Zoom 1.0×"
@@ -158,7 +158,7 @@ final class SegmentWaveformEditorViewController: UIViewController {
         loopSeg.translatesAutoresizingMaskIntoConstraints = false
         loopSeg.selectedSegmentIndex = 0
         loopSeg.setContentHuggingPriority(.required, for: .horizontal)
-        // Show current N in the second segment's title
+        // Show current N in the second clip's title
         loopSeg.setTitle("N× (\(settings.globalRepeats))", forSegmentAt: 1)
         
         
@@ -322,12 +322,12 @@ final class SegmentWaveformEditorViewController: UIViewController {
         self.durationMs = durationMs
         waveform.durationMs = durationMs
 
-        if let seg = segment {
+        if let seg = clip {
             waveform.setSelection(start: seg.startMs, end: seg.endMs)
             titleText = seg.title
             repeatsVal = seg.repeats
             langCode = seg.languageCode
-            kindSeg.selectedSegmentIndex = SegmentKind.allCases.firstIndex(of: seg.kind) ?? 0
+            kindSeg.selectedSegmentIndex = ClipKind.allCases.firstIndex(of: seg.kind) ?? 0
         } else {
             // default selection: middle
             let mid = durationMs / 2
@@ -406,8 +406,8 @@ final class SegmentWaveformEditorViewController: UIViewController {
         }
         let gap = (repeats == 1) ? 0.0 : settings.gapSeconds
 
-        // Transient segment for audition; set per-segment repeats to our chosen count
-        let temp = Segment(
+        // Transient clip for audition; set per-clip repeats to our chosen count
+        let temp = Clip(
             id: UUID().uuidString,
             startMs: s,
             endMs: e,
@@ -420,10 +420,10 @@ final class SegmentWaveformEditorViewController: UIViewController {
         do {
             try audioPlayer.play(
                 track: track,
-                segments: [temp],
+                clips: [temp],
                 globalRepeats: repeats,               // aligns with temp.repeats
                 gapSeconds: gap,                      // repeat gap when looping
-                interSegmentGapSeconds: 0,
+                interClipGapSeconds: 0,
                 prerollMs: settings.prerollMs
             )
             isPlaying = true
@@ -489,8 +489,8 @@ final class SegmentWaveformEditorViewController: UIViewController {
             presentAlert("Invalid Range", "End must be greater than start.")
             return
         }
-        let chosenKind = SegmentKind.allCases[kindSeg.selectedSegmentIndex]
-        var seg = segment ?? Segment(id: UUID().uuidString, startMs: s, endMs: e, kind: chosenKind, title: nil, repeats: nil, languageCode: nil)
+        let chosenKind = ClipKind.allCases[kindSeg.selectedSegmentIndex]
+        var seg = clip ?? Clip(id: UUID().uuidString, startMs: s, endMs: e, kind: chosenKind, title: nil, repeats: nil, languageCode: nil)
         seg.startMs = s
         seg.endMs = e
         seg.kind = chosenKind
@@ -499,9 +499,9 @@ final class SegmentWaveformEditorViewController: UIViewController {
         seg.languageCode = (langCode?.isEmpty == false) ? langCode : nil
 
         do {
-            let map: Arrangement
-            if segment == nil { map = try segmentService.add(seg, to: track.id) }
-            else { map = try segmentService.update(seg, in: track.id) }
+            let map: PracticeSet
+            if clip == nil { map = try clipService.add(seg, to: track.id) }
+            else { map = try clipService.update(seg, in: track.id) }
             onSaved?(map)
             navigationController?.popViewController(animated: true)
         } catch {

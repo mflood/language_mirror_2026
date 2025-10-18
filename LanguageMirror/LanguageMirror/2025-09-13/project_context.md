@@ -164,7 +164,7 @@ LanguageMirror/
     packs/<packId>/manifest.json
     tracks/<trackId>/
       audio.m4a | .mp3
-      track.json           # Track + optional Arrangement
+      track.json           # Track + optional PracticeSet
       transcript.json      # optional
   routines/
     <routineId>.json
@@ -421,21 +421,21 @@ Server ASR vendor/pricing (later; protocol allows swapping).
 - 2025-09-15 — Waveform editor gained a tiny loop audition toggle (1× vs N× from Settings). Play Selection now repeats according to the toggle, using Settings.gapSeconds for inter-repeat gap and Settings.prerollMs for preroll.
 
 
-- 2025-09-15 — Segment Waveform Editor gained “Play Selection”. Uses AudioPlayerService segments API to audition the current range as a one-shot with preroll from Settings. UI shows Pause/Resume and Stop while playing. Wired audioPlayer + settings down through SegmentEditor → Waveform Editor.
+- 2025-09-15 — Clip Waveform Editor gained "Play Selection". Uses AudioPlayerService clips API to audition the current range as a one-shot with preroll from Settings. UI shows Pause/Resume and Stop while playing. Wired audioPlayer + settings down through ClipEditor → Waveform Editor.
 
 - 2025-09-15 — Added zoomable/pannable waveform to Segment Waveform Editor with a slider (1×–10×). Implemented snap-to-zero-crossing (toggleable) via a pluggable ZeroCrossingSource. Current source uses the synthetic waveform; ready to swap for true audio-based zero-crossing later.
 
 
 - 2025-09-15 — Added WaveformPlaceholderView with draggable start/end handles and time ruler. Introduced SegmentWaveformEditorViewController for visual editing of a single segment (create or edit). Segment Editor now pushes the waveform editor for add/edit. Duration derived from Track.durationMs or AVAsset if needed.
 
-- 2025-09-15 — Practice tab now exposes quick controls for N, gap, inter-segment gap, and preroll, bound to SettingsService (UserDefaults). Added track picker and immediate “Play Drills” action using AudioPlayerService segments API. Practice remembers last selected track.
+- 2025-09-15 — Practice tab now exposes quick controls for N, gap, inter-clip gap, and preroll, bound to SettingsService (UserDefaults). Added track picker and immediate "Play Drills" action using AudioPlayerService clips API. Practice remembers last selected track.
 
-- 2025-09-15 — Start Routine now plays only Drill segments in order. AudioPlayerService gained a segments API honoring per-segment repeats with a gap between repeats and between segments. Implemented via AVPlayer with a periodic time observer; whole-track play preserved for legacy/testing.
+- 2025-09-15 — Start Routine now plays only Drill clips in order. AudioPlayerService gained a clips API honoring per-clip repeats with a gap between repeats and between clips. Implemented via AVPlayer with a periodic time observer; whole-track play preserved for legacy/testing.
 - 2025-09-15 — Wired N repeats + gap using AVPlayer. Extended AudioPlayerService with play(track:repeats:gapSeconds:), pause(), resume(), stop(). Track Detail exposes Pause/Resume and Stop controls and listens for start/stop notifications to update UI.
-- 2025-09-15 — Added dedicated Segment Editor screen. Editor supports list, add/edit/delete, reorder, and quick kind cycle. Introduced SegmentService.update/moveSegment to persist edits and ordering. Track Detail now pushes the editor and refreshes its Segments section on return via callback.
-- 2025-09-15 — Added Segments section scaffold to Track Detail. Introduced Segment/SegmentKind/Arrangement models and JSON-backed SegmentService that reads/writes Documents/LanguageMirror/library/tracks/<trackId>/track.json. Supports empty state, add dialog (start/end/title/kind), and swipe-to-delete.
+- 2025-09-15 — Added dedicated Clip Editor screen. Editor supports list, add/edit/delete, reorder, and quick kind cycle. Introduced ClipService.update/moveClip to persist edits and ordering. Track Detail now pushes the editor and refreshes its Clips section on return via callback.
+- 2025-09-15 — Added Clips section scaffold to Track Detail. Introduced Clip/ClipKind/PracticeSet models and JSON-backed ClipService that reads/writes Documents/LanguageMirror/library/tracks/<trackId>/track.json. Supports empty state, add dialog (start/end/title/kind), and swipe-to-delete.
 
-- 2025-09-14 — Starter app (UIKit, no storyboard) with TabBar + coordinators retained strongly to keep delegates alive. JSON-first LibraryService loads library_seed.json or persists to Documents/LanguageMirror/library.json. Chose Drill/Skip/Noise for SegmentKind. Track has optional languageCode.
+- 2025-09-14 — Starter app (UIKit, no storyboard) with TabBar + coordinators retained strongly to keep delegates alive. JSON-first LibraryService loads library_seed.json or persists to Documents/LanguageMirror/library.json. Chose Drill/Skip/Noise for ClipKind. Track has optional languageCode.
 
 - 2025-09-13 — Initial architecture/IA defined; AVAudioEngine chosen for precise loops; Coordinators + Services to ensure low coupling.
 

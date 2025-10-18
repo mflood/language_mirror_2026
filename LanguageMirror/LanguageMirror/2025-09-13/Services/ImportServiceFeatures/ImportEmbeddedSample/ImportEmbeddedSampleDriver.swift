@@ -11,13 +11,13 @@ import Foundation
 final class ImportEmbeddedSampleDriver {
     private let engine: EmbeddedBundleManifestLoader
     private let library: LibraryService
-    private let segments: SegmentService
+    private let clips: ClipService
     private let fm = FileManager.default
 
-    init(engine: EmbeddedBundleManifestLoader, library: LibraryService, segments: SegmentService) {
+    init(engine: EmbeddedBundleManifestLoader, library: LibraryService, clips: ClipService) {
         self.engine = engine
         self.library = library
-        self.segments = segments
+        self.clips = clips
     }
 
     func run() async throws -> [Track] {
@@ -64,23 +64,23 @@ final class ImportEmbeddedSampleDriver {
                 print("Track UUID: \(trackUUID) for \(bundleTrack.title)")
                 let trackId = trackUUID.uuidString
                 
-                // Extract segment maps
-                var trackSegmentMaps: [Arrangement] = []
+                // Extract practice set maps
+                var trackPracticeSets: [PracticeSet] = []
                 
                 for (idx, embeddedMap) in bundleTrack.segment_maps.enumerated() {
-                    // Calculate deterministic UUID for segment map
+                    // Calculate deterministic UUID for practice set
                     let mapUUID = uuid5(namespace: trackUUID, name: norm(embeddedMap.title))
                     
-                    print("Map UUID: \(mapUUID) for \(embeddedMap.title)")
+                    print("Practice Set UUID: \(mapUUID) for \(embeddedMap.title)")
                     
-                    let map = Arrangement(
+                    let map = PracticeSet(
                         id: mapUUID.uuidString,
                         trackId: trackId,
                         displayOrder: idx,
                         title: embeddedMap.title,
-                        segments: embeddedMap.segments)
+                        clips: embeddedMap.segments)
                     
-                    trackSegmentMaps.append(map)
+                    trackPracticeSets.append(map)
                 }
                 
                 guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
@@ -96,6 +96,8 @@ final class ImportEmbeddedSampleDriver {
                 print("Copying \(audioUrl.path) to \(dest.path)")
                 try fm.copyItem(at: audioUrl, to: dest)
 
+                let tags = autoTagsForTrack(sourceType: .textbook, languageCode: bundleTrack.languageCode, fileExtension: audioUrl.pathExtension)
+                
                 let track = Track(
                     id: trackId,
                     packId: packId,
@@ -103,17 +105,16 @@ final class ImportEmbeddedSampleDriver {
                     filename: bundleTrack.filename,
                     localUrl: audioUrl,
                     durationMs: ms,
-                    languageCode: nil,
-                    arrangements: trackSegmentMaps,
+                    // languageCode: bundleTrack.languageCode,
+                    practiceSets: trackPracticeSets,
                     transcripts: [],
-                    tags: [],
-                    sourceType: .localRecording
-                    
-                    // createdAt: Date()
+                    tags: tags,
+                    sourceType: .textbook,
+                    createdAt: Date()
                     )
                 
                 do {
-                    try library.addTrack(track)
+                    try library.addTrack(track, to: packId)
                     tracks.append(track)
                     return_tracks.append(track)
                 } catch {

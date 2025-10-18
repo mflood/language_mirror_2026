@@ -62,6 +62,7 @@ public final class ImportVideoDriver {
         let durationMs = Int((duration.isFinite ? duration : 0) * 1000.0)
 
         let title = suggestedTitle ?? videoURL.deletingPathExtension().lastPathComponent
+        let tags = autoTagsForTrack(sourceType: .videoExtract, languageCode: nil, fileExtension: ext)
         
         let track = Track(
             id: trackId,
@@ -70,13 +71,14 @@ public final class ImportVideoDriver {
             filename: filename,
             localUrl: audioLibraryUrl,
             durationMs: durationMs,
-            arrangements: [Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            languageCode: nil,
+            practiceSets: [PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)],
             transcripts: [],
-            tags: [],
-            sourceType: .textbook
-            // createdAt: Date(),
+            tags: tags,
+            sourceType: .videoExtract,
+            createdAt: Date()
         )
-        try library.addTrack(track)
+        try library.addTrack(track, to: packId)
         return [track]
     }
 }

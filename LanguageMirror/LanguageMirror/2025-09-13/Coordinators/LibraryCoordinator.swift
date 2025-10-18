@@ -41,7 +41,7 @@ extension LibraryCoordinator: LibraryViewControllerDelegate {
         let detail = TrackDetailViewController(
             track: track,
             audioPlayer: container.audioPlayer,
-            segmentService: container.segmentService,
+            clipService: container.clipService,
             settings: container.settings
         )
         navigationController.pushViewController(detail, animated: true)

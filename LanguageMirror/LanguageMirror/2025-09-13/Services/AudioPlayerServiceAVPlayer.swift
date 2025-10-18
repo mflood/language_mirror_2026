@@ -24,15 +24,15 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private var wholeTrackRepeatsRemaining: Int = 0
     private var wholeTrackGapSeconds: TimeInterval = 0.5
 
-    // Segment mode
+    // Clip mode
     private var currentTrack: Track?
     private var trackURL: URL?
-    private var segmentsQueue: [Segment] = []
+    private var clipsQueue: [Clip] = []
     private var currentSegmentIndex: Int = 0
     private var currentSegmentRepeatsRemaining: Int = 0
     private var globalRepeats: Int = 1
     private var gapSeconds: TimeInterval = 0.5
-    private var interSegmentGapSeconds: TimeInterval = 0.5
+    private var interClipGapSeconds: TimeInterval = 0.5
     private var prerollSeconds: TimeInterval = 0.0
     private var currentSegmentStart: CMTime = .zero
     private var currentSegmentEnd: CMTime = .zero
@@ -56,16 +56,16 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     }
 
     func play(track: Track,
-              segments: [Segment],
+              clips: [Clip],
               globalRepeats: Int,
               gapSeconds: TimeInterval,
-              interSegmentGapSeconds: TimeInterval,
+              interClipGapSeconds: TimeInterval,
               prerollMs: Int) throws {
         try startSegments(track: track,
-                          segments: segments,
+                          clips: clips,
                           globalRepeats: globalRepeats,
                           gap: gapSeconds,
-                          interGap: interSegmentGapSeconds,
+                          interGap: interClipGapSeconds,
                           prerollMs: prerollMs)
     }
 
@@ -93,7 +93,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         player?.pause()
         player = nil
         isPlaying = false
-        segmentsQueue = []
+        clipsQueue = []
         currentTrack = nil
         trackURL = nil
 
@@ -149,10 +149,10 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)
     }
 
-    // MARK: - Segment mode
+    // MARK: - Clip mode
 
     private func startSegments(track: Track,
-                               segments: [Segment],
+                               clips: [Clip],
                                globalRepeats: Int,
                                gap: TimeInterval,
                                interGap: TimeInterval,
@@ -166,28 +166,28 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
 
         currentTrack = track
         trackURL = url
-        segmentsQueue = segments
+        clipsQueue = clips
         self.globalRepeats = max(1, globalRepeats)
         self.gapSeconds = max(0, gap)
-        self.interSegmentGapSeconds = max(0, interGap)
+        self.interClipGapSeconds = max(0, interGap)
         self.prerollSeconds = max(0, Double(prerollMs) / 1000.0)
         currentSegmentIndex = 0
 
         let item = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: item)
 
-        // Periodic observer to detect end-of-segment
+        // Periodic observer to detect end-of-clip
         addPeriodicObserver()
 
         addSessionNotifications()                   // Media Player
         setupRemoteCommands()                       // Media Player
         
-        // Start first segment
+        // Start first clip
         startCurrentSegment()
     }
 
     private func startCurrentSegment() {
-        guard currentSegmentIndex >= 0, currentSegmentIndex < segmentsQueue.count else {
+        guard currentSegmentIndex >= 0, currentSegmentIndex < clipsQueue.count else {
             stop()
             return
         }
@@ -195,7 +195,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             stop(); return
         }
 
-        let seg = segmentsQueue[currentSegmentIndex]
+        let seg = clipsQueue[currentSegmentIndex]
         currentSegmentRepeatsRemaining = max(1, seg.repeats ?? globalRepeats)
 
         currentSegmentStart = CMTime(seconds: Double(seg.startMs) / 1000.0, preferredTimescale: 600)
@@ -210,7 +210,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             self.player?.play()
             self.isPlaying = true
             
-            // Update Now Playing for this segment (duration is segment length)
+            // Update Now Playing for this clip (duration is clip length)
             let segDuration = self.currentSegmentEnd.seconds - self.currentSegmentStart.seconds // Media Player
             self.updateNowPlaying(track: track,
                                   segmentTitle: seg.title,
@@ -223,10 +223,10 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     }
 
     private func handleSegmentTick(_ time: CMTime) {
-        // End-of-segment detection
+        // End-of-clip detection
         guard isPlaying else { return }
         
-        // Update elapsed in Now Playing (ignoring preroll; shows progress of the actual segment)
+        // Update elapsed in Now Playing (ignoring preroll; shows progress of the actual clip)
         let elapsed = max(0, time.seconds - currentSegmentStart.seconds)
         updateNowPlayingElapsed(elapsed)
         
@@ -237,7 +237,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
 
             currentSegmentRepeatsRemaining -= 1
             if currentSegmentRepeatsRemaining > 0 {
-                // repeat same segment after gap
+                // repeat same clip after gap
                 let work = DispatchWorkItem { [weak self] in
                     guard let self else { return }
 
@@ -255,13 +255,13 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                 pendingWorkItem = work
                 DispatchQueue.main.asyncAfter(deadline: .now() + gapSeconds, execute: work)
             } else {
-                // advance to next segment after inter-segment gap
+                // advance to next clip after inter-clip gap
                 currentSegmentIndex += 1
                 let work = DispatchWorkItem { [weak self] in
                     self?.startCurrentSegment()
                 }
                 pendingWorkItem = work
-                DispatchQueue.main.asyncAfter(deadline: .now() + interSegmentGapSeconds, execute: work)
+                DispatchQueue.main.asyncAfter(deadline: .now() + interClipGapSeconds, execute: work)
             }
         }
     }
@@ -400,7 +400,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         let t2 = center.pauseCommand.addTarget { [weak self] _ in self?.pause(); return .success }
         let t3 = center.stopCommand.addTarget { [weak self] _ in self?.stop(); return .success }
 
-        // (Optional) Next/Previous as segment skip:
+        // (Optional) Next/Previous as clip skip:
         // center.nextTrackCommand.isEnabled = true
         // center.previousTrackCommand.isEnabled = true
         // let t4 = center.nextTrackCommand.addTarget { [weak self] _ in self?.skipToNextSegment(); return .success }
@@ -458,8 +458,8 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
     }
 
-    // (Optional) segment skip for remote next/prev:
-    // private func skipToNextSegment() { currentSegmentIndex = min(currentSegmentIndex+1, segmentsQueue.count); startCurrentSegment() }
+    // (Optional) clip skip for remote next/prev:
+    // private func skipToNextSegment() { currentSegmentIndex = min(currentSegmentIndex+1, clipsQueue.count); startCurrentSegment() }
     // private func skipToPreviousSegment() { currentSegmentIndex = max(0, currentSegmentIndex-1); startCurrentSegment() }
 
 

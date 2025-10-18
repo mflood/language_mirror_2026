@@ -10,7 +10,7 @@ import Foundation
 struct AppContainer {
     let libraryService: LibraryService
     let audioPlayer: AudioPlayerService
-    let segmentService: SegmentService
+    let clipService: ClipService
     let settings: SettingsService
     let importService: ImportService 
 
@@ -18,9 +18,9 @@ struct AppContainer {
         self.settings = SettingsServiceUserDefaults()
         self.libraryService = LibraryServiceJSON()
         self.audioPlayer = AudioPlayerServiceAVPlayer()
-        self.segmentService = SegmentServiceJSON()
+        self.clipService = ClipServiceJSON()
         self.importService = ImportServiceLite(library: libraryService,
-                                               segments: segmentService,
+                                               clips: clipService,
                                                useMock: false)
     }
 }

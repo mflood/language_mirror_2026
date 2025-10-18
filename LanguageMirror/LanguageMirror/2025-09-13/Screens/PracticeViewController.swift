@@ -12,7 +12,7 @@ final class PracticeViewController: UITableViewController {
 
     private let settings: SettingsService
     private let library: LibraryService
-    private let segments: SegmentService
+    private let clipService: ClipService
     private let player: AudioPlayerService
 
     // Selected track (optional) + persisted last selection
@@ -48,11 +48,11 @@ final class PracticeViewController: UITableViewController {
 
     init(settings: SettingsService,
          libraryService: LibraryService,
-         segmentService: SegmentService,
+         clipService: ClipService,
          audioPlayer: AudioPlayerService) {
         self.settings = settings
         self.library = libraryService
-        self.segments = segmentService
+        self.clipService = clipService
         self.player = audioPlayer
         super.init(style: .insetGrouped)
     }
@@ -116,8 +116,8 @@ final class PracticeViewController: UITableViewController {
 
     private func refreshDrillCount() {
         guard let t = selectedTrack else { drillCount = 0; return }
-        if let map = try? segments.loadMap(for: t.id) {
-            drillCount = map.segments.filter { $0.kind == .drill }.count
+        if let map = try? clipService.loadMap(for: t.id) {
+            drillCount = map.clips.filter { $0.kind == .drill }.count
         } else {
             drillCount = 0
         }
@@ -140,8 +140,8 @@ final class PracticeViewController: UITableViewController {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
             let count: Int = {
-                if let map = try? self.segments.loadMap(for: currentId) {
-                    return map.segments.lazy.filter { $0.kind == .drill }.count
+                if let map = try? self.clipService.loadMap(for: currentId) {
+                    return map.clips.lazy.filter { $0.kind == .drill }.count
                 }
                 return 0
             }()
@@ -203,7 +203,7 @@ final class PracticeViewController: UITableViewController {
                 cfg.secondaryText = String(format: "%.1fs", settings.gapSeconds)
                 cell.accessoryView = gapSlider
             case .interGap:
-                cfg.text = "Gap between segments"
+                cfg.text = "Gap between clips"
                 cfg.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
                 cell.accessoryView = interGapSlider
             case .preroll:
@@ -249,18 +249,18 @@ final class PracticeViewController: UITableViewController {
                 presentAlert("No Track", "Select a track first.")
                 return
             }
-            let map = (try? segments.loadMap(for: t.id)) ?? Arrangement.fullTrackFactory(trackId: t.id, displayOrder: 0)
-            let drills = map.segments.filter { $0.kind == .drill }
+            let practiceSet: PracticeSet = (try? clipService.loadMap(for: t.id)) ?? PracticeSet.fullTrackFactory(trackId: t.id, displayOrder: 0)
+            let drills = practiceSet.clips.filter { $0.kind == .drill }
             guard !drills.isEmpty else {
                 presentAlert("No Drills", "This track has no Drill segments.")
                 return
             }
             do {
                 try player.play(track: t,
-                                segments: drills,
+                                clips: drills,
                                 globalRepeats: settings.globalRepeats,
                                 gapSeconds: settings.gapSeconds,
-                                interSegmentGapSeconds: settings.interSegmentGapSeconds,
+                                interClipGapSeconds: settings.interSegmentGapSeconds,
                                 prerollMs: settings.prerollMs)
                 isPlaying = true
                 isPaused = false

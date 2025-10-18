@@ -20,11 +20,11 @@ final class ArrangementListViewController: UIViewController {
 
     // MARK: - Dependencies
     private let track: AudioTrack
-    private var arrangements: [Arrangement] = []
+    private var arrangements: [PracticeSet] = []
 
     // MARK: - UI
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    private var dataSource: UITableViewDiffableDataSource<Section, Arrangement>!
+    private var dataSource: UITableViewDiffableDataSource<Section, PracticeSet>!
 
     // MARK: - Init
     init(track: AudioTrack) {

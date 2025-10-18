@@ -1,75 +1,75 @@
 //
-//  SegmentServiceJSON.swift
+//  ClipServiceJSON.swift
 //  LanguageMirror
 //
 //  Created by Matthew Flood on 9/15/25.
 //
 
-// path: Services/SegmentServiceJSON.swift
+// path: Services/ClipServiceJSON.swift
 import Foundation
 
-final class SegmentServiceJSON: SegmentService {
+final class ClipServiceJSON: ClipService {
     
     private let fm = FileManager.default
 
-    func loadMap(for trackId: String) throws -> Arrangement {
+    func loadMap(for trackId: String) throws -> PracticeSet {
         let url = mapURL(trackId: trackId)
         if !fm.fileExists(atPath: url.path) {
-            let emptyMap = Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)
+            let emptyMap = PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
             try persist(emptyMap, to: url)
             return emptyMap
         }
         do {
             let data = try Data(contentsOf: url)
-            return try JSONDecoder().decode(Arrangement.self, from: data)
+            return try JSONDecoder().decode(PracticeSet.self, from: data)
         } catch let e as DecodingError {
-            throw SegmentStoreError.decode(e)
+            throw ClipStoreError.decode(e)
         } catch {
-            throw SegmentStoreError.io(error)
+            throw ClipStoreError.io(error)
         }
     }
 
-    func saveMap(_ map: Arrangement, for trackId: String) throws {
+    func saveMap(_ map: PracticeSet, for trackId: String) throws {
         try persist(map, to: mapURL(trackId: trackId))
     }
 
-    func add(_ segment: Segment, to trackId: String) throws -> Arrangement {
-        guard segment.startMs >= 0, segment.endMs > segment.startMs else { throw SegmentStoreError.invalidRange }
+    func add(_ clip: Clip, to trackId: String) throws -> PracticeSet {
+        guard clip.startMs >= 0, clip.endMs > clip.startMs else { throw ClipStoreError.invalidRange }
         var map = try loadMap(for: trackId)
-        map.segments.append(segment)
+        map.clips.append(clip)
         // Keep chronological order by default; user can override via reorder
-        map.segments.sort { $0.startMs < $1.startMs }
+        map.clips.sort { $0.startMs < $1.startMs }
         try saveMap(map, for: trackId)
         return map
     }
 
-    func delete(segmentId: String, from trackId: String) throws -> Arrangement {
+    func delete(clipId: String, from trackId: String) throws -> PracticeSet {
         var map = try loadMap(for: trackId)
-        let before = map.segments.count
-        map.segments.removeAll { $0.id == segmentId }
-        guard map.segments.count != before else { throw SegmentStoreError.notFound }
+        let before = map.clips.count
+        map.clips.removeAll { $0.id == clipId }
+        guard map.clips.count != before else { throw ClipStoreError.notFound }
         try saveMap(map, for: trackId)
         return map
     }
 
-    func update(_ segment: Segment, in trackId: String) throws -> Arrangement {
-        guard segment.startMs >= 0, segment.endMs > segment.startMs else { throw SegmentStoreError.invalidRange }
+    func update(_ clip: Clip, in trackId: String) throws -> PracticeSet {
+        guard clip.startMs >= 0, clip.endMs > clip.startMs else { throw ClipStoreError.invalidRange }
         var map = try loadMap(for: trackId)
-        guard let idx = map.segments.firstIndex(where: { $0.id == segment.id }) else {
-            throw SegmentStoreError.notFound
+        guard let idx = map.clips.firstIndex(where: { $0.id == clip.id }) else {
+            throw ClipStoreError.notFound
         }
-        map.segments[idx] = segment
-        map.segments.sort { $0.startMs < $1.startMs }
+        map.clips[idx] = clip
+        map.clips.sort { $0.startMs < $1.startMs }
         try saveMap(map, for: trackId)
         return map
     }
 
-    func moveSegment(from sourceIndex: Int, to destinationIndex: Int, in trackId: String) throws -> Arrangement {
+    func moveClip(from sourceIndex: Int, to destinationIndex: Int, in trackId: String) throws -> PracticeSet {
         var map = try loadMap(for: trackId)
-        guard map.segments.indices.contains(sourceIndex),
-              map.segments.indices.contains(destinationIndex) else { return map }
-        let item = map.segments.remove(at: sourceIndex)
-        map.segments.insert(item, at: destinationIndex)
+        guard map.clips.indices.contains(sourceIndex),
+              map.clips.indices.contains(destinationIndex) else { return map }
+        let item = map.clips.remove(at: sourceIndex)
+        map.clips.insert(item, at: destinationIndex)
         // Note: we honor user-defined ordering here (no auto-sort)
         try saveMap(map, for: trackId)
         return map
@@ -88,7 +88,7 @@ final class SegmentServiceJSON: SegmentService {
         return dir.appendingPathComponent("track.json")
     }
 
-    private func persist(_ map: Arrangement, to url: URL) throws {
+    private func persist(_ map: PracticeSet, to url: URL) throws {
         do {
             
             let encoder = JSONEncoder()
@@ -97,11 +97,12 @@ final class SegmentServiceJSON: SegmentService {
             let data = try encoder.encode(map)
             try data.write(to: url, options: .atomic)
         } catch let e as EncodingError {
-            throw SegmentStoreError.encode(e)
+            throw ClipStoreError.encode(e)
         } catch {
-            throw SegmentStoreError.io(error)
+            throw ClipStoreError.io(error)
         }
     }
 }
+
 
 

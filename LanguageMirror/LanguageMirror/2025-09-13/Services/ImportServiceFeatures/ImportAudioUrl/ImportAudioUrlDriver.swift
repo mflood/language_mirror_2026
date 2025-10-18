@@ -69,8 +69,10 @@ public final class ImportAudioUrlDriver {
 
         // 4) Save track
         let title = suggestedTitle ?? url.lastPathComponent
+        let ext = dest.pathExtension
+        let tags = autoTagsForTrack(sourceType: .youtube, languageCode: nil, fileExtension: ext)
         
-        let emptySegmentMap = Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)
+        let emptyPracticeSet = PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
         
         let track = Track(
             id: trackId,
@@ -79,14 +81,15 @@ public final class ImportAudioUrlDriver {
             filename: suggestedFilename,
             localUrl: dest,
             durationMs: ms,
-            arrangements: [emptySegmentMap],
+            languageCode: nil,
+            practiceSets: [emptyPracticeSet],
             transcripts: [],
-            tags: [],
-            sourceType: .localRecording
-            // createdAt: Date(),
+            tags: tags,
+            sourceType: .youtube,
+            createdAt: Date()
         )
             
-        try library.addTrack(track)
+        try library.addTrack(track, to: UUID.namespaceDownloadedFile.uuidString)
         return [track]
     }
 }

@@ -23,7 +23,7 @@ enum ImportLiteError: Error {
 final class ImportServiceLite: ImportService {
     private let fm = FileManager.default
     private let library: LibraryService
-    private let segmentService: SegmentService
+    private let clipService: ClipService
     
     
     private let videoUseCase: ImportVideoDriver
@@ -35,9 +35,9 @@ final class ImportServiceLite: ImportService {
     /// Optional hook the VC can pass in to show alerts.
     /// Signature: (title, message)
     
-    init(library: LibraryService, segments: SegmentService, useMock: Bool) {
+    init(library: LibraryService, clips: ClipService, useMock: Bool) {
         self.library = library
-        self.segmentService = segments
+        self.clipService = clips
         
         self.videoUseCase = ImportVideoDriver(
             engine: VideoImporterFactory.make(useMock: useMock),
@@ -56,7 +56,7 @@ final class ImportServiceLite: ImportService {
         self.importEmbeddedSampleDriver  = ImportEmbeddedSampleDriver(
                                                   engine: SampleImporterFactory.make(),
                                                   library: library,
-                                                  segments: segmentService)
+                                                  clips: clipService)
         
         self.recordingUseCase = ImportRecordingUseCase(engine: RecordingImporterFactory.make(),
                                                        library: library)

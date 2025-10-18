@@ -18,6 +18,7 @@ enum LibraryError: Error {
 protocol LibraryService {
     // Packs
     func listPacks() -> [Pack]
+    func listNonEmptyPacks() -> [Pack]
     func loadPack(id: String) throws -> Pack
     func addPack(_ pack: Pack) throws
     func updatePack(_ pack: Pack) throws
@@ -31,25 +32,17 @@ protocol LibraryService {
     func loadTrack(id: String) throws -> Track           
     func updateTrack(_ track: Track) throws
 
-    // Arrangements
-    func listArrangements(in trackId: String) -> [Arrangement]
-    func loadArrangement(id: String) throws -> Arrangement
-    func addArrangement(_ arrangement: Arrangement, to trackId: String) throws
-    func updateArrangement(_ arrangement: Arrangement, in trackId: String) throws
-    func deleteArrangement(id: String, from trackId: String) throws
+    // Practice Sets
+    func listPracticeSets(in trackId: String) -> [PracticeSet]
+    func loadPracticeSet(id: String) throws -> PracticeSet
+    func addPracticeSet(_ practiceSet: PracticeSet, to trackId: String) throws
+    func updatePracticeSet(_ practiceSet: PracticeSet, in trackId: String) throws
+    func deletePracticeSet(id: String, from trackId: String) throws
 
-    // Segments
-    func listSegments(in arrangementId: String) -> [Segment]
-    func loadSegment(id: String) throws -> Segment
-    func addSegment(_ segment: Segment, to arrangementId: String) throws
-    func updateSegment(_ segment: Segment, in arrangementId: String) throws
-    func deleteSegment(id: String, from arrangementId: String) throws
-}
-
-enum LibraryError: Error {
-    case notFound
-    case writeFailed
-    case ioError(Error)
-    case decodeError(Error)
-    case encodeError(Error)
+    // Clips
+    func listClips(in practiceSetId: String) -> [Clip]
+    func loadClip(id: String) throws -> Clip
+    func addClip(_ clip: Clip, to practiceSetId: String) throws
+    func updateClip(_ clip: Clip, in practiceSetId: String) throws
+    func deleteClip(id: String, from practiceSetId: String) throws
 }

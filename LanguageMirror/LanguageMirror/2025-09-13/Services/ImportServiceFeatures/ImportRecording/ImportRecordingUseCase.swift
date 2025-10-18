@@ -46,22 +46,24 @@ public final class ImportRecordingUseCase {
         let seconds = try await AVURLAsset(url: dest).load(.duration).seconds
         let ms = Int((seconds.isFinite ? seconds : 0) * 1000.0)
         
+        let tags = autoTagsForTrack(sourceType: .localRecording, languageCode: nil, fileExtension: ext)
+        
         let track = Track(
             id: trackId,
-            packId: UUID.namespaceDownloadedFile.uuidString,
+            packId: UUID.namespaceFromRecording.uuidString,
             title: title,
             filename: filename,
             localUrl: dest,
             durationMs: ms,
-            arrangements: [Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            languageCode: nil,
+            practiceSets: [PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)],
             transcripts: [],
-            tags: [],
-            sourceType: .textbook
-            
-            // createdAt: Date(),
+            tags: tags,
+            sourceType: .localRecording,
+            createdAt: Date()
         )
             
-        try library.addTrack(track)
+        try library.addTrack(track, to: UUID.namespaceFromRecording.uuidString)
         return [track]
         
     }

@@ -30,6 +30,8 @@ public final class ImportAudioUseCase {
         //  trackId is UUID5 of the source URL
         let trackId = uuid5(namespace: UUID.namespaceFromMemo, name: norm(sourceURL.absoluteString)).uuidString
         
+        let title = suggestedTitle ?? prepared.deletingPathExtension().lastPathComponent
+        // let ext = prepared.pathExtension
         let ext = prepared.pathExtension.isEmpty ? "m4a" : prepared.pathExtension
         let filename = "audio.\(ext)"
         guard let lib = library as? LibraryServiceJSON else { throw LibraryError.writeFailed }
@@ -46,7 +48,8 @@ public final class ImportAudioUseCase {
         let seconds = try await AVURLAsset(url: dest).load(.duration).seconds
         let ms = Int((seconds.isFinite ? seconds : 0) * 1000.0)
 
-        let title = suggestedTitle ?? prepared.deletingPathExtension().lastPathComponent
+
+        let tags = autoTagsForTrack(sourceType: .voiceMemo, languageCode: nil, fileExtension: ext)
         
         let track = Track(
             id: trackId,
@@ -55,13 +58,14 @@ public final class ImportAudioUseCase {
             filename: filename,
             localUrl: dest,
             durationMs: ms,
-            arrangements: [Arrangement.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            languageCode: nil,
+            practiceSets: [PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)],
             transcripts: [],
-            tags: [],
-            sourceType: .textbook
-            // createdAt: Date(),
+            tags: tags,
+            sourceType: .voiceMemo,
+            createdAt: Date()
         )
-        try library.addTrack(track)
+        try library.addTrack(track, to: UUID.namespaceFromMemo.uuidString)
         return [track]
     }
 }

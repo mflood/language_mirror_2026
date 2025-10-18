@@ -18,7 +18,7 @@ final class PracticeCoordinator: Coordinator {
         let vc = PracticeViewController(
             settings: container.settings,
             libraryService: container.libraryService,
-            segmentService: container.segmentService,
+            clipService: container.clipService,
             audioPlayer: container.audioPlayer
         )
         vc.title = "Practice"

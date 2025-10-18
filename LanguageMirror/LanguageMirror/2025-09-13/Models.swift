@@ -27,36 +27,36 @@ struct Track: Codable, Identifiable, Equatable {
     var localUrl: URL?     // local file URL if downloaded or imported
     var durationMs: Int?         // nice if you know it....
     var languageCode: String?    // e.g., "ko-KR" or "en-US"
-    var arrangements: [Arrangement] // Change to "Practice Sets" in UI
+    var practiceSets: [PracticeSet]
     var transcripts: [TranscriptSpan]
     var tags: [String]
     var sourceType: AudioSourceType
-    // var createdAt: Date?      // Timestamp of when the track was imported
+    var createdAt: Date?      // Timestamp of when the track was imported
 }
 
-struct Arrangement: Codable, Equatable {
+struct PracticeSet: Codable, Equatable {
     var id: String           // UUID string so we can reference it from practice sessions
-    var trackId: String  // If we tag segments to play in a playlist, we can reference the track here
+    var trackId: String  // If we tag clips to play in a playlist, we can reference the track here
     var displayOrder: Int
     var title: String?
-    var segments: [Segment]
+    var clips: [Clip]
     
-    static func fullTrackFactory(trackId: String, displayOrder: Int) -> Arrangement {
-        return Arrangement(
+    static func fullTrackFactory(trackId: String, displayOrder: Int) -> PracticeSet {
+        return PracticeSet(
             id: UUID().uuidString,
             trackId: trackId,
             displayOrder: displayOrder,
             title: "Practice Set",
-            segments: [
-                Segment(id: UUID().uuidString, startMs: 0, endMs: 9999999, kind: .drill, title: "Full Track", repeats: nil, startSpeed: nil, endSpeed: nil)
+            clips: [
+                Clip(id: UUID().uuidString, startMs: 0, endMs: 9999999, kind: .drill, title: "Full Track", repeats: nil, startSpeed: nil, endSpeed: nil)
             ]
         )
     }
 }
 
-enum SegmentKind: String, Codable, CaseIterable { case drill, skip, noise }
+enum ClipKind: String, Codable, CaseIterable { case drill, skip, noise }
 
-extension SegmentKind {
+extension ClipKind {
     var label: String {
         switch self {
         case .drill:  return "Drill"
@@ -66,12 +66,11 @@ extension SegmentKind {
     }
 }
 
-struct Segment: Codable, Identifiable, Equatable {
+struct Clip: Codable, Identifiable, Equatable {
     let id: String
     var startMs: Int
     var endMs: Int
-    // rename to segmentType
-    var kind: SegmentKind
+    var kind: ClipKind
     var title: String?
     var repeats: Int?            // nil = use global N
     var startSpeed: Float?       // nil = use global 1.0

@@ -18,12 +18,12 @@ protocol AudioPlayerService: AnyObject {
     ///   - segments: Segments to play; segment.repeats overrides globalRepeats when present.
     ///   - globalRepeats: Fallback repeats if segment.repeats == nil (min 1).
     ///   - gapSeconds: Gap between repeats of the **same** segment (>= 0).
-    ///   - interSegmentGapSeconds: Gap between **different** segments (>= 0).
+    ///   - interClipGapSeconds: Gap between **different** clips (>= 0).
     func play(track: Track,
-              segments: [Segment],
+              clips: [Clip],
               globalRepeats: Int,
               gapSeconds: TimeInterval,
-              interSegmentGapSeconds: TimeInterval,
+              interClipGapSeconds: TimeInterval,
               prerollMs: Int) throws
     
     func pause()

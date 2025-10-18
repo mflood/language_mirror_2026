@@ -13,33 +13,33 @@ final class TrackDetailViewController: UITableViewController {
 
     private let track: Track
     private let audioPlayer: AudioPlayerService
-    private let segmentService: SegmentService
+    private let clipService: ClipService
     private let settings: SettingsService
 
-    private var segmentMap: Arrangement!
+    private var clipMap: PracticeSet!
     
     // Playback config (temporary defaults; later from Settings)
     private let defaultRepeats = 3
     private let defaultGap: TimeInterval = 0.5
-    private let defaultInterSegmentGap: TimeInterval = 0.5  // NEW
+    private let defaultInterClipGap: TimeInterval = 0.5  // NEW
 
     // Local UI state
     private var isPlaying: Bool = false
     private var isPaused: Bool = false
 
-    init(track: Track, audioPlayer: AudioPlayerService, segmentService: SegmentService, settings: SettingsService) {
+    init(track: Track, audioPlayer: AudioPlayerService, clipService: ClipService, settings: SettingsService) {
         self.track = track
         self.audioPlayer = audioPlayer
-        self.segmentService = segmentService
+        self.clipService = clipService
         self.settings = settings
         super.init(style: .insetGrouped)
         self.title = track.title
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-    private enum Section: Int, CaseIterable { case overview, actions, segments }
+    private enum Section: Int, CaseIterable { case overview, actions, clips }
     private enum OverviewRow: CaseIterable { case filename, duration, language }
-    private enum ActionRow: CaseIterable { case startRoutine, editSegments }
+    private enum ActionRow: CaseIterable { case startRoutine, editClips }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +47,7 @@ final class TrackDetailViewController: UITableViewController {
         navigationItem.largeTitleDisplayMode = .never
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
-        loadSegments()
+        loadClips()
         buildHeader()
         
 
@@ -97,17 +97,17 @@ final class TrackDetailViewController: UITableViewController {
         headerView.frame = CGRect(origin: .zero, size: CGSize(width: size.width, height: size.height))
     }
 
-    private func loadSegments() {
+    private func loadClips() {
         do {
             
-            if track.arrangements.isEmpty {
-                segmentMap = Arrangement.fullTrackFactory(trackId: track.id, displayOrder: 0)
+            if track.practiceSets.isEmpty {
+                clipMap = PracticeSet.fullTrackFactory(trackId: track.id, displayOrder: 0)
             } else {
-                segmentMap = track.arrangements[0]
+                clipMap = track.practiceSets[0]
             }
             tableView.reloadData()
         } catch {
-            segmentMap = Arrangement(id: UUID().uuidString, trackId: track.id, displayOrder: 0, segments: [])
+            clipMap = PracticeSet(id: UUID().uuidString, trackId: track.id, displayOrder: 0, clips: [])
             tableView.reloadData()
             presentError("Could not load segments", error: error)
         }
@@ -121,7 +121,7 @@ final class TrackDetailViewController: UITableViewController {
         switch Section(rawValue: section)! {
         case .overview: return "Overview"
         case .actions:  return "Actions"
-        case .segments: return "Segments"
+        case .clips: return "Segments"
         }
     }
 
@@ -129,7 +129,7 @@ final class TrackDetailViewController: UITableViewController {
         switch Section(rawValue: section)! {
         case .overview: return OverviewRow.allCases.count
         case .actions:  return ActionRow.allCases.count
-        case .segments: return max(segmentMap.segments.count, 1)
+        case .clips: return max(clipMap.clips.count, 1)
         }
     }
 
@@ -162,7 +162,7 @@ final class TrackDetailViewController: UITableViewController {
                 let gap = settings.gapSeconds
                 let inter = settings.interSegmentGapSeconds
                 let pre = settings.prerollMs
-                let drillCount = segmentMap.segments.filter { $0.kind == .drill }.count
+                let drillCount = clipMap.clips.filter { $0.kind == .drill }.count
 
                 config.text = "Start Routine"
                 if drillCount > 0 {
@@ -171,20 +171,20 @@ final class TrackDetailViewController: UITableViewController {
                     config.secondaryText = "No drills defined (add segments)"
                 }
                 cell.accessoryType = .disclosureIndicator
-            case .editSegments:
+            case .editClips:
                 config.text = "Edit Segments"
                 config.secondaryText = "Open Segment Editor"
                 cell.accessoryType = .disclosureIndicator
             }
 
-        case .segments:
-            if segmentMap.segments.isEmpty {
+        case .clips:
+            if clipMap.clips.isEmpty {
                 config.text = "No segments yet"
                 config.secondaryText = "Tap Edit Segments to add"
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
             } else {
-                let seg = segmentMap.segments[indexPath.row]
+                let seg = clipMap.clips[indexPath.row]
                 let title = seg.title?.isEmpty == false ? seg.title! : "(Untitled)"
                 config.text = "[\(formatTime(seg.startMs)) – \(formatTime(seg.endMs))] \(title)"
                 let repeats = seg.repeats.map { " • repeats: \($0)" } ?? ""
@@ -204,7 +204,7 @@ final class TrackDetailViewController: UITableViewController {
         case .actions:
             switch ActionRow.allCases[indexPath.row] {
             case .startRoutine:
-                let drills = segmentMap.segments.filter { $0.kind == .drill }
+                let drills = clipMap.clips.filter { $0.kind == .drill }
                     guard !drills.isEmpty else {
                         presentMessage("No Drills", "Add segments and mark some as Drill to practice.")
                         return
@@ -212,10 +212,10 @@ final class TrackDetailViewController: UITableViewController {
                 
                 do {
                     try audioPlayer.play(track: track,
-                                         segments: drills,
+                                         clips: drills,
                                          globalRepeats: defaultRepeats,
                                          gapSeconds: defaultGap,
-                                         interSegmentGapSeconds: defaultInterSegmentGap,
+                                         interClipGapSeconds: defaultInterClipGap,
                                          prerollMs: settings.prerollMs)
                     isPlaying = true
                     isPaused = false
@@ -223,15 +223,15 @@ final class TrackDetailViewController: UITableViewController {
                 } catch {
                     presentError("Playback Error", error: error)
                 }
-            case .editSegments:
-                let editor = SegmentEditorViewController(track: track, segmentService: segmentService,
+            case .editClips:
+                let editor = ClipEditorViewController(track: track, clipService: clipService,
                 
                                                          audioPlayer: audioPlayer,          // NEW
                                                          settings: settings                 // NEW
                 )
                 editor.onMapChanged = { [weak self] newMap in
-                    self?.segmentMap = newMap
-                    if let section = Section.allCases.firstIndex(of: .segments) {
+                    self?.clipMap = newMap
+                    if let section = Section.allCases.firstIndex(of: .clips) {
                         self?.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
                     } else {
                         self?.tableView.reloadData()
@@ -239,7 +239,7 @@ final class TrackDetailViewController: UITableViewController {
                 }
                 navigationController?.pushViewController(editor, animated: true)
             }
-        case .overview, .segments:
+        case .overview, .clips:
             break
         }
     }
