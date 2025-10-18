@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol EmbeddedBundleManifestLoader: Sendable {
+protocol EmbeddedBundleManifestLoader: Sendable {
     /// Load the list of available embedded packs
     func loadAvailablePacks() async throws -> [EmbeddedPackMetadata]
     

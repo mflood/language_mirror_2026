@@ -8,16 +8,16 @@
 // Features/ImportingSample/IOS18SampleImporter.swift
 import Foundation
 
-public enum SampleImportError: Error {
+enum SampleImportError: Error {
     case notFound
     case unreadable
     case packNotFound(packId: String)
 }
 
-public final class IOS18SampleImporter: EmbeddedBundleManifestLoader {
-    public init() {}
+final class IOS18SampleImporter: EmbeddedBundleManifestLoader {
+    init() {}
     
-    public func loadAvailablePacks() async throws -> [EmbeddedPackMetadata] {
+    func loadAvailablePacks() async throws -> [EmbeddedPackMetadata] {
         print("Loading available embedded packs manifest...")
         
         guard let manifestUrl = Bundle.main.url(

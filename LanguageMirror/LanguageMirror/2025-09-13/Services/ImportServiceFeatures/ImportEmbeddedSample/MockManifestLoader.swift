@@ -8,9 +8,9 @@
 // Features/ImportingSample/MockManifestLoader.swift
 import Foundation
 
-public final class MockManifestLoader: EmbeddedBundleManifestLoader {
+final class MockManifestLoader: EmbeddedBundleManifestLoader {
 
-    public enum ErrorMode: Sendable {
+    enum ErrorMode: Sendable {
         case none
         case immediate(Error)
         case afterDelay(Error)
@@ -20,7 +20,7 @@ public final class MockManifestLoader: EmbeddedBundleManifestLoader {
     private let step: TimeInterval
     private let errorMode: ErrorMode
 
-    public init(totalDuration: TimeInterval = 0,
+    init(totalDuration: TimeInterval = 0,
                 step: TimeInterval = 0.2,
                 errorMode: ErrorMode = .none) {
         self.totalDuration = max(0, totalDuration)
@@ -28,7 +28,7 @@ public final class MockManifestLoader: EmbeddedBundleManifestLoader {
         self.errorMode = errorMode
     }
 
-    public func loadAvailablePacks() async throws -> [EmbeddedPackMetadata] {
+    func loadAvailablePacks() async throws -> [EmbeddedPackMetadata] {
         switch errorMode {
         case .immediate(let e): throw e
         case .none, .afterDelay: break
@@ -59,7 +59,7 @@ public final class MockManifestLoader: EmbeddedBundleManifestLoader {
         ]
     }
     
-    public func loadPack(packId: String) async throws -> EmbeddedBundlePack {
+    func loadPack(packId: String) async throws -> EmbeddedBundlePack {
         switch errorMode {
         case .immediate(let e): throw e
         case .none, .afterDelay: break

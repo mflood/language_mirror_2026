@@ -7,8 +7,8 @@
 
 import Foundation
 
-public enum SampleImporterFactory {
-    public static func make(useMock: Bool = false) -> EmbeddedBundleManifestLoader {
+enum SampleImporterFactory {
+    static func make(useMock: Bool = false) -> EmbeddedBundleManifestLoader {
         #if DEBUG
         if useMock {
             return MockManifestLoader(totalDuration: 1.0, step: 0.1, errorMode: .none)
