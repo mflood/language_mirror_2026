@@ -15,6 +15,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
     private let importer: ImportService
     private var currentImportTask: Task<Void, Never>?
+    private var progressViewController: UIViewController?
     
     init(importService: ImportService) {
         self.importer = importService
@@ -24,13 +25,66 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
     private enum Row: Int, CaseIterable {
         case fromVideo, fromFiles, record, fromURL, fromS3Bundle, installSample
+        
+        var title: String {
+            switch self {
+            case .fromVideo: return "Import from Video"
+            case .fromFiles: return "Import from Files"
+            case .record: return "Record Audio"
+            case .fromURL: return "Download from URL"
+            case .fromS3Bundle: return "Install S3 Bundle"
+            case .installSample: return "Install Free Packs"
+            }
+        }
+        
+        var description: String {
+            switch self {
+            case .fromVideo: return "Extract audio from video files"
+            case .fromFiles: return "Choose from Files or Voice Memos"
+            case .record: return "Record new audio with your mic"
+            case .fromURL: return "Download mp3, m4a, or wav files"
+            case .fromS3Bundle: return "Load bundle from manifest URL"
+            case .installSample: return "Pre-made learning packs"
+            }
+        }
+        
+        var iconName: String {
+            switch self {
+            case .fromVideo: return "video.fill"
+            case .fromFiles: return "folder.fill"
+            case .record: return "mic.fill"
+            case .fromURL: return "link"
+            case .fromS3Bundle: return "cloud.fill"
+            case .installSample: return "gift.fill"
+            }
+        }
+        
+        var iconColor: UIColor {
+            switch self {
+            case .fromVideo: return .systemPurple
+            case .fromFiles: return .systemBlue
+            case .record: return .systemRed
+            case .fromURL: return .systemGreen
+            case .fromS3Bundle: return .systemCyan
+            case .installSample: return .systemOrange
+            }
+        }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Help", style: .plain, target: self, action: #selector(helpTapped))
+        view.backgroundColor = AppColors.primaryBackground
+        tableView.backgroundColor = AppColors.primaryBackground
+        tableView.register(ImportOptionCell.self, forCellReuseIdentifier: "importCell")
+        tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "questionmark.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(helpTapped)
+        )
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -39,39 +93,47 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         currentImportTask = nil
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { Row.allCases.count }
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { "Sources" }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 
+        Row.allCases.count 
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { 
+        "Choose an Import Method"
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        "Select how you'd like to add audio to your library. All imports are saved locally on your device."
+    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var cfg = cell.defaultContentConfiguration()
-        switch Row(rawValue: indexPath.row)! {
-        case .fromVideo:
-            cfg.text = "Import audio from Video"
-            cfg.secondaryText = "Pick a video and extract audio (m4a)"
-        case .fromFiles:
-            cfg.text = "Import from Files / Voice Memos"
-            cfg.secondaryText = "Choose audio files via Files app"
-        case .record:
-            cfg.text = "Record audio"
-            cfg.secondaryText = "Capture new audio and add to library"
-        case .fromURL:
-            cfg.text = "Download from URL"
-            cfg.secondaryText = "mp3 / m4a / wav direct link"
-        case .fromS3Bundle:
-            cfg.text = "Install S3 bundle"
-            cfg.secondaryText = "Load bundle manifest and tracks"
-        case .installSample:
-            cfg.text = "Install free sample bundle"
-            cfg.secondaryText = "Ships with the app"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "importCell", for: indexPath) as? ImportOptionCell else {
+            return UITableViewCell()
         }
-        cell.contentConfiguration = cfg
-        cell.accessoryType = .disclosureIndicator
+        
+        let row = Row(rawValue: indexPath.row)!
+        cell.configure(
+            title: row.title,
+            description: row.description,
+            iconName: row.iconName,
+            iconColor: row.iconColor
+        )
+        
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 88
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+        
         switch Row(rawValue: indexPath.row)! {
         case .fromVideo: presentVideoPicker()
         case .fromFiles: presentFilePicker()
@@ -182,62 +244,133 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         present(nav, animated: true)
     }
 
-    // MARK: - Import runner w/ simple spinner
+    // MARK: - Import runner with beautiful progress UI
 
     private func runImport(_ src: ImportSource) async {
-        // Build and present spinner sheet
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.startAnimating()
+        // Create and present beautiful progress view
+        let progressView = ImportProgressView(frame: .zero)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.updateState(.processing)
+        
         let host = UIViewController()
-        host.view.backgroundColor = .systemBackground
-        host.view.addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
+        host.view.backgroundColor = .clear
+        host.view.addSubview(progressView)
+        host.modalPresentationStyle = .overFullScreen
+        host.modalTransitionStyle = .crossDissolve
+        
         NSLayoutConstraint.activate([
-            spinner.centerXAnchor.constraint(equalTo: host.view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: host.view.centerYAnchor),
+            progressView.topAnchor.constraint(equalTo: host.view.topAnchor),
+            progressView.leadingAnchor.constraint(equalTo: host.view.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: host.view.trailingAnchor),
+            progressView.bottomAnchor.constraint(equalTo: host.view.bottomAnchor)
         ])
-        host.modalPresentationStyle = .formSheet
+        
+        progressView.onCancel = { [weak self] in
+            self?.currentImportTask?.cancel()
+            host.dismiss(animated: true)
+        }
+        
+        progressViewController = host
         present(host, animated: true)
 
         do {
             let tracks = try await importer.performImport(source: src)
-            host.dismiss(animated: true) { [weak self] in
-                let msg = tracks.isEmpty ? "No tracks imported." : "Imported \(tracks.count) track(s)."
-                self?.alert("Done", msg)
-            }
+            
+            // Show success state
+            let count = tracks.count
+            let message = count == 1 
+                ? "Added 1 track to your library" 
+                : "Added \(count) tracks to your library"
+            
+            progressView.updateState(.success(message: message))
+            
+            // Notify about new tracks
             if !tracks.isEmpty {
-                    let trackId = tracks[0].id
-                    NotificationCenter.default.post(
-                        name: .libraryDidAddTrack,
-                        object: nil,
-                        userInfo: ["trackID": trackId])
+                let trackId = tracks[0].id
+                NotificationCenter.default.post(
+                    name: .libraryDidAddTrack,
+                    object: nil,
+                    userInfo: ["trackID": trackId]
+                )
             }
             
-
+            // Dismiss after showing success
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                host.dismiss(animated: true)
+            }
             
         } catch is CancellationError {
-            host.dismiss(animated: true) // cancelled—no alert needed
+            // User cancelled - already dismissed
         } catch {
-            host.dismiss(animated: true) { [weak self] in
-                self?.alert("Import Failed", error.localizedDescription)
+            // Show error state with helpful message
+            let message = friendlyErrorMessage(for: error)
+            progressView.updateState(.error(message: message))
+            
+            // Let user dismiss manually
+            progressView.onCancel = {
+                host.dismiss(animated: true)
             }
+        }
+    }
+    
+    private func friendlyErrorMessage(for error: Error) -> String {
+        let description = error.localizedDescription
+        
+        // Provide friendlier messages for common errors
+        if description.contains("network") || description.contains("Internet") {
+            return "Check your internet connection and try again."
+        } else if description.contains("not found") || description.contains("404") {
+            return "The file couldn't be found. Check the URL and try again."
+        } else if description.contains("permission") || description.contains("access") {
+            return "Unable to access the file. Check permissions."
+        } else if description.contains("format") || description.contains("codec") {
+            return "This file format isn't supported. Try mp3, m4a, or wav."
+        } else {
+            return description.isEmpty ? "Something went wrong. Please try again." : description
         }
     }
 
     // MARK: - Helpers
 
     @objc private func helpTapped() {
-        alert("Tips", """
-- Voice Memos: open “Files” → On My iPhone → Voice Memos.
-- Videos: pick a video; we’ll extract audio as M4A.
-- S3 bundles: host a JSON manifest with track URLs and optional segments.
-""")
+        let message = """
+        📹 Import from Video
+        Extract audio from any video file
+        
+        📁 Import from Files
+        Access Voice Memos: Files → On My iPhone → Voice Memos
+        
+        🎤 Record Audio
+        Create new tracks with your microphone
+        
+        🔗 Download from URL
+        Direct links to audio files (mp3, m4a, wav)
+        
+        ☁️ S3 Bundles
+        Load pre-configured track collections
+        
+        🎁 Free Packs
+        Pre-made learning content included with the app
+        """
+        
+        alert("Import Help", message)
     }
 
     private func alert(_ title: String, _ msg: String) {
         let a = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        a.addAction(UIAlertAction(title: "OK", style: .default))
+        a.addAction(UIAlertAction(title: "Got It", style: .default))
         present(a, animated: true)
+    }
+    
+    // MARK: - Trait Collection
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            view.backgroundColor = AppColors.primaryBackground
+            tableView.backgroundColor = AppColors.primaryBackground
+        }
     }
 
     // MARK: - UIDocumentPickerDelegate
