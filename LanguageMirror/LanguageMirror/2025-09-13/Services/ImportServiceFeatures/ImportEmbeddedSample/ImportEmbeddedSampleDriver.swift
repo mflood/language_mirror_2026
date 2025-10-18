@@ -79,7 +79,7 @@ final class ImportEmbeddedSampleDriver {
                 guard let audioUrl = Bundle.main.url(
                     forResource: name,
                     withExtension: ext,
-                    subdirectory: bundlePack.audioSubdirectory
+                    // subdirectory: bundlePack.audioSubdirectory
                 ) else {
                     print("Skipping missing embedded asset: \(bundleTrack.filename) in subdirectory: \(bundlePack.audioSubdirectory ?? "none")")
                     continue

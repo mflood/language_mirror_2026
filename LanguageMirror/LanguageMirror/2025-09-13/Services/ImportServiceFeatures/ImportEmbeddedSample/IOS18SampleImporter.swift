@@ -23,7 +23,7 @@ final class IOS18SampleImporter: EmbeddedBundleManifestLoader {
         guard let manifestUrl = Bundle.main.url(
             forResource: "packs_manifest",
             withExtension: "json",
-            subdirectory: "embedded_packs"
+            // subdirectory: "embedded_packs"
         ) else {
             throw SampleImportError.notFound
         }
@@ -55,7 +55,7 @@ final class IOS18SampleImporter: EmbeddedBundleManifestLoader {
         guard let packUrl = Bundle.main.url(
             forResource: resourceName,
             withExtension: "json",
-            subdirectory: "embedded_packs"
+            // subdirectory: "embedded_packs"
         ) else {
             throw SampleImportError.notFound
         }

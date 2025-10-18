@@ -65,10 +65,6 @@ final class ImportServiceLite: ImportService {
     // Only supports .videoFile; others alert + throw
     func performImport(source: ImportSource) async throws -> [Track] {
         try Task.checkCancellation()
-        
-        for track in self.library.listTracks(in: nil) {
-            print("Track: \(track.title) (\(track.filename))")
-        }
             
         switch source {
         case .videoFile(let url):

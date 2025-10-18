@@ -166,7 +166,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
     private func runEmbeddedSample() {
         // Show pack selection screen
-        let manifestLoader = SampleImporterFactory.makeManifestLoader()
+        let manifestLoader = SampleImporterFactory.make(useMock: false)
         let packSelectionVC = PackSelectionViewController(manifestLoader: manifestLoader)
         
         packSelectionVC.onPackSelected = { [weak self] packId in
