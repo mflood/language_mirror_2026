@@ -81,4 +81,3 @@ struct TranscriptSpan: Codable, Equatable {
     var speaker: String?
     var languageCode: String? // Used for TTS prompts, e.g., "en-US"
 }
-
