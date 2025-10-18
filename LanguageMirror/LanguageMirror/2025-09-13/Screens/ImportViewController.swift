@@ -253,29 +253,46 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 extension ImportViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         dismiss(animated: true)
+
         guard
             let item = results.first?.itemProvider,
             item.hasItemConformingToTypeIdentifier(UTType.movie.identifier)
         else { return }
 
-        // Cancel any prior import task
-        currentImportTask?.cancel()
-
-        currentImportTask = Task { [weak self] in
+        Task { [weak self] in
             guard let self = self else { return }
-            do {
-                // 1) Get the temp movie file URL from the picker
-                let movieURL = try await item.loadMovieFileURL()
 
-                // 2) Run the import (shows spinner, awaits importer, alerts on completion)
-                await self.runImport(.videoFile(url: movieURL))
-            } catch is CancellationError {
-                // user navigated away / task cancelled — silently ignore or show a tiny notice
+            do {
+                let safeURL: URL = try await withCheckedThrowingContinuation { continuation in
+                    item.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { tempURL, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                            return
+                        }
+
+                        guard let tempURL = tempURL else {
+                            continuation.resume(throwing: VideoImportError.exportFailed)
+                            return
+                        }
+
+                        do {
+                            let safeURL = FileManager.default.temporaryDirectory
+                                .appendingPathComponent(UUID().uuidString + ".mov")
+                            try FileManager.default.copyItem(at: tempURL, to: safeURL)
+                            continuation.resume(returning: safeURL)
+                        } catch {
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+
+                await self.runImport(.videoFile(url: safeURL))
             } catch {
                 self.alert("Pick Failed", error.localizedDescription)
             }
         }
     }
+    
 }
 
 

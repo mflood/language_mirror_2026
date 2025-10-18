@@ -1,5 +1,5 @@
 //
-//  MockVideoImporter.swift
+//  MockVideoAudioExtractor.swift
 //  LanguageMirror
 //
 //  Created by Matthew Flood on 9/20/25.
@@ -11,7 +11,7 @@ import Foundation
 /// - returns `sample.mp3` from the main bundle
 /// - can take a configurable duration (sleep in small steps, cancellable)
 /// - can throw a configured error (immediately or after the delay)
-public final class MockVideoImporter: VideoImporting {
+public final class MockVideoAudioExtractor: VideoAudioExtractorProtocol {
 
     public enum ErrorMode: Sendable {
         case none

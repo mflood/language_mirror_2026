@@ -26,7 +26,7 @@ final class ImportServiceLite: ImportService {
     private let segmentService: SegmentService
     
     
-    private let videoUseCase: ImportVideoUseCase
+    private let videoUseCase: ImportVideoDriver
     private let importAudioUrlDriver: ImportAudioUrlDriver
     private let audioUseCase: ImportAudioUseCase
     private let importEmbeddedSampleDriver: ImportEmbeddedSampleDriver
@@ -39,7 +39,7 @@ final class ImportServiceLite: ImportService {
         self.library = library
         self.segmentService = segments
         
-        self.videoUseCase = ImportVideoUseCase(
+        self.videoUseCase = ImportVideoDriver(
             engine: VideoImporterFactory.make(useMock: useMock),
             library: library
         )
