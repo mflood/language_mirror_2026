@@ -40,7 +40,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         var description: String {
             switch self {
             case .fromVideo: return "Extract audio from video files"
-            case .fromFiles: return "Choose from Files or Voice Memos"
+            case .fromFiles: return "Browse Files app or use Share button"
             case .record: return "Record new audio with your mic"
             case .fromURL: return "Download mp3, m4a, or wav files"
             case .fromS3Bundle: return "Load bundle from manifest URL"
@@ -338,7 +338,8 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         Extract audio from any video file
         
         📁 Import from Files
-        Access Voice Memos: Files → On My iPhone → Voice Memos
+        • Tap Share button in Voice Memos → LanguageMirror
+        • Or browse: Files → On My iPhone → Voice Memos
         
         🎤 Record Audio
         Create new tracks with your microphone
