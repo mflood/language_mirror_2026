@@ -18,11 +18,13 @@ enum AudioLocator {
         if !base.isEmpty, let u = Bundle.main.url(forResource: base, withExtension: ext.isEmpty ? nil : ext) {
             return u
         }
-        // 2) Documents/LanguageMirror/library/tracks/<track.id>/<filename>
+        // 2) Documents/LanguageMirror/library/packs/<track.packId>/tracks/<track.id>/<filename>
         if let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let inTrackDir = docs
                 .appendingPathComponent("LanguageMirror", isDirectory: true)
                 .appendingPathComponent("library", isDirectory: true)
+                .appendingPathComponent("packs", isDirectory: true)
+                .appendingPathComponent(track.packId, isDirectory: true)
                 .appendingPathComponent("tracks", isDirectory: true)
                 .appendingPathComponent(track.id, isDirectory: true)
                 .appendingPathComponent(filename)
