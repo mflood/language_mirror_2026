@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6FF6299C2EA5A995006404A7 /* LanguageMirrorShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6FF629912EA5A995006404A7 /* LanguageMirrorShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		6FAB0EC52E1067B300D3B9C4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,12 +25,34 @@
 			remoteGlobalIDString = 6FAB0EAA2E1067B100D3B9C4;
 			remoteInfo = LanguageMirror;
 		};
+		6FF629992EA5A995006404A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6FAB0EA32E1067B100D3B9C4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6FF629902EA5A995006404A7;
+			remoteInfo = LanguageMirrorShare;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6FF6299B2EA5A995006404A7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6FF6299C2EA5A995006404A7 /* LanguageMirrorShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6FAB0EAB2E1067B100D3B9C4 /* LanguageMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LanguageMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAB0EC42E1067B300D3B9C4 /* LanguageMirrorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LanguageMirrorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FAB0ECE2E1067B300D3B9C4 /* LanguageMirrorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LanguageMirrorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FF629912EA5A995006404A7 /* LanguageMirrorShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LanguageMirrorShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -41,6 +67,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"2025-09-13/Resources/library_seed.json",
+				"2025-09-13/ShareExtension/Info.plist",
+				"2025-09-13/ShareExtension/ShareViewController.swift",
 				Info.plist,
 				Resources/data_2.json,
 				"Utilities/audio-recorder-viewmodel.swift",
@@ -68,6 +96,15 @@
 				ViewControllers/StudyPlayerViewController.swift,
 			);
 			target = 6FAB0EAA2E1067B100D3B9C4 /* LanguageMirror */;
+		};
+		6FF629A32EA5AA43006404A7 /* Exceptions for "LanguageMirror" folder in "LanguageMirrorShare" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"2025-09-13/SharedImport/SharedImportManager.swift",
+				"2025-09-13/SharedImport/SharedImportModels.swift",
+				"2025-09-13/ShareExtension/ShareViewController.swift",
+			);
+			target = 6FF629902EA5A995006404A7 /* LanguageMirrorShare */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -98,6 +135,7 @@
 				6FAB0FFE2E10E06E00D3B9C4 /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirror" target */,
 				6F137C932E7C4D67007D0F0E /* Exceptions for "LanguageMirror" folder in "LanguageMirrorTests" target */,
 				6F137C982E7C4D8D007D0F0E /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirrorTests" target */,
+				6FF629A32EA5AA43006404A7 /* Exceptions for "LanguageMirror" folder in "LanguageMirrorShare" target */,
 			);
 			path = LanguageMirror;
 			sourceTree = "<group>";
@@ -110,6 +148,11 @@
 		6FAB0ED12E1067B300D3B9C4 /* LanguageMirrorUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = LanguageMirrorUITests;
+			sourceTree = "<group>";
+		};
+		6FF629922EA5A995006404A7 /* LanguageMirrorShare */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LanguageMirrorShare;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -136,6 +179,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6FF6298E2EA5A995006404A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -145,6 +195,7 @@
 				6FAB0EAD2E1067B100D3B9C4 /* LanguageMirror */,
 				6FAB0EC72E1067B300D3B9C4 /* LanguageMirrorTests */,
 				6FAB0ED12E1067B300D3B9C4 /* LanguageMirrorUITests */,
+				6FF629922EA5A995006404A7 /* LanguageMirrorShare */,
 				6FAB0EAC2E1067B100D3B9C4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -155,6 +206,7 @@
 				6FAB0EAB2E1067B100D3B9C4 /* LanguageMirror.app */,
 				6FAB0EC42E1067B300D3B9C4 /* LanguageMirrorTests.xctest */,
 				6FAB0ECE2E1067B300D3B9C4 /* LanguageMirrorUITests.xctest */,
+				6FF629912EA5A995006404A7 /* LanguageMirrorShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,10 +221,12 @@
 				6FAB0EA72E1067B100D3B9C4 /* Sources */,
 				6FAB0EA82E1067B100D3B9C4 /* Frameworks */,
 				6FAB0EA92E1067B100D3B9C4 /* Resources */,
+				6FF6299B2EA5A995006404A7 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6FF6299A2EA5A995006404A7 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				6FAB0EAD2E1067B100D3B9C4 /* LanguageMirror */,
@@ -230,6 +284,28 @@
 			productReference = 6FAB0ECE2E1067B300D3B9C4 /* LanguageMirrorUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		6FF629902EA5A995006404A7 /* LanguageMirrorShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6FF6299D2EA5A995006404A7 /* Build configuration list for PBXNativeTarget "LanguageMirrorShare" */;
+			buildPhases = (
+				6FF6298D2EA5A995006404A7 /* Sources */,
+				6FF6298E2EA5A995006404A7 /* Frameworks */,
+				6FF6298F2EA5A995006404A7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6FF629922EA5A995006404A7 /* LanguageMirrorShare */,
+			);
+			name = LanguageMirrorShare;
+			packageProductDependencies = (
+			);
+			productName = LanguageMirrorShare;
+			productReference = 6FF629912EA5A995006404A7 /* LanguageMirrorShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -237,7 +313,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					6FAB0EAA2E1067B100D3B9C4 = {
@@ -250,6 +326,9 @@
 					6FAB0ECD2E1067B300D3B9C4 = {
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = 6FAB0EAA2E1067B100D3B9C4;
+					};
+					6FF629902EA5A995006404A7 = {
+						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
@@ -270,6 +349,7 @@
 				6FAB0EAA2E1067B100D3B9C4 /* LanguageMirror */,
 				6FAB0EC32E1067B300D3B9C4 /* LanguageMirrorTests */,
 				6FAB0ECD2E1067B300D3B9C4 /* LanguageMirrorUITests */,
+				6FF629902EA5A995006404A7 /* LanguageMirrorShare */,
 			);
 		};
 /* End PBXProject section */
@@ -290,6 +370,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6FAB0ECC2E1067B300D3B9C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6FF6298F2EA5A995006404A7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -320,6 +407,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6FF6298D2EA5A995006404A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -333,6 +427,11 @@
 			target = 6FAB0EAA2E1067B100D3B9C4 /* LanguageMirror */;
 			targetProxy = 6FAB0ECF2E1067B300D3B9C4 /* PBXContainerItemProxy */;
 		};
+		6FF6299A2EA5A995006404A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6FF629902EA5A995006404A7 /* LanguageMirrorShare */;
+			targetProxy = 6FF629992EA5A995006404A7 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -341,6 +440,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8695SQ572;
@@ -352,7 +452,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -371,6 +471,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8695SQ572;
@@ -382,7 +483,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -591,6 +692,66 @@
 			};
 			name = Release;
 		};
+		6FF6299E2EA5A995006404A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LanguageMirrorShare/LanguageMirrorShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8695SQ572;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LanguageMirror/2025-09-13/ShareExtension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LanguageMirrorShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sixwandsstudios.LanguageMirror.LanguageMirrorShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6FF6299F2EA5A995006404A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LanguageMirrorShare/LanguageMirrorShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8695SQ572;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LanguageMirror/2025-09-13/ShareExtension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LanguageMirrorShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sixwandsstudios.LanguageMirror.LanguageMirrorShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -626,6 +787,15 @@
 			buildConfigurations = (
 				6FAB0EE02E1067B300D3B9C4 /* Debug */,
 				6FAB0EE12E1067B300D3B9C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6FF6299D2EA5A995006404A7 /* Build configuration list for PBXNativeTarget "LanguageMirrorShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6FF6299E2EA5A995006404A7 /* Debug */,
+				6FF6299F2EA5A995006404A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
