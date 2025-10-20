@@ -717,6 +717,13 @@ final class PracticeViewController: UIViewController {
             return
         }
         
+        // Validate clip times
+        let invalidClips = drillClips.filter { $0.startMs < 0 || $0.endMs <= $0.startMs }
+        guard invalidClips.isEmpty else {
+            presentAlert("Invalid Clips", "Some drill clips have invalid time ranges. Please edit segments.")
+            return
+        }
+        
         do {
             // Create or load session
             var session: PracticeSession?

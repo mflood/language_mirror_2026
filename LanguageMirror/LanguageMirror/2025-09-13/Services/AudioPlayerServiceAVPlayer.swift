@@ -246,6 +246,15 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
 
         let seg = clipsQueue[currentSegmentIndex]
         
+        // Validate clip times to prevent error -50
+        guard seg.startMs >= 0, seg.endMs > seg.startMs else {
+            print("Invalid clip times: startMs=\(seg.startMs), endMs=\(seg.endMs)")
+            // Skip to next clip
+            currentSegmentIndex += 1
+            startCurrentSegment()
+            return
+        }
+        
         // Determine total loops and restore progress if resuming session
         totalLoopsForCurrentClip = max(1, seg.repeats ?? globalRepeats)
         if let session = currentSession, session.currentClipIndex == currentSegmentIndex {
@@ -474,10 +483,21 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             opts.insert(.duckOthers) 
         }
         
-        // Use .playback category to enable background audio and lock screen controls
-        // Mode .spokenAudio is better for language learning content
-        try session.setCategory(.playback, mode: .spokenAudio, options: opts)
-        try session.setActive(true, options: [])
+        // Only reconfigure if needed (avoid conflicts with multiple instances)
+        let needsConfig = session.category != .playback || 
+                         session.mode != .spokenAudio ||
+                         session.categoryOptions != opts
+        
+        if needsConfig {
+            // Use .playback category to enable background audio and lock screen controls
+            // Mode .spokenAudio is better for language learning content
+            try session.setCategory(.playback, mode: .spokenAudio, options: opts)
+        }
+        
+        // Activate session with option to not interrupt other audio if already active
+        if !session.isOtherAudioPlaying {
+            try session.setActive(true, options: [])
+        }
     }
 
     private func resolveURL(for track: Track) -> URL? {
