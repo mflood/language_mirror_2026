@@ -460,6 +460,7 @@ final class PracticeViewController: UIViewController {
     
     private func scrollToCurrentClipIfNeeded() {
         guard let session = currentSession,
+              !workingClips.isEmpty,
               session.currentClipIndex < workingClips.count else { return }
         
         let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
