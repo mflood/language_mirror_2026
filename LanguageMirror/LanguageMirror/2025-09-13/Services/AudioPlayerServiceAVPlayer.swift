@@ -536,16 +536,23 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         // Configure audio session for background playback and media controls
         // Read duck others preference from settings
         let duck = (AppContainer().settings.duckOthers)
-        var opts: AVAudioSession.CategoryOptions = [.mixWithOthers, .allowAirPlay, .allowBluetooth, .allowBluetoothA2DP]
+        
+        // For .playback category, we don't use .mixWithOthers (that's for playAndRecord)
+        // Instead, use .duckOthers if requested, plus Bluetooth/AirPlay support
+        var opts: AVAudioSession.CategoryOptions = []
         if duck { 
             opts.insert(.duckOthers) 
         }
+        // Always allow Bluetooth and AirPlay for better user experience
+        opts.insert(.allowBluetooth)
+        opts.insert(.allowBluetoothA2DP)
+        opts.insert(.allowAirPlay)
         
         print("    Current category: \(session.category.rawValue)")
         print("    Current mode: \(session.mode.rawValue)")
         print("    Target category: playback")
         print("    Target mode: spokenAudio")
-        print("    Duck others: \(duck)")
+        print("    Options: \(opts)")
         
         // Only reconfigure if needed (avoid conflicts with multiple instances)
         let needsConfig = session.category != .playback || 
@@ -561,7 +568,18 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                 print("    ✅ Audio session category and mode set")
             } catch {
                 print("    ❌ Failed to set audio session category: \(error)")
-                throw error
+                print("    Attempting fallback configuration without mode...")
+                // Fallback: try without specifying mode
+                do {
+                    try session.setCategory(.playback, options: opts)
+                    print("    ✅ Audio session category set (without mode)")
+                } catch {
+                    print("    ❌ Fallback also failed: \(error)")
+                    // Last resort: try minimal configuration
+                    print("    Attempting minimal configuration...")
+                    try session.setCategory(.playback)
+                    print("    ✅ Audio session set to playback (minimal)")
+                }
             }
         } else {
             print("    Audio session already configured correctly")
