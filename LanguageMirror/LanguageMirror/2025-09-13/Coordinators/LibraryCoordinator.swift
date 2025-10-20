@@ -59,6 +59,18 @@ extension LibraryCoordinator: LibraryViewControllerDelegate {
 
 extension LibraryCoordinator: TrackDetailViewControllerDelegate {
     func trackDetailViewController(_ vc: TrackDetailViewController, didSelectPracticeSet practiceSet: PracticeSet, forTrack track: Track) {
-        appCoordinator?.switchToPracticeWithSet(track: track, practiceSet: practiceSet)
+        // Push practice view onto Library nav stack for contextual navigation
+        let practiceVC = PracticeViewController(
+            settings: container.settings,
+            libraryService: container.libraryService,
+            clipService: container.clipService,
+            audioPlayer: container.audioPlayer,
+            practiceService: container.practiceService
+        )
+        practiceVC.loadTrackAndPracticeSet(track: track, practiceSet: practiceSet)
+        navigationController.pushViewController(practiceVC, animated: true)
+        
+        // Sync Practice tab state so it shows the same session
+        appCoordinator?.practiceSessionStartedFromLibrary(track: track, practiceSet: practiceSet)
     }
 }

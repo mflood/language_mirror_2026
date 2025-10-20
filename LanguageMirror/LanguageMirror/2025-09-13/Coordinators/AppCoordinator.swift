@@ -146,4 +146,10 @@ final class AppCoordinator {
         // Load practice set in PracticeViewController
         practiceCoordinator?.loadPracticeSet(track: track, practiceSet: practiceSet)
     }
+    
+    func practiceSessionStartedFromLibrary(track: Track, practiceSet: PracticeSet) {
+        // Update Practice tab's view to show this session without switching tabs
+        // This keeps both views in sync when practice is started from Library flow
+        practiceCoordinator?.loadPracticeSet(track: track, practiceSet: practiceSet)
+    }
 }
