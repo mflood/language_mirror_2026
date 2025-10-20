@@ -280,15 +280,28 @@ final class PracticeViewController: UIViewController {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
             
-            // Load the specific practice set if ID is provided
-            var set: PracticeSet
-            if let setId = practiceSetId, let foundSet = t.practiceSets.first(where: { $0.id == setId }) {
-                set = foundSet
-            } else if let firstSet = t.practiceSets.first {
-                set = firstSet
+            // Always load from clipService for the most up-to-date data
+            // (This ensures we get updates from split/merge/kind changes)
+            let set = (try? self.clipService.loadMap(for: trackId)) ?? PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
+            
+            // If a specific practice set ID was requested (from navigation),
+            // and it matches the loaded set, use it. Otherwise, use the loaded set.
+            // Note: Currently clipService only stores one practice set per track,
+            // so this just validates the ID matches if provided.
+            let finalSet: PracticeSet
+            if let setId = practiceSetId, set.id == setId {
+                finalSet = set
+            } else if practiceSetId == nil {
+                // No specific ID requested, use whatever clipService has
+                finalSet = set
             } else {
-                // Fallback to loading from clipService or creating default
-                set = (try? self.clipService.loadMap(for: trackId)) ?? PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
+                // Requested ID doesn't match - maybe fall back to track's practice sets
+                if let foundSet = t.practiceSets.first(where: { $0.id == practiceSetId }) {
+                    finalSet = foundSet
+                } else {
+                    // Use clipService result anyway
+                    finalSet = set
+                }
             }
             
             let session = try? self.practiceService.loadSession(packId: packId, trackId: trackId)
@@ -297,8 +310,8 @@ final class PracticeViewController: UIViewController {
                 guard let self else { return }
                 guard self.selectedTrack?.id == trackId else { return }
                 
-                self.practiceSet = set
-                self.allClips = set.clips  // Show ALL clips, not just drills
+                self.practiceSet = finalSet
+                self.allClips = finalSet.clips  // Show ALL clips, not just drills
                 self.currentSession = session
                 self.updateUI()
             }
@@ -626,7 +639,7 @@ final class PracticeViewController: UIViewController {
             // Split the clip
             let (_, newClip) = try clipService.splitClip(id: clip.id, atMs: trackMs, in: track.id)
             
-            // Reload practice set
+            // Reload practice set (refreshDataAsync will load from clipService)
             refreshDataAsync()
             
             // Update session to point to new clip (index + 1)
@@ -836,7 +849,7 @@ extension PracticeViewController {
                 currentSession = session
             }
             
-            // Reload data
+            // Reload practice set (refreshDataAsync will load from clipService)
             refreshDataAsync()
             
             let generator = UINotificationFeedbackGenerator()
@@ -860,7 +873,7 @@ extension PracticeViewController {
         do {
             try clipService.updateClipKind(id: clip.id, kind: kind, in: track.id)
             
-            // Reload data
+            // Reload practice set (refreshDataAsync will load from clipService)
             refreshDataAsync()
             
             let generator = UIImpactFeedbackGenerator(style: .light)
