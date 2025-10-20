@@ -1044,9 +1044,9 @@ extension PracticeViewController: UITableViewDataSource {
         let totalLoops = settings.globalRepeats
         let currentLoops = currentSession?.clipPlayCounts[clip.id] ?? 0
         let currentSpeed = currentSession?.currentSpeed ?? 1.0
-        let isCurrent = (currentSession?.currentClipIndex == indexPath.row) && isPlaying
+        let isCurrent = currentSession?.currentClipIndex == indexPath.row
         let isCompleted = currentLoops >= totalLoops
-        let showForeverBadge = (currentSession?.foreverMode ?? false) && isCurrent
+        let showForeverBadge = (currentSession?.foreverMode ?? false) && isCurrent && isPlaying
         
         cell.configure(
             index: indexPath.row,
