@@ -612,8 +612,14 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                   rate: Float) {
         var info: [String: Any] = [:]
         
-        // Track/clip title
-        let displayTitle = segmentTitle?.isEmpty == false ? segmentTitle : track.title
+        // Track/clip title - unwrap segmentTitle properly
+        let displayTitle: String
+        if let segment = segmentTitle, !segment.isEmpty {
+            displayTitle = segment
+        } else {
+            displayTitle = track.title
+        }
+        
         info[MPMediaItemPropertyTitle] = displayTitle
         info[MPMediaItemPropertyAlbumTitle] = "LanguageMirror"
         info[MPMediaItemPropertyArtist] = "Practice Session"
