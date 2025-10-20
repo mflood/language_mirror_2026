@@ -149,20 +149,29 @@ class ShareViewController: UIViewController {
                     self?.showSuccess()
                 }
             } catch SharedImportError.appGroupNotConfigured {
+                print("[ShareExtension] App Group not configured")
                 DispatchQueue.main.async {
-                    self?.showError("App Group not configured. Please rebuild.")
+                    self?.showError("App Group error. Check Console.")
+                }
+            } catch SharedImportError.fileAccessDenied {
+                print("[ShareExtension] File access denied")
+                DispatchQueue.main.async {
+                    self?.showError("Permission denied.")
                 }
             } catch SharedImportError.invalidFileURL {
+                print("[ShareExtension] Invalid file URL")
                 DispatchQueue.main.async {
-                    self?.showError("File not accessible.")
+                    self?.showError("File not found.")
                 }
             } catch SharedImportError.copyFailed {
+                print("[ShareExtension] Copy failed")
                 DispatchQueue.main.async {
-                    self?.showError("Failed to copy file.")
+                    self?.showError("Save failed. Check Console.")
                 }
             } catch {
+                print("[ShareExtension] Unexpected error: \(error)")
                 DispatchQueue.main.async {
-                    self?.showError("Error: \(error.localizedDescription)")
+                    self?.showError("\(error.localizedDescription)")
                 }
             }
         }
@@ -197,20 +206,29 @@ class ShareViewController: UIViewController {
                     self?.showSuccess()
                 }
             } catch SharedImportError.appGroupNotConfigured {
+                print("[ShareExtension] App Group not configured")
                 DispatchQueue.main.async {
-                    self?.showError("App Group not configured. Please rebuild.")
+                    self?.showError("App Group error. Check Console.")
+                }
+            } catch SharedImportError.fileAccessDenied {
+                print("[ShareExtension] File access denied")
+                DispatchQueue.main.async {
+                    self?.showError("Permission denied.")
                 }
             } catch SharedImportError.invalidFileURL {
+                print("[ShareExtension] Invalid file URL")
                 DispatchQueue.main.async {
-                    self?.showError("File not accessible.")
+                    self?.showError("File not found.")
                 }
             } catch SharedImportError.copyFailed {
+                print("[ShareExtension] Copy failed")
                 DispatchQueue.main.async {
-                    self?.showError("Failed to copy file.")
+                    self?.showError("Save failed. Check Console.")
                 }
             } catch {
+                print("[ShareExtension] Unexpected error: \(error)")
                 DispatchQueue.main.async {
-                    self?.showError("Error: \(error.localizedDescription)")
+                    self?.showError("\(error.localizedDescription)")
                 }
             }
         }

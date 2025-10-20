@@ -53,8 +53,12 @@ final class SharedImportManager {
     /// Add a file to the pending imports queue (called from Share Extension)
     static func enqueuePendingImport(sourceURL: URL, sourceName: String?) throws -> PendingImport {
         guard let sharedFilesDir = sharedFilesDirectory else {
+            print("[SharedImport] ERROR: App Group container not available")
+            print("[SharedImport] App Group ID: \(appGroupIdentifier)")
             throw SharedImportError.appGroupNotConfigured
         }
+        
+        print("[SharedImport] Shared container path: \(sharedFilesDir.path)")
         
         // Generate unique filename
         let fileExtension = sourceURL.pathExtension.isEmpty ? "m4a" : sourceURL.pathExtension
@@ -67,29 +71,51 @@ final class SharedImportManager {
             let needsAccess = sourceURL.startAccessingSecurityScopedResource()
             defer { if needsAccess { sourceURL.stopAccessingSecurityScopedResource() } }
             
-            // Remove destination if it already exists (shouldn't happen with UUID, but be safe)
-            if FileManager.default.fileExists(atPath: destinationURL.path) {
-                try? FileManager.default.removeItem(at: destinationURL)
-            }
-            
-            // Verify source file exists
+            // Verify source file exists and is readable
             guard FileManager.default.fileExists(atPath: sourceURL.path) else {
                 print("[SharedImport] Source file doesn't exist: \(sourceURL.path)")
                 throw SharedImportError.invalidFileURL
             }
             
-            try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
+            guard FileManager.default.isReadableFile(atPath: sourceURL.path) else {
+                print("[SharedImport] Source file not readable: \(sourceURL.path)")
+                throw SharedImportError.fileAccessDenied
+            }
+            
+            // Get file attributes for debugging
+            if let attrs = try? FileManager.default.attributesOfItem(atPath: sourceURL.path) {
+                print("[SharedImport] Source file size: \(attrs[.size] ?? 0) bytes")
+            }
+            
+            // Remove destination if it already exists
+            if FileManager.default.fileExists(atPath: destinationURL.path) {
+                try? FileManager.default.removeItem(at: destinationURL)
+            }
+            
+            // For temp files from extensions, we need to use Data as an intermediate
+            // because direct file operations may fail on temp URLs
+            print("[SharedImport] Reading source file data...")
+            let fileData = try Data(contentsOf: sourceURL)
+            print("[SharedImport] Successfully read \(fileData.count) bytes")
+            
+            print("[SharedImport] Writing to shared container...")
+            try fileData.write(to: destinationURL, options: .atomic)
+            print("[SharedImport] Successfully wrote to: \(destinationURL.path)")
             
             // Verify the copy succeeded
             guard FileManager.default.fileExists(atPath: destinationURL.path) else {
-                print("[SharedImport] Copy succeeded but file not found at destination")
+                print("[SharedImport] File not found at destination after write")
                 throw SharedImportError.copyFailed
             }
+            
+            print("[SharedImport] ✅ File successfully copied to shared container")
             
         } catch let error as SharedImportError {
             throw error
         } catch {
-            print("[SharedImport] Copy failed with error: \(error.localizedDescription)")
+            print("[SharedImport] ❌ Copy failed with error: \(error.localizedDescription)")
+            print("[SharedImport] Error domain: \((error as NSError).domain)")
+            print("[SharedImport] Error code: \((error as NSError).code)")
             print("[SharedImport] Source: \(sourceURL.path)")
             print("[SharedImport] Destination: \(destinationURL.path)")
             throw SharedImportError.copyFailed
@@ -105,6 +131,8 @@ final class SharedImportManager {
         var queue = loadPendingImportsQueue()
         queue.imports.append(pendingImport)
         savePendingImportsQueue(queue)
+        
+        print("[SharedImport] Added to pending imports queue")
         
         return pendingImport
     }
