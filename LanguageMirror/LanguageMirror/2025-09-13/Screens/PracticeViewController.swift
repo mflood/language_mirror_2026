@@ -49,11 +49,9 @@ final class PracticeViewController: UIViewController {
     
     // UI Components
     private let headerView = UIView()
-    private let trackButton = UIButton(type: .system)
     private let foreverButton = UIButton(type: .system)
     private let saveButton = UIButton(type: .system)
     private let discardButton = UIButton(type: .system)
-    private let settingsButton = UIButton(type: .system)
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let bottomBar = UIView()
     private let playPauseButton = UIButton(type: .system)
@@ -96,16 +94,10 @@ final class PracticeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Hide navigation bar since we use a custom headerView
-        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Show navigation bar when leaving this screen
-        navigationController?.setNavigationBarHidden(false, animated: animated)
         
         // Stop playback when navigating away from Practice screen
         // This prevents edge cases where audio continues playing for a different track
@@ -122,18 +114,19 @@ final class PracticeViewController: UIViewController {
     // MARK: - Setup
 
     private func setupUI() {
+        // Navigation bar settings button
+        let settingsButton = UIBarButtonItem(
+            image: UIImage(systemName: "gearshape"),
+            style: .plain,
+            target: self,
+            action: #selector(settingsButtonTapped)
+        )
+        navigationItem.rightBarButtonItem = settingsButton
+        
         // Header
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.backgroundColor = AppColors.primaryBackground
         view.addSubview(headerView)
-        
-        // Track button
-        trackButton.translatesAutoresizingMaskIntoConstraints = false
-        trackButton.setTitle("Select Track ▼", for: .normal)
-        trackButton.setTitleColor(AppColors.primaryText, for: .normal)
-        trackButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        trackButton.addTarget(self, action: #selector(trackButtonTapped), for: .touchUpInside)
-        headerView.addSubview(trackButton)
         
         // Forever button (infinity symbol)
         foreverButton.translatesAutoresizingMaskIntoConstraints = false
@@ -162,13 +155,6 @@ final class PracticeViewController: UIViewController {
         discardButton.alpha = 0
         discardButton.isHidden = true
         headerView.addSubview(discardButton)
-        
-        // Settings button (gear)
-        settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsButton.setImage(UIImage(systemName: "gearshape"), for: .normal)
-        settingsButton.tintColor = AppColors.primaryAccent
-        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
-        headerView.addSubview(settingsButton)
         
         // Table view
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -238,25 +224,16 @@ final class PracticeViewController: UIViewController {
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 56),
             
-            trackButton.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-            trackButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            trackButton.trailingAnchor.constraint(lessThanOrEqualTo: foreverButton.leadingAnchor, constant: -12),
-            
-            settingsButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
-            settingsButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            settingsButton.widthAnchor.constraint(equalToConstant: 44),
-            settingsButton.heightAnchor.constraint(equalToConstant: 44),
-            
-            discardButton.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -8),
-            discardButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            saveButton.trailingAnchor.constraint(equalTo: discardButton.leadingAnchor, constant: -8),
-            saveButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            foreverButton.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -8),
+            foreverButton.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
             foreverButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             foreverButton.widthAnchor.constraint(equalToConstant: 44),
             foreverButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            saveButton.leadingAnchor.constraint(equalTo: foreverButton.trailingAnchor, constant: 8),
+            saveButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+            discardButton.leadingAnchor.constraint(equalTo: saveButton.trailingAnchor, constant: 8),
+            discardButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             
             // Bottom bar
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -328,11 +305,12 @@ final class PracticeViewController: UIViewController {
             practiceSet = nil
             currentSession = nil
             hasUnsavedChanges = false
+            title = "Practice"
             updateUI()
             return
         }
 
-        trackButton.setTitle(t.title, for: .normal)
+        title = t.title
         
         let packId = t.packId
         let trackId = t.id
@@ -485,23 +463,6 @@ final class PracticeViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
-    @objc private func trackButtonTapped() {
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
-        
-        // If we have a selected track, navigate to its details in Library
-        if let track = selectedTrack {
-            delegate?.practiceViewController(self, didTapTrackTitle: track)
-        } else {
-            // Otherwise, show track picker
-            let picker = PracticeTrackPickerViewController(libraryService: library)
-            picker.onPick = { [weak self] t in
-                self?.selectedTrack = t
-            }
-            navigationController?.pushViewController(picker, animated: true)
-        }
-    }
     
     @objc private func foreverButtonTapped() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
