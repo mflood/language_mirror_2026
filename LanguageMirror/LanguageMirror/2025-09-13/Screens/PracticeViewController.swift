@@ -605,11 +605,15 @@ final class PracticeViewController: UIViewController {
             let updatedTrack = try library.loadTrack(id: track.id)
             selectedTrack = updatedTrack
             
-            // Update session to point to new practice set
-            if var session = currentSession {
-                session.practiceSetId = newPracticeSet.id
-                try practiceService.saveSession(session)
-            }
+            // Create new session for the new practice set
+            // (practiceSetId is immutable, so we need a new session)
+            let newSession = try practiceService.createSession(
+                practiceSet: newPracticeSet,
+                packId: track.packId,
+                trackId: track.id
+            )
+            try practiceService.saveSession(newSession)
+            currentSession = newSession
             
             // Load the new practice set
             selectedPracticeSetId = newPracticeSet.id
