@@ -57,7 +57,7 @@ final class SharedImportManager {
         }
         
         // Generate unique filename
-        let fileExtension = sourceURL.pathExtension
+        let fileExtension = sourceURL.pathExtension.isEmpty ? "m4a" : sourceURL.pathExtension
         let uniqueFilename = "\(UUID().uuidString).\(fileExtension)"
         let destinationURL = sharedFilesDir.appendingPathComponent(uniqueFilename)
         
@@ -67,8 +67,31 @@ final class SharedImportManager {
             let needsAccess = sourceURL.startAccessingSecurityScopedResource()
             defer { if needsAccess { sourceURL.stopAccessingSecurityScopedResource() } }
             
+            // Remove destination if it already exists (shouldn't happen with UUID, but be safe)
+            if FileManager.default.fileExists(atPath: destinationURL.path) {
+                try? FileManager.default.removeItem(at: destinationURL)
+            }
+            
+            // Verify source file exists
+            guard FileManager.default.fileExists(atPath: sourceURL.path) else {
+                print("[SharedImport] Source file doesn't exist: \(sourceURL.path)")
+                throw SharedImportError.invalidFileURL
+            }
+            
             try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
+            
+            // Verify the copy succeeded
+            guard FileManager.default.fileExists(atPath: destinationURL.path) else {
+                print("[SharedImport] Copy succeeded but file not found at destination")
+                throw SharedImportError.copyFailed
+            }
+            
+        } catch let error as SharedImportError {
+            throw error
         } catch {
+            print("[SharedImport] Copy failed with error: \(error.localizedDescription)")
+            print("[SharedImport] Source: \(sourceURL.path)")
+            print("[SharedImport] Destination: \(destinationURL.path)")
             throw SharedImportError.copyFailed
         }
         

@@ -156,14 +156,24 @@ class ShareViewController: UIViewController {
     
     private func handleAudioFile(at url: URL) {
         do {
+            // Debug logging
+            print("[ShareExtension] Attempting to import file: \(url.path)")
+            print("[ShareExtension] File exists: \(FileManager.default.fileExists(atPath: url.path))")
+            
             // Queue the file for import
             let sourceName = url.lastPathComponent
             _ = try SharedImportManager.enqueuePendingImport(sourceURL: url, sourceName: sourceName)
             
             // Show success
             showSuccess()
+        } catch SharedImportError.appGroupNotConfigured {
+            showError("App Group not configured. Please rebuild the app.")
+        } catch SharedImportError.invalidFileURL {
+            showError("File not accessible. Try a different file.")
+        } catch SharedImportError.copyFailed {
+            showError("Failed to copy file. Check permissions.")
         } catch {
-            showError("Failed to save file: \(error.localizedDescription)")
+            showError("Error: \(error.localizedDescription)")
         }
     }
     
