@@ -257,7 +257,7 @@ final class LibraryServiceJSON: LibraryService {
         NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
     }
     
-    // MARK: - Practice Set Methods (stub implementations)
+    // MARK: - Practice Set Methods
     
     func listPracticeSets(in trackId: String) -> [PracticeSet] {
         guard let track = try? loadTrack(id: trackId) else { return [] }
@@ -265,19 +265,49 @@ final class LibraryServiceJSON: LibraryService {
     }
     
     func loadPracticeSet(id: String) throws -> PracticeSet {
-        throw LibraryError.notFound // Not implemented - practice sets are stored in track
+        // Find practice set across all tracks
+        for pack in cache.packs {
+            for track in pack.tracks {
+                if let practiceSet = track.practiceSets.first(where: { $0.id == id }) {
+                    return practiceSet
+                }
+            }
+        }
+        throw LibraryError.notFound
     }
     
     func addPracticeSet(_ practiceSet: PracticeSet, to trackId: String) throws {
-        throw LibraryError.notFound // Not implemented
+        var track = try loadTrack(id: trackId)
+        
+        // Check if practice set already exists
+        if track.practiceSets.contains(where: { $0.id == practiceSet.id }) {
+            throw LibraryError.writeFailed
+        }
+        
+        track.practiceSets.append(practiceSet)
+        try updateTrack(track)
     }
     
     func updatePracticeSet(_ practiceSet: PracticeSet, in trackId: String) throws {
-        throw LibraryError.notFound // Not implemented
+        var track = try loadTrack(id: trackId)
+        
+        guard let idx = track.practiceSets.firstIndex(where: { $0.id == practiceSet.id }) else {
+            throw LibraryError.notFound
+        }
+        
+        track.practiceSets[idx] = practiceSet
+        try updateTrack(track)
     }
     
     func deletePracticeSet(id: String, from trackId: String) throws {
-        throw LibraryError.notFound // Not implemented
+        var track = try loadTrack(id: trackId)
+        
+        guard let idx = track.practiceSets.firstIndex(where: { $0.id == id }) else {
+            throw LibraryError.notFound
+        }
+        
+        track.practiceSets.remove(at: idx)
+        try updateTrack(track)
     }
     
     // MARK: - Clip Methods (stub implementations)

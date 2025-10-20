@@ -32,14 +32,22 @@ final class PracticeViewController: UIViewController {
         }
     }
     private var selectedPracticeSetId: String?  // Specific practice set to load
-    private var practiceSet: PracticeSet?
-    private var allClips: [Clip] = []  // All clips in practice set
+    private var practiceSet: PracticeSet?  // Original loaded practice set
+    private var workingClips: [Clip] = []  // In-memory mutable copy for editing
+    private var allClips: [Clip] = []  // All clips in practice set (deprecated, use workingClips)
     private var currentSession: PracticeSession?
+    private var hasUnsavedChanges: Bool = false {
+        didSet {
+            updateSaveDiscardButtons()
+        }
+    }
     
     // UI Components
     private let headerView = UIView()
     private let trackButton = UIButton(type: .system)
     private let foreverButton = UIButton(type: .system)
+    private let saveButton = UIButton(type: .system)
+    private let discardButton = UIButton(type: .system)
     private let settingsButton = UIButton(type: .system)
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let bottomBar = UIView()
@@ -109,6 +117,26 @@ final class PracticeViewController: UIViewController {
         foreverButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         foreverButton.addTarget(self, action: #selector(foreverButtonTapped), for: .touchUpInside)
         headerView.addSubview(foreverButton)
+        
+        // Save button
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitleColor(AppColors.primaryAccent, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        saveButton.alpha = 0
+        saveButton.isHidden = true
+        headerView.addSubview(saveButton)
+        
+        // Discard button
+        discardButton.translatesAutoresizingMaskIntoConstraints = false
+        discardButton.setTitle("Discard", for: .normal)
+        discardButton.setTitleColor(.systemRed, for: .normal)
+        discardButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .medium)
+        discardButton.addTarget(self, action: #selector(discardButtonTapped), for: .touchUpInside)
+        discardButton.alpha = 0
+        discardButton.isHidden = true
+        headerView.addSubview(discardButton)
         
         // Settings button (gear)
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -194,7 +222,13 @@ final class PracticeViewController: UIViewController {
             settingsButton.widthAnchor.constraint(equalToConstant: 44),
             settingsButton.heightAnchor.constraint(equalToConstant: 44),
             
-            foreverButton.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -8),
+            discardButton.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -8),
+            discardButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+            saveButton.trailingAnchor.constraint(equalTo: discardButton.leadingAnchor, constant: -8),
+            saveButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+            foreverButton.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -8),
             foreverButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             foreverButton.widthAnchor.constraint(equalToConstant: 44),
             foreverButton.heightAnchor.constraint(equalToConstant: 44),
@@ -265,8 +299,10 @@ final class PracticeViewController: UIViewController {
     private func refreshDataAsync() {
         guard let t = selectedTrack else {
             allClips = []
+            workingClips = []
             practiceSet = nil
             currentSession = nil
+            hasUnsavedChanges = false
             updateUI()
             return
         }
@@ -280,28 +316,16 @@ final class PracticeViewController: UIViewController {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
             
-            // Always load from clipService for the most up-to-date data
-            // (This ensures we get updates from split/merge/kind changes)
-            let set = (try? self.clipService.loadMap(for: trackId)) ?? PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
-            
-            // If a specific practice set ID was requested (from navigation),
-            // and it matches the loaded set, use it. Otherwise, use the loaded set.
-            // Note: Currently clipService only stores one practice set per track,
-            // so this just validates the ID matches if provided.
+            // Load practice set from track's practice sets array
             let finalSet: PracticeSet
-            if let setId = practiceSetId, set.id == setId {
-                finalSet = set
-            } else if practiceSetId == nil {
-                // No specific ID requested, use whatever clipService has
-                finalSet = set
+            if let setId = practiceSetId, let foundSet = t.practiceSets.first(where: { $0.id == setId }) {
+                finalSet = foundSet
+            } else if let firstSet = t.practiceSets.first {
+                // No specific ID requested, use first practice set
+                finalSet = firstSet
             } else {
-                // Requested ID doesn't match - maybe fall back to track's practice sets
-                if let foundSet = t.practiceSets.first(where: { $0.id == practiceSetId }) {
-                    finalSet = foundSet
-                } else {
-                    // Use clipService result anyway
-                    finalSet = set
-                }
+                // No practice sets exist, create a default one
+                finalSet = PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
             }
             
             let session = try? self.practiceService.loadSession(packId: packId, trackId: trackId)
@@ -311,15 +335,17 @@ final class PracticeViewController: UIViewController {
                 guard self.selectedTrack?.id == trackId else { return }
                 
                 self.practiceSet = finalSet
-                self.allClips = finalSet.clips  // Show ALL clips, not just drills
+                self.workingClips = finalSet.clips  // Initialize working copy from saved practice set
+                self.allClips = finalSet.clips  // Keep for backward compatibility
                 self.currentSession = session
+                self.hasUnsavedChanges = false
                 self.updateUI()
             }
         }
     }
     
     private func updateUI() {
-        let hasClips = !allClips.isEmpty
+        let hasClips = !workingClips.isEmpty
         tableView.isHidden = !hasClips
         emptyStateView.isHidden = hasClips
         
@@ -346,12 +372,12 @@ final class PracticeViewController: UIViewController {
     }
     
     private func updateProgressLabel() {
-        guard let session = currentSession, !allClips.isEmpty else {
+        guard let session = currentSession, !workingClips.isEmpty else {
             progressLabel.text = "Ready to practice"
             return
         }
         
-        let clipIndex = min(session.currentClipIndex, allClips.count - 1)
+        let clipIndex = min(session.currentClipIndex, workingClips.count - 1)
         let totalLoops = settings.globalRepeats
         
         // Format time displays
@@ -371,7 +397,7 @@ final class PracticeViewController: UIViewController {
             text += "\n"
         }
         
-        text += "Clip \(clipIndex + 1)/\(allClips.count) • Loop \(session.currentLoopCount)/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
+        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(session.currentLoopCount)/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
         
         progressLabel.text = text
     }
@@ -404,7 +430,7 @@ final class PracticeViewController: UIViewController {
     private func validateMergeButton() {
         guard let session = currentSession,
               session.currentClipIndex > 0,
-              allClips.count > 1 else {
+              workingClips.count > 1 else {
             mergeButton.isEnabled = false
             mergeButton.tintColor = AppColors.tertiaryText
             mergeButton.alpha = 0.4
@@ -418,7 +444,7 @@ final class PracticeViewController: UIViewController {
     
     private func scrollToCurrentClipIfNeeded() {
         guard let session = currentSession,
-              session.currentClipIndex < allClips.count else { return }
+              session.currentClipIndex < workingClips.count else { return }
         
         let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
         tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
@@ -484,6 +510,163 @@ final class PracticeViewController: UIViewController {
         present(nav, animated: true)
     }
     
+    @objc private func saveButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        guard let track = selectedTrack, let practiceSet = practiceSet else { return }
+        
+        // Create alert for save options
+        let alert = UIAlertController(title: "Save Practice Set", message: "Choose how to save your changes", preferredStyle: .alert)
+        
+        // Add text field for name
+        alert.addTextField { textField in
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            textField.placeholder = "Sliced Track \(formatter.string(from: Date()))"
+            textField.autocapitalizationType = .words
+        }
+        
+        // Save as New action
+        alert.addAction(UIAlertAction(title: "Save as New", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
+            let textField = alert.textFields?.first
+            let name = textField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let finalName = name.isEmpty ? textField?.placeholder ?? "Practice Set" : name
+            
+            self.saveAsNewPracticeSet(name: finalName, for: track)
+        })
+        
+        // Update Current action (only if not the default practice set)
+        if !practiceSet.clips.isEmpty && practiceSet.title != nil {
+            alert.addAction(UIAlertAction(title: "Update Current", style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateCurrentPracticeSet(for: track)
+            })
+        }
+        
+        // Cancel action
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true)
+    }
+    
+    @objc private func discardButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        // Show confirmation alert
+        let alert = UIAlertController(
+            title: "Discard Changes?",
+            message: "All unsaved changes will be lost.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            self.discardChanges()
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true)
+    }
+    
+    private func updateSaveDiscardButtons() {
+        let shouldShow = hasUnsavedChanges
+        
+        UIView.animate(withDuration: 0.3) {
+            self.saveButton.alpha = shouldShow ? 1.0 : 0.0
+            self.discardButton.alpha = shouldShow ? 1.0 : 0.0
+        } completion: { _ in
+            self.saveButton.isHidden = !shouldShow
+            self.discardButton.isHidden = !shouldShow
+        }
+    }
+    
+    private func saveAsNewPracticeSet(name: String, for track: Track) {
+        guard let practiceSet = practiceSet else { return }
+        
+        // Create new practice set with working clips
+        let newPracticeSet = PracticeSet(
+            id: UUID().uuidString,
+            trackId: track.id,
+            displayOrder: track.practiceSets.count,
+            title: name,
+            clips: workingClips
+        )
+        
+        do {
+            // Add to library
+            try library.addPracticeSet(newPracticeSet, to: track.id)
+            
+            // Reload track to get updated practice sets
+            let updatedTrack = try library.loadTrack(id: track.id)
+            selectedTrack = updatedTrack
+            
+            // Update session to point to new practice set
+            if var session = currentSession {
+                session.practiceSetId = newPracticeSet.id
+                try practiceService.saveSession(session)
+            }
+            
+            // Load the new practice set
+            selectedPracticeSetId = newPracticeSet.id
+            refreshDataAsync()
+            
+            // Success feedback
+            let successGenerator = UINotificationFeedbackGenerator()
+            successGenerator.notificationOccurred(.success)
+            
+            presentAlert("Saved", "Practice set '\(name)' created successfully")
+        } catch {
+            presentAlert("Save Failed", error.localizedDescription)
+        }
+    }
+    
+    private func updateCurrentPracticeSet(for track: Track) {
+        guard var practiceSet = practiceSet else { return }
+        
+        // Update practice set with working clips
+        practiceSet.clips = workingClips
+        
+        do {
+            // Update in library
+            try library.updatePracticeSet(practiceSet, in: track.id)
+            
+            // Reload track
+            let updatedTrack = try library.loadTrack(id: track.id)
+            selectedTrack = updatedTrack
+            
+            // Reload the practice set
+            refreshDataAsync()
+            
+            // Success feedback
+            let successGenerator = UINotificationFeedbackGenerator()
+            successGenerator.notificationOccurred(.success)
+            
+            presentAlert("Updated", "Practice set updated successfully")
+        } catch {
+            presentAlert("Update Failed", error.localizedDescription)
+        }
+    }
+    
+    private func discardChanges() {
+        guard let practiceSet = practiceSet else { return }
+        
+        // Reset working clips to saved state
+        workingClips = practiceSet.clips
+        hasUnsavedChanges = false
+        
+        // Reload table view
+        tableView.reloadData()
+        
+        // Feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+    }
+    
     @objc private func playPauseButtonTapped() {
         if isPlaying && !isPaused {
             // Pause
@@ -504,10 +687,10 @@ final class PracticeViewController: UIViewController {
     }
     
     private func startPractice() {
-        guard let track = selectedTrack, let set = practiceSet, !allClips.isEmpty else { return }
+        guard let track = selectedTrack, let set = practiceSet, !workingClips.isEmpty else { return }
         
         // Filter to only play drill clips
-        let drillClips = allClips.filter { $0.kind == .drill }
+        let drillClips = workingClips.filter { $0.kind == .drill }
         guard !drillClips.isEmpty else {
             presentAlert("No Drills", "This track has no drill clips to practice")
             return
@@ -581,7 +764,7 @@ final class PracticeViewController: UIViewController {
         tableView.reloadData()
         
         // Scroll to current clip
-        if clipIndex < allClips.count {
+        if clipIndex < workingClips.count {
             let indexPath = IndexPath(row: clipIndex, section: 0)
             tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
         }
@@ -592,7 +775,7 @@ final class PracticeViewController: UIViewController {
     
     @objc private func handleLoopDidComplete(_ notification: Notification) {
         // Reload current cell to update progress
-        if let session = currentSession, session.currentClipIndex < allClips.count {
+        if let session = currentSession, session.currentClipIndex < workingClips.count {
             let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
             tableView.reloadRows(at: [indexPath], with: .none)
         }
@@ -623,10 +806,9 @@ final class PracticeViewController: UIViewController {
         
         guard let trackMs = currentTrackTimeMs,
               let session = currentSession,
-              session.currentClipIndex < allClips.count,
-              let track = selectedTrack else { return }
+              session.currentClipIndex < workingClips.count else { return }
         
-        let clip = allClips[session.currentClipIndex]
+        let clip = workingClips[session.currentClipIndex]
         
         // Validate split point
         guard trackMs > clip.startMs + 500,
@@ -635,28 +817,56 @@ final class PracticeViewController: UIViewController {
             return
         }
         
+        // Split the clip in memory
+        let clip1 = Clip(
+            id: clip.id,
+            startMs: clip.startMs,
+            endMs: trackMs,
+            kind: clip.kind,
+            title: clip.title,
+            repeats: clip.repeats,
+            startSpeed: clip.startSpeed,
+            endSpeed: clip.endSpeed,
+            languageCode: clip.languageCode
+        )
+        
+        let clip2 = Clip(
+            id: UUID().uuidString,
+            startMs: trackMs,
+            endMs: clip.endMs,
+            kind: clip.kind,
+            title: clip.title,
+            repeats: clip.repeats,
+            startSpeed: clip.startSpeed,
+            endSpeed: clip.endSpeed,
+            languageCode: clip.languageCode
+        )
+        
+        // Update working clips in memory
+        workingClips[session.currentClipIndex] = clip1
+        workingClips.insert(clip2, at: session.currentClipIndex + 1)
+        
+        // Update session to point to new clip (index + 1)
+        var updatedSession = session
+        updatedSession.currentClipIndex = session.currentClipIndex + 1
+        updatedSession.currentLoopCount = 0
+        
         do {
-            // Split the clip
-            let (_, newClip) = try clipService.splitClip(id: clip.id, atMs: trackMs, in: track.id)
-            
-            // Reload practice set (refreshDataAsync will load from clipService)
-            refreshDataAsync()
-            
-            // Update session to point to new clip (index + 1)
-            var updatedSession = session
-            updatedSession.currentClipIndex = session.currentClipIndex + 1
-            updatedSession.currentLoopCount = 0
             try practiceService.saveSession(updatedSession)
             currentSession = updatedSession
-            
-            // Success feedback
-            let successGenerator = UINotificationFeedbackGenerator()
-            successGenerator.notificationOccurred(.success)
-            
-            // Continue playback will happen automatically as audio player continues
         } catch {
-            presentAlert("Split Failed", error.localizedDescription)
+            print("Failed to save session: \(error)")
         }
+        
+        // Mark as having unsaved changes
+        hasUnsavedChanges = true
+        
+        // Reload table view
+        tableView.reloadData()
+        
+        // Success feedback
+        let successGenerator = UINotificationFeedbackGenerator()
+        successGenerator.notificationOccurred(.success)
     }
     
     @objc private func mergeButtonTapped() {
@@ -687,9 +897,9 @@ final class PracticeViewController: UIViewController {
     }
     
     func resetClipToZero(at index: Int) {
-        guard var session = currentSession, index < allClips.count else { return }
+        guard var session = currentSession, index < workingClips.count else { return }
         
-        let clipId = allClips[index].id
+        let clipId = workingClips[index].id
         session.clipPlayCounts[clipId] = 0
         
         // If this is the current clip, also reset loop count
@@ -716,13 +926,13 @@ final class PracticeViewController: UIViewController {
 
 extension PracticeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allClips.count
+        return workingClips.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClipCell", for: indexPath) as! ClipCell
         
-        let clip = allClips[indexPath.row]
+        let clip = workingClips[indexPath.row]
         let totalLoops = settings.globalRepeats
         let currentLoops = currentSession?.clipPlayCounts[clip.id] ?? 0
         let currentSpeed = currentSession?.currentSpeed ?? 1.0
@@ -789,7 +999,7 @@ extension PracticeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let clip = allClips[indexPath.row]
+        let clip = workingClips[indexPath.row]
         var actions: [UIContextualAction] = []
         
         // Always show all three kind options
@@ -833,53 +1043,54 @@ extension PracticeViewController: UITableViewDelegate {
 extension PracticeViewController {
     
     func mergeClipUp(at index: Int) {
-        guard index > 0, index < allClips.count,
-              let track = selectedTrack else { return }
+        guard index > 0, index < workingClips.count else { return }
         
-        let currentClip = allClips[index]
-        let previousClip = allClips[index - 1]
+        var currentClip = workingClips[index]
+        var previousClip = workingClips[index - 1]
         
-        do {
-            let mergedClip = try clipService.mergeClips(clipId: currentClip.id, into: previousClip.id, in: track.id)
-            
-            // Update session if this was the current clip
-            if var session = currentSession, session.currentClipIndex == index {
-                session.currentClipIndex = index - 1
+        // Merge: extend previous clip to end of current clip
+        previousClip.endMs = currentClip.endMs
+        
+        // Update working clips in memory
+        workingClips[index - 1] = previousClip
+        workingClips.remove(at: index)
+        
+        // Update session if this was the current clip
+        if var session = currentSession, session.currentClipIndex == index {
+            session.currentClipIndex = index - 1
+            do {
                 try practiceService.saveSession(session)
                 currentSession = session
+            } catch {
+                print("Failed to save session: \(error)")
             }
-            
-            // Reload practice set (refreshDataAsync will load from clipService)
-            refreshDataAsync()
-            
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
-            
-            // If playing current clip, might need to restart playback
-            if isPlaying && currentSession?.currentClipIndex == index - 1 {
-                // Audio player will naturally continue
-            }
-        } catch {
-            presentAlert("Merge Failed", error.localizedDescription)
         }
+        
+        // Mark as having unsaved changes
+        hasUnsavedChanges = true
+        
+        // Reload table view
+        tableView.reloadData()
+        
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
     
     func setClipKind(at index: Int, to kind: ClipKind) {
-        guard index < allClips.count,
-              let track = selectedTrack else { return }
+        guard index < workingClips.count else { return }
         
-        let clip = allClips[index]
+        var clip = workingClips[index]
+        clip.kind = kind
+        workingClips[index] = clip
         
-        do {
-            try clipService.updateClipKind(id: clip.id, kind: kind, in: track.id)
-            
-            // Reload practice set (refreshDataAsync will load from clipService)
-            refreshDataAsync()
-            
-            let generator = UIImpactFeedbackGenerator(style: .light)
-            generator.impactOccurred()
-        } catch {
-            presentAlert("Set Kind Failed", error.localizedDescription)
-        }
+        // Mark as having unsaved changes
+        hasUnsavedChanges = true
+        
+        // Reload the specific row
+        let indexPath = IndexPath(row: index, section: 0)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
     }
 }
