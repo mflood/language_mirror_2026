@@ -25,6 +25,11 @@ final class PracticeViewController: UIViewController {
     // Data
     private var selectedTrack: Track? {
         didSet {
+            // Stop playback when switching to a different track to avoid edge cases
+            if let oldTrack = oldValue, let newTrack = selectedTrack, oldTrack.id != newTrack.id {
+                stopCurrentPlayback()
+            }
+            
             if let t = selectedTrack {
                 UserDefaults.standard.set(t.id, forKey: "practice.lastTrackId")
             }
@@ -89,9 +94,20 @@ final class PracticeViewController: UIViewController {
         setupNotifications()
         restoreLastTrackOrPickFirst()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Stop playback when navigating away from Practice screen
+        // This prevents edge cases where audio continues playing for a different track
+        if isMovingFromParent || isBeingDismissed {
+            stopCurrentPlayback()
+        }
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        stopCurrentPlayback()
     }
 
     // MARK: - Setup
@@ -898,6 +914,15 @@ final class PracticeViewController: UIViewController {
         let a = UIAlertController(title: title, message: message, preferredStyle: .alert)
         a.addAction(UIAlertAction(title: "OK", style: .default))
         present(a, animated: true)
+    }
+    
+    private func stopCurrentPlayback() {
+        if isPlaying || isPaused {
+            player.stop()
+            isPlaying = false
+            isPaused = false
+            updatePlayPauseButton()
+        }
     }
     
     func resetClipToZero(at index: Int) {

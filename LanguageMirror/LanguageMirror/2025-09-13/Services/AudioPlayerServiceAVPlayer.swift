@@ -5,8 +5,8 @@
 //  Created by Matthew Flood on 9/15/25.
 //
 // path: Services/AudioPlayerServiceAVPlayer.swift
-// path: Services/AudioPlayerServiceAVPlayer.swift
 import Foundation
+import UIKit
 import AVFoundation
 import MediaPlayer
 
@@ -466,14 +466,17 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private func configureSession() throws {
         let session = AVAudioSession.sharedInstance()
         
-        // Media Player
-        // If you later surface a UI switch, read a `duck = <from settings>` here
-        let duck = (AppContainer().settings.duckOthers) // safe default usage if container exists
+        // Configure audio session for background playback and media controls
+        // Read duck others preference from settings
+        let duck = (AppContainer().settings.duckOthers)
         var opts: AVAudioSession.CategoryOptions = [.mixWithOthers, .allowAirPlay, .allowBluetooth, .allowBluetoothA2DP]
-        if duck { opts.insert(.duckOthers) }
+        if duck { 
+            opts.insert(.duckOthers) 
+        }
         
-        
-        try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+        // Use .playback category to enable background audio and lock screen controls
+        // Mode .spokenAudio is better for language learning content
+        try session.setCategory(.playback, mode: .spokenAudio, options: opts)
         try session.setActive(true, options: [])
     }
 
@@ -564,20 +567,25 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         center.pauseCommand.isEnabled = true
         center.stopCommand.isEnabled = true
 
-        let t1 = center.playCommand.addTarget { [weak self] _ in self?.resume(); return .success }
-        let t2 = center.pauseCommand.addTarget { [weak self] _ in self?.pause(); return .success }
-        let t3 = center.stopCommand.addTarget { [weak self] _ in self?.stop(); return .success }
+        // Register command handlers (removed duplicate registrations)
+        center.playCommand.addTarget { [weak self] _ in 
+            self?.resume()
+            return .success 
+        }
+        center.pauseCommand.addTarget { [weak self] _ in 
+            self?.pause()
+            return .success 
+        }
+        center.stopCommand.addTarget { [weak self] _ in 
+            self?.stop()
+            return .success 
+        }
 
         // (Optional) Next/Previous as clip skip:
         // center.nextTrackCommand.isEnabled = true
         // center.previousTrackCommand.isEnabled = true
-        // let t4 = center.nextTrackCommand.addTarget { [weak self] _ in self?.skipToNextSegment(); return .success }
-        // let t5 = center.previousTrackCommand.addTarget { [weak self] _ in self?.skipToPreviousSegment(); return .success }
-
-        center.playCommand.addTarget { [weak self] _ in self?.resume(); return .success }
-        center.pauseCommand.addTarget { [weak self] _ in self?.pause();  return .success }
-        center.stopCommand.addTarget  { [weak self] _ in self?.stop();   return .success }
-
+        // center.nextTrackCommand.addTarget { [weak self] _ in self?.skipToNextSegment(); return .success }
+        // center.previousTrackCommand.addTarget { [weak self] _ in self?.skipToPreviousSegment(); return .success }
     }
 
     private func disableRemoteCommands() {
@@ -602,17 +610,63 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                   elapsed: Double,
                                   duration: Double,
                                   rate: Float) {
-        var info: [String: Any] = nowPlayingInfo
-        info[MPMediaItemPropertyTitle] = segmentTitle?.isEmpty == false ? segmentTitle : track.title
+        var info: [String: Any] = [:]
+        
+        // Track/clip title
+        let displayTitle = segmentTitle?.isEmpty == false ? segmentTitle : track.title
+        info[MPMediaItemPropertyTitle] = displayTitle
         info[MPMediaItemPropertyAlbumTitle] = "LanguageMirror"
+        info[MPMediaItemPropertyArtist] = "Practice Session"
+        
+        // Playback info
         info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsed
         info[MPMediaItemPropertyPlaybackDuration] = duration
         info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
         info[MPNowPlayingInfoPropertyPlaybackRate] = rate
-        // If you have artwork later, set MPMediaItemPropertyArtwork here.
+        info[MPNowPlayingInfoPropertyDefaultPlaybackRate] = 1.0
+        
+        // Add artwork for better lock screen presence
+        // Create a simple placeholder image with app icon or text
+        if let artwork = createPlaceholderArtwork(title: displayTitle) {
+            info[MPMediaItemPropertyArtwork] = artwork
+        }
 
         nowPlayingInfo = info
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+    }
+    
+    private func createPlaceholderArtwork(title: String) -> MPMediaItemArtwork? {
+        // Create a simple colored square with text
+        let size = CGSize(width: 300, height: 300)
+        
+        return MPMediaItemArtwork(boundsSize: size) { size in
+            let renderer = UIGraphicsImageRenderer(size: size)
+            return renderer.image { context in
+                // Background gradient
+                let colors = [UIColor.systemBlue.cgColor, UIColor.systemPurple.cgColor]
+                if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                                            colors: colors as CFArray,
+                                            locations: [0.0, 1.0]) {
+                    context.cgContext.drawLinearGradient(gradient,
+                                                        start: CGPoint(x: 0, y: 0),
+                                                        end: CGPoint(x: size.width, y: size.height),
+                                                        options: [])
+                }
+                
+                // Add app icon or text
+                let text = "🎧"
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: 120, weight: .bold),
+                    .foregroundColor: UIColor.white
+                ]
+                let textSize = text.size(withAttributes: attributes)
+                let textRect = CGRect(x: (size.width - textSize.width) / 2,
+                                     y: (size.height - textSize.height) / 2,
+                                     width: textSize.width,
+                                     height: textSize.height)
+                text.draw(in: textRect, withAttributes: attributes)
+            }
+        }
     }
 
     private func updateNowPlayingElapsed(_ elapsed: Double) {
