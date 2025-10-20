@@ -15,10 +15,11 @@ protocol TrackDetailViewControllerDelegate: AnyObject {
 
 final class TrackDetailViewController: UITableViewController {
 
-    private let track: Track
+    private var track: Track
     private let audioPlayer: AudioPlayerService
     private let clipService: ClipService
     private let settings: SettingsService
+    private let library: LibraryService
     
     weak var delegate: TrackDetailViewControllerDelegate?
 
@@ -33,11 +34,12 @@ final class TrackDetailViewController: UITableViewController {
     private var isPlaying: Bool = false
     private var isPaused: Bool = false
 
-    init(track: Track, audioPlayer: AudioPlayerService, clipService: ClipService, settings: SettingsService) {
+    init(track: Track, audioPlayer: AudioPlayerService, clipService: ClipService, settings: SettingsService, library: LibraryService) {
         self.track = track
         self.audioPlayer = audioPlayer
         self.clipService = clipService
         self.settings = settings
+        self.library = library
         super.init(style: .insetGrouped)
         self.title = track.title
     }
@@ -70,9 +72,22 @@ final class TrackDetailViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Reload track from library to get latest practice sets
+        if let updatedTrack = try? library.loadTrack(id: track.id) {
+            track = updatedTrack
+            title = track.title
+            loadClips()
+        }
+        
         // Refresh Start Routine cell subtitle with current settings
         if let actionsSection = Section.allCases.firstIndex(of: .actions) {
             tableView.reloadSections(IndexSet(integer: actionsSection), with: .none)
+        }
+        
+        // Refresh practice sets section to show any new sets
+        if let practiceSetsSection = Section.allCases.firstIndex(of: .practiceSets) {
+            tableView.reloadSections(IndexSet(integer: practiceSetsSection), with: .none)
         }
     }
     

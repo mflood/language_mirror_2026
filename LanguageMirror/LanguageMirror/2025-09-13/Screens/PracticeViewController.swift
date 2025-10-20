@@ -87,7 +87,6 @@ final class PracticeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Practice"
         view.backgroundColor = AppColors.calmBackground
 
         setupUI()
@@ -95,8 +94,18 @@ final class PracticeViewController: UIViewController {
         restoreLastTrackOrPickFirst()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Hide navigation bar since we use a custom headerView
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        // Show navigation bar when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         
         // Stop playback when navigating away from Practice screen
         // This prevents edge cases where audio continues playing for a different track
@@ -601,12 +610,22 @@ final class PracticeViewController: UIViewController {
     private func updateSaveDiscardButtons() {
         let shouldShow = hasUnsavedChanges
         
+        // When showing buttons, unhide them BEFORE animating alpha
+        // (hidden views don't render, so alpha animation has no effect)
+        if shouldShow {
+            saveButton.isHidden = false
+            discardButton.isHidden = false
+        }
+        
         UIView.animate(withDuration: 0.3) {
             self.saveButton.alpha = shouldShow ? 1.0 : 0.0
             self.discardButton.alpha = shouldShow ? 1.0 : 0.0
         } completion: { _ in
-            self.saveButton.isHidden = !shouldShow
-            self.discardButton.isHidden = !shouldShow
+            // When hiding buttons, set isHidden AFTER animation completes
+            if !shouldShow {
+                self.saveButton.isHidden = true
+                self.discardButton.isHidden = true
+            }
         }
     }
     
@@ -758,8 +777,24 @@ final class PracticeViewController: UIViewController {
             if let existing = currentSession {
                 session = existing
                 print("  Using existing session: \(existing.id)")
+                
+                // Convert session's currentClipIndex (which is in workingClips) to drillClips index
+                if existing.currentClipIndex < workingClips.count {
+                    let currentClip = workingClips[existing.currentClipIndex]
+                    if let drillIndex = drillClips.firstIndex(where: { $0.id == currentClip.id }) {
+                        session?.currentClipIndex = drillIndex
+                        print("  Converted workingClips index \(existing.currentClipIndex) to drillClips index \(drillIndex)")
+                    } else {
+                        // Current clip is not a drill, start from first drill
+                        session?.currentClipIndex = 0
+                        print("  Current clip is not a drill, starting from first drill")
+                    }
+                } else {
+                    session?.currentClipIndex = 0
+                }
             } else {
                 session = try practiceService.createSession(practiceSet: set, packId: track.packId, trackId: track.id)
+                session?.currentClipIndex = 0
                 currentSession = session
                 print("  Created new session: \(session?.id ?? "nil")")
             }
@@ -821,16 +856,38 @@ final class PracticeViewController: UIViewController {
     }
     
     @objc private func handleClipDidChange(_ notification: Notification) {
-        guard let clipIndex = notification.userInfo?["clipIndex"] as? Int else { return }
+        // IMPORTANT: Index Management Strategy
+        // - Table view displays ALL clips (drill, skip, noise) from workingClips array
+        // - Audio player only receives/plays drill clips (filtered array)
+        // - Player tracks indices in the filtered drill clips array
+        // - Session needs to track indices in the full workingClips array for UI consistency
+        // - Solution: Use clipId from notification to find actual index in workingClips
+        
+        guard let clipId = notification.userInfo?["clipId"] as? String else { return }
+        
+        // Find the index of this clip in the full workingClips array
+        guard let actualIndex = workingClips.firstIndex(where: { $0.id == clipId }) else {
+            print("⚠️ [PracticeViewController] Could not find clip with ID: \(clipId)")
+            return
+        }
+        
+        // Update session to reflect actual index in workingClips
+        if var session = currentSession {
+            session.currentClipIndex = actualIndex
+            do {
+                try practiceService.saveSession(session)
+                currentSession = session
+            } catch {
+                print("⚠️ [PracticeViewController] Failed to update session: \(error)")
+            }
+        }
         
         // Reload cells to update visual state
         tableView.reloadData()
         
-        // Scroll to current clip
-        if clipIndex < workingClips.count {
-            let indexPath = IndexPath(row: clipIndex, section: 0)
-            tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
-        }
+        // Scroll to current clip using actual index
+        let indexPath = IndexPath(row: actualIndex, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
         
         updateProgressLabel()
         validateMergeButton()
@@ -938,7 +995,7 @@ final class PracticeViewController: UIViewController {
         
         guard let session = currentSession,
               session.currentClipIndex > 0,
-              session.currentClipIndex < allClips.count else { return }
+              session.currentClipIndex < workingClips.count else { return }
         
         mergeClipUp(at: session.currentClipIndex)
     }
@@ -1056,9 +1113,29 @@ extension PracticeViewController: UITableViewDelegate {
         
         guard var session = currentSession else { return }
         
-        // Jump to selected clip
-        session.currentClipIndex = indexPath.row
-        session.currentLoopCount = 0  // Start from saved state if exists
+        let selectedClip = workingClips[indexPath.row]
+        
+        // If user taps a non-drill clip, find the next drill clip
+        if selectedClip.kind != .drill {
+            // Find next drill clip after the selected index
+            if let nextDrillIndex = workingClips[indexPath.row...].firstIndex(where: { $0.kind == .drill }) {
+                session.currentClipIndex = nextDrillIndex
+                presentAlert("Skipping to Drill", "Selected clip is marked as \(selectedClip.kind.label). Jumping to next drill clip.")
+            } else if let firstDrillIndex = workingClips.firstIndex(where: { $0.kind == .drill }) {
+                // No drill after this point, wrap to first drill
+                session.currentClipIndex = firstDrillIndex
+                presentAlert("Skipping to Drill", "Selected clip is marked as \(selectedClip.kind.label). Jumping to first drill clip.")
+            } else {
+                // No drills at all
+                presentAlert("No Drills", "This track has no drill clips to practice")
+                return
+            }
+        } else {
+            // Jump to selected drill clip
+            session.currentClipIndex = indexPath.row
+        }
+        
+        session.currentLoopCount = 0  // Reset loop count for new clip
         
         do {
             try practiceService.saveSession(session)

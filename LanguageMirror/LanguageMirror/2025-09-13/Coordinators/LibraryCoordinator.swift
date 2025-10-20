@@ -37,7 +37,8 @@ final class LibraryCoordinator: Coordinator {
             track: track,
             audioPlayer: container.audioPlayer,
             clipService: container.clipService,
-            settings: container.settings
+            settings: container.settings,
+            library: container.libraryService
         )
         detail.delegate = self
         navigationController.pushViewController(detail, animated: true)
@@ -50,7 +51,8 @@ extension LibraryCoordinator: LibraryViewControllerDelegate {
             track: track,
             audioPlayer: container.audioPlayer,
             clipService: container.clipService,
-            settings: container.settings
+            settings: container.settings,
+            library: container.libraryService
         )
         detail.delegate = self
         navigationController.pushViewController(detail, animated: true)
