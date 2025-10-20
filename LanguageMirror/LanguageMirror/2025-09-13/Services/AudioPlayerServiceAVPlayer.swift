@@ -191,12 +191,33 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                interGap: TimeInterval,
                                prerollMs: Int,
                                session: PracticeSession?) throws {
+        print("🎵 [AudioPlayerServiceAVPlayer] startSegments called:")
+        print("  Track filename: \(track.filename)")
+        print("  Track ID: \(track.id)")
+        print("  Pack ID: \(track.packId)")
+        print("  Clips count: \(clips.count)")
+        print("  Global repeats: \(globalRepeats)")
+        print("  Gap seconds: \(gap)")
+        print("  Inter-clip gap seconds: \(interGap)")
+        print("  Preroll ms: \(prerollMs)")
+        
+        // Log all clip times
+        for (index, clip) in clips.enumerated() {
+            print("  Clip[\(index)]: startMs=\(clip.startMs), endMs=\(clip.endMs), kind=\(clip.kind.rawValue)")
+        }
+        
         stop() // cleanup
 
+        print("  Resolving audio file URL...")
         guard let url = resolveURL(for: track) else {
+            print("❌ [AudioPlayerServiceAVPlayer] Audio file not found: \(track.filename)")
             throw AudioPlayerError.fileNotFound(filename: track.filename)
         }
+        print("✅ [AudioPlayerServiceAVPlayer] Resolved URL: \(url.path)")
+        
+        print("  Configuring audio session...")
         try configureSession()
+        print("✅ [AudioPlayerServiceAVPlayer] Audio session configured")
 
         currentTrack = track
         trackURL = url
@@ -211,12 +232,16 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         self.foreverMode = session?.foreverMode ?? false
         if let session = session {
             currentSegmentIndex = session.currentClipIndex
+            print("  Using session clip index: \(currentSegmentIndex)")
         } else {
             currentSegmentIndex = 0
+            print("  Starting at clip index: 0")
         }
 
+        print("  Creating AVPlayerItem with URL: \(url.path)")
         let item = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: item)
+        print("✅ [AudioPlayerServiceAVPlayer] AVPlayer created")
 
         // Periodic observer to detect end-of-clip
         addPeriodicObserver()
@@ -225,49 +250,75 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         setupRemoteCommands()                       // Media Player
         
         // Start first clip
+        print("  Starting first segment...")
         startCurrentSegment()
     }
 
     private func startCurrentSegment() {
+        print("  🎬 [AudioPlayerServiceAVPlayer] startCurrentSegment - index: \(currentSegmentIndex)")
+        
         // Check bounds and handle forever mode
         if currentSegmentIndex < 0 || currentSegmentIndex >= clipsQueue.count {
+            print("    ⚠️ Clip index out of bounds: \(currentSegmentIndex) (queue size: \(clipsQueue.count))")
             // If forever mode and at end, loop back to first clip
             if foreverMode && !clipsQueue.isEmpty {
+                print("    Forever mode enabled, looping back to clip 0")
                 currentSegmentIndex = 0
             } else {
+                print("    Stopping playback (end of queue)")
                 stop()
                 return
             }
         }
         
         guard let player = player, let track = currentTrack else {
+            print("    ❌ Player or track is nil")
             stop(); return
         }
 
         let seg = clipsQueue[currentSegmentIndex]
+        print("    Clip[\(currentSegmentIndex)]: startMs=\(seg.startMs), endMs=\(seg.endMs)")
+        
+        // Get track duration for validation
+        let trackDurationMs = track.durationMs ?? Int.max
+        print("    Track duration: \(trackDurationMs)ms")
         
         // Validate clip times to prevent error -50
         guard seg.startMs >= 0, seg.endMs > seg.startMs else {
-            print("Invalid clip times: startMs=\(seg.startMs), endMs=\(seg.endMs)")
+            print("    ❌ Invalid clip times: startMs=\(seg.startMs), endMs=\(seg.endMs)")
             // Skip to next clip
             currentSegmentIndex += 1
             startCurrentSegment()
             return
         }
         
+        // Validate clip doesn't exceed track duration
+        if seg.endMs > trackDurationMs {
+            print("    ⚠️ Clip endMs (\(seg.endMs)) exceeds track duration (\(trackDurationMs)). Clamping to track duration.")
+        }
+        
+        // Clamp end time to track duration to prevent seeking beyond file
+        let clampedEndMs = min(seg.endMs, trackDurationMs)
+        
         // Determine total loops and restore progress if resuming session
         totalLoopsForCurrentClip = max(1, seg.repeats ?? globalRepeats)
         if let session = currentSession, session.currentClipIndex == currentSegmentIndex {
             currentSegmentRepeatsRemaining = totalLoopsForCurrentClip - session.currentLoopCount
+            print("    Resuming session: loops remaining=\(currentSegmentRepeatsRemaining)")
         } else {
             currentSegmentRepeatsRemaining = totalLoopsForCurrentClip
+            print("    Starting fresh: total loops=\(totalLoopsForCurrentClip)")
         }
 
         currentSegmentStart = CMTime(seconds: Double(seg.startMs) / 1000.0, preferredTimescale: 600)
-        currentSegmentEnd   = CMTime(seconds: Double(seg.endMs)   / 1000.0, preferredTimescale: 600)
+        currentSegmentEnd   = CMTime(seconds: Double(clampedEndMs)   / 1000.0, preferredTimescale: 600)
+        
+        print("    CMTime start: \(currentSegmentStart.seconds)s")
+        print("    CMTime end: \(currentSegmentEnd.seconds)s")
 
         let seekStart = max(0, currentSegmentStart.seconds - prerollSeconds)
         let seekTime = CMTime(seconds: seekStart, preferredTimescale: 600)
+        print("    Seek time (with preroll): \(seekTime.seconds)s")
         
         // Calculate speed for current loop
         let currentLoop = totalLoopsForCurrentClip - currentSegmentRepeatsRemaining
@@ -279,10 +330,14 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             maxSpeed: settings.maxSpeed,
             modeN: settings.speedModeN
         )
+        print("    Speed: \(speed)x")
         
         // Seek precisely to start and play
-        player.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
+        print("    Seeking to \(seekTime.seconds)s...")
+        player.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] finished in
             guard let self else { return }
+            print("    ✅ Seek completed (finished: \(finished))")
+            print("    Setting playback rate to \(speed)x and starting...")
             self.player?.rate = speed
             self.isPlaying = true
             
@@ -297,7 +352,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                     )
                     self.currentSession = session
                 } catch {
-                    print("Failed to update practice session: \(error)")
+                    print("    ⚠️ Failed to update practice session: \(error)")
                 }
             }
             
@@ -324,6 +379,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             )
             
             NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)
+            print("    ✅ Clip playback started")
         }
     }
 
@@ -475,6 +531,8 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private func configureSession() throws {
         let session = AVAudioSession.sharedInstance()
         
+        print("  🔊 [AudioPlayerServiceAVPlayer] Configuring audio session...")
+        
         // Configure audio session for background playback and media controls
         // Read duck others preference from settings
         let duck = (AppContainer().settings.duckOthers)
@@ -483,20 +541,44 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             opts.insert(.duckOthers) 
         }
         
+        print("    Current category: \(session.category.rawValue)")
+        print("    Current mode: \(session.mode.rawValue)")
+        print("    Target category: playback")
+        print("    Target mode: spokenAudio")
+        print("    Duck others: \(duck)")
+        
         // Only reconfigure if needed (avoid conflicts with multiple instances)
         let needsConfig = session.category != .playback || 
                          session.mode != .spokenAudio ||
                          session.categoryOptions != opts
         
         if needsConfig {
+            print("    Reconfiguring audio session...")
             // Use .playback category to enable background audio and lock screen controls
             // Mode .spokenAudio is better for language learning content
-            try session.setCategory(.playback, mode: .spokenAudio, options: opts)
+            do {
+                try session.setCategory(.playback, mode: .spokenAudio, options: opts)
+                print("    ✅ Audio session category and mode set")
+            } catch {
+                print("    ❌ Failed to set audio session category: \(error)")
+                throw error
+            }
+        } else {
+            print("    Audio session already configured correctly")
         }
         
         // Activate session with option to not interrupt other audio if already active
         if !session.isOtherAudioPlaying {
-            try session.setActive(true, options: [])
+            print("    Activating audio session...")
+            do {
+                try session.setActive(true, options: [])
+                print("    ✅ Audio session activated")
+            } catch {
+                print("    ❌ Failed to activate audio session: \(error)")
+                throw error
+            }
+        } else {
+            print("    Skipping activation (other audio is playing)")
         }
     }
 
@@ -504,11 +586,18 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         let filename = track.filename
         let ext = (filename as NSString).pathExtension
         let base = (filename as NSString).deletingPathExtension
+        
+        print("  🔍 [AudioPlayerServiceAVPlayer] Resolving URL for: \(filename)")
+        print("    Base: \(base)")
+        print("    Extension: \(ext)")
 
         // 1) Bundle
+        print("    Checking Bundle...")
         if !base.isEmpty, let u = Bundle.main.url(forResource: base, withExtension: ext.isEmpty ? nil : ext) {
+            print("    ✅ Found in Bundle: \(u.path)")
             return u
         }
+        print("    ❌ Not found in Bundle")
 
         // 2) Documents/LanguageMirror/library/packs/<track.packId>/tracks/<track.id>/<filename>
         if let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -521,17 +610,24 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                 .appendingPathComponent(track.id, isDirectory: true)
                 .appendingPathComponent(filename)
 
+            print("    Checking Documents/LanguageMirror path: \(inTrackDir.path)")
             if FileManager.default.fileExists(atPath: inTrackDir.path) {
+                print("    ✅ Found in Documents/LanguageMirror: \(inTrackDir.path)")
                 return inTrackDir
             }
+            print("    ❌ Not found in Documents/LanguageMirror")
 
             // 3) Documents root fallback
             let inDocs = docs.appendingPathComponent(filename)
+            print("    Checking Documents root: \(inDocs.path)")
             if FileManager.default.fileExists(atPath: inDocs.path) {
+                print("    ✅ Found in Documents root: \(inDocs.path)")
                 return inDocs
             }
+            print("    ❌ Not found in Documents root")
         }
 
+        print("    ❌ File not found in any location")
         return nil
     }
     

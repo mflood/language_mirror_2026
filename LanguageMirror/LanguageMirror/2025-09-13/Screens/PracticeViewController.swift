@@ -341,7 +341,7 @@ final class PracticeViewController: UIViewController {
                 finalSet = firstSet
             } else {
                 // No practice sets exist, create a default one
-                finalSet = PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
+                finalSet = PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0, trackDurationMs: t.durationMs)
             }
             
             let session = try? self.practiceService.loadSession(packId: packId, trackId: trackId)
@@ -367,7 +367,10 @@ final class PracticeViewController: UIViewController {
         
         if hasClips {
             tableView.reloadData()
-            scrollToCurrentClipIfNeeded()
+            // Delay scroll to ensure table view has processed the reload
+            DispatchQueue.main.async { [weak self] in
+                self?.scrollToCurrentClipIfNeeded()
+            }
         } else {
             emptyStateView.configure(
                 icon: "waveform.slash",
@@ -461,7 +464,12 @@ final class PracticeViewController: UIViewController {
     private func scrollToCurrentClipIfNeeded() {
         guard let session = currentSession,
               !workingClips.isEmpty,
-              session.currentClipIndex < workingClips.count else { return }
+              session.currentClipIndex < workingClips.count,
+              tableView.numberOfRows(inSection: 0) > 0,
+              session.currentClipIndex < tableView.numberOfRows(inSection: 0) else { 
+            print("  ⚠️ [PracticeViewController] Cannot scroll - session: \(currentSession != nil), clips: \(workingClips.count), tableRows: \(tableView.numberOfRows(inSection: 0))")
+            return 
+        }
         
         let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
         tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
@@ -708,11 +716,21 @@ final class PracticeViewController: UIViewController {
     }
     
     private func startPractice() {
-        guard let track = selectedTrack, let set = practiceSet, !workingClips.isEmpty else { return }
+        guard let track = selectedTrack, let set = practiceSet, !workingClips.isEmpty else {
+            print("⚠️ [PracticeViewController] startPractice: guard failed - track=\(selectedTrack != nil), set=\(practiceSet != nil), workingClips.isEmpty=\(workingClips.isEmpty)")
+            return
+        }
+        
+        print("▶️ [PracticeViewController] startPractice called:")
+        print("  Track: \(track.title) (filename: \(track.filename))")
+        print("  All working clips count: \(workingClips.count)")
         
         // Filter to only play drill clips
         let drillClips = workingClips.filter { $0.kind == .drill }
+        print("  Drill clips count after filter: \(drillClips.count)")
+        
         guard !drillClips.isEmpty else {
+            print("⚠️ [PracticeViewController] No drill clips found")
             presentAlert("No Drills", "This track has no drill clips to practice")
             return
         }
@@ -720,19 +738,33 @@ final class PracticeViewController: UIViewController {
         // Validate clip times
         let invalidClips = drillClips.filter { $0.startMs < 0 || $0.endMs <= $0.startMs }
         guard invalidClips.isEmpty else {
+            print("❌ [PracticeViewController] Invalid clips found: \(invalidClips.count)")
+            for clip in invalidClips {
+                print("  Invalid clip: startMs=\(clip.startMs), endMs=\(clip.endMs)")
+            }
             presentAlert("Invalid Clips", "Some drill clips have invalid time ranges. Please edit segments.")
             return
         }
+        
+        print("  Playback settings:")
+        print("    globalRepeats: \(settings.globalRepeats)")
+        print("    gapSeconds: \(settings.gapSeconds)")
+        print("    interSegmentGapSeconds: \(settings.interSegmentGapSeconds)")
+        print("    prerollMs: \(settings.prerollMs)")
         
         do {
             // Create or load session
             var session: PracticeSession?
             if let existing = currentSession {
                 session = existing
+                print("  Using existing session: \(existing.id)")
             } else {
                 session = try practiceService.createSession(practiceSet: set, packId: track.packId, trackId: track.id)
                 currentSession = session
+                print("  Created new session: \(session?.id ?? "nil")")
             }
+            
+            print("  Calling player.play() with \(drillClips.count) drill clips...")
             
             // Start playback with session (only drill clips are played)
             if let playerWithSession = player as? AudioPlayerServiceAVPlayer {
@@ -756,10 +788,13 @@ final class PracticeViewController: UIViewController {
                 )
             }
             
+            print("✅ [PracticeViewController] Playback started successfully")
+            
             isPlaying = true
             isPaused = false
             updatePlayPauseButton()
         } catch {
+            print("❌ [PracticeViewController] Playback error: \(error.localizedDescription)")
             presentAlert("Playback Error", error.localizedDescription)
         }
     }
@@ -911,6 +946,24 @@ final class PracticeViewController: UIViewController {
     // MARK: - Public Methods
     
     func loadTrackAndPracticeSet(track: Track, practiceSet: PracticeSet) {
+        // Log incoming track and practice set
+        print("🎯 [PracticeViewController] loadTrackAndPracticeSet called:")
+        print("  Track ID: \(track.id)")
+        print("  Track Title: \(track.title)")
+        print("  Track Filename: \(track.filename)")
+        print("  Track Pack ID: \(track.packId)")
+        print("  Track Duration: \(track.durationMs ?? -1)ms")
+        print("  Practice Set ID: \(practiceSet.id)")
+        print("  Practice Set Title: \(practiceSet.title ?? "nil")")
+        print("  Practice Set Clips Count: \(practiceSet.clips.count)")
+        
+        // Log drill clips
+        let drillClips = practiceSet.clips.filter { $0.kind == .drill }
+        print("  Drill clips count: \(drillClips.count)")
+        for (index, clip) in drillClips.enumerated() {
+            print("  DrillClip[\(index)]: startMs=\(clip.startMs), endMs=\(clip.endMs)")
+        }
+        
         // Set the track and practice set ID
         selectedPracticeSetId = practiceSet.id
         selectedTrack = track  // This will trigger refreshDataAsync

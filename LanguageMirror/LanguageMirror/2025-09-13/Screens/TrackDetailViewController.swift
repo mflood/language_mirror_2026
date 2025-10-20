@@ -107,7 +107,7 @@ final class TrackDetailViewController: UITableViewController {
         do {
             
             if track.practiceSets.isEmpty {
-                clipMap = PracticeSet.fullTrackFactory(trackId: track.id, displayOrder: 0)
+                clipMap = PracticeSet.fullTrackFactory(trackId: track.id, displayOrder: 0, trackDurationMs: track.durationMs)
             } else {
                 clipMap = track.practiceSets[0]
             }

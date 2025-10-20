@@ -59,6 +59,21 @@ extension LibraryCoordinator: LibraryViewControllerDelegate {
 
 extension LibraryCoordinator: TrackDetailViewControllerDelegate {
     func trackDetailViewController(_ vc: TrackDetailViewController, didSelectPracticeSet practiceSet: PracticeSet, forTrack track: Track) {
+        // Log track details
+        print("📚 [LibraryCoordinator] Selected practice set for track:")
+        print("  Track ID: \(track.id)")
+        print("  Track Title: \(track.title)")
+        print("  Track Filename: \(track.filename)")
+        print("  Track Pack ID: \(track.packId)")
+        print("  Practice Set ID: \(practiceSet.id)")
+        print("  Practice Set Title: \(practiceSet.title ?? "nil")")
+        print("  Practice Set Clips Count: \(practiceSet.clips.count)")
+        
+        // Log each clip's details
+        for (index, clip) in practiceSet.clips.enumerated() {
+            print("  Clip[\(index)]: startMs=\(clip.startMs), endMs=\(clip.endMs), kind=\(clip.kind.rawValue), title=\(clip.title ?? "nil")")
+        }
+        
         // Push practice view onto Library nav stack for contextual navigation
         let practiceVC = PracticeViewController(
             settings: container.settings,

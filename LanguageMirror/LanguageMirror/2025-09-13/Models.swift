@@ -41,14 +41,16 @@ struct PracticeSet: Codable, Equatable {
     var title: String?
     var clips: [Clip]
     
-    static func fullTrackFactory(trackId: String, displayOrder: Int) -> PracticeSet {
+    static func fullTrackFactory(trackId: String, displayOrder: Int, trackDurationMs: Int? = nil) -> PracticeSet {
+        // Use actual track duration if provided, otherwise use a safe default
+        let endMs = trackDurationMs ?? 9999999
         return PracticeSet(
             id: UUID().uuidString,
             trackId: trackId,
             displayOrder: displayOrder,
             title: "Practice Set",
             clips: [
-                Clip(id: UUID().uuidString, startMs: 0, endMs: 9999999, kind: .drill, title: "Full Track", repeats: nil, startSpeed: nil, endSpeed: nil)
+                Clip(id: UUID().uuidString, startMs: 0, endMs: endMs, kind: .drill, title: "Full Track", repeats: nil, startSpeed: nil, endSpeed: nil)
             ]
         )
     }
