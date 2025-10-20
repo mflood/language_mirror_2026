@@ -120,60 +120,99 @@ class ShareViewController: UIViewController {
     
     private func loadAudioFile(from itemProvider: NSItemProvider) {
         itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.audio.identifier) { [weak self] url, error in
-            DispatchQueue.main.async {
-                if let error = error {
+            // IMPORTANT: Handle file immediately - it's a temp file that iOS may delete
+            
+            if let error = error {
+                DispatchQueue.main.async {
                     self?.showError("Failed to access file: \(error.localizedDescription)")
-                    return
                 }
-                
-                guard let url = url else {
+                return
+            }
+            
+            guard let url = url else {
+                DispatchQueue.main.async {
                     self?.showError("Invalid file URL")
-                    return
                 }
+                return
+            }
+            
+            // Copy the file NOW (on background thread) before iOS deletes the temp file
+            do {
+                print("[ShareExtension] Received temp file: \(url.path)")
+                print("[ShareExtension] File exists: \(FileManager.default.fileExists(atPath: url.path))")
                 
-                self?.handleAudioFile(at: url)
+                let sourceName = url.lastPathComponent
+                _ = try SharedImportManager.enqueuePendingImport(sourceURL: url, sourceName: sourceName)
+                
+                // Success - update UI on main thread
+                DispatchQueue.main.async {
+                    self?.showSuccess()
+                }
+            } catch SharedImportError.appGroupNotConfigured {
+                DispatchQueue.main.async {
+                    self?.showError("App Group not configured. Please rebuild.")
+                }
+            } catch SharedImportError.invalidFileURL {
+                DispatchQueue.main.async {
+                    self?.showError("File not accessible.")
+                }
+            } catch SharedImportError.copyFailed {
+                DispatchQueue.main.async {
+                    self?.showError("Failed to copy file.")
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self?.showError("Error: \(error.localizedDescription)")
+                }
             }
         }
     }
     
     private func loadFileURL(from itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { [weak self] (item, error) in
-            DispatchQueue.main.async {
-                if let error = error {
+            if let error = error {
+                DispatchQueue.main.async {
                     self?.showError("Failed to access file: \(error.localizedDescription)")
-                    return
                 }
-                
-                guard let url = item as? URL else {
-                    self?.showError("Invalid file URL")
-                    return
-                }
-                
-                self?.handleAudioFile(at: url)
+                return
             }
-        }
-    }
-    
-    private func handleAudioFile(at url: URL) {
-        do {
-            // Debug logging
-            print("[ShareExtension] Attempting to import file: \(url.path)")
-            print("[ShareExtension] File exists: \(FileManager.default.fileExists(atPath: url.path))")
             
-            // Queue the file for import
-            let sourceName = url.lastPathComponent
-            _ = try SharedImportManager.enqueuePendingImport(sourceURL: url, sourceName: sourceName)
+            guard let url = item as? URL else {
+                DispatchQueue.main.async {
+                    self?.showError("Invalid file URL")
+                }
+                return
+            }
             
-            // Show success
-            showSuccess()
-        } catch SharedImportError.appGroupNotConfigured {
-            showError("App Group not configured. Please rebuild the app.")
-        } catch SharedImportError.invalidFileURL {
-            showError("File not accessible. Try a different file.")
-        } catch SharedImportError.copyFailed {
-            showError("Failed to copy file. Check permissions.")
-        } catch {
-            showError("Error: \(error.localizedDescription)")
+            // Handle file immediately
+            do {
+                print("[ShareExtension] Received file URL: \(url.path)")
+                print("[ShareExtension] File exists: \(FileManager.default.fileExists(atPath: url.path))")
+                
+                let sourceName = url.lastPathComponent
+                _ = try SharedImportManager.enqueuePendingImport(sourceURL: url, sourceName: sourceName)
+                
+                // Success - update UI on main thread
+                DispatchQueue.main.async {
+                    self?.showSuccess()
+                }
+            } catch SharedImportError.appGroupNotConfigured {
+                DispatchQueue.main.async {
+                    self?.showError("App Group not configured. Please rebuild.")
+                }
+            } catch SharedImportError.invalidFileURL {
+                DispatchQueue.main.async {
+                    self?.showError("File not accessible.")
+                }
+            } catch SharedImportError.copyFailed {
+                DispatchQueue.main.async {
+                    self?.showError("Failed to copy file.")
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self?.showError("Error: \(error.localizedDescription)")
+                }
+            }
         }
     }
     
