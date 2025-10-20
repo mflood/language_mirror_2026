@@ -39,6 +39,12 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private let pollInterval = CMTime(seconds: 0.01, preferredTimescale: 600) // 10ms
     private let epsilon: Double = 0.005 // 5ms
 
+    // Practice session tracking
+    private let practiceService: PracticeService
+    private let settings: SettingsService
+    private var currentSession: PracticeSession?
+    private var totalLoopsForCurrentClip: Int = 0
+    private var foreverMode: Bool = false
     
     // MARK: - Media Player
     
@@ -47,6 +53,14 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     
     // Interruption state
     private var shouldResumeAfterInterruption = false
+    
+    // MARK: - Init
+    
+    init(practiceService: PracticeService, settings: SettingsService) {
+        self.practiceService = practiceService
+        self.settings = settings
+        super.init()
+    }
     
     // MARK: - Public API
 
@@ -66,7 +80,24 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                           globalRepeats: globalRepeats,
                           gap: gapSeconds,
                           interGap: interClipGapSeconds,
-                          prerollMs: prerollMs)
+                          prerollMs: prerollMs,
+                          session: nil)
+    }
+    
+    func play(track: Track,
+              clips: [Clip],
+              globalRepeats: Int,
+              gapSeconds: TimeInterval,
+              interClipGapSeconds: TimeInterval,
+              prerollMs: Int,
+              session: PracticeSession?) throws {
+        try startSegments(track: track,
+                          clips: clips,
+                          globalRepeats: globalRepeats,
+                          gap: gapSeconds,
+                          interGap: interClipGapSeconds,
+                          prerollMs: prerollMs,
+                          session: session)
     }
 
     func pause() {
@@ -96,6 +127,8 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         clipsQueue = []
         currentTrack = nil
         trackURL = nil
+        currentSession = nil
+        foreverMode = false
 
         NotificationCenter.default.post(name: .AudioPlayerDidStop, object: nil)
     }
@@ -156,7 +189,8 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                globalRepeats: Int,
                                gap: TimeInterval,
                                interGap: TimeInterval,
-                               prerollMs: Int) throws {
+                               prerollMs: Int,
+                               session: PracticeSession?) throws {
         stop() // cleanup
 
         guard let url = resolveURL(for: track) else {
@@ -171,7 +205,15 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         self.gapSeconds = max(0, gap)
         self.interClipGapSeconds = max(0, interGap)
         self.prerollSeconds = max(0, Double(prerollMs) / 1000.0)
-        currentSegmentIndex = 0
+        
+        // Practice session handling
+        self.currentSession = session
+        self.foreverMode = session?.foreverMode ?? false
+        if let session = session {
+            currentSegmentIndex = session.currentClipIndex
+        } else {
+            currentSegmentIndex = 0
+        }
 
         let item = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: item)
@@ -187,16 +229,30 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     }
 
     private func startCurrentSegment() {
-        guard currentSegmentIndex >= 0, currentSegmentIndex < clipsQueue.count else {
-            stop()
-            return
+        // Check bounds and handle forever mode
+        if currentSegmentIndex < 0 || currentSegmentIndex >= clipsQueue.count {
+            // If forever mode and at end, loop back to first clip
+            if foreverMode && !clipsQueue.isEmpty {
+                currentSegmentIndex = 0
+            } else {
+                stop()
+                return
+            }
         }
+        
         guard let player = player, let track = currentTrack else {
             stop(); return
         }
 
         let seg = clipsQueue[currentSegmentIndex]
-        currentSegmentRepeatsRemaining = max(1, seg.repeats ?? globalRepeats)
+        
+        // Determine total loops and restore progress if resuming session
+        totalLoopsForCurrentClip = max(1, seg.repeats ?? globalRepeats)
+        if let session = currentSession, session.currentClipIndex == currentSegmentIndex {
+            currentSegmentRepeatsRemaining = totalLoopsForCurrentClip - session.currentLoopCount
+        } else {
+            currentSegmentRepeatsRemaining = totalLoopsForCurrentClip
+        }
 
         currentSegmentStart = CMTime(seconds: Double(seg.startMs) / 1000.0, preferredTimescale: 600)
         currentSegmentEnd   = CMTime(seconds: Double(seg.endMs)   / 1000.0, preferredTimescale: 600)
@@ -204,11 +260,37 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         let seekStart = max(0, currentSegmentStart.seconds - prerollSeconds)
         let seekTime = CMTime(seconds: seekStart, preferredTimescale: 600)
         
+        // Calculate speed for current loop
+        let currentLoop = totalLoopsForCurrentClip - currentSegmentRepeatsRemaining
+        let speed = practiceService.calculateSpeed(
+            mode: settings.speedMode,
+            currentLoop: currentLoop,
+            totalLoops: totalLoopsForCurrentClip,
+            minSpeed: settings.minSpeed,
+            maxSpeed: settings.maxSpeed,
+            modeN: settings.speedModeN
+        )
+        
         // Seek precisely to start and play
         player.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
             guard let self else { return }
-            self.player?.play()
+            self.player?.rate = speed
             self.isPlaying = true
+            
+            // Update session with current speed
+            if var session = self.currentSession {
+                do {
+                    try self.practiceService.updateProgress(
+                        session: &session,
+                        clipIndex: self.currentSegmentIndex,
+                        loopCount: currentLoop,
+                        speed: speed
+                    )
+                    self.currentSession = session
+                } catch {
+                    print("Failed to update practice session: \(error)")
+                }
+            }
             
             // Update Now Playing for this clip (duration is clip length)
             let segDuration = self.currentSegmentEnd.seconds - self.currentSegmentStart.seconds // Media Player
@@ -216,7 +298,21 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                   segmentTitle: seg.title,
                                   elapsed: 0,
                                   duration: max(0.01, segDuration),
-                                  rate: 1.0) // Media Player
+                                  rate: speed) // Media Player
+            
+            // Post clip change notification
+            NotificationCenter.default.post(
+                name: .AudioPlayerClipDidChange,
+                object: nil,
+                userInfo: ["clipIndex": self.currentSegmentIndex, "clipId": seg.id]
+            )
+            
+            // Post speed change notification
+            NotificationCenter.default.post(
+                name: .AudioPlayerSpeedDidChange,
+                object: nil,
+                userInfo: ["speed": speed]
+            )
             
             NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)
         }
@@ -230,10 +326,46 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         let elapsed = max(0, time.seconds - currentSegmentStart.seconds)
         updateNowPlayingElapsed(elapsed)
         
+        // Post time update for UI (track time and clip bounds)
+        let trackTimeMs = Int(time.seconds * 1000)
+        let clipStartMs = Int(currentSegmentStart.seconds * 1000)
+        let clipEndMs = Int(currentSegmentEnd.seconds * 1000)
+        
+        NotificationCenter.default.post(
+            name: .AudioPlayerDidUpdateTime,
+            object: nil,
+            userInfo: [
+                "trackTimeMs": trackTimeMs,
+                "clipStartMs": clipStartMs,
+                "clipEndMs": clipEndMs
+            ]
+        )
+        
         if time.seconds >= currentSegmentEnd.seconds - epsilon {
             // Stop immediately to avoid hearing audio past end
             player?.pause()
             isPlaying = false
+
+            // Update practice session - increment play count for this clip
+            if var session = currentSession {
+                let seg = clipsQueue[currentSegmentIndex]
+                do {
+                    try practiceService.incrementClipPlayCount(session: &session, clipId: seg.id)
+                    currentSession = session
+                } catch {
+                    print("Failed to increment clip play count: \(error)")
+                }
+            }
+
+            // Post loop complete notification
+            NotificationCenter.default.post(
+                name: .AudioPlayerLoopDidComplete,
+                object: nil,
+                userInfo: [
+                    "clipIndex": self.currentSegmentIndex,
+                    "loopCount": self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining + 1
+                ]
+            )
 
             currentSegmentRepeatsRemaining -= 1
             if currentSegmentRepeatsRemaining > 0 {
@@ -243,10 +375,44 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
 
                     let seekStart = max(0, self.currentSegmentStart.seconds - self.prerollSeconds)
                     let seekTime = CMTime(seconds: seekStart, preferredTimescale: 600)
+                    
+                    // Calculate speed for next loop
+                    let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
+                    let speed = self.practiceService.calculateSpeed(
+                        mode: self.settings.speedMode,
+                        currentLoop: currentLoop,
+                        totalLoops: self.totalLoopsForCurrentClip,
+                        minSpeed: self.settings.minSpeed,
+                        maxSpeed: self.settings.maxSpeed,
+                        modeN: self.settings.speedModeN
+                    )
 
                     self.player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { _ in
-                        self.player?.play()
+                        self.player?.rate = speed
                         self.isPlaying = true
+                        
+                        // Update session with current loop and speed
+                        if var session = self.currentSession {
+                            do {
+                                try self.practiceService.updateProgress(
+                                    session: &session,
+                                    clipIndex: self.currentSegmentIndex,
+                                    loopCount: currentLoop,
+                                    speed: speed
+                                )
+                                self.currentSession = session
+                            } catch {
+                                print("Failed to update practice session: \(error)")
+                            }
+                        }
+                        
+                        // Post speed change notification
+                        NotificationCenter.default.post(
+                            name: .AudioPlayerSpeedDidChange,
+                            object: nil,
+                            userInfo: ["speed": speed]
+                        )
+                        
                         // reset elapsed for new loop
                         self.updateNowPlayingElapsed(0)
                         NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)

@@ -51,4 +51,8 @@ extension AudioPlayerService {
 public extension Notification.Name {
     static let AudioPlayerDidStart = Notification.Name("AudioPlayerDidStart")
     static let AudioPlayerDidStop  = Notification.Name("AudioPlayerDidStop")
+    static let AudioPlayerClipDidChange = Notification.Name("AudioPlayerClipDidChange")
+    static let AudioPlayerLoopDidComplete = Notification.Name("AudioPlayerLoopDidComplete")
+    static let AudioPlayerSpeedDidChange = Notification.Name("AudioPlayerSpeedDidChange")
+    static let AudioPlayerDidUpdateTime = Notification.Name("AudioPlayerDidUpdateTime")
 }

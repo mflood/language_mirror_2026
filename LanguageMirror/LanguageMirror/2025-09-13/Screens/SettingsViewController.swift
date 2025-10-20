@@ -20,6 +20,36 @@ final class SettingsViewController: UITableViewController {
 
     private enum Row: Int, CaseIterable {
         case repeats, gap, interGap, preroll, duck
+        
+        var title: String {
+            switch self {
+            case .repeats: return "Repeat Count"
+            case .gap: return "Gap Between Repeats"
+            case .interGap: return "Gap Between Segments"
+            case .preroll: return "Preroll Delay"
+            case .duck: return "Duck Other Audio"
+            }
+        }
+        
+        var iconName: String {
+            switch self {
+            case .repeats: return "arrow.clockwise.circle.fill"
+            case .gap: return "timer"
+            case .interGap: return "arrow.left.and.right"
+            case .preroll: return "play.circle.fill"
+            case .duck: return "speaker.wave.2.fill"
+            }
+        }
+        
+        var iconColor: UIColor {
+            switch self {
+            case .repeats: return .systemBlue
+            case .gap: return .systemGreen
+            case .interGap: return .systemPurple
+            case .preroll: return .systemOrange
+            case .duck: return .systemTeal
+            }
+        }
     }
 
     init(settings: SettingsService) {
@@ -30,35 +60,42 @@ final class SettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.backgroundColor = AppColors.primaryBackground
+        tableView.backgroundColor = AppColors.primaryBackground
+        tableView.register(SettingsCell.self, forCellReuseIdentifier: "settingsCell")
+        tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         configureControls()
     }
 
     private func configureControls() {
-        // Repeats
+        // Repeats stepper
         repeatsStepper.minimumValue = 1
         repeatsStepper.maximumValue = 20
         repeatsStepper.stepValue = 1
         repeatsStepper.value = Double(settings.globalRepeats)
+        repeatsStepper.tintColor = Row.repeats.iconColor
         repeatsStepper.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
 
-        // Gap
+        // Gap slider
         gapSlider.minimumValue = 0.0
         gapSlider.maximumValue = 2.0
         gapSlider.value = Float(settings.gapSeconds)
+        gapSlider.minimumTrackTintColor = Row.gap.iconColor
         gapSlider.addTarget(self, action: #selector(gapChanged), for: .valueChanged)
 
-        // Inter-segment gap
+        // Inter-segment gap slider
         interGapSlider.minimumValue = 0.0
         interGapSlider.maximumValue = 2.0
         interGapSlider.value = Float(settings.interSegmentGapSeconds)
+        interGapSlider.minimumTrackTintColor = Row.interGap.iconColor
         interGapSlider.addTarget(self, action: #selector(interGapChanged), for: .valueChanged)
 
-        // Preroll
+        // Preroll segmented control
         let ms = settings.prerollMs
         let idx = [0,100,200,300].firstIndex(of: max(0, min(ms, 300))) ?? 0
         prerollSeg.selectedSegmentIndex = idx
+        prerollSeg.selectedSegmentTintColor = Row.preroll.iconColor
         prerollSeg.addTarget(self, action: #selector(prerollChanged), for: .valueChanged)
     }
 
@@ -76,57 +113,86 @@ final class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var config = cell.defaultContentConfiguration()
-
-        switch Row(rawValue: indexPath.row)! {
-        case .repeats:
-            config.text = "Repeats (global N)"
-            config.secondaryText = "\(settings.globalRepeats)x"
-            cell.accessoryView = repeatsStepper
-
-        case .gap:
-            config.text = "Gap between repeats"
-            config.secondaryText = String(format: "%.1fs", settings.gapSeconds)
-            cell.accessoryView = gapSlider
-
-        case .interGap:
-            config.text = "Gap between segments"
-            config.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
-            cell.accessoryView = interGapSlider
-
-        case .preroll:
-            config.text = "Preroll"
-            config.secondaryText = "\(settings.prerollMs) ms"
-            cell.accessoryView = prerollSeg
-            
-            // cellForRowAt:
-        case .duck:
-            config.text = "Duck other audio"
-            let sw = UISwitch()
-            sw.isOn = settings.duckOthers
-            sw.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
-            cell.accessoryView = sw
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as? SettingsCell else {
+            return UITableViewCell()
         }
 
-        cell.selectionStyle = .none
-        cell.contentConfiguration = config
+        let row = Row(rawValue: indexPath.row)!
+
+        switch row {
+        case .repeats:
+            let value = "\(settings.globalRepeats)x"
+            cell.configure(
+                title: row.title,
+                value: value,
+                iconName: row.iconName,
+                iconColor: row.iconColor,
+                control: repeatsStepper
+            )
+
+        case .gap:
+            let value = String(format: "%.1f seconds", settings.gapSeconds)
+            cell.configure(
+                title: row.title,
+                value: value,
+                iconName: row.iconName,
+                iconColor: row.iconColor,
+                control: gapSlider
+            )
+
+        case .interGap:
+            let value = String(format: "%.1f seconds", settings.interSegmentGapSeconds)
+            cell.configure(
+                title: row.title,
+                value: value,
+                iconName: row.iconName,
+                iconColor: row.iconColor,
+                control: interGapSlider
+            )
+
+        case .preroll:
+            let value = "\(settings.prerollMs) ms"
+            cell.configure(
+                title: row.title,
+                value: value,
+                iconName: row.iconName,
+                iconColor: row.iconColor,
+                control: prerollSeg
+            )
+            
+        case .duck:
+            let sw = UISwitch()
+            sw.isOn = settings.duckOthers
+            sw.onTintColor = row.iconColor
+            sw.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
+            
+            let value = settings.duckOthers ? "Enabled" : "Disabled"
+            cell.configure(
+                title: row.title,
+                value: value,
+                iconName: row.iconName,
+                iconColor: row.iconColor,
+                control: sw
+            )
+        }
+
         return cell
     }
     
     private func updateSecondary(_ row: Row) {
         let indexPath = IndexPath(row: row.rawValue, section: 0)
-        guard let cell = tableView.cellForRow(at: indexPath),
-              var cfg = cell.contentConfiguration as? UIListContentConfiguration else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else { return }
 
+        let newValue: String
         switch row {
-        case .repeats:   cfg.secondaryText = "\(settings.globalRepeats)x"
-        case .gap:       cfg.secondaryText = String(format: "%.1fs", settings.gapSeconds)
-        case .interGap:  cfg.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
-        case .preroll:   cfg.secondaryText = "\(settings.prerollMs) ms"
-        case .duck:      break // no secondary text to update
+        case .repeats:   newValue = "\(settings.globalRepeats)x"
+        case .gap:       newValue = String(format: "%.1f seconds", settings.gapSeconds)
+        case .interGap:  newValue = String(format: "%.1f seconds", settings.interSegmentGapSeconds)
+        case .preroll:   newValue = "\(settings.prerollMs) ms"
+        case .duck:      newValue = settings.duckOthers ? "Enabled" : "Disabled"
         }
-        cell.contentConfiguration = cfg
+        
+        cell.updateValue(newValue, animated: true)
     }
     
     // MARK: - Actions
@@ -134,6 +200,10 @@ final class SettingsViewController: UITableViewController {
     @objc private func repeatsChanged() {
         settings.globalRepeats = Int(repeatsStepper.value)
         updateSecondary(.repeats)
+        
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
     }
 
     @objc private func gapChanged() {
@@ -142,6 +212,10 @@ final class SettingsViewController: UITableViewController {
         gapSlider.value = Float(stepped)
         settings.gapSeconds = Double(gapSlider.value)
         updateSecondary(.gap)
+        
+        // Haptic feedback
+        let generator = UISelectionFeedbackGenerator()
+        generator.selectionChanged()
     }
 
     @objc private func interGapChanged() {
@@ -149,17 +223,30 @@ final class SettingsViewController: UITableViewController {
         interGapSlider.value = Float(stepped)
         settings.interSegmentGapSeconds = Double(interGapSlider.value)
         updateSecondary(.interGap)
+        
+        // Haptic feedback
+        let generator = UISelectionFeedbackGenerator()
+        generator.selectionChanged()
     }
 
     @objc private func prerollChanged() {
         let values = [0, 100, 200, 300]
         settings.prerollMs = values[prerollSeg.selectedSegmentIndex]
         updateSecondary(.preroll)
+        
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
     }
 
     
     @objc private func duckToggled(_ sw: UISwitch) {
         settings.duckOthers = sw.isOn
+        updateSecondary(.duck)
+        
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
     }
     
     private func reload(_ row: Row) {
@@ -172,6 +259,28 @@ final class SettingsViewController: UITableViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadRows(at: [IndexPath(row: row.rawValue, section: 0)], with: .none)
+        }
+    }
+    
+    // MARK: - Table View Height
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 84
+    }
+    
+    // MARK: - Trait Collection
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            // Update colors for dark mode transition
+            view.backgroundColor = AppColors.primaryBackground
+            tableView.backgroundColor = AppColors.primaryBackground
         }
     }
 

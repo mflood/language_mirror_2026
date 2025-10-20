@@ -12,6 +12,7 @@ final class LibraryServiceJSON: LibraryService {
     private let fm = FileManager.default
     private let base: URL
     private let indexURL: URL
+    private let practiceService: PracticeService?
 
     private struct Index: Codable { 
         var packs: [Pack] = []
@@ -22,10 +23,11 @@ final class LibraryServiceJSON: LibraryService {
 
     private var cache: Index = .init()
 
-    init() {
+    init(practiceService: PracticeService? = nil) {
         let docs = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
         base = docs.appendingPathComponent("LanguageMirror/library", isDirectory: true)
         indexURL = base.appendingPathComponent("library.json")
+        self.practiceService = practiceService
 
         try? fm.createDirectory(at: base, withIntermediateDirectories: true)
         loadIndex()
@@ -142,6 +144,33 @@ final class LibraryServiceJSON: LibraryService {
         NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
     }
     
+    func deletePack(id: String) throws {
+        guard let idx = cache.packs.firstIndex(where: { $0.id == id }) else {
+            throw LibraryError.notFound
+        }
+        
+        // Delete all practice sessions for tracks in this pack
+        let pack = cache.packs[idx]
+        do {
+            try practiceService?.deleteSessionsForPack(packId: id)
+        } catch {
+            print("Failed to delete practice sessions for pack \(id): \(error)")
+        }
+        
+        // Delete audio files for all tracks in this pack
+        for track in pack.tracks {
+            let trackFolder = trackFolder(forPackId: id, forTrackId: track.id)
+            if fm.fileExists(atPath: trackFolder.path) {
+                try? fm.removeItem(at: trackFolder)
+            }
+        }
+        
+        // Remove pack from cache
+        cache.packs.remove(at: idx)
+        saveIndex()
+        NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
+    }
+    
     // MARK: - Track Methods
     
     func listTracks(in packId: String) -> [Track] {
@@ -195,6 +224,35 @@ final class LibraryServiceJSON: LibraryService {
             throw LibraryError.notFound
         }
         cache.packs[packIdx].tracks[trackIdx] = track
+        saveIndex()
+        NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
+    }
+    
+    func deleteTrack(id: String) throws {
+        // Find the pack containing this track
+        guard let packIdx = cache.packs.firstIndex(where: { $0.tracks.contains(where: { $0.id == id }) }),
+              let trackIdx = cache.packs[packIdx].tracks.firstIndex(where: { $0.id == id }) else {
+            throw LibraryError.notFound
+        }
+        
+        let track = cache.packs[packIdx].tracks[trackIdx]
+        let packId = cache.packs[packIdx].id
+        
+        // Delete practice session for this track
+        do {
+            try practiceService?.deleteSession(packId: packId, trackId: id)
+        } catch {
+            print("Failed to delete practice session for track \(id): \(error)")
+        }
+        
+        // Delete audio files
+        let trackFolder = trackFolder(forPackId: packId, forTrackId: id)
+        if fm.fileExists(atPath: trackFolder.path) {
+            try? fm.removeItem(at: trackFolder)
+        }
+        
+        // Remove track from pack
+        cache.packs[packIdx].tracks.remove(at: trackIdx)
         saveIndex()
         NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
     }

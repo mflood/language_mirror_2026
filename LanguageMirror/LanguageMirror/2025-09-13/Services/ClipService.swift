@@ -17,6 +17,11 @@ protocol ClipService {
     // NEW:
     func update(_ clip: Clip, in trackId: String) throws -> PracticeSet
     func moveClip(from sourceIndex: Int, to destinationIndex: Int, in trackId: String) throws -> PracticeSet
+    
+    // Clip editing methods:
+    func splitClip(id: String, atMs: Int, in trackId: String) throws -> (Clip, Clip)
+    func mergeClips(clipId: String, into previousClipId: String, in trackId: String) throws -> Clip
+    func updateClipKind(id: String, kind: ClipKind, in trackId: String) throws
 }
 
 enum ClipStoreError: Error, LocalizedError {

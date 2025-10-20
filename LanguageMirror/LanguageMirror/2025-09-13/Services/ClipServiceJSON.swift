@@ -74,6 +74,96 @@ final class ClipServiceJSON: ClipService {
         try saveMap(map, for: trackId)
         return map
     }
+    
+    // MARK: - Clip Editing
+    
+    func splitClip(id: String, atMs: Int, in trackId: String) throws -> (Clip, Clip) {
+        var map = try loadMap(for: trackId)
+        
+        guard let idx = map.clips.firstIndex(where: { $0.id == id }) else {
+            throw ClipStoreError.notFound
+        }
+        
+        let originalClip = map.clips[idx]
+        
+        // Validate split point
+        guard atMs > originalClip.startMs + 500,
+              atMs < originalClip.endMs - 500 else {
+            throw ClipStoreError.invalidRange
+        }
+        
+        // Create first clip (modified original)
+        let clip1 = Clip(
+            id: originalClip.id,
+            startMs: originalClip.startMs,
+            endMs: atMs,
+            kind: originalClip.kind,
+            title: originalClip.title,
+            repeats: originalClip.repeats,
+            startSpeed: originalClip.startSpeed,
+            endSpeed: originalClip.endSpeed,
+            languageCode: originalClip.languageCode
+        )
+        
+        // Create second clip (new ID, rest copied from original)
+        let clip2 = Clip(
+            id: UUID().uuidString,
+            startMs: atMs,
+            endMs: originalClip.endMs,
+            kind: originalClip.kind,
+            title: originalClip.title,
+            repeats: originalClip.repeats,
+            startSpeed: originalClip.startSpeed,
+            endSpeed: originalClip.endSpeed,
+            languageCode: originalClip.languageCode
+        )
+        
+        // Replace original with clip1 and insert clip2 after
+        map.clips[idx] = clip1
+        map.clips.insert(clip2, at: idx + 1)
+        
+        try saveMap(map, for: trackId)
+        
+        return (clip1, clip2)
+    }
+    
+    func mergeClips(clipId: String, into previousClipId: String, in trackId: String) throws -> Clip {
+        var map = try loadMap(for: trackId)
+        
+        guard let currentIdx = map.clips.firstIndex(where: { $0.id == clipId }),
+              let prevIdx = map.clips.firstIndex(where: { $0.id == previousClipId }),
+              prevIdx < currentIdx else {
+            throw ClipStoreError.notFound
+        }
+        
+        let currentClip = map.clips[currentIdx]
+        var previousClip = map.clips[prevIdx]
+        
+        // Merge: extend previous clip to end of current clip
+        previousClip.endMs = currentClip.endMs
+        
+        // Update previous clip and remove current clip
+        map.clips[prevIdx] = previousClip
+        map.clips.remove(at: currentIdx)
+        
+        try saveMap(map, for: trackId)
+        
+        return previousClip
+    }
+    
+    func updateClipKind(id: String, kind: ClipKind, in trackId: String) throws {
+        var map = try loadMap(for: trackId)
+        
+        guard let idx = map.clips.firstIndex(where: { $0.id == id }) else {
+            throw ClipStoreError.notFound
+        }
+        
+        var clip = map.clips[idx]
+        clip.kind = kind
+        map.clips[idx] = clip
+        
+        try saveMap(map, for: trackId)
+    }
 
     // MARK: - Helpers
 

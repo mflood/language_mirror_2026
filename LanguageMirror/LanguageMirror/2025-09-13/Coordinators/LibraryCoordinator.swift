@@ -11,12 +11,11 @@ import UIKit
 final class LibraryCoordinator: Coordinator {
     let navigationController = UINavigationController()
     private let container: AppContainer
-    // private var viewController: LibraryViewController!
+    private weak var appCoordinator: AppCoordinator?
     
-    init(container: AppContainer) {
-        
+    init(container: AppContainer, appCoordinator: AppCoordinator) {
         self.container = container
-        
+        self.appCoordinator = appCoordinator
     }
 
     func start() -> UINavigationController {
@@ -30,10 +29,19 @@ final class LibraryCoordinator: Coordinator {
     }
     
     deinit {
-        
-        
-        print("LibraryCoordinator deinit") }
+        print("LibraryCoordinator deinit")
+    }
     
+    func showTrackDetail(for track: Track) {
+        let detail = TrackDetailViewController(
+            track: track,
+            audioPlayer: container.audioPlayer,
+            clipService: container.clipService,
+            settings: container.settings
+        )
+        detail.delegate = self
+        navigationController.pushViewController(detail, animated: true)
+    }
 }
 
 extension LibraryCoordinator: LibraryViewControllerDelegate {
@@ -44,6 +52,13 @@ extension LibraryCoordinator: LibraryViewControllerDelegate {
             clipService: container.clipService,
             settings: container.settings
         )
+        detail.delegate = self
         navigationController.pushViewController(detail, animated: true)
+    }
+}
+
+extension LibraryCoordinator: TrackDetailViewControllerDelegate {
+    func trackDetailViewController(_ vc: TrackDetailViewController, didSelectPracticeSet practiceSet: PracticeSet, forTrack track: Track) {
+        appCoordinator?.switchToPracticeWithSet(track: track, practiceSet: practiceSet)
     }
 }

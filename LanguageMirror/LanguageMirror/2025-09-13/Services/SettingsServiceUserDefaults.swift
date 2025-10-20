@@ -15,6 +15,10 @@ final class SettingsServiceUserDefaults: SettingsService {
         case interGap = "settings.interSegmentGapSeconds"
         case preroll = "settings.prerollMs"
         case duckOthers = "settings.duckOthers"
+        case minSpeed = "settings.minSpeed"
+        case maxSpeed = "settings.maxSpeed"
+        case speedMode = "settings.speedMode"
+        case speedModeN = "settings.speedModeN"
     }
 
     // Defaults
@@ -23,6 +27,10 @@ final class SettingsServiceUserDefaults: SettingsService {
     private let defaultInterGap: TimeInterval = 0.5
     private let defaultPrerollMs = 0
     private let defaultDuck = false
+    private let defaultMinSpeed: Float = 0.6
+    private let defaultMaxSpeed: Float = 1.0
+    private let defaultSpeedMode: SpeedMode = .linear
+    private let defaultSpeedModeN = 5
 
     var globalRepeats: Int {
         get { max(1, d.integer(forKey: Key.repeats.rawValue) == 0 ? defaultRepeats : d.integer(forKey: Key.repeats.rawValue)) }
@@ -56,5 +64,40 @@ final class SettingsServiceUserDefaults: SettingsService {
     var duckOthers: Bool {
         get { d.object(forKey: Key.duckOthers.rawValue) as? Bool ?? defaultDuck }
         set { d.set(newValue, forKey: Key.duckOthers.rawValue) }
+    }
+    
+    var minSpeed: Float {
+        get {
+            let v = d.object(forKey: Key.minSpeed.rawValue) as? Float
+            return v ?? defaultMinSpeed
+        }
+        set { d.set(max(0.3, min(newValue, 1.0)), forKey: Key.minSpeed.rawValue) }
+    }
+    
+    var maxSpeed: Float {
+        get {
+            let v = d.object(forKey: Key.maxSpeed.rawValue) as? Float
+            return v ?? defaultMaxSpeed
+        }
+        set { d.set(max(0.5, min(newValue, 2.0)), forKey: Key.maxSpeed.rawValue) }
+    }
+    
+    var speedMode: SpeedMode {
+        get {
+            guard let rawValue = d.string(forKey: Key.speedMode.rawValue),
+                  let mode = SpeedMode(rawValue: rawValue) else {
+                return defaultSpeedMode
+            }
+            return mode
+        }
+        set { d.set(newValue.rawValue, forKey: Key.speedMode.rawValue) }
+    }
+    
+    var speedModeN: Int {
+        get {
+            let v = d.object(forKey: Key.speedModeN.rawValue) as? Int
+            return v ?? defaultSpeedModeN
+        }
+        set { d.set(max(1, min(newValue, 50)), forKey: Key.speedModeN.rawValue) }
     }
 }

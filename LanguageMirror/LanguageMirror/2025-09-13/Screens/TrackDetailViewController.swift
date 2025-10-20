@@ -9,12 +9,18 @@
 // plus Pause/Resume/Stop nav buttons and notification handling).
 import UIKit
 
+protocol TrackDetailViewControllerDelegate: AnyObject {
+    func trackDetailViewController(_ vc: TrackDetailViewController, didSelectPracticeSet practiceSet: PracticeSet, forTrack track: Track)
+}
+
 final class TrackDetailViewController: UITableViewController {
 
     private let track: Track
     private let audioPlayer: AudioPlayerService
     private let clipService: ClipService
     private let settings: SettingsService
+    
+    weak var delegate: TrackDetailViewControllerDelegate?
 
     private var clipMap: PracticeSet!
     
@@ -37,7 +43,7 @@ final class TrackDetailViewController: UITableViewController {
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-    private enum Section: Int, CaseIterable { case overview, actions, clips }
+    private enum Section: Int, CaseIterable { case overview, actions, practiceSets }
     private enum OverviewRow: CaseIterable { case filename, duration, language }
     private enum ActionRow: CaseIterable { case startRoutine, editClips }
 
@@ -121,7 +127,7 @@ final class TrackDetailViewController: UITableViewController {
         switch Section(rawValue: section)! {
         case .overview: return "Overview"
         case .actions:  return "Actions"
-        case .clips: return "Segments"
+        case .practiceSets: return "Practice Sets"
         }
     }
 
@@ -129,7 +135,7 @@ final class TrackDetailViewController: UITableViewController {
         switch Section(rawValue: section)! {
         case .overview: return OverviewRow.allCases.count
         case .actions:  return ActionRow.allCases.count
-        case .clips: return max(clipMap.clips.count, 1)
+        case .practiceSets: return max(track.practiceSets.count, 1)
         }
     }
 
@@ -177,19 +183,19 @@ final class TrackDetailViewController: UITableViewController {
                 cell.accessoryType = .disclosureIndicator
             }
 
-        case .clips:
-            if clipMap.clips.isEmpty {
-                config.text = "No segments yet"
-                config.secondaryText = "Tap Edit Segments to add"
+        case .practiceSets:
+            if track.practiceSets.isEmpty {
+                config.text = "No practice sets yet"
+                config.secondaryText = "Tap Edit Segments to create practice sets"
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
             } else {
-                let seg = clipMap.clips[indexPath.row]
-                let title = seg.title?.isEmpty == false ? seg.title! : "(Untitled)"
-                config.text = "[\(formatTime(seg.startMs)) – \(formatTime(seg.endMs))] \(title)"
-                let repeats = seg.repeats.map { " • repeats: \($0)" } ?? ""
-                config.secondaryText = "\(seg.kind.rawValue)\(repeats)"
-                cell.selectionStyle = .none
+                let practiceSet = track.practiceSets[indexPath.row]
+                let title = practiceSet.title?.isEmpty == false ? practiceSet.title! : "Practice Set \(indexPath.row + 1)"
+                let drillCount = practiceSet.clips.filter { $0.kind == .drill }.count
+                config.text = title
+                config.secondaryText = "\(practiceSet.clips.count) clips • \(drillCount) drills"
+                cell.selectionStyle = .default
                 cell.accessoryType = .disclosureIndicator
             }
         }
@@ -231,7 +237,7 @@ final class TrackDetailViewController: UITableViewController {
                 )
                 editor.onMapChanged = { [weak self] newMap in
                     self?.clipMap = newMap
-                    if let section = Section.allCases.firstIndex(of: .clips) {
+                    if let section = Section.allCases.firstIndex(of: .practiceSets) {
                         self?.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
                     } else {
                         self?.tableView.reloadData()
@@ -239,7 +245,11 @@ final class TrackDetailViewController: UITableViewController {
                 }
                 navigationController?.pushViewController(editor, animated: true)
             }
-        case .overview, .clips:
+        case .practiceSets:
+            guard !track.practiceSets.isEmpty else { return }
+            let practiceSet = track.practiceSets[indexPath.row]
+            delegate?.trackDetailViewController(self, didSelectPracticeSet: practiceSet, forTrack: track)
+        case .overview:
             break
         }
     }

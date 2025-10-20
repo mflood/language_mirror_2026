@@ -15,6 +15,10 @@ final class AppCoordinator {
 
     private var coordinators: [Coordinator] = []
     
+    // Store coordinator references for cross-tab navigation
+    private var libraryCoordinator: LibraryCoordinator?
+    private var practiceCoordinator: PracticeCoordinator?
+    
     // token for observing library changes
     // Non-isolated storage for the token
     private let tokenBox = NotificationTokenBox()
@@ -38,10 +42,14 @@ final class AppCoordinator {
     func start() {
         // Child coordinators
         
-        let libraryCoordinator = LibraryCoordinator(container: container)
+        let libraryCoordinator = LibraryCoordinator(container: container, appCoordinator: self)
         let importCoordinator  = ImportCoordinator(container: container)
-        let practiceCoordinator = PracticeCoordinator(container: container)
+        let practiceCoordinator = PracticeCoordinator(container: container, appCoordinator: self)
         let settingsCoordinator = SettingsCoordinator(container: container)
+        
+        // Store references for cross-tab navigation
+        self.libraryCoordinator = libraryCoordinator
+        self.practiceCoordinator = practiceCoordinator
         
         self.coordinators = [libraryCoordinator, importCoordinator, practiceCoordinator, settingsCoordinator]
         
@@ -119,5 +127,23 @@ final class AppCoordinator {
         if !pendingImports.isEmpty {
             tabBarController.selectedIndex = 0
         }
+    }
+    
+    // MARK: - Cross-Tab Navigation
+    
+    func switchToLibraryWithTrack(_ track: Track) {
+        // Switch to Library tab (index 0)
+        tabBarController.selectedIndex = 0
+        
+        // Push TrackDetailViewController onto Library navigation stack
+        libraryCoordinator?.showTrackDetail(for: track)
+    }
+    
+    func switchToPracticeWithSet(track: Track, practiceSet: PracticeSet) {
+        // Switch to Practice tab (index 2)
+        tabBarController.selectedIndex = 2
+        
+        // Load practice set in PracticeViewController
+        practiceCoordinator?.loadPracticeSet(track: track, practiceSet: practiceSet)
     }
 }

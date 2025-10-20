@@ -22,6 +22,7 @@ protocol LibraryService {
     func loadPack(id: String) throws -> Pack
     func addPack(_ pack: Pack) throws
     func updatePack(_ pack: Pack) throws
+    func deletePack(id: String) throws
 
     // Pack Tracks
     func listTracks(in packId: String) -> [Track]
@@ -31,6 +32,7 @@ protocol LibraryService {
     func listTracks(in group: String?) -> [Track]
     func loadTrack(id: String) throws -> Track           
     func updateTrack(_ track: Track) throws
+    func deleteTrack(id: String) throws
 
     // Practice Sets
     func listPracticeSets(in trackId: String) -> [PracticeSet]

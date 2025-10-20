@@ -8,6 +8,7 @@
 import Foundation
 
 struct AppContainer {
+    let practiceService: PracticeService
     let libraryService: LibraryService
     let audioPlayer: AudioPlayerService
     let clipService: ClipService
@@ -16,8 +17,9 @@ struct AppContainer {
 
     init() {
         self.settings = SettingsServiceUserDefaults()
-        self.libraryService = LibraryServiceJSON()
-        self.audioPlayer = AudioPlayerServiceAVPlayer()
+        self.practiceService = PracticeServiceJSON()
+        self.libraryService = LibraryServiceJSON(practiceService: practiceService)
+        self.audioPlayer = AudioPlayerServiceAVPlayer(practiceService: practiceService, settings: settings)
         self.clipService = ClipServiceJSON()
         self.importService = ImportServiceLite(library: libraryService,
                                                clips: clipService,

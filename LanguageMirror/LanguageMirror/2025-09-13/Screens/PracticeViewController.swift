@@ -8,98 +8,246 @@
 // path: Screens/PracticeViewController.swift
 import UIKit
 
-final class PracticeViewController: UITableViewController {
+protocol PracticeViewControllerDelegate: AnyObject {
+    func practiceViewController(_ vc: PracticeViewController, didTapTrackTitle track: Track)
+}
+
+final class PracticeViewController: UIViewController {
 
     private let settings: SettingsService
     private let library: LibraryService
     private let clipService: ClipService
     private let player: AudioPlayerService
+    private let practiceService: PracticeService
+    
+    weak var delegate: PracticeViewControllerDelegate?
 
-    // Selected track (optional) + persisted last selection
+    // Data
     private var selectedTrack: Track? {
         didSet {
             if let t = selectedTrack {
                 UserDefaults.standard.set(t.id, forKey: "practice.lastTrackId")
             }
-            // Reflect the new title immediately
-            reload(.target)
-            reload(.actions)
-            // Refresh drill count asynchronously
-            refreshDrillCountAsync()
+            refreshDataAsync()
         }
     }
-
-    private var drillCount: Int = 0
-
-    // Controls (reuse behavior of Settings screen, but inline)
-    private let repeatsStepper = UIStepper()
-    private let gapSlider = UISlider()
-    private let interGapSlider = UISlider()
-    private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
-
-    // Playback UI state
+    private var selectedPracticeSetId: String?  // Specific practice set to load
+    private var practiceSet: PracticeSet?
+    private var allClips: [Clip] = []  // All clips in practice set
+    private var currentSession: PracticeSession?
+    
+    // UI Components
+    private let headerView = UIView()
+    private let trackButton = UIButton(type: .system)
+    private let foreverButton = UIButton(type: .system)
+    private let settingsButton = UIButton(type: .system)
+    private let tableView = UITableView(frame: .zero, style: .plain)
+    private let bottomBar = UIView()
+    private let playPauseButton = UIButton(type: .system)
+    private let splitButton = UIButton(type: .system)
+    private let mergeButton = UIButton(type: .system)
+    private let progressLabel = UILabel()
+    private let emptyStateView = EmptyStateView()
+    
+    // State
     private var isPlaying = false
     private var isPaused = false
-
-    private enum Section: Int, CaseIterable { case target, controls, actions }
-    private enum TargetRow: Int, CaseIterable { case track }
-    private enum ControlRow: Int, CaseIterable { case repeats, gap, interGap, preroll }
-    private enum ActionRow: Int, CaseIterable { case play }
+    private var currentTrackTimeMs: Int?
+    private var currentClipStartMs: Int?
+    private var currentClipEndMs: Int?
 
     init(settings: SettingsService,
          libraryService: LibraryService,
          clipService: ClipService,
-         audioPlayer: AudioPlayerService) {
+         audioPlayer: AudioPlayerService,
+         practiceService: PracticeService) {
         self.settings = settings
         self.library = libraryService
         self.clipService = clipService
         self.player = audioPlayer
-        super.init(style: .insetGrouped)
+        self.practiceService = practiceService
+        super.init(nibName: nil, bundle: nil)
     }
+    
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        title = "Practice"
+        view.backgroundColor = AppColors.calmBackground
 
-        configureControls()
+        setupUI()
+        setupNotifications()
         restoreLastTrackOrPickFirst()
-
-        // Observe playback to toggle Pause/Stop buttons
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStopped), name: .AudioPlayerDidStop, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStarted), name: .AudioPlayerDidStart, object: nil)
     }
 
-    deinit { NotificationCenter.default.removeObserver(self) }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     // MARK: - Setup
 
-    private func configureControls() {
-        // Repeats
-        repeatsStepper.minimumValue = 1
-        repeatsStepper.maximumValue = 20
-        repeatsStepper.stepValue = 1
-        repeatsStepper.value = Double(settings.globalRepeats)
-        repeatsStepper.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
-
-        // Gap
-        gapSlider.minimumValue = 0.0
-        gapSlider.maximumValue = 2.0
-        gapSlider.value = Float(settings.gapSeconds)
-        gapSlider.addTarget(self, action: #selector(gapChanged), for: .valueChanged)
-
-        // Inter-segment gap
-        interGapSlider.minimumValue = 0.0
-        interGapSlider.maximumValue = 2.0
-        interGapSlider.value = Float(settings.interSegmentGapSeconds)
-        interGapSlider.addTarget(self, action: #selector(interGapChanged), for: .valueChanged)
-
-        // Preroll
-        let values = [0, 100, 200, 300]
-        let idx = values.firstIndex(of: max(0, min(settings.prerollMs, 300))) ?? 0
-        prerollSeg.selectedSegmentIndex = idx
-        prerollSeg.addTarget(self, action: #selector(prerollChanged), for: .valueChanged)
+    private func setupUI() {
+        // Header
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.backgroundColor = AppColors.primaryBackground
+        view.addSubview(headerView)
+        
+        // Track button
+        trackButton.translatesAutoresizingMaskIntoConstraints = false
+        trackButton.setTitle("Select Track ▼", for: .normal)
+        trackButton.setTitleColor(AppColors.primaryText, for: .normal)
+        trackButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        trackButton.addTarget(self, action: #selector(trackButtonTapped), for: .touchUpInside)
+        headerView.addSubview(trackButton)
+        
+        // Forever button (infinity symbol)
+        foreverButton.translatesAutoresizingMaskIntoConstraints = false
+        foreverButton.setTitle("∞", for: .normal)
+        foreverButton.setTitleColor(AppColors.secondaryText, for: .normal)
+        foreverButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        foreverButton.addTarget(self, action: #selector(foreverButtonTapped), for: .touchUpInside)
+        headerView.addSubview(foreverButton)
+        
+        // Settings button (gear)
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.setImage(UIImage(systemName: "gearshape"), for: .normal)
+        settingsButton.tintColor = AppColors.primaryAccent
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+        headerView.addSubview(settingsButton)
+        
+        // Table view
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(ClipCell.self, forCellReuseIdentifier: "ClipCell")
+        view.addSubview(tableView)
+        
+        // Empty state
+        emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+        emptyStateView.isHidden = true
+        view.addSubview(emptyStateView)
+        
+        // Bottom bar
+        bottomBar.translatesAutoresizingMaskIntoConstraints = false
+        bottomBar.backgroundColor = AppColors.cardBackground
+        bottomBar.layer.shadowColor = UIColor.black.cgColor
+        bottomBar.layer.shadowOpacity = 0.1
+        bottomBar.layer.shadowOffset = CGSize(width: 0, height: -2)
+        bottomBar.layer.shadowRadius = 8
+        view.addSubview(bottomBar)
+        
+        // Play/Pause button
+        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        let playConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
+        playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: playConfig), for: .normal)
+        playPauseButton.tintColor = AppColors.primaryAccent
+        playPauseButton.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
+        bottomBar.addSubview(playPauseButton)
+        
+        // Split button
+        splitButton.translatesAutoresizingMaskIntoConstraints = false
+        let splitConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        splitButton.setImage(UIImage(systemName: "scissors", withConfiguration: splitConfig), for: .normal)
+        splitButton.tintColor = AppColors.tertiaryText
+        splitButton.isEnabled = false
+        splitButton.alpha = 0.4
+        splitButton.addTarget(self, action: #selector(splitButtonTapped), for: .touchUpInside)
+        bottomBar.addSubview(splitButton)
+        
+        // Merge button
+        mergeButton.translatesAutoresizingMaskIntoConstraints = false
+        let mergeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        mergeButton.setImage(UIImage(systemName: "arrow.up.square.fill", withConfiguration: mergeConfig), for: .normal)
+        mergeButton.tintColor = AppColors.tertiaryText
+        mergeButton.isEnabled = false
+        mergeButton.alpha = 0.4
+        mergeButton.addTarget(self, action: #selector(mergeButtonTapped), for: .touchUpInside)
+        bottomBar.addSubview(mergeButton)
+        
+        // Progress label (status display)
+        progressLabel.translatesAutoresizingMaskIntoConstraints = false
+        progressLabel.font = .monospacedSystemFont(ofSize: 11, weight: .medium)
+        progressLabel.textColor = AppColors.secondaryText
+        progressLabel.text = "Ready to practice"
+        progressLabel.textAlignment = .left
+        progressLabel.numberOfLines = 2
+        bottomBar.addSubview(progressLabel)
+        
+        // Layout
+        NSLayoutConstraint.activate([
+            // Header
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 56),
+            
+            trackButton.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            trackButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            trackButton.trailingAnchor.constraint(lessThanOrEqualTo: foreverButton.leadingAnchor, constant: -12),
+            
+            settingsButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            settingsButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            settingsButton.widthAnchor.constraint(equalToConstant: 44),
+            settingsButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            foreverButton.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -8),
+            foreverButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            foreverButton.widthAnchor.constraint(equalToConstant: 44),
+            foreverButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            // Bottom bar
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            bottomBar.heightAnchor.constraint(equalToConstant: 92),
+            
+            // Control buttons (top section of bottom bar)
+            playPauseButton.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor, constant: 16),
+            playPauseButton.topAnchor.constraint(equalTo: bottomBar.topAnchor, constant: 8),
+            playPauseButton.widthAnchor.constraint(equalToConstant: 44),
+            playPauseButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            splitButton.leadingAnchor.constraint(equalTo: playPauseButton.trailingAnchor, constant: 12),
+            splitButton.topAnchor.constraint(equalTo: playPauseButton.topAnchor),
+            splitButton.widthAnchor.constraint(equalToConstant: 44),
+            splitButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            mergeButton.leadingAnchor.constraint(equalTo: splitButton.trailingAnchor, constant: 12),
+            mergeButton.topAnchor.constraint(equalTo: playPauseButton.topAnchor),
+            mergeButton.widthAnchor.constraint(equalToConstant: 44),
+            mergeButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            // Status display (bottom section of bottom bar)
+            progressLabel.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor, constant: 16),
+            progressLabel.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor, constant: -16),
+            progressLabel.topAnchor.constraint(equalTo: playPauseButton.bottomAnchor, constant: 4),
+            progressLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomBar.bottomAnchor, constant: -8),
+            
+            // Table view
+            tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomBar.topAnchor),
+            
+            // Empty state
+            emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyStateView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            emptyStateView.bottomAnchor.constraint(equalTo: bottomBar.topAnchor),
+        ])
+    }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStopped), name: .AudioPlayerDidStop, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStarted), name: .AudioPlayerDidStart, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleClipDidChange(_:)), name: .AudioPlayerClipDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLoopDidComplete(_:)), name: .AudioPlayerLoopDidComplete, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSpeedDidChange(_:)), name: .AudioPlayerSpeedDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTimeUpdate(_:)), name: .AudioPlayerDidUpdateTime, object: nil)
     }
 
     private func restoreLastTrackOrPickFirst() {
@@ -114,302 +262,611 @@ final class PracticeViewController: UITableViewController {
         }
     }
 
-    private func refreshDrillCount() {
-        guard let t = selectedTrack else { drillCount = 0; return }
-        if let map = try? clipService.loadMap(for: t.id) {
-            drillCount = map.clips.filter { $0.kind == .drill }.count
-        } else {
-            drillCount = 0
-        }
-    }
-
-    // New async version
-    private func refreshDrillCountAsync() {
+    private func refreshDataAsync() {
         guard let t = selectedTrack else {
-            drillCount = 0
-            reload(.target); reload(.actions)
+            allClips = []
+            practiceSet = nil
+            currentSession = nil
+            updateUI()
             return
         }
 
-        let currentId = t.id
-        // optimistic UI while counting
-        // (keeps the UI responsive; optional)
-        // drillCount = 0
-        // reload(.target); reload(.actions)
+        trackButton.setTitle(t.title, for: .normal)
+        
+        let packId = t.packId
+        let trackId = t.id
+        let practiceSetId = self.selectedPracticeSetId
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
-            let count: Int = {
-                if let map = try? self.clipService.loadMap(for: currentId) {
-                    return map.clips.lazy.filter { $0.kind == .drill }.count
-                }
-                return 0
-            }()
+            
+            // Load the specific practice set if ID is provided
+            var set: PracticeSet
+            if let setId = practiceSetId, let foundSet = t.practiceSets.first(where: { $0.id == setId }) {
+                set = foundSet
+            } else if let firstSet = t.practiceSets.first {
+                set = firstSet
+            } else {
+                // Fallback to loading from clipService or creating default
+                set = (try? self.clipService.loadMap(for: trackId)) ?? PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
+            }
+            
+            let session = try? self.practiceService.loadSession(packId: packId, trackId: trackId)
 
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                // Only apply if user hasn’t switched tracks meanwhile
-                guard self.selectedTrack?.id == currentId else { return }
-                self.drillCount = count
-                self.reload(.target)
-                self.reload(.actions)
+                guard self.selectedTrack?.id == trackId else { return }
+                
+                self.practiceSet = set
+                self.allClips = set.clips  // Show ALL clips, not just drills
+                self.currentSession = session
+                self.updateUI()
             }
         }
     }
     
-    // MARK: - Table
-
-    override func numberOfSections(in tableView: UITableView) -> Int { Section.allCases.count }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch Section(rawValue: section)! {
-        case .target: return "Target"
-        case .controls: return "Quick Controls"
-        case .actions: return "Run"
+    private func updateUI() {
+        let hasClips = !allClips.isEmpty
+        tableView.isHidden = !hasClips
+        emptyStateView.isHidden = hasClips
+        
+        if hasClips {
+            tableView.reloadData()
+            scrollToCurrentClipIfNeeded()
+        } else {
+            emptyStateView.configure(
+                icon: "waveform.slash",
+                title: "No Practice Clips",
+                message: "This track doesn't have any clips yet",
+                actionTitle: nil
+            )
         }
+        
+        updateForeverButton()
+        updateProgressLabel()
+        validateMergeButton()
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section)! {
-        case .target: return TargetRow.allCases.count
-        case .controls: return ControlRow.allCases.count
-        case .actions: return ActionRow.allCases.count
+    
+    private func updateForeverButton() {
+        let isForever = currentSession?.foreverMode ?? false
+        foreverButton.setTitleColor(isForever ? AppColors.primaryAccent : AppColors.secondaryText, for: .normal)
+    }
+    
+    private func updateProgressLabel() {
+        guard let session = currentSession, !allClips.isEmpty else {
+            progressLabel.text = "Ready to practice"
+            return
         }
-    }
-
-    override func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var cfg = cell.defaultContentConfiguration()
-
-        switch Section(rawValue: indexPath.section)! {
-        case .target:
-            cfg.text = "Track"
-            if let t = selectedTrack {
-                cfg.secondaryText = "\(t.title)  •  drills: \(drillCount)"
-            } else {
-                cfg.secondaryText = "Choose a track"
-            }
-            cell.accessoryType = .disclosureIndicator
-
-        case .controls:
-            switch ControlRow(rawValue: indexPath.row)! {
-            case .repeats:
-                cfg.text = "Repeats (N)"
-                cfg.secondaryText = "\(settings.globalRepeats)x"
-                cell.accessoryView = repeatsStepper
-            case .gap:
-                cfg.text = "Gap between repeats"
-                cfg.secondaryText = String(format: "%.1fs", settings.gapSeconds)
-                cell.accessoryView = gapSlider
-            case .interGap:
-                cfg.text = "Gap between clips"
-                cfg.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
-                cell.accessoryView = interGapSlider
-            case .preroll:
-                cfg.text = "Preroll"
-                cfg.secondaryText = "\(settings.prerollMs) ms"
-                cell.accessoryView = prerollSeg
-            }
-            cell.selectionStyle = .none
-
-        case .actions:
-            cfg.text = "Play Drills"
-            if selectedTrack == nil {
-                cfg.secondaryText = "Select a track above"
-            } else if drillCount == 0 {
-                cfg.secondaryText = "No drills defined in this track"
-            } else {
-                cfg.secondaryText = "N=\(settings.globalRepeats) • gap \(String(format: "%.1f", settings.gapSeconds))s • inter \(String(format: "%.1f", settings.interSegmentGapSeconds))s • preroll \(settings.prerollMs)ms"
-            }
-            cell.textLabel?.textColor = view.tintColor
-            cell.accessoryType = .disclosureIndicator
+        
+        let clipIndex = min(session.currentClipIndex, allClips.count - 1)
+        let totalLoops = settings.globalRepeats
+        
+        // Format time displays
+        var text = ""
+        
+        // Add clip time if available
+        if let trackMs = currentTrackTimeMs, let startMs = currentClipStartMs, let endMs = currentClipEndMs {
+            let clipElapsed = max(0, trackMs - startMs)
+            let clipDuration = max(0, endMs - startMs)
+            text += "Clip: \(formatTime(clipElapsed))/\(formatTime(clipDuration)) • "
         }
-
-        cell.contentConfiguration = cfg
-        return cell
+        
+        // Add track time if available
+        if let trackMs = currentTrackTimeMs, let track = selectedTrack, let durationMs = track.durationMs {
+            text += "Track: \(formatTime(trackMs))/\(formatTime(durationMs))\n"
+        } else {
+            text += "\n"
+        }
+        
+        text += "Clip \(clipIndex + 1)/\(allClips.count) • Loop \(session.currentLoopCount)/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
+        
+        progressLabel.text = text
     }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-
-        switch Section(rawValue: indexPath.section)! {
-        case .target:
+    
+    private func formatTime(_ ms: Int) -> String {
+        let totalSeconds = ms / 1000
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        return String(format: "%d:%02d", minutes, seconds)
+    }
+    
+    private func validateSplitButton() {
+        guard isPlaying,
+              let trackMs = currentTrackTimeMs,
+              let startMs = currentClipStartMs,
+              let endMs = currentClipEndMs,
+              trackMs > startMs + 500,
+              trackMs < endMs - 500 else {
+            splitButton.isEnabled = false
+            splitButton.tintColor = AppColors.tertiaryText
+            splitButton.alpha = 0.4
+            return
+        }
+        
+        splitButton.isEnabled = true
+        splitButton.tintColor = AppColors.primaryAccent
+        splitButton.alpha = 1.0
+    }
+    
+    private func validateMergeButton() {
+        guard let session = currentSession,
+              session.currentClipIndex > 0,
+              allClips.count > 1 else {
+            mergeButton.isEnabled = false
+            mergeButton.tintColor = AppColors.tertiaryText
+            mergeButton.alpha = 0.4
+            return
+        }
+        
+        mergeButton.isEnabled = true
+        mergeButton.tintColor = AppColors.primaryAccent
+        mergeButton.alpha = 1.0
+    }
+    
+    private func scrollToCurrentClipIfNeeded() {
+        guard let session = currentSession,
+              session.currentClipIndex < allClips.count else { return }
+        
+        let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func trackButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+        
+        // If we have a selected track, navigate to its details in Library
+        if let track = selectedTrack {
+            delegate?.practiceViewController(self, didTapTrackTitle: track)
+        } else {
+            // Otherwise, show track picker
             let picker = PracticeTrackPickerViewController(libraryService: library)
             picker.onPick = { [weak self] t in
                 self?.selectedTrack = t
             }
             navigationController?.pushViewController(picker, animated: true)
-
-        case .controls:
-            break
-
-        case .actions:
-            guard let t = selectedTrack else {
-                presentAlert("No Track", "Select a track first.")
-                return
-            }
-            let practiceSet: PracticeSet = (try? clipService.loadMap(for: t.id)) ?? PracticeSet.fullTrackFactory(trackId: t.id, displayOrder: 0)
-            let drills = practiceSet.clips.filter { $0.kind == .drill }
-            guard !drills.isEmpty else {
-                presentAlert("No Drills", "This track has no Drill segments.")
-                return
-            }
+        }
+    }
+    
+    @objc private func foreverButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        guard var session = currentSession else {
+            // Create new session with forever mode enabled
+            guard let track = selectedTrack,
+                  let set = practiceSet else { return }
+            
             do {
-                try player.play(track: t,
-                                clips: drills,
-                                globalRepeats: settings.globalRepeats,
-                                gapSeconds: settings.gapSeconds,
-                                interClipGapSeconds: settings.interSegmentGapSeconds,
-                                prerollMs: settings.prerollMs)
-                isPlaying = true
-                isPaused = false
-                updatePlaybackButtons()
+                var newSession = try practiceService.createSession(practiceSet: set, packId: track.packId, trackId: track.id)
+                newSession.foreverMode = true
+                try practiceService.saveSession(newSession)
+                currentSession = newSession
+                updateForeverButton()
             } catch {
-                presentAlert("Playback Error", error.localizedDescription)
+                print("Failed to create session: \(error)")
             }
+            return
         }
-    }
-
-    
-    private func updateControlRow(_ row: ControlRow) {
-        let ip = IndexPath(row: row.rawValue, section: Section.controls.rawValue)
-        guard let cell = tableView.cellForRow(at: ip) else { return }
-        var cfg = cell.defaultContentConfiguration()
-        switch row {
-        case .repeats:
-            cfg.text = "Repeats (N)"
-            cfg.secondaryText = "\(settings.globalRepeats)x"
-            cell.accessoryView = repeatsStepper
-        case .gap:
-            cfg.text = "Gap between repeats"
-            cfg.secondaryText = String(format: "%.1fs", settings.gapSeconds)
-            cell.accessoryView = gapSlider
-        case .interGap:
-            cfg.text = "Gap between segments"
-            cfg.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
-            cell.accessoryView = interGapSlider
-        case .preroll:
-            cfg.text = "Preroll"
-            cfg.secondaryText = "\(settings.prerollMs) ms"
-            cell.accessoryView = prerollSeg
-        }
-        cell.contentConfiguration = cfg
-        cell.selectionStyle = .none
-    }
-
-    private func updateActionsSummaryRow() {
-        let ip = IndexPath(row: ActionRow.play.rawValue, section: Section.actions.rawValue)
-        guard let cell = tableView.cellForRow(at: ip) else { return }
-        var cfg = cell.defaultContentConfiguration()
-        cfg.text = "Play Drills"
-        if selectedTrack == nil {
-            cfg.secondaryText = "Select a track above"
-        } else if drillCount == 0 {
-            cfg.secondaryText = "No drills defined in this track"
-        } else {
-            cfg.secondaryText = "N=\(settings.globalRepeats) • gap \(String(format: "%.1f", settings.gapSeconds))s • inter \(String(format: "%.1f", settings.interSegmentGapSeconds))s • preroll \(settings.prerollMs)ms"
-        }
-        cell.contentConfiguration = cfg
-        cell.accessoryType = .disclosureIndicator
-    }
-    
-    
-    // MARK: - Control callbacks (persist to Settings)
-
-    @objc private func repeatsChanged() {
-        //settings.globalRepeats = Int(repeatsStepper.value)
-        //reload(.controls)
         
-        
-        settings.globalRepeats = Int(repeatsStepper.value)
-        updateControlRow(.repeats)
-        updateActionsSummaryRow()
-    }
-    @objc private func gapChanged() {
-        let stepped = Double(round(gapSlider.value * 10) / 10)
-        gapSlider.value = Float(stepped)
-        settings.gapSeconds = Double(gapSlider.value)
-        updateControlRow(.gap)
-        updateActionsSummaryRow()
-    }
-    @objc private func interGapChanged() {
-        let stepped = Double(round(interGapSlider.value * 10) / 10)
-        interGapSlider.value = Float(stepped)
-        settings.interSegmentGapSeconds = Double(interGapSlider.value)
-        updateControlRow(.interGap)
-        updateActionsSummaryRow()
-    }
-    @objc private func prerollChanged() {
-        let values = [0,100,200,300]
-        settings.prerollMs = values[prerollSeg.selectedSegmentIndex]
-        updateControlRow(.preroll)
-        updateActionsSummaryRow()
-    }
-
-    // MARK: - Playback UI
-
-    private func updatePlaybackButtons() {
-        if isPlaying {
-            let pauseTitle = isPaused ? "Resume" : "Pause"
-            let pauseItem = UIBarButtonItem(title: pauseTitle, style: .plain, target: self, action: #selector(pauseResumeTapped))
-            let stopItem  = UIBarButtonItem(title: "Stop", style: .plain, target: self, action: #selector(stopTapped))
-            navigationItem.rightBarButtonItems = [stopItem, pauseItem]
-        } else {
-            navigationItem.rightBarButtonItems = nil
+        // Toggle forever mode on existing session
+        session.foreverMode.toggle()
+        do {
+            try practiceService.saveSession(session)
+            currentSession = session
+            updateForeverButton()
+        } catch {
+            print("Failed to save session: \(error)")
         }
     }
-
-    @objc private func pauseResumeTapped() {
-        if isPaused {
-            player.resume()
-            isPaused = false
-            isPlaying = true
-        } else {
+    
+    @objc private func settingsButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        let settingsVC = PracticeSettingsViewController(settings: settings)
+        let nav = UINavigationController(rootViewController: settingsVC)
+        present(nav, animated: true)
+    }
+    
+    @objc private func playPauseButtonTapped() {
+        if isPlaying && !isPaused {
+            // Pause
             player.pause()
             isPaused = true
             isPlaying = false
+            updatePlayPauseButton()
+        } else if isPaused {
+            // Resume
+            player.resume()
+            isPaused = false
+            isPlaying = true
+            updatePlayPauseButton()
+        } else {
+            // Start new playback
+            startPractice()
         }
-        updatePlaybackButtons()
     }
-
-    @objc private func stopTapped() {
-        DispatchQueue.main.async {
-            self.player.stop()
-            self.isPaused = false
-            self.isPlaying = false
-            self.updatePlaybackButtons()
+    
+    private func startPractice() {
+        guard let track = selectedTrack, let set = practiceSet, !allClips.isEmpty else { return }
+        
+        // Filter to only play drill clips
+        let drillClips = allClips.filter { $0.kind == .drill }
+        guard !drillClips.isEmpty else {
+            presentAlert("No Drills", "This track has no drill clips to practice")
+            return
+        }
+        
+        do {
+            // Create or load session
+            var session: PracticeSession?
+            if let existing = currentSession {
+                session = existing
+            } else {
+                session = try practiceService.createSession(practiceSet: set, packId: track.packId, trackId: track.id)
+                currentSession = session
+            }
+            
+            // Start playback with session (only drill clips are played)
+            if let playerWithSession = player as? AudioPlayerServiceAVPlayer {
+                try playerWithSession.play(
+                    track: track,
+                    clips: drillClips,
+                    globalRepeats: settings.globalRepeats,
+                    gapSeconds: settings.gapSeconds,
+                    interClipGapSeconds: settings.interSegmentGapSeconds,
+                    prerollMs: settings.prerollMs,
+                    session: session
+                )
+            } else {
+                try player.play(
+                    track: track,
+                    clips: drillClips,
+                    globalRepeats: settings.globalRepeats,
+                    gapSeconds: settings.gapSeconds,
+                    interClipGapSeconds: settings.interSegmentGapSeconds,
+                    prerollMs: settings.prerollMs
+                )
+            }
+            
+            isPlaying = true
+            isPaused = false
+            updatePlayPauseButton()
+        } catch {
+            presentAlert("Playback Error", error.localizedDescription)
         }
     }
-
+    
+    private func updatePlayPauseButton() {
+        let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
+        let imageName = (isPlaying && !isPaused) ? "pause.circle.fill" : "play.circle.fill"
+        playPauseButton.setImage(UIImage(systemName: imageName, withConfiguration: config), for: .normal)
+    }
+    
+    // MARK: - Notifications
+    
     @objc private func handlePlaybackStopped() {
-        DispatchQueue.main.async {
-            self.isPaused = false
-            self.isPlaying = false
-            self.updatePlaybackButtons()
-        }
+        isPaused = false
+        isPlaying = false
+        updatePlayPauseButton()
+        tableView.reloadData()
     }
-
+    
     @objc private func handlePlaybackStarted() {
-        DispatchQueue.main.async {
-            self.isPaused = false
-            self.isPlaying = true
-            self.updatePlaybackButtons()
+        isPaused = false
+        isPlaying = true
+        updatePlayPauseButton()
+    }
+    
+    @objc private func handleClipDidChange(_ notification: Notification) {
+        guard let clipIndex = notification.userInfo?["clipIndex"] as? Int else { return }
+        
+        // Reload cells to update visual state
+        tableView.reloadData()
+        
+        // Scroll to current clip
+        if clipIndex < allClips.count {
+            let indexPath = IndexPath(row: clipIndex, section: 0)
+            tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
         }
-
+        
+        updateProgressLabel()
+        validateMergeButton()
+    }
+    
+    @objc private func handleLoopDidComplete(_ notification: Notification) {
+        // Reload current cell to update progress
+        if let session = currentSession, session.currentClipIndex < allClips.count {
+            let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
+            tableView.reloadRows(at: [indexPath], with: .none)
+        }
+        
+        updateProgressLabel()
+    }
+    
+    @objc private func handleSpeedDidChange(_ notification: Notification) {
+        updateProgressLabel()
+    }
+    
+    @objc private func handleTimeUpdate(_ notification: Notification) {
+        guard let trackTimeMs = notification.userInfo?["trackTimeMs"] as? Int,
+              let clipStartMs = notification.userInfo?["clipStartMs"] as? Int,
+              let clipEndMs = notification.userInfo?["clipEndMs"] as? Int else { return }
+        
+        currentTrackTimeMs = trackTimeMs
+        currentClipStartMs = clipStartMs
+        currentClipEndMs = clipEndMs
+        
+        updateProgressLabel()
+        validateSplitButton()
+    }
+    
+    @objc private func splitButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        guard let trackMs = currentTrackTimeMs,
+              let session = currentSession,
+              session.currentClipIndex < allClips.count,
+              let track = selectedTrack else { return }
+        
+        let clip = allClips[session.currentClipIndex]
+        
+        // Validate split point
+        guard trackMs > clip.startMs + 500,
+              trackMs < clip.endMs - 500 else {
+            presentAlert("Invalid Split", "Split point must be at least 0.5 seconds from clip boundaries")
+            return
+        }
+        
+        do {
+            // Split the clip
+            let (_, newClip) = try clipService.splitClip(id: clip.id, atMs: trackMs, in: track.id)
+            
+            // Reload practice set
+            refreshDataAsync()
+            
+            // Update session to point to new clip (index + 1)
+            var updatedSession = session
+            updatedSession.currentClipIndex = session.currentClipIndex + 1
+            updatedSession.currentLoopCount = 0
+            try practiceService.saveSession(updatedSession)
+            currentSession = updatedSession
+            
+            // Success feedback
+            let successGenerator = UINotificationFeedbackGenerator()
+            successGenerator.notificationOccurred(.success)
+            
+            // Continue playback will happen automatically as audio player continues
+        } catch {
+            presentAlert("Split Failed", error.localizedDescription)
+        }
+    }
+    
+    @objc private func mergeButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        guard let session = currentSession,
+              session.currentClipIndex > 0,
+              session.currentClipIndex < allClips.count else { return }
+        
+        mergeClipUp(at: session.currentClipIndex)
     }
 
+    // MARK: - Public Methods
+    
+    func loadTrackAndPracticeSet(track: Track, practiceSet: PracticeSet) {
+        // Set the track and practice set ID
+        selectedPracticeSetId = practiceSet.id
+        selectedTrack = track  // This will trigger refreshDataAsync
+    }
+    
     // MARK: - Helpers
-
-    private func reloadAll() { tableView.reloadData() }
-
-    private func reload(_ section: Section) {
-        tableView.reloadSections(IndexSet(integer: section.rawValue), with: .none)
-    }
 
     private func presentAlert(_ title: String, _ message: String) {
         let a = UIAlertController(title: title, message: message, preferredStyle: .alert)
         a.addAction(UIAlertAction(title: "OK", style: .default))
         present(a, animated: true)
+    }
+    
+    func resetClipToZero(at index: Int) {
+        guard var session = currentSession, index < allClips.count else { return }
+        
+        let clipId = allClips[index].id
+        session.clipPlayCounts[clipId] = 0
+        
+        // If this is the current clip, also reset loop count
+        if session.currentClipIndex == index {
+            session.currentLoopCount = 0
+        }
+        
+        do {
+            try practiceService.saveSession(session)
+            currentSession = session
+            
+            let indexPath = IndexPath(row: index, section: 0)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        } catch {
+            print("Failed to reset clip: \(error)")
+        }
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension PracticeViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return allClips.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ClipCell", for: indexPath) as! ClipCell
+        
+        let clip = allClips[indexPath.row]
+        let totalLoops = settings.globalRepeats
+        let currentLoops = currentSession?.clipPlayCounts[clip.id] ?? 0
+        let currentSpeed = currentSession?.currentSpeed ?? 1.0
+        let isCurrent = (currentSession?.currentClipIndex == indexPath.row) && isPlaying
+        let isCompleted = currentLoops >= totalLoops
+        let showForeverBadge = (currentSession?.foreverMode ?? false) && isCurrent
+        
+        cell.configure(
+            index: indexPath.row,
+            clip: clip,
+            currentLoops: currentLoops,
+            totalLoops: totalLoops,
+            currentSpeed: currentSpeed,
+            isCurrent: isCurrent,
+            isCompleted: isCompleted,
+            showForeverBadge: showForeverBadge
+        )
+        
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension PracticeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+        
+        guard var session = currentSession else { return }
+        
+        // Jump to selected clip
+        session.currentClipIndex = indexPath.row
+        session.currentLoopCount = 0  // Start from saved state if exists
+        
+        do {
+            try practiceService.saveSession(session)
+            currentSession = session
+            
+            // If currently playing, restart playback at new clip
+            if isPlaying {
+                startPractice()
+            }
+            
+            tableView.reloadData()
+            updateProgressLabel()
+        } catch {
+            print("Failed to update session: \(error)")
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let resetAction = UIContextualAction(style: .destructive, title: "Reset") { [weak self] _, _, completion in
+            self?.resetClipToZero(at: indexPath.row)
+            completion(true)
+        }
+        
+        resetAction.backgroundColor = .systemRed
+        resetAction.image = UIImage(systemName: "arrow.counterclockwise")
+        
+        return UISwipeActionsConfiguration(actions: [resetAction])
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let clip = allClips[indexPath.row]
+        var actions: [UIContextualAction] = []
+        
+        // Always show all three kind options
+        // Order from right to left as they appear when swiping: Noise, Skip, Drill
+        
+        // Noise (rightmost when swiping)
+        let noiseAction = UIContextualAction(style: .normal, title: "Noise") { [weak self] _, _, completion in
+            self?.setClipKind(at: indexPath.row, to: .noise)
+            completion(true)
+        }
+        noiseAction.backgroundColor = .systemGray
+        noiseAction.image = UIImage(systemName: "speaker.slash.circle")
+        actions.append(noiseAction)
+        
+        // Skip (middle)
+        let skipAction = UIContextualAction(style: .normal, title: "Skip") { [weak self] _, _, completion in
+            self?.setClipKind(at: indexPath.row, to: .skip)
+            completion(true)
+        }
+        skipAction.backgroundColor = .systemOrange
+        skipAction.image = UIImage(systemName: "forward.circle")
+        actions.append(skipAction)
+        
+        // Drill (leftmost when swiping)
+        let drillAction = UIContextualAction(style: .normal, title: "Drill") { [weak self] _, _, completion in
+            self?.setClipKind(at: indexPath.row, to: .drill)
+            completion(true)
+        }
+        drillAction.backgroundColor = .systemGreen
+        drillAction.image = UIImage(systemName: "checkmark.circle")
+        actions.append(drillAction)
+        
+        let config = UISwipeActionsConfiguration(actions: actions)
+        config.performsFirstActionWithFullSwipe = false  // Prevent accidental full swipe
+        return config
+    }
+}
+
+// MARK: - Clip Editing Helpers
+
+extension PracticeViewController {
+    
+    func mergeClipUp(at index: Int) {
+        guard index > 0, index < allClips.count,
+              let track = selectedTrack else { return }
+        
+        let currentClip = allClips[index]
+        let previousClip = allClips[index - 1]
+        
+        do {
+            let mergedClip = try clipService.mergeClips(clipId: currentClip.id, into: previousClip.id, in: track.id)
+            
+            // Update session if this was the current clip
+            if var session = currentSession, session.currentClipIndex == index {
+                session.currentClipIndex = index - 1
+                try practiceService.saveSession(session)
+                currentSession = session
+            }
+            
+            // Reload data
+            refreshDataAsync()
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            // If playing current clip, might need to restart playback
+            if isPlaying && currentSession?.currentClipIndex == index - 1 {
+                // Audio player will naturally continue
+            }
+        } catch {
+            presentAlert("Merge Failed", error.localizedDescription)
+        }
+    }
+    
+    func setClipKind(at index: Int, to kind: ClipKind) {
+        guard index < allClips.count,
+              let track = selectedTrack else { return }
+        
+        let clip = allClips[index]
+        
+        do {
+            try clipService.updateClipKind(id: clip.id, kind: kind, in: track.id)
+            
+            // Reload data
+            refreshDataAsync()
+            
+            let generator = UIImpactFeedbackGenerator(style: .light)
+            generator.impactOccurred()
+        } catch {
+            presentAlert("Set Kind Failed", error.localizedDescription)
+        }
     }
 }
