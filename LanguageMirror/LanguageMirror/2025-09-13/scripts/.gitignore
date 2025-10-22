@@ -1,0 +1,14 @@
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Test outputs
+test_output_*.json
+
+# Whisper cache (usually in home dir, but just in case)
+.cache/
+
