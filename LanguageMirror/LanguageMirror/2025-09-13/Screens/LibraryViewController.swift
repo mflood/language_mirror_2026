@@ -139,30 +139,32 @@ final class LibraryViewController: UIViewController {
         // Reload data to ensure we have the latest tracks
         loadData()
         
-        // Find the track in our data
+        // Find the track and its pack
         var targetIndexPath: IndexPath?
+        var targetPackId: String?
         
         for (sectionIndex, pack) in filteredPacks.enumerated() {
             for (rowIndex, track) in pack.tracks.enumerated() {
                 if track.id == trackId {
                     targetIndexPath = IndexPath(row: rowIndex, section: sectionIndex)
+                    targetPackId = pack.id
                     break
                 }
             }
             if targetIndexPath != nil { break }
         }
         
-        guard let indexPath = targetIndexPath else {
+        guard let indexPath = targetIndexPath, let packId = targetPackId else {
             print("Could not find track with ID: \(trackId)")
             return
         }
         
-        // Ensure the pack is expanded so the track is visible
-        let pack = filteredPacks[indexPath.section]
-        if !expandedPackIds.contains(pack.id) {
-            expandedPackIds.insert(pack.id)
-            tableView.reloadSections([indexPath.section], with: .fade)
-        }
+        // Collapse all packs except the target pack
+        expandedPackIds = [packId]
+        saveExpansionState()
+        
+        // Reload table to show collapsed/expanded state
+        tableView.reloadData()
         
         // Scroll to the track with a slight delay to ensure the table is ready
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
