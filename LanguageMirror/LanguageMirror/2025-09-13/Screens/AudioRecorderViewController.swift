@@ -24,7 +24,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
     private let buttonContainer = UIView()
     private let buttonIcon = UIImageView()
     private let amplitudeBar = UIView()
-    private let amplitudeBarHeightConstraint: NSLayoutConstraint
+    private var amplitudeBarHeightConstraint: NSLayoutConstraint!
     
     // MARK: - Recording State
     
@@ -42,12 +42,10 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
     // MARK: - Init
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        amplitudeBarHeightConstraint = NSLayoutConstraint()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     required init?(coder: NSCoder) {
-        amplitudeBarHeightConstraint = NSLayoutConstraint()
         super.init(coder: coder)
     }
 
@@ -113,6 +111,9 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
     }
     
     private func setupConstraints() {
+        // Create amplitude bar height constraint
+        amplitudeBarHeightConstraint = amplitudeBar.heightAnchor.constraint(equalToConstant: 0)
+        
         NSLayoutConstraint.activate([
             // Timer label
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -136,9 +137,6 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
             amplitudeBar.widthAnchor.constraint(equalToConstant: 200),
             amplitudeBarHeightConstraint
         ])
-        
-        // Set initial amplitude bar height
-        amplitudeBarHeightConstraint.constant = 0
     }
     
     private func setupHapticFeedback() {
