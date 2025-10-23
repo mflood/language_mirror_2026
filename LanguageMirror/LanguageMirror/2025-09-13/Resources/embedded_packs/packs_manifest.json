@@ -13,7 +13,7 @@
       "id": "urn:pack-app:com.six.wands.pack.culture.1",
       "title": "Demo Pack - Korean Culture 1",
       "description": "40 Korean culture audio lessons",
-      "filename": "pack_culture_1.json",
+      "filename": "pack_culture_1_enhanced.json",
       "trackCount": 40,
       "languageCode": "ko"
     },

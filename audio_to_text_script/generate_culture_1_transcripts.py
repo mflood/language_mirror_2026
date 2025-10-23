@@ -261,18 +261,18 @@ class PackGenerator:
             "trackId": track_id,
             "displayOrder": 0,
             "title": "Practice Set",
-            "clips": formatted_clips
+            "segments": formatted_clips
         }
         
         # Update track with new data
         enhanced_track = track.copy()
         enhanced_track["transcripts"] = formatted_transcripts
-        enhanced_track["practiceSets"] = [practice_set]
+        enhanced_track["segment_maps"] = [practice_set]
         
         # Remove old segment_maps if present
-        if "segment_maps" in enhanced_track:
-            del enhanced_track["segment_maps"]
-        
+        #if "segment_maps" in enhanced_track:
+        #    del enhanced_track["segment_maps"]
+        # 
         return enhanced_track
     
     def save_pack(self, pack_data: Dict[str, Any]):
@@ -309,18 +309,14 @@ def main():
     print(f"Loading pack from: {PACK_JSON_INPUT}")
     pack_data = pack_generator.load_pack()
     print(f"Found {len(pack_data['tracks'])} tracks in pack")
-    
-    # TEMPORARY: Only process first 3 tracks for testing
-    tracks_to_process = pack_data["tracks"][:3]
-    print(f"*** TESTING MODE: Processing only {len(tracks_to_process)} tracks ***")
     print()
     
     # Process each track
     enhanced_tracks = []
     
-    for i, track in enumerate(tracks_to_process, 1):
+    for i, track in enumerate(pack_data["tracks"], 1):
         print(f"\n{'=' * 60}")
-        print(f"Processing Track {i}/{len(tracks_to_process)}: {track['title']}")
+        print(f"Processing Track {i}/{len(pack_data['tracks'])}: {track['title']}")
         print(f"{'=' * 60}")
         
         filename = track["filename"]
@@ -363,10 +359,8 @@ def main():
             traceback.print_exc()
             enhanced_tracks.append(track)  # Keep original track on error
     
-    # Update pack with enhanced tracks (only first 3 for testing)
-    # Keep the rest of the tracks unchanged
-    remaining_tracks = pack_data["tracks"][3:]
-    pack_data["tracks"] = enhanced_tracks + remaining_tracks
+    # Update pack with enhanced tracks
+    pack_data["tracks"] = enhanced_tracks
     
     # Save enhanced pack
     pack_generator.save_pack(pack_data)

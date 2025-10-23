@@ -1,0 +1,616 @@
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+============================================================
+Korean Audio Transcription & Practice Set Generator
+============================================================
+
+Loading Whisper model: base...
+Whisper model loaded successfully
+Loading pack from: /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Resources/embedded_packs/pack_culture_1.json
+Found 40 tracks in pack
+
+
+============================================================
+Processing Track 1/40: Culture 1-01
+============================================================
+Audio duration: 79.61 seconds
+Transcribing: culture_1_01.mp3
+  0%|          | 0/7954 [00:00<?, ?frames/s] 15%|█▍        | 1182/7954 [00:01<00:10, 626.99frames/s] 41%|████      | 3234/7954 [00:03<00:04, 1000.16frames/s] 74%|███████▍  | 5896/7954 [00:04<00:01, 1442.23frames/s]100%|██████████| 7954/7954 [00:05<00:00, 1654.56frames/s]100%|██████████| 7954/7954 [00:05<00:00, 1414.01frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 13 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 13 transcript spans
+  - 14 clips
+✓ Track 1 processed successfully
+
+============================================================
+Processing Track 2/40: Culture 1-02
+============================================================
+Audio duration: 48.60 seconds
+Transcribing: culture_1_02.mp3
+  0%|          | 0/4856 [00:00<?, ?frames/s] 53%|█████▎    | 2562/4856 [00:01<00:00, 2548.24frames/s] 86%|████████▋ | 4192/4856 [00:01<00:00, 2251.50frames/s]100%|██████████| 4856/4856 [00:02<00:00, 1883.31frames/s]100%|██████████| 4856/4856 [00:02<00:00, 2037.86frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 11 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 11 transcript spans
+  - 12 clips
+✓ Track 2 processed successfully
+
+============================================================
+Processing Track 3/40: Culture 1-03
+============================================================
+Audio duration: 46.41 seconds
+Transcribing: culture_1_03.mp3
+  0%|          | 0/4636 [00:00<?, ?frames/s] 38%|███▊      | 1752/4636 [00:00<00:01, 2170.77frames/s] 82%|████████▏ | 3822/4636 [00:01<00:00, 2178.11frames/s]100%|██████████| 4636/4636 [00:02<00:00, 1876.19frames/s]100%|██████████| 4636/4636 [00:02<00:00, 1964.39frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 7 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 7 transcript spans
+  - 9 clips
+✓ Track 3 processed successfully
+
+============================================================
+Processing Track 4/40: Culture 1-04
+============================================================
+Audio duration: 36.21 seconds
+Transcribing: culture_1_04.mp3
+  0%|          | 0/3617 [00:00<?, ?frames/s] 65%|██████▍   | 2338/3617 [00:00<00:00, 2474.00frames/s]100%|██████████| 3617/3617 [00:01<00:00, 2232.19frames/s]100%|██████████| 3617/3617 [00:01<00:00, 2275.14frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 7 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 7 transcript spans
+  - 8 clips
+✓ Track 4 processed successfully
+
+============================================================
+Processing Track 5/40: Culture 1-05
+============================================================
+Audio duration: 54.54 seconds
+Transcribing: culture_1_05.mp3
+  0%|          | 0/5449 [00:00<?, ?frames/s] 35%|███▌      | 1926/5449 [00:00<00:01, 2181.25frames/s] 78%|███████▊  | 4258/5449 [00:02<00:00, 1821.41frames/s]100%|██████████| 5449/5449 [00:03<00:00, 1732.97frames/s]100%|██████████| 5449/5449 [00:03<00:00, 1789.43frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 8 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 8 transcript spans
+  - 9 clips
+✓ Track 5 processed successfully
+
+============================================================
+Processing Track 6/40: Culture 1-06
+============================================================
+Audio duration: 47.30 seconds
+Transcribing: culture_1_06.mp3
+  0%|          | 0/4725 [00:00<?, ?frames/s] 52%|█████▏    | 2442/4725 [00:00<00:00, 2461.88frames/s]100%|██████████| 4725/4725 [00:01<00:00, 2448.98frames/s]100%|██████████| 4725/4725 [00:01<00:00, 2450.82frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 10 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 10 transcript spans
+  - 21 clips
+✓ Track 6 processed successfully
+
+============================================================
+Processing Track 7/40: Culture 1-07
+============================================================
+Audio duration: 63.87 seconds
+Transcribing: culture_1_07.mp3
+  0%|          | 0/6381 [00:00<?, ?frames/s] 35%|███▌      | 2254/6381 [00:00<00:01, 2352.64frames/s] 77%|███████▋  | 4888/6381 [00:02<00:00, 2266.53frames/s]100%|██████████| 6381/6381 [00:02<00:00, 2189.03frames/s]100%|██████████| 6381/6381 [00:02<00:00, 2220.33frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 12 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 12 transcript spans
+  - 25 clips
+✓ Track 7 processed successfully
+
+============================================================
+Processing Track 8/40: Culture 1-08
+============================================================
+Audio duration: 53.73 seconds
+Transcribing: culture_1_08.mp3
+  0%|          | 0/5368 [00:00<?, ?frames/s] 37%|███▋      | 2004/5368 [00:00<00:01, 2548.23frames/s] 84%|████████▍ | 4514/5368 [00:02<00:00, 2189.21frames/s]100%|██████████| 5368/5368 [00:02<00:00, 1978.55frames/s]100%|██████████| 5368/5368 [00:02<00:00, 2074.02frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 9 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 9 transcript spans
+  - 10 clips
+✓ Track 8 processed successfully
+
+============================================================
+Processing Track 9/40: Culture 1-09
+============================================================
+Audio duration: 43.82 seconds
+Transcribing: culture_1_09.mp3
+  0%|          | 0/4378 [00:00<?, ?frames/s] 63%|██████▎   | 2740/4378 [00:01<00:00, 2237.07frames/s]100%|██████████| 4378/4378 [00:02<00:00, 2093.27frames/s]100%|██████████| 4378/4378 [00:02<00:00, 2118.71frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 8 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 8 transcript spans
+  - 9 clips
+✓ Track 9 processed successfully
+
+============================================================
+Processing Track 10/40: Culture 1-10
+============================================================
+Audio duration: 47.90 seconds
+Transcribing: culture_1_10.mp3
+  0%|          | 0/4785 [00:00<?, ?frames/s] 54%|█████▎    | 2564/4785 [00:01<00:00, 2526.17frames/s] 85%|████████▍ | 4064/4785 [00:01<00:00, 2196.93frames/s]100%|██████████| 4785/4785 [00:02<00:00, 1943.95frames/s]100%|██████████| 4785/4785 [00:02<00:00, 2069.76frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 9 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 9 transcript spans
+  - 11 clips
+✓ Track 10 processed successfully
+
+============================================================
+Processing Track 11/40: Culture 1-11
+============================================================
+Audio duration: 47.58 seconds
+Transcribing: culture_1_11.mp3
+  0%|          | 0/4754 [00:00<?, ?frames/s] 55%|█████▍    | 2592/4754 [00:01<00:00, 2247.27frames/s]100%|██████████| 4754/4754 [00:02<00:00, 2208.88frames/s]100%|██████████| 4754/4754 [00:02<00:00, 2214.94frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 8 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 8 transcript spans
+  - 9 clips
+✓ Track 11 processed successfully
+
+============================================================
+Processing Track 12/40: Culture 1-12
+============================================================
+Audio duration: 47.66 seconds
+Transcribing: culture_1_12.mp3
+  0%|          | 0/4762 [00:00<?, ?frames/s] 53%|█████▎    | 2516/4762 [00:01<00:00, 2419.11frames/s]100%|██████████| 4762/4762 [00:02<00:00, 2243.09frames/s]100%|██████████| 4762/4762 [00:02<00:00, 2269.13frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 8 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 8 transcript spans
+  - 9 clips
+✓ Track 12 processed successfully
+
+============================================================
+Processing Track 13/40: Culture 1-13
+============================================================
+Audio duration: 61.67 seconds
+Transcribing: culture_1_13.mp3
+  0%|          | 0/6162 [00:00<?, ?frames/s] 44%|████▍     | 2732/6162 [00:01<00:01, 2458.31frames/s] 87%|████████▋ | 5342/6162 [00:02<00:00, 2292.07frames/s]100%|██████████| 6162/6162 [00:02<00:00, 2078.19frames/s]100%|██████████| 6162/6162 [00:02<00:00, 2167.20frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 11 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 11 transcript spans
+  - 13 clips
+✓ Track 13 processed successfully
+
+============================================================
+Processing Track 14/40: Culture 1-14
+============================================================
+Audio duration: 52.03 seconds
+Transcribing: culture_1_14.mp3
+  0%|          | 0/5198 [00:00<?, ?frames/s] 48%|████▊     | 2474/5198 [00:00<00:01, 2583.98frames/s]100%|██████████| 5198/5198 [00:02<00:00, 2597.09frames/s]100%|██████████| 5198/5198 [00:02<00:00, 2595.05frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 10 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 10 transcript spans
+  - 20 clips
+✓ Track 14 processed successfully
+
+============================================================
+Processing Track 15/40: Culture 1-15
+============================================================
+Audio duration: 59.82 seconds
+Transcribing: culture_1_15.mp3
+  0%|          | 0/5976 [00:00<?, ?frames/s] 42%|████▏     | 2514/5976 [00:00<00:01, 2684.75frames/s] 83%|████████▎ | 4942/5976 [00:02<00:00, 2317.11frames/s]100%|██████████| 5976/5976 [00:02<00:00, 2145.05frames/s]100%|██████████| 5976/5976 [00:02<00:00, 2236.61frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 11 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 11 transcript spans
+  - 12 clips
+✓ Track 15 processed successfully
+
+============================================================
+Processing Track 16/40: Culture 1-16
+============================================================
+Audio duration: 49.88 seconds
+Transcribing: culture_1_16.mp3
+  0%|          | 0/4984 [00:00<?, ?frames/s] 47%|████▋     | 2334/4984 [00:00<00:00, 2690.32frames/s] 86%|████████▌ | 4282/4984 [00:01<00:00, 2337.57frames/s]100%|██████████| 4984/4984 [00:02<00:00, 2007.43frames/s]100%|██████████| 4984/4984 [00:02<00:00, 2149.42frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 7 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 7 transcript spans
+  - 8 clips
+✓ Track 16 processed successfully
+
+============================================================
+Processing Track 17/40: Culture 1-17
+============================================================
+Audio duration: 58.62 seconds
+Transcribing: culture_1_17.mp3
+  0%|          | 0/5856 [00:00<?, ?frames/s] 42%|████▏     | 2480/5856 [00:01<00:01, 2349.26frames/s] 87%|████████▋ | 5120/5856 [00:02<00:00, 2145.14frames/s]100%|██████████| 5856/5856 [00:02<00:00, 1955.25frames/s]100%|██████████| 5856/5856 [00:02<00:00, 2039.07frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 11 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 11 transcript spans
+  - 12 clips
+✓ Track 17 processed successfully
+
+============================================================
+Processing Track 18/40: Culture 1-18
+============================================================
+Audio duration: 60.11 seconds
+Transcribing: culture_1_18.mp3
+  0%|          | 0/6005 [00:00<?, ?frames/s] 46%|████▌     | 2770/6005 [00:01<00:01, 2224.79frames/s] 83%|████████▎ | 5014/6005 [00:02<00:00, 2258.13frames/s]100%|██████████| 6005/6005 [00:02<00:00, 1970.61frames/s]100%|██████████| 6005/6005 [00:02<00:00, 2057.81frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 7 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 7 transcript spans
+  - 9 clips
+✓ Track 18 processed successfully
+
+============================================================
+Processing Track 19/40: Culture 1-19
+============================================================
+Audio duration: 55.74 seconds
+Transcribing: culture_1_19.mp3
+  0%|          | 0/5569 [00:00<?, ?frames/s] 44%|████▎     | 2434/5569 [00:00<00:01, 2536.40frames/s] 84%|████████▍ | 4692/5569 [00:01<00:00, 2530.96frames/s]100%|██████████| 5569/5569 [00:02<00:00, 2234.04frames/s]100%|██████████| 5569/5569 [00:02<00:00, 2328.63frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 9 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 9 transcript spans
+  - 10 clips
+✓ Track 19 processed successfully
+
+============================================================
+Processing Track 20/40: Culture 1-20
+============================================================
+Audio duration: 45.80 seconds
+Transcribing: culture_1_20.mp3
+  0%|          | 0/4576 [00:00<?, ?frames/s] 56%|█████▌    | 2552/4576 [00:01<00:00, 2298.50frames/s] 83%|████████▎ | 3820/4576 [00:01<00:00, 2015.65frames/s]100%|██████████| 4576/4576 [00:02<00:00, 1869.38frames/s]100%|██████████| 4576/4576 [00:02<00:00, 1958.94frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 7 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 7 transcript spans
+  - 8 clips
+✓ Track 20 processed successfully
+
+============================================================
+Processing Track 21/40: Culture 1-21
+============================================================
+Audio duration: 58.88 seconds
+Transcribing: culture_1_21.mp3
+  0%|          | 0/5882 [00:00<?, ?frames/s] 43%|████▎     | 2500/5882 [00:01<00:01, 2390.01frames/s] 88%|████████▊ | 5190/5882 [00:02<00:00, 2481.40frames/s]100%|██████████| 5882/5882 [00:02<00:00, 2163.50frames/s]100%|██████████| 5882/5882 [00:02<00:00, 2256.11frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 12 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 12 transcript spans
+  - 24 clips
+✓ Track 21 processed successfully
+
+============================================================
+Processing Track 22/40: Culture 1-22
+============================================================
+Audio duration: 62.38 seconds
+Transcribing: culture_1_22.mp3
+  0%|          | 0/6232 [00:00<?, ?frames/s] 42%|████▏     | 2618/6232 [00:01<00:01, 2445.90frames/s] 73%|███████▎  | 4578/6232 [00:02<00:00, 2195.45frames/s]100%|██████████| 6232/6232 [00:02<00:00, 2107.36frames/s]100%|██████████| 6232/6232 [00:02<00:00, 2160.79frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 9 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 9 transcript spans
+  - 10 clips
+✓ Track 22 processed successfully
+
+============================================================
+Processing Track 23/40: Culture 1-23
+============================================================
+Audio duration: 62.98 seconds
+Transcribing: culture_1_23.mp3
+  0%|          | 0/6292 [00:00<?, ?frames/s] 42%|████▏     | 2626/6292 [00:01<00:01, 2503.14frames/s] 77%|███████▋  | 4824/6292 [00:02<00:00, 2205.44frames/s]100%|██████████| 6292/6292 [00:02<00:00, 2128.91frames/s]100%|██████████| 6292/6292 [00:02<00:00, 2184.30frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 10 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 10 transcript spans
+  - 12 clips
+✓ Track 23 processed successfully
+
+============================================================
+Processing Track 24/40: Culture 1-24
+============================================================
+Audio duration: 66.96 seconds
+Transcribing: culture_1_24.mp3
+  0%|          | 0/6689 [00:00<?, ?frames/s] 38%|███▊      | 2550/6689 [00:01<00:01, 2440.91frames/s] 78%|███████▊  | 5240/6689 [00:02<00:00, 2228.76frames/s]100%|██████████| 6689/6689 [00:03<00:00, 2134.62frames/s]100%|██████████| 6689/6689 [00:03<00:00, 2184.40frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 10 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 10 transcript spans
+  - 12 clips
+✓ Track 24 processed successfully
+
+============================================================
+Processing Track 25/40: Culture 1-25
+============================================================
+Audio duration: 60.92 seconds
+Transcribing: culture_1_25.mp3
+  0%|          | 0/6086 [00:00<?, ?frames/s] 45%|████▌     | 2754/6086 [00:07<00:08, 375.59frames/s] 86%|████████▌ | 5204/6086 [00:08<00:01, 696.50frames/s]100%|██████████| 6086/6086 [00:09<00:00, 792.51frames/s]100%|██████████| 6086/6086 [00:09<00:00, 671.36frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 10 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 10 transcript spans
+  - 12 clips
+✓ Track 25 processed successfully
+
+============================================================
+Processing Track 26/40: Culture 1-26
+============================================================
+Audio duration: 63.35 seconds
+Transcribing: culture_1_26.mp3
+  0%|          | 0/6329 [00:00<?, ?frames/s] 32%|███▏      | 2012/6329 [00:00<00:01, 2463.22frames/s] 71%|███████   | 4494/6329 [00:01<00:00, 2303.81frames/s] 87%|████████▋ | 5524/6329 [00:02<00:00, 2049.56frames/s]100%|██████████| 6329/6329 [00:03<00:00, 1915.11frames/s]100%|██████████| 6329/6329 [00:03<00:00, 2045.99frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 10 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 10 transcript spans
+  - 11 clips
+✓ Track 26 processed successfully
+
+============================================================
+Processing Track 27/40: Culture 1-27
+============================================================
+Audio duration: 56.50 seconds
+Transcribing: culture_1_27.mp3
+  0%|          | 0/5645 [00:00<?, ?frames/s] 41%|████      | 2302/5645 [00:00<00:01, 2898.82frames/s] 84%|████████▍ | 4752/5645 [00:01<00:00, 2439.42frames/s]100%|██████████| 5645/5645 [00:02<00:00, 2026.91frames/s]100%|██████████| 5645/5645 [00:02<00:00, 2187.11frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 9 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 9 transcript spans
+  - 10 clips
+✓ Track 27 processed successfully
+
+============================================================
+Processing Track 28/40: Culture 1-28
+============================================================
+Audio duration: 64.47 seconds
+Transcribing: culture_1_28.mp3
+  0%|          | 0/6441 [00:00<?, ?frames/s] 40%|███▉      | 2556/6441 [00:01<00:01, 2355.73frames/s] 78%|███████▊  | 5018/6441 [00:02<00:00, 2224.19frames/s]100%|██████████| 6441/6441 [00:02<00:00, 2203.59frames/s]100%|██████████| 6441/6441 [00:02<00:00, 2224.68frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 10 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 10 transcript spans
+  - 11 clips
+✓ Track 28 processed successfully
+
+============================================================
+Processing Track 29/40: Culture 1-29
+============================================================
+Audio duration: 69.86 seconds
+Transcribing: culture_1_29.mp3
+  0%|          | 0/6979 [00:00<?, ?frames/s] 29%|██▉       | 2018/6979 [00:00<00:01, 2606.09frames/s] 68%|██████▊   | 4716/6979 [00:02<00:00, 2320.03frames/s]100%|██████████| 6979/6979 [00:03<00:00, 2242.56frames/s]100%|██████████| 6979/6979 [00:03<00:00, 2283.57frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 9 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 9 transcript spans
+  - 10 clips
+✓ Track 29 processed successfully
+
+============================================================
+Processing Track 30/40: Culture 1-30
+============================================================
+Audio duration: 85.94 seconds
+Transcribing: culture_1_30.mp3
+  0%|          | 0/8586 [00:00<?, ?frames/s] 31%|███       | 2622/8586 [00:01<00:02, 2439.59frames/s] 57%|█████▋    | 4860/8586 [00:02<00:01, 2191.98frames/s] 90%|████████▉ | 7720/8586 [00:03<00:00, 2216.85frames/s]100%|██████████| 8586/8586 [00:04<00:00, 2062.07frames/s]100%|██████████| 8586/8586 [00:04<00:00, 2140.23frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 12 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 12 transcript spans
+  - 14 clips
+✓ Track 30 processed successfully
+
+============================================================
+Processing Track 31/40: Culture 1-31
+============================================================
+Audio duration: 78.75 seconds
+Transcribing: culture_1_31.mp3
+  0%|          | 0/7868 [00:00<?, ?frames/s] 33%|███▎      | 2604/7868 [00:01<00:02, 2421.68frames/s] 61%|██████▏   | 4834/7868 [00:02<00:01, 2252.72frames/s] 97%|█████████▋| 7636/7868 [00:03<00:00, 2165.97frames/s]100%|██████████| 7868/7868 [00:03<00:00, 1870.93frames/s]100%|██████████| 7868/7868 [00:03<00:00, 2029.27frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 12 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 12 transcript spans
+  - 24 clips
+✓ Track 31 processed successfully
+
+============================================================
+Processing Track 32/40: Culture 1-32
+============================================================
+Audio duration: 73.68 seconds
+Transcribing: culture_1_32.mp3
+  0%|          | 0/7361 [00:00<?, ?frames/s] 36%|███▌      | 2662/7361 [00:01<00:02, 2252.81frames/s] 73%|███████▎  | 5348/7361 [00:02<00:00, 2099.33frames/s]100%|██████████| 7361/7361 [00:03<00:00, 2096.36frames/s]100%|██████████| 7361/7361 [00:03<00:00, 2112.76frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 11 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 11 transcript spans
+  - 12 clips
+✓ Track 32 processed successfully
+
+============================================================
+Processing Track 33/40: Culture 1-33
+============================================================
+Audio duration: 80.53 seconds
+Transcribing: culture_1_33.mp3
+  0%|          | 0/8045 [00:00<?, ?frames/s] 33%|███▎      | 2662/8045 [00:01<00:02, 2405.71frames/s] 63%|██████▎   | 5078/8045 [00:02<00:01, 2136.13frames/s]100%|██████████| 8045/8045 [00:03<00:00, 2254.18frames/s]100%|██████████| 8045/8045 [00:03<00:00, 2248.33frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 12 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 12 transcript spans
+  - 25 clips
+✓ Track 33 processed successfully
+
+============================================================
+Processing Track 34/40: Culture 1-34
+============================================================
+Audio duration: 74.93 seconds
+Transcribing: culture_1_34.mp3
+  0%|          | 0/7486 [00:00<?, ?frames/s] 36%|███▌      | 2710/7486 [00:01<00:02, 2263.72frames/s] 66%|██████▌   | 4922/7486 [00:02<00:01, 2042.85frames/s]100%|██████████| 7486/7486 [00:03<00:00, 2178.50frames/s]100%|██████████| 7486/7486 [00:03<00:00, 2163.61frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 13 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 13 transcript spans
+  - 14 clips
+✓ Track 34 processed successfully
+
+============================================================
+Processing Track 35/40: Culture 1-35
+============================================================
+Audio duration: 69.83 seconds
+Transcribing: culture_1_35.mp3
+  0%|          | 0/6977 [00:00<?, ?frames/s] 30%|███       | 2100/6977 [00:00<00:02, 2118.99frames/s] 68%|██████▊   | 4778/6977 [00:02<00:01, 1955.65frames/s] 92%|█████████▏| 6434/6977 [00:03<00:00, 1842.33frames/s]100%|██████████| 6977/6977 [00:03<00:00, 1693.07frames/s]100%|██████████| 6977/6977 [00:03<00:00, 1797.22frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 13 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 13 transcript spans
+  - 27 clips
+✓ Track 35 processed successfully
+
+============================================================
+Processing Track 36/40: Culture 1-36
+============================================================
+Audio duration: 90.75 seconds
+Transcribing: culture_1_36.mp3
+  0%|          | 0/9067 [00:00<?, ?frames/s] 21%|██▏       | 1928/9067 [00:00<00:02, 2409.58frames/s] 42%|████▏     | 3830/9067 [00:01<00:02, 2118.89frames/s] 66%|██████▌   | 5986/9067 [00:02<00:01, 2154.26frames/s] 97%|█████████▋| 8834/9067 [00:04<00:00, 2018.26frames/s] 97%|█████████▋| 8834/9067 [00:04<00:00, 1970.16frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 11 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 11 transcript spans
+  - 12 clips
+✓ Track 36 processed successfully
+
+============================================================
+Processing Track 37/40: Culture 1-37
+============================================================
+Audio duration: 75.74 seconds
+Transcribing: culture_1_37.mp3
+  0%|          | 0/7567 [00:00<?, ?frames/s] 29%|██▉       | 2230/7567 [00:00<00:02, 2479.70frames/s] 68%|██████▊   | 5130/7567 [00:02<00:00, 2468.32frames/s]100%|██████████| 7567/7567 [00:03<00:00, 2401.21frames/s]100%|██████████| 7567/7567 [00:03<00:00, 2419.52frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 12 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 12 transcript spans
+  - 14 clips
+✓ Track 37 processed successfully
+
+============================================================
+Processing Track 38/40: Culture 1-38
+============================================================
+Audio duration: 85.65 seconds
+Transcribing: culture_1_38.mp3
+  0%|          | 0/8557 [00:00<?, ?frames/s] 30%|██▉       | 2556/8557 [00:01<00:02, 2277.58frames/s] 59%|█████▉    | 5048/8557 [00:02<00:01, 2050.83frames/s] 86%|████████▌ | 7362/8557 [00:03<00:00, 2014.56frames/s]100%|██████████| 8557/8557 [00:04<00:00, 1980.54frames/s]100%|██████████| 8557/8557 [00:04<00:00, 2020.85frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 13 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 13 transcript spans
+  - 24 clips
+✓ Track 38 processed successfully
+
+============================================================
+Processing Track 39/40: Culture 1-39
+============================================================
+Audio duration: 97.05 seconds
+Transcribing: culture_1_39.mp3
+  0%|          | 0/9696 [00:00<?, ?frames/s] 21%|██        | 1998/9696 [00:00<00:03, 2318.55frames/s] 48%|████▊     | 4626/9696 [00:02<00:02, 2132.69frames/s] 72%|███████▏  | 7006/9696 [00:03<00:01, 2133.29frames/s]100%|██████████| 9696/9696 [00:04<00:00, 2265.39frames/s]100%|██████████| 9696/9696 [00:04<00:00, 2229.01frames/s]
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/scripts/venv/lib/python3.13/site-packages/whisper/transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+Transcription complete. Detected 15 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 15 transcript spans
+  - 17 clips
+✓ Track 39 processed successfully
+
+============================================================
+Processing Track 40/40: Culture 1-40
+============================================================
+Audio duration: 110.72 seconds
+Transcribing: culture_1_40.mp3
+  0%|          | 0/11062 [00:00<?, ?frames/s] 26%|██▌       | 2844/11062 [00:01<00:03, 2386.85frames/s] 47%|████▋     | 5194/11062 [00:02<00:02, 2177.92frames/s] 68%|██████▊   | 7490/11062 [00:03<00:01, 2095.52frames/s] 95%|█████████▍| 10490/11062 [00:04<00:00, 2652.47frames/s] 95%|█████████▍| 10490/11062 [00:04<00:00, 2325.46frames/s]
+Transcription complete. Detected 15 segments
+Sending transcription to GPT for analysis...
+Analysis complete:
+  - 15 transcript spans
+  - 16 clips
+✓ Track 40 processed successfully
+
+Enhanced pack saved to: /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Resources/embedded_packs/pack_culture_1_enhanced.json
+
+============================================================
+Processing Complete!
+============================================================
+Enhanced pack saved to: /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Resources/embedded_packs/pack_culture_1_enhanced.json
