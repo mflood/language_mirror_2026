@@ -132,6 +132,49 @@ final class LibraryViewController: UIViewController {
         updateEmptyState()
     }
     
+    // MARK: - Track Highlighting
+    
+    /// Highlight a specific track by ID (useful after importing)
+    func highlightTrack(withId trackId: String) {
+        // Reload data to ensure we have the latest tracks
+        loadData()
+        
+        // Find the track in our data
+        var targetIndexPath: IndexPath?
+        
+        for (sectionIndex, pack) in filteredPacks.enumerated() {
+            for (rowIndex, track) in pack.tracks.enumerated() {
+                if track.id == trackId {
+                    targetIndexPath = IndexPath(row: rowIndex, section: sectionIndex)
+                    break
+                }
+            }
+            if targetIndexPath != nil { break }
+        }
+        
+        guard let indexPath = targetIndexPath else {
+            print("Could not find track with ID: \(trackId)")
+            return
+        }
+        
+        // Ensure the pack is expanded so the track is visible
+        let pack = filteredPacks[indexPath.section]
+        if !expandedPackIds.contains(pack.id) {
+            expandedPackIds.insert(pack.id)
+            tableView.reloadSections([indexPath.section], with: .fade)
+        }
+        
+        // Scroll to the track with a slight delay to ensure the table is ready
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+            
+            // Add a brief highlight animation
+            if let cell = self.tableView.cellForRow(at: indexPath) as? TrackCell {
+                cell.highlightBriefly()
+            }
+        }
+    }
+    
     private func applySort() {
         for (index, var pack) in packs.enumerated() {
             pack.tracks = sortTracks(pack.tracks)

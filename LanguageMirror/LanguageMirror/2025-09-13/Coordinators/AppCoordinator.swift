@@ -92,6 +92,11 @@ final class AppCoordinator {
             [weak self] note in
             guard let self = self else { return }
             self.tabBarController.selectedIndex = 0
+            
+            // Highlight the newly added track if we have the track ID
+            if let trackId = note.userInfo?["trackID"] as? String {
+                self.highlightTrackInLibrary(trackId: trackId)
+            }
         }
     }
     
@@ -126,6 +131,16 @@ final class AppCoordinator {
         // If we imported at least one file, switch to Library tab
         if !pendingImports.isEmpty {
             tabBarController.selectedIndex = 0
+        }
+    }
+    
+    // MARK: - Track Highlighting
+    
+    private func highlightTrackInLibrary(trackId: String) {
+        // Find the Library view controller and highlight the track
+        if let libraryNav = tabBarController.viewControllers?[0] as? UINavigationController,
+           let libraryVC = libraryNav.viewControllers.first as? LibraryViewController {
+            libraryVC.highlightTrack(withId: trackId)
         }
     }
     

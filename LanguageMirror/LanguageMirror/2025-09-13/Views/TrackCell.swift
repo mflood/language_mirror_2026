@@ -204,6 +204,29 @@ final class TrackCell: UITableViewCell {
         }
     }
     
+    // MARK: - Highlight Animation
+    
+    /// Brief highlight animation to draw attention to the cell
+    func highlightBriefly() {
+        guard !UIAccessibility.isReduceMotionEnabled else { return }
+        
+        // Store original background color
+        let originalBackground = cardView.backgroundColor
+        
+        // Brief highlight with success color
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.allowUserInteraction]) {
+            self.cardView.backgroundColor = AppColors.successColor.withAlphaComponent(0.2)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.cardView.backgroundColor = originalBackground
+            }
+        }
+        
+        // Haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+    }
+    
     // MARK: - Trait Collection
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
