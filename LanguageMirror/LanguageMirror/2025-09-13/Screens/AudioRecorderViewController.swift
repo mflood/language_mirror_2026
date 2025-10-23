@@ -352,7 +352,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         guard !UIAccessibility.isReduceMotionEnabled else { return }
         
         UIView.animate(withDuration: 1.5, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction]) {
-            self.buttonContainer.transform = CGAffineTransform(scaleX: 1.05, scaleY: 1.05)
+            self.buttonContainer.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
         }
     }
     
@@ -366,7 +366,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         guard !UIAccessibility.isReduceMotionEnabled else { return }
         
         UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction]) {
-            self.buttonContainer.transform = CGAffineTransform(scaleX: 1.1, scaleY: 1.1)
+            self.buttonContainer.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         } completion: { _ in
             UIView.animate(withDuration: 0.3) {
                 self.buttonContainer.transform = .identity
