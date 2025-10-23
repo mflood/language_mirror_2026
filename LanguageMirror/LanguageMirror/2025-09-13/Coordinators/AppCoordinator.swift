@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-final class AppCoordinator {
+final class AppCoordinator: UITabBarControllerDelegate {
     private let window: UIWindow
     private let container: AppContainer
     private let tabBarController = UITabBarController()
@@ -74,6 +74,7 @@ final class AppCoordinator {
                                               tag: 3)
 
         tabBarController.viewControllers = [libraryNav, importNav, practiceNav, settingsNav]
+        tabBarController.delegate = self
         
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
@@ -166,5 +167,40 @@ final class AppCoordinator {
         // Update Practice tab's view to show this session without switching tabs
         // This keeps both views in sync when practice is started from Library flow
         practiceCoordinator?.loadPracticeSet(track: track, practiceSet: practiceSet)
+    }
+    
+    func navigateToPracticeFromHome(track: Track, practiceSet: PracticeSet) {
+        // Switch to Library tab first
+        tabBarController.selectedIndex = 0
+        
+        // Push TrackDetailViewController, then push PracticeViewController
+        libraryCoordinator?.showTrackDetailAndPractice(for: track, practiceSet: practiceSet)
+    }
+    
+    // MARK: - UITabBarControllerDelegate
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        // Stop practice playback when Practice tab is selected
+        if tabBarController.selectedIndex == 2 { // Practice tab index
+            stopPracticePlaybackInAllNavigationStacks()
+        }
+    }
+    
+    private func stopPracticePlaybackInAllNavigationStacks() {
+        // Check all navigation controllers for PracticeViewController instances
+        for viewController in tabBarController.viewControllers ?? [] {
+            if let navController = viewController as? UINavigationController {
+                stopPracticePlaybackInNavigationStack(navController)
+            }
+        }
+    }
+    
+    private func stopPracticePlaybackInNavigationStack(_ navigationController: UINavigationController) {
+        // Check all view controllers in the navigation stack
+        for viewController in navigationController.viewControllers {
+            if let practiceVC = viewController as? PracticeViewController {
+                practiceVC.stopCurrentPlayback()
+            }
+        }
     }
 }

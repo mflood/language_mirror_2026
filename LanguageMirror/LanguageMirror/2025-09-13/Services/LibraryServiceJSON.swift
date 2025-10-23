@@ -331,6 +331,38 @@ final class LibraryServiceJSON: LibraryService {
     func deleteClip(id: String, from practiceSetId: String) throws {
         throw LibraryError.notFound // Not implemented
     }
+    
+    // MARK: - Favorite Methods
+    
+    func getAllFavoritePracticeSets() -> [(track: Track, practiceSet: PracticeSet)] {
+        var favorites: [(track: Track, practiceSet: PracticeSet)] = []
+        
+        for pack in cache.packs {
+            for track in pack.tracks {
+                for practiceSet in track.practiceSets {
+                    if practiceSet.isFavorite {
+                        favorites.append((track: track, practiceSet: practiceSet))
+                    }
+                }
+            }
+        }
+        
+        return favorites
+    }
+    
+    func togglePracticeSetFavorite(trackId: String, practiceSetId: String) throws {
+        var track = try loadTrack(id: trackId)
+        
+        guard let practiceSetIndex = track.practiceSets.firstIndex(where: { $0.id == practiceSetId }) else {
+            throw LibraryError.notFound
+        }
+        
+        // Toggle the favorite status
+        track.practiceSets[practiceSetIndex].isFavorite.toggle()
+        
+        // Update the track in the library
+        try updateTrack(track)
+    }
 
     // Utilities to help importers (public static helpers are OK too)
     func trackFolder(forPackId packId: String, forTrackId trackId: String) -> URL {

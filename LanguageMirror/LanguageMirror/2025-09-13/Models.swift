@@ -40,6 +40,7 @@ struct PracticeSet: Codable, Equatable {
     var displayOrder: Int
     var title: String?
     var clips: [Clip]
+    var isFavorite: Bool = false
     
     static func fullTrackFactory(trackId: String, displayOrder: Int, trackDurationMs: Int? = nil) -> PracticeSet {
         // Use actual track duration if provided, otherwise use a safe default

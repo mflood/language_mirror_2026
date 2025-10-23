@@ -60,6 +60,9 @@ final class PracticeViewController: UIViewController {
     private let progressLabel = UILabel()
     private let emptyStateView = EmptyStateView()
     
+    // Navigation bar buttons
+    private var favoriteButton: UIBarButtonItem?
+    
     // State
     private var isPlaying = false
     private var isPaused = false
@@ -114,14 +117,22 @@ final class PracticeViewController: UIViewController {
     // MARK: - Setup
 
     private func setupUI() {
-        // Navigation bar settings button
+        // Navigation bar buttons
         let settingsButton = UIBarButtonItem(
             image: UIImage(systemName: "gearshape"),
             style: .plain,
             target: self,
             action: #selector(settingsButtonTapped)
         )
-        navigationItem.rightBarButtonItem = settingsButton
+        
+        favoriteButton = UIBarButtonItem(
+            image: UIImage(systemName: "heart"),
+            style: .plain,
+            target: self,
+            action: #selector(favoriteButtonTapped)
+        )
+        
+        navigationItem.rightBarButtonItems = [settingsButton, favoriteButton!]
         
         // Header
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -370,11 +381,22 @@ final class PracticeViewController: UIViewController {
         updateForeverButton()
         updateProgressLabel()
         validateMergeButton()
+        updateFavoriteButtonState()
     }
     
     private func updateForeverButton() {
         let isForever = currentSession?.foreverMode ?? false
         foreverButton.setTitleColor(isForever ? AppColors.primaryAccent : AppColors.secondaryText, for: .normal)
+    }
+    
+    private func updateFavoriteButtonState() {
+        guard let practiceSet = practiceSet, let favoriteButton = favoriteButton else {
+            return
+        }
+        
+        let isFavorite = practiceSet.isFavorite
+        favoriteButton.image = UIImage(systemName: isFavorite ? "heart.fill" : "heart")
+        favoriteButton.tintColor = isFavorite ? .systemRed : AppColors.secondaryText
     }
     
     private func updateProgressLabel() {
@@ -503,6 +525,30 @@ final class PracticeViewController: UIViewController {
         let settingsVC = PracticeSettingsViewController(settings: settings)
         let nav = UINavigationController(rootViewController: settingsVC)
         present(nav, animated: true)
+    }
+    
+    @objc private func favoriteButtonTapped() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        guard let track = selectedTrack, let practiceSet = practiceSet else { return }
+        
+        do {
+            try library.togglePracticeSetFavorite(trackId: track.id, practiceSetId: practiceSet.id)
+            
+            // Reload track data to get the updated practice set
+            if let updatedTrack = try? library.loadTrack(id: track.id) {
+                selectedTrack = updatedTrack
+            }
+            
+            // Update the favorite button state
+            updateFavoriteButtonState()
+            
+            let successGenerator = UINotificationFeedbackGenerator()
+            successGenerator.notificationOccurred(.success)
+        } catch {
+            presentAlert("Error", "Failed to toggle favorite: \(error.localizedDescription)")
+        }
     }
     
     @objc private func saveButtonTapped() {
@@ -995,7 +1041,7 @@ final class PracticeViewController: UIViewController {
         present(a, animated: true)
     }
     
-    private func stopCurrentPlayback() {
+    func stopCurrentPlayback() {
         if isPlaying || isPaused {
             player.stop()
             isPlaying = false

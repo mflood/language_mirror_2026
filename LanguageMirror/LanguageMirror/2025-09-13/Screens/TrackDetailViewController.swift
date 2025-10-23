@@ -212,6 +212,12 @@ final class TrackDetailViewController: UITableViewController {
                 config.secondaryText = "\(practiceSet.clips.count) clips • \(drillCount) drills"
                 cell.selectionStyle = .default
                 cell.accessoryType = .disclosureIndicator
+                
+                // Add favorite indicator
+                if practiceSet.isFavorite {
+                    config.image = UIImage(systemName: "heart.fill")
+                    config.imageProperties.tintColor = .systemRed
+                }
             }
         }
 
@@ -266,6 +272,50 @@ final class TrackDetailViewController: UITableViewController {
             delegate?.trackDetailViewController(self, didSelectPracticeSet: practiceSet, forTrack: track)
         case .overview:
             break
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        switch Section(rawValue: indexPath.section)! {
+        case .practiceSets:
+            guard !track.practiceSets.isEmpty else { return nil }
+            
+            let practiceSet = track.practiceSets[indexPath.row]
+            let actionTitle = practiceSet.isFavorite ? "Unfavorite" : "Favorite"
+            let actionImage = practiceSet.isFavorite ? "heart.slash" : "heart"
+            
+            let favoriteAction = UIContextualAction(style: .normal, title: actionTitle) { [weak self] _, _, completion in
+                self?.toggleFavorite(practiceSet: practiceSet, at: indexPath.row)
+                completion(true)
+            }
+            
+            favoriteAction.backgroundColor = practiceSet.isFavorite ? .systemRed : .systemBlue
+            favoriteAction.image = UIImage(systemName: actionImage)
+            
+            return UISwipeActionsConfiguration(actions: [favoriteAction])
+            
+        default:
+            return nil
+        }
+    }
+    
+    private func toggleFavorite(practiceSet: PracticeSet, at index: Int) {
+        do {
+            try library.togglePracticeSetFavorite(trackId: track.id, practiceSetId: practiceSet.id)
+            
+            // Reload track data to get the updated practice set with new favorite status
+            if let updatedTrack = try? library.loadTrack(id: track.id) {
+                track = updatedTrack
+            }
+            
+            // Reload the specific row to update the UI
+            let indexPath = IndexPath(row: index, section: Section.practiceSets.rawValue)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        } catch {
+            presentMessage("Error", "Failed to toggle favorite: \(error.localizedDescription)")
         }
     }
 

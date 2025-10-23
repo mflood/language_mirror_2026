@@ -47,4 +47,8 @@ protocol LibraryService {
     func addClip(_ clip: Clip, to practiceSetId: String) throws
     func updateClip(_ clip: Clip, in practiceSetId: String) throws
     func deleteClip(id: String, from practiceSetId: String) throws
+    
+    // Favorites
+    func getAllFavoritePracticeSets() -> [(track: Track, practiceSet: PracticeSet)]
+    func togglePracticeSetFavorite(trackId: String, practiceSetId: String) throws
 }

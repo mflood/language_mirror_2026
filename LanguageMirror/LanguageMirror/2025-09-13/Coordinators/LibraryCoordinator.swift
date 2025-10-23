@@ -43,6 +43,29 @@ final class LibraryCoordinator: Coordinator {
         detail.delegate = self
         navigationController.pushViewController(detail, animated: true)
     }
+    
+    func showTrackDetailAndPractice(for track: Track, practiceSet: PracticeSet) {
+        let detail = TrackDetailViewController(
+            track: track,
+            audioPlayer: container.audioPlayer,
+            clipService: container.clipService,
+            settings: container.settings,
+            library: container.libraryService
+        )
+        detail.delegate = self
+        navigationController.pushViewController(detail, animated: true)
+        
+        // Immediately push the practice view controller
+        let practiceVC = PracticeViewController(
+            settings: container.settings,
+            libraryService: container.libraryService,
+            clipService: container.clipService,
+            audioPlayer: container.audioPlayer,
+            practiceService: container.practiceService
+        )
+        practiceVC.loadTrackAndPracticeSet(track: track, practiceSet: practiceSet)
+        navigationController.pushViewController(practiceVC, animated: true)
+    }
 }
 
 extension LibraryCoordinator: LibraryViewControllerDelegate {
