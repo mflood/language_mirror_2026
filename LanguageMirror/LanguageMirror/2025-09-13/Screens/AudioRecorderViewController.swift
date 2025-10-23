@@ -23,8 +23,8 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
     private let timerLabel = UILabel()
     private let buttonContainer = UIView()
     private let buttonIcon = UIImageView()
-    private let amplitudeBar = UIView()
-    private var amplitudeBarHeightConstraint: NSLayoutConstraint!
+    private let waveformContainer = UIView()
+    private var waveformBars: [UIView] = []
     
     // MARK: - Recording State
     
@@ -92,16 +92,16 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         buttonIcon.isAccessibilityElement = false // Handled by container
         buttonContainer.addSubview(buttonIcon)
         
-        // Amplitude bar
-        amplitudeBar.translatesAutoresizingMaskIntoConstraints = false
-        amplitudeBar.backgroundColor = AppColors.primaryAccent
-        amplitudeBar.layer.cornerRadius = 2
-        amplitudeBar.layer.cornerCurve = .continuous
-        amplitudeBar.isHidden = true
-        amplitudeBar.isAccessibilityElement = true
-        amplitudeBar.accessibilityLabel = "Audio level indicator"
-        amplitudeBar.accessibilityTraits = .updatesFrequently
-        view.addSubview(amplitudeBar)
+        // Waveform container
+        waveformContainer.translatesAutoresizingMaskIntoConstraints = false
+        waveformContainer.isHidden = true
+        waveformContainer.isAccessibilityElement = true
+        waveformContainer.accessibilityLabel = "Audio level indicator"
+        waveformContainer.accessibilityTraits = .updatesFrequently
+        view.addSubview(waveformContainer)
+        
+        // Create waveform bars
+        setupWaveformBars()
         
         // Tap gesture for button
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
@@ -110,10 +110,32 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         setupConstraints()
     }
     
-    private func setupConstraints() {
-        // Create amplitude bar height constraint
-        amplitudeBarHeightConstraint = amplitudeBar.heightAnchor.constraint(equalToConstant: 0)
+    private func setupWaveformBars() {
+        // Create 8 waveform bars with fun colors for Korean teenager appeal
+        let colors: [UIColor] = [
+            .systemPink,    // Hot pink
+            .systemPurple,    // Purple
+            .systemBlue,      // Blue
+            .systemCyan,      // Cyan
+            .systemGreen,     // Green
+            .systemYellow,    // Yellow
+            .systemOrange,    // Orange
+            .systemRed        // Red
+        ]
         
+        for i in 0..<8 {
+            let bar = UIView()
+            bar.translatesAutoresizingMaskIntoConstraints = false
+            bar.backgroundColor = colors[i]
+            bar.layer.cornerRadius = 2
+            bar.layer.cornerCurve = .continuous
+            bar.alpha = 0.3 // Start with low opacity
+            waveformContainer.addSubview(bar)
+            waveformBars.append(bar)
+        }
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             // Timer label
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -131,12 +153,32 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
             buttonIcon.widthAnchor.constraint(equalToConstant: 60),
             buttonIcon.heightAnchor.constraint(equalToConstant: 60),
             
-            // Amplitude bar
-            amplitudeBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            amplitudeBar.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: 40),
-            amplitudeBar.widthAnchor.constraint(equalToConstant: 200),
-            amplitudeBarHeightConstraint
+            // Waveform container
+            waveformContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            waveformContainer.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: 40),
+            waveformContainer.widthAnchor.constraint(equalToConstant: 200),
+            waveformContainer.heightAnchor.constraint(equalToConstant: 60)
         ])
+        
+        // Setup waveform bar constraints
+        setupWaveformBarConstraints()
+    }
+    
+    private func setupWaveformBarConstraints() {
+        let barWidth: CGFloat = 8
+        let barSpacing: CGFloat = 4
+        let totalWidth = CGFloat(waveformBars.count) * barWidth + CGFloat(waveformBars.count - 1) * barSpacing
+        
+        for (index, bar) in waveformBars.enumerated() {
+            let xOffset = CGFloat(index) * (barWidth + barSpacing) - totalWidth / 2
+            
+            NSLayoutConstraint.activate([
+                bar.centerXAnchor.constraint(equalTo: waveformContainer.centerXAnchor, constant: xOffset),
+                bar.centerYAnchor.constraint(equalTo: waveformContainer.centerYAnchor),
+                bar.widthAnchor.constraint(equalToConstant: barWidth),
+                bar.heightAnchor.constraint(equalToConstant: 4) // Start with minimal height
+            ])
+        }
     }
     
     private func setupHapticFeedback() {
@@ -240,7 +282,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         if isRecording {
             // Show recording UI
             timerLabel.isHidden = false
-            amplitudeBar.isHidden = false
+            waveformContainer.isHidden = false
             
             // Update button appearance
             buttonContainer.backgroundColor = .systemRed
@@ -256,7 +298,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         } else {
             // Hide recording UI
             timerLabel.isHidden = true
-            amplitudeBar.isHidden = true
+            waveformContainer.isHidden = true
             
             // Update button appearance
             buttonContainer.backgroundColor = AppColors.primaryAccent
@@ -316,8 +358,19 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
     private func stopAmplitudeMonitoring() {
         amplitudeTimer?.invalidate()
         amplitudeTimer = nil
-        amplitudeBarHeightConstraint.constant = 0
-        view.layoutIfNeeded()
+        
+        // Reset waveform bars to default state
+        for bar in waveformBars {
+            UIView.animate(withDuration: 0.3) {
+                bar.transform = .identity
+                bar.alpha = 0.3
+            }
+        }
+        
+        // Reset button to normal size
+        UIView.animate(withDuration: 0.3) {
+            self.buttonContainer.transform = .identity
+        }
     }
     
     private func updateAmplitude() {
@@ -327,11 +380,26 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         let db = recorder.averagePower(forChannel: 0)
         let normalized = normalizeDB(db)
         
-        // Animate amplitude bar height (0-60pt range)
-        amplitudeBarHeightConstraint.constant = CGFloat(normalized * 60)
+        // Animate waveform bars with different patterns for each bar
+        for (index, bar) in waveformBars.enumerated() {
+            // Create a more interesting pattern by varying each bar's response
+            let barVariation = Float(index) * 0.1 // Each bar responds slightly differently
+            let barNormalized = max(0, min(1, normalized + barVariation))
+            
+            // Calculate height (4-50pt range)
+            let height = CGFloat(4 + barNormalized * 46)
+            
+            // Update bar height with smooth animation
+            UIView.animate(withDuration: 0.1, delay: 0, options: [.allowUserInteraction, .beginFromCurrentState]) {
+                bar.transform = CGAffineTransform(scaleX: 1.0, y: height / 4.0) // Scale from base height of 4
+                bar.alpha = 0.3 + CGFloat(barNormalized * 0.7) // Opacity varies with intensity
+            }
+        }
         
-        UIView.animate(withDuration: 0.05, delay: 0, options: [.allowUserInteraction, .beginFromCurrentState]) {
-            self.view.layoutIfNeeded()
+        // Also pulse the button slightly with the audio
+        let buttonPulse = 1.0 + CGFloat(normalized * 0.1) // 1.0 to 1.1 scale
+        UIView.animate(withDuration: 0.1, delay: 0, options: [.allowUserInteraction, .beginFromCurrentState]) {
+            self.buttonContainer.transform = CGAffineTransform(scaleX: buttonPulse, y: buttonPulse)
         }
     }
     
