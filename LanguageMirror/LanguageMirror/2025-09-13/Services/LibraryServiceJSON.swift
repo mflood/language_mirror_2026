@@ -245,10 +245,14 @@ final class LibraryServiceJSON: LibraryService {
             print("Failed to delete practice session for track \(id): \(error)")
         }
         
-        // Delete audio files
-        let trackFolder = trackFolder(forPackId: packId, forTrackId: id)
-        if fm.fileExists(atPath: trackFolder.path) {
-            try? fm.removeItem(at: trackFolder)
+        // Delete audio files (only if not from app bundle)
+        if !isAudioInBundle(track) {
+            let trackFolder = trackFolder(forPackId: packId, forTrackId: id)
+            if fm.fileExists(atPath: trackFolder.path) {
+                try? fm.removeItem(at: trackFolder)
+            }
+        } else {
+            print("Skipping audio file deletion for track \(id) - file is from app bundle")
         }
         
         // Remove track from pack
@@ -364,6 +368,21 @@ final class LibraryServiceJSON: LibraryService {
         try updateTrack(track)
     }
 
+    // MARK: - Audio File Safety
+    
+    /// Determines if a track's audio file is from the app bundle (should not be deleted)
+    private func isAudioInBundle(_ track: Track) -> Bool {
+        // Check if the audio file can be found in the app bundle
+        let filename = track.filename
+        let ext = (filename as NSString).pathExtension
+        let base = (filename as NSString).deletingPathExtension
+        
+        if !base.isEmpty, Bundle.main.url(forResource: base, withExtension: ext.isEmpty ? nil : ext) != nil {
+            return true
+        }
+        return false
+    }
+    
     // Utilities to help importers (public static helpers are OK too)
     func trackFolder(forPackId packId: String, forTrackId trackId: String) -> URL {
         base.appendingPathComponent("packs/\(packId)/tracks/\(trackId)", isDirectory: true)

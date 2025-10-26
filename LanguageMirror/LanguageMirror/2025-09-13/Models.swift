@@ -123,30 +123,6 @@ struct TrackProgress: Codable, Hashable {
 
 // MARK: - Practice Session Models
 
-enum SpeedMode: String, Codable, CaseIterable {
-    case constantMin      // Always play at min speed
-    case constantMax      // Always play at max speed
-    case linear           // Gradually increase from min to max over all loops
-    case minThenLinear    // Play first N loops at min, then linear progression
-    case linearThenMax    // Linear progression for N loops, then max for rest
-    
-    var label: String {
-        switch self {
-        case .constantMin: return "Min"
-        case .constantMax: return "Max"
-        case .linear: return "Linear"
-        case .minThenLinear: return "Min→Linear"
-        case .linearThenMax: return "Linear→Max"
-        }
-    }
-    
-    var usesN: Bool {
-        switch self {
-        case .minThenLinear, .linearThenMax: return true
-        case .constantMin, .constantMax, .linear: return false
-        }
-    }
-}
 
 struct ClipPlayCount: Codable, Equatable {
     let clipId: String

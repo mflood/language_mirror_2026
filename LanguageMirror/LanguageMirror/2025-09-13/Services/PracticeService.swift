@@ -33,8 +33,8 @@ protocol PracticeService: AnyObject {
     /// List recent practice sessions sorted by most recent first
     func listRecentSessions(limit: Int) -> [(packId: String, trackId: String, lastUpdated: Date)]
     
-    /// Calculate the current speed based on the mode and progress
-    func calculateSpeed(mode: SpeedMode, currentLoop: Int, totalLoops: Int, minSpeed: Float, maxSpeed: Float, modeN: Int) -> Float
+    /// Calculate the current speed based on progression mode and settings
+    func calculateSpeed(useProgressionMode: Bool, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float
 }
 
 enum PracticeServiceError: Error, LocalizedError {

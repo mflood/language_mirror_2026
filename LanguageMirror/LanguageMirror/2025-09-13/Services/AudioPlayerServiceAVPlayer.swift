@@ -323,12 +323,13 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         // Calculate speed for current loop
         let currentLoop = totalLoopsForCurrentClip - currentSegmentRepeatsRemaining
         let speed = practiceService.calculateSpeed(
-            mode: settings.speedMode,
+            useProgressionMode: settings.useProgressionMode,
             currentLoop: currentLoop,
-            totalLoops: totalLoopsForCurrentClip,
+            progressionMinRepeats: settings.progressionMinRepeats,
+            progressionLinearRepeats: settings.progressionLinearRepeats,
+            progressionMaxRepeats: settings.progressionMaxRepeats,
             minSpeed: settings.minSpeed,
-            maxSpeed: settings.maxSpeed,
-            modeN: settings.speedModeN
+            maxSpeed: settings.maxSpeed
         )
         print("    Speed: \(speed)x")
         
@@ -444,12 +445,13 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                     // Calculate speed for next loop
                     let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
                     let speed = self.practiceService.calculateSpeed(
-                        mode: self.settings.speedMode,
+                        useProgressionMode: self.settings.useProgressionMode,
                         currentLoop: currentLoop,
-                        totalLoops: self.totalLoopsForCurrentClip,
+                        progressionMinRepeats: self.settings.progressionMinRepeats,
+                        progressionLinearRepeats: self.settings.progressionLinearRepeats,
+                        progressionMaxRepeats: self.settings.progressionMaxRepeats,
                         minSpeed: self.settings.minSpeed,
-                        maxSpeed: self.settings.maxSpeed,
-                        modeN: self.settings.speedModeN
+                        maxSpeed: self.settings.maxSpeed
                     )
 
                     self.player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { _ in

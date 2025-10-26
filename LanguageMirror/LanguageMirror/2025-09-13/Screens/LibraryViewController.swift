@@ -410,6 +410,72 @@ extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
         return 100
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let track: Track
+        if isSearching {
+            let allTracks = filteredPacks.flatMap(\.tracks)
+            track = allTracks[indexPath.row]
+        } else {
+            let pack = filteredPacks[indexPath.section]
+            track = pack.tracks[indexPath.row]
+        }
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+            self?.confirmDeleteTrack(track, at: indexPath, completion: completion)
+        }
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    
+    private func confirmDeleteTrack(_ track: Track, at indexPath: IndexPath, completion: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(
+            title: "Delete Track",
+            message: "Are you sure you want to delete \"\(track.title)\"? This action cannot be undone.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            completion(false)
+        })
+        
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.performTrackDeletion(track, at: indexPath)
+            completion(true)
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func performTrackDeletion(_ track: Track, at indexPath: IndexPath) {
+        do {
+            try service.deleteTrack(id: track.id)
+            
+            // Haptic feedback for successful deletion
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            // Reload data to update the UI (this will handle empty pack removal)
+            loadData()
+            
+        } catch {
+            print("Failed to delete track: \(error)")
+            
+            // Show error alert
+            let errorAlert = UIAlertController(
+                title: "Delete Failed",
+                message: "Could not delete the track. Please try again.",
+                preferredStyle: .alert
+            )
+            errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(errorAlert, animated: true)
+            
+            // Haptic feedback for error
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+        }
+    }
+    
     private func togglePackExpansion(packId: String, section: Int) {
         let isExpanding = !expandedPackIds.contains(packId)
         

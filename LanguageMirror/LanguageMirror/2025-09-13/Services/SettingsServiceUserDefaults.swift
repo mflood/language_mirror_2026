@@ -15,10 +15,12 @@ final class SettingsServiceUserDefaults: SettingsService {
         case interGap = "settings.interSegmentGapSeconds"
         case preroll = "settings.prerollMs"
         case duckOthers = "settings.duckOthers"
+        case useProgressionMode = "settings.useProgressionMode"
+        case progressionMinRepeats = "settings.progressionMinRepeats"
+        case progressionLinearRepeats = "settings.progressionLinearRepeats"
+        case progressionMaxRepeats = "settings.progressionMaxRepeats"
         case minSpeed = "settings.minSpeed"
         case maxSpeed = "settings.maxSpeed"
-        case speedMode = "settings.speedMode"
-        case speedModeN = "settings.speedModeN"
     }
 
     // Defaults
@@ -27,14 +29,16 @@ final class SettingsServiceUserDefaults: SettingsService {
     private let defaultInterGap: TimeInterval = 0.5
     private let defaultPrerollMs = 0
     private let defaultDuck = false
+    private let defaultUseProgressionMode = false
+    private let defaultProgressionMinRepeats = 5
+    private let defaultProgressionLinearRepeats = 10
+    private let defaultProgressionMaxRepeats = 5
     private let defaultMinSpeed: Float = 0.6
     private let defaultMaxSpeed: Float = 1.0
-    private let defaultSpeedMode: SpeedMode = .linear
-    private let defaultSpeedModeN = 5
 
     var globalRepeats: Int {
         get { max(1, d.integer(forKey: Key.repeats.rawValue) == 0 ? defaultRepeats : d.integer(forKey: Key.repeats.rawValue)) }
-        set { d.set(max(1, min(newValue, 20)), forKey: Key.repeats.rawValue) }
+        set { d.set(max(1, min(newValue, 100)), forKey: Key.repeats.rawValue) }
     }
 
     var gapSeconds: TimeInterval {
@@ -79,25 +83,35 @@ final class SettingsServiceUserDefaults: SettingsService {
             let v = d.object(forKey: Key.maxSpeed.rawValue) as? Float
             return v ?? defaultMaxSpeed
         }
-        set { d.set(max(0.5, min(newValue, 2.0)), forKey: Key.maxSpeed.rawValue) }
+        set { d.set(max(0.5, min(newValue, 3.0)), forKey: Key.maxSpeed.rawValue) }
     }
     
-    var speedMode: SpeedMode {
-        get {
-            guard let rawValue = d.string(forKey: Key.speedMode.rawValue),
-                  let mode = SpeedMode(rawValue: rawValue) else {
-                return defaultSpeedMode
-            }
-            return mode
-        }
-        set { d.set(newValue.rawValue, forKey: Key.speedMode.rawValue) }
+    var useProgressionMode: Bool {
+        get { d.object(forKey: Key.useProgressionMode.rawValue) as? Bool ?? defaultUseProgressionMode }
+        set { d.set(newValue, forKey: Key.useProgressionMode.rawValue) }
     }
     
-    var speedModeN: Int {
+    var progressionMinRepeats: Int {
         get {
-            let v = d.object(forKey: Key.speedModeN.rawValue) as? Int
-            return v ?? defaultSpeedModeN
+            let v = d.object(forKey: Key.progressionMinRepeats.rawValue) as? Int
+            return v ?? defaultProgressionMinRepeats
         }
-        set { d.set(max(1, min(newValue, 50)), forKey: Key.speedModeN.rawValue) }
+        set { d.set(max(1, min(newValue, 100)), forKey: Key.progressionMinRepeats.rawValue) }
+    }
+    
+    var progressionLinearRepeats: Int {
+        get {
+            let v = d.object(forKey: Key.progressionLinearRepeats.rawValue) as? Int
+            return v ?? defaultProgressionLinearRepeats
+        }
+        set { d.set(max(1, min(newValue, 100)), forKey: Key.progressionLinearRepeats.rawValue) }
+    }
+    
+    var progressionMaxRepeats: Int {
+        get {
+            let v = d.object(forKey: Key.progressionMaxRepeats.rawValue) as? Int
+            return v ?? defaultProgressionMaxRepeats
+        }
+        set { d.set(max(1, min(newValue, 100)), forKey: Key.progressionMaxRepeats.rawValue) }
     }
 }

@@ -7,14 +7,12 @@
 
 import UIKit
 
-/// ADHD-friendly settings cell with colorful icons, clear visual hierarchy, and support for various controls
+/// Clean settings cell with clear visual hierarchy and support for various controls
 final class SettingsCell: UITableViewCell {
     
     // MARK: - Properties
     
     private let cardView = UIView()
-    private let iconContainerView = UIView()
-    private let iconImageView = UIImageView()
     private let titleLabel = UILabel()
     private let valueLabel = UILabel()
     private let controlContainerView = UIView()
@@ -44,18 +42,6 @@ final class SettingsCell: UITableViewCell {
         cardView.layer.cornerCurve = .continuous
         contentView.addSubview(cardView)
         
-        // Icon container (circular background)
-        iconContainerView.translatesAutoresizingMaskIntoConstraints = false
-        iconContainerView.layer.cornerRadius = 20
-        iconContainerView.layer.cornerCurve = .continuous
-        cardView.addSubview(iconContainerView)
-        
-        // Icon
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.contentMode = .scaleAspectFit
-        iconImageView.tintColor = .white
-        iconContainerView.addSubview(iconImageView)
-        
         // Title label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -81,33 +67,24 @@ final class SettingsCell: UITableViewCell {
             cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
-            cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 72),
-            
-            // Icon container (circular)
-            iconContainerView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
-            iconContainerView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            iconContainerView.widthAnchor.constraint(equalToConstant: 40),
-            iconContainerView.heightAnchor.constraint(equalToConstant: 40),
-            
-            // Icon (centered in container)
-            iconImageView.centerXAnchor.constraint(equalTo: iconContainerView.centerXAnchor),
-            iconImageView.centerYAnchor.constraint(equalTo: iconContainerView.centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 22),
-            iconImageView.heightAnchor.constraint(equalToConstant: 22),
+            cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
             
             // Title
-            titleLabel.leadingAnchor.constraint(equalTo: iconContainerView.trailingAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
+            titleLabel.trailingAnchor.constraint(equalTo: valueLabel.leadingAnchor, constant: -8),
             
-            // Value label
-            valueLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            valueLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 3),
-            valueLabel.bottomAnchor.constraint(lessThanOrEqualTo: cardView.bottomAnchor, constant: -14),
+            // Value label (for steppers and sliders)
+            valueLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
+            valueLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            valueLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
             
-            // Control container (on the right side)
-            controlContainerView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12),
-            controlContainerView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            controlContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 12)
+            // Control container (below the title/value row)
+            controlContainerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            controlContainerView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            controlContainerView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            controlContainerView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -12),
+            controlContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 30)
         ])
         
         // Apply shadow
@@ -118,15 +95,12 @@ final class SettingsCell: UITableViewCell {
     
     func configure(
         title: String,
-        value: String,
-        iconName: String,
-        iconColor: UIColor,
+        value: String?,
         control: UIView? = nil
     ) {
         titleLabel.text = title
         valueLabel.text = value
-        iconImageView.image = UIImage(systemName: iconName)
-        iconContainerView.backgroundColor = iconColor
+        valueLabel.isHidden = value == nil
         
         // Remove existing control
         controlContainerView.subviews.forEach { $0.removeFromSuperview() }
@@ -143,6 +117,15 @@ final class SettingsCell: UITableViewCell {
                 control.bottomAnchor.constraint(equalTo: controlContainerView.bottomAnchor)
             ])
         }
+    }
+    
+    // Convenience method for backward compatibility
+    func configure(
+        title: String,
+        value: String,
+        control: UIView? = nil
+    ) {
+        configure(title: title, value: value as String?, control: control)
     }
     
     // Update just the value text (for animations)

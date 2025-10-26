@@ -16,10 +16,14 @@ protocol SettingsService: AnyObject {
     var duckOthers: Bool { get set }                     // duck other audio when playing
     // With duck ON, other audio dips under yours; with duck OFF, other audio keeps normal volume (but still mixed).
     
-    // Practice speed settings
+    // Practice mode settings
+    var useProgressionMode: Bool { get set }           // toggle between simple and progression modes
+    var progressionMinRepeats: Int { get set }         // M repeats at minimum speed (1-100)
+    var progressionLinearRepeats: Int { get set }      // N repeats during linear progression (1-100)
+    var progressionMaxRepeats: Int { get set }         // O repeats at maximum speed (1-100)
+    
+    // Speed settings
     var minSpeed: Float { get set }                    // 0.3..1.0
-    var maxSpeed: Float { get set }                    // 0.5..2.0
-    var speedMode: SpeedMode { get set }               // speed progression mode
-    var speedModeN: Int { get set }                    // N loops for modes that use it
+    var maxSpeed: Float { get set }                    // 0.5..3.0
 }
 

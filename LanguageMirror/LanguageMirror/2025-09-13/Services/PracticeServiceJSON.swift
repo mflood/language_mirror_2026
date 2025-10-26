@@ -166,42 +166,28 @@ final class PracticeServiceJSON: PracticeService {
         return Array(sessions.prefix(limit))
     }
     
-    func calculateSpeed(mode: SpeedMode, currentLoop: Int, totalLoops: Int, minSpeed: Float, maxSpeed: Float, modeN: Int) -> Float {
-        // Ensure we have at least 1 loop to avoid division by zero
-        guard totalLoops > 0 else { return minSpeed }
+    func calculateSpeed(useProgressionMode: Bool, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float {
+        // If not using progression mode, return normal speed (1.0)
+        guard useProgressionMode else { return 1.0 }
         
-        switch mode {
-        case .constantMin:
+        // Ensure we have at least 1 loop to avoid division by zero
+        guard currentLoop >= 0 else { return minSpeed }
+        
+        let M = progressionMinRepeats
+        let N = progressionLinearRepeats
+        let O = progressionMaxRepeats
+        
+        if currentLoop < M {
+            // First M loops at minimum speed
             return minSpeed
-            
-        case .constantMax:
+        } else if currentLoop < M + N {
+            // Next N loops with linear progression from min to max
+            let progressIndex = currentLoop - M
+            let progressRatio = Float(progressIndex) / Float(N - 1)
+            return minSpeed + (maxSpeed - minSpeed) * progressRatio
+        } else {
+            // Remaining O loops at maximum speed
             return maxSpeed
-            
-        case .linear:
-            // Linear progression from min to max over all loops
-            let progress = Float(currentLoop) / Float(totalLoops)
-            return minSpeed + (maxSpeed - minSpeed) * progress
-            
-        case .minThenLinear:
-            // First N loops at min speed, then linear progression
-            if currentLoop < modeN {
-                return minSpeed
-            } else {
-                let remainingLoops = totalLoops - modeN
-                guard remainingLoops > 0 else { return maxSpeed }
-                let loopsIntoLinear = currentLoop - modeN
-                let progress = Float(loopsIntoLinear) / Float(remainingLoops)
-                return minSpeed + (maxSpeed - minSpeed) * progress
-            }
-            
-        case .linearThenMax:
-            // Linear progression for N loops, then max for the rest
-            if currentLoop < modeN {
-                let progress = Float(currentLoop) / Float(modeN)
-                return minSpeed + (maxSpeed - minSpeed) * progress
-            } else {
-                return maxSpeed
-            }
         }
     }
 }

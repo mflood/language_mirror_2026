@@ -7,6 +7,88 @@
 
 import UIKit
 
+/// Custom cell for practice settings with flexible layout for different control types
+final class PracticeSettingCell: UITableViewCell {
+    
+    private let titleLabel = UILabel()
+    private let valueLabel = UILabel()
+    private let controlContainer = UIView()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        selectionStyle = .none
+        
+        // Title label
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = .systemFont(ofSize: 17, weight: .regular)
+        titleLabel.textColor = .label
+        contentView.addSubview(titleLabel)
+        
+        // Value label (for steppers and other controls that need value display)
+        valueLabel.translatesAutoresizingMaskIntoConstraints = false
+        valueLabel.font = .systemFont(ofSize: 15, weight: .medium)
+        valueLabel.textColor = .secondaryLabel
+        valueLabel.textAlignment = .right
+        contentView.addSubview(valueLabel)
+        
+        // Control container
+        controlContainer.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(controlContainer)
+        
+        NSLayoutConstraint.activate([
+            // Title label
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: valueLabel.leadingAnchor, constant: -8),
+            
+            // Value label (for steppers)
+            valueLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            valueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            valueLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
+            
+            // Control container
+            controlContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            controlContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            controlContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            controlContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+            controlContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: 30)
+        ])
+    }
+    
+    func configure(title: String, value: String? = nil, control: UIView) {
+        titleLabel.text = title
+        valueLabel.text = value
+        valueLabel.isHidden = value == nil
+        
+        // Remove any existing control
+        controlContainer.subviews.forEach { $0.removeFromSuperview() }
+        
+        // Add new control
+        control.translatesAutoresizingMaskIntoConstraints = false
+        controlContainer.addSubview(control)
+        
+        NSLayoutConstraint.activate([
+            control.topAnchor.constraint(equalTo: controlContainer.topAnchor),
+            control.leadingAnchor.constraint(equalTo: controlContainer.leadingAnchor),
+            control.trailingAnchor.constraint(equalTo: controlContainer.trailingAnchor),
+            control.bottomAnchor.constraint(equalTo: controlContainer.bottomAnchor)
+        ])
+    }
+    
+    func updateValue(_ text: String) {
+        valueLabel.text = text
+        valueLabel.isHidden = false
+    }
+}
+
 /// Modal settings view for practice configuration
 final class PracticeSettingsViewController: UITableViewController {
     
@@ -17,14 +99,20 @@ final class PracticeSettingsViewController: UITableViewController {
     private let gapSlider = UISlider()
     private let interGapSlider = UISlider()
     private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
+    
+    // Progression mode controls
+    private let practiceModeSwitch = UISwitch()
+    private let progressionMinRepeatsSlider = UISlider()
+    private let progressionLinearRepeatsSlider = UISlider()
+    private let progressionMaxRepeatsSlider = UISlider()
     private let minSpeedSlider = UISlider()
     private let maxSpeedSlider = UISlider()
-    private let speedModeSeg = UISegmentedControl(items: SpeedMode.allCases.map { $0.label })
-    private let speedModeNStepper = UIStepper()
     
-    private enum Section: Int, CaseIterable { case practice, speed }
-    private enum PracticeRow: Int, CaseIterable { case repeats, gap, interGap, preroll }
-    private enum SpeedRow: Int, CaseIterable { case minSpeed, maxSpeed, speedMode, speedModeN }
+    private enum Section: Int, CaseIterable { case practiceMode, simple, progression, basic }
+    private enum PracticeModeRow: Int, CaseIterable { case toggle }
+    private enum SimpleRow: Int, CaseIterable { case repeats }
+    private enum BasicRow: Int, CaseIterable { case gap, interGap, preroll }
+    private enum ProgressionRow: Int, CaseIterable { case progressionMinRepeats, progressionLinearRepeats, progressionMaxRepeats, minSpeed, maxSpeed }
     
     init(settings: SettingsService) {
         self.settings = settings
@@ -40,7 +128,7 @@ final class PracticeSettingsViewController: UITableViewController {
         
         title = "Practice Settings"
         view.backgroundColor = AppColors.calmBackground
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(PracticeSettingCell.self, forCellReuseIdentifier: "PracticeSettingCell")
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done,
@@ -54,7 +142,7 @@ final class PracticeSettingsViewController: UITableViewController {
     private func configureControls() {
         // Repeats
         repeatsStepper.minimumValue = 1
-        repeatsStepper.maximumValue = 50
+        repeatsStepper.maximumValue = 100
         repeatsStepper.stepValue = 1
         repeatsStepper.value = Double(settings.globalRepeats)
         repeatsStepper.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
@@ -77,26 +165,39 @@ final class PracticeSettingsViewController: UITableViewController {
         prerollSeg.selectedSegmentIndex = idx
         prerollSeg.addTarget(self, action: #selector(prerollChanged), for: .valueChanged)
         
-        // Speed controls
+        // Practice mode switch
+        practiceModeSwitch.isOn = settings.useProgressionMode
+        practiceModeSwitch.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
+        
+        // Progression min repeats slider (0-100)
+        progressionMinRepeatsSlider.minimumValue = 0
+        progressionMinRepeatsSlider.maximumValue = 100
+        progressionMinRepeatsSlider.value = Float(settings.progressionMinRepeats)
+        progressionMinRepeatsSlider.addTarget(self, action: #selector(progressionMinRepeatsChanged), for: .valueChanged)
+        
+        // Progression linear repeats slider (0-100)
+        progressionLinearRepeatsSlider.minimumValue = 0
+        progressionLinearRepeatsSlider.maximumValue = 100
+        progressionLinearRepeatsSlider.value = Float(settings.progressionLinearRepeats)
+        progressionLinearRepeatsSlider.addTarget(self, action: #selector(progressionLinearRepeatsChanged), for: .valueChanged)
+        
+        // Progression max repeats slider (1-100)
+        progressionMaxRepeatsSlider.minimumValue = 1
+        progressionMaxRepeatsSlider.maximumValue = 100
+        progressionMaxRepeatsSlider.value = Float(settings.progressionMaxRepeats)
+        progressionMaxRepeatsSlider.addTarget(self, action: #selector(progressionMaxRepeatsChanged), for: .valueChanged)
+        
+        // Min speed slider
         minSpeedSlider.minimumValue = 0.3
         minSpeedSlider.maximumValue = 1.0
         minSpeedSlider.value = settings.minSpeed
         minSpeedSlider.addTarget(self, action: #selector(minSpeedChanged), for: .valueChanged)
         
+        // Max speed slider
         maxSpeedSlider.minimumValue = 0.5
-        maxSpeedSlider.maximumValue = 2.0
+        maxSpeedSlider.maximumValue = 3.0
         maxSpeedSlider.value = settings.maxSpeed
         maxSpeedSlider.addTarget(self, action: #selector(maxSpeedChanged), for: .valueChanged)
-        
-        let modeIndex = SpeedMode.allCases.firstIndex(of: settings.speedMode) ?? 0
-        speedModeSeg.selectedSegmentIndex = modeIndex
-        speedModeSeg.addTarget(self, action: #selector(speedModeChanged), for: .valueChanged)
-        
-        speedModeNStepper.minimumValue = 1
-        speedModeNStepper.maximumValue = 50
-        speedModeNStepper.stepValue = 1
-        speedModeNStepper.value = Double(settings.speedModeN)
-        speedModeNStepper.addTarget(self, action: #selector(speedModeNChanged), for: .valueChanged)
     }
     
     // MARK: - Table View
@@ -107,76 +208,100 @@ final class PracticeSettingsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
-        case .practice: return PracticeRow.allCases.count
-        case .speed:
-            // Hide speedModeN row if current mode doesn't use it
-            return settings.speedMode.usesN ? SpeedRow.allCases.count : SpeedRow.allCases.count - 1
+        case .practiceMode: return PracticeModeRow.allCases.count
+        case .simple: return SimpleRow.allCases.count
+        case .progression: return ProgressionRow.allCases.count
+        case .basic: return BasicRow.allCases.count
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch Section(rawValue: section)! {
-        case .practice: return "Practice Controls"
-        case .speed: return "Speed Settings"
+        case .practiceMode: return "Practice Mode"
+        case .simple: return "Simple Mode Settings"
+        case .progression: return "Progression Mode Settings"
+        case .basic: return "Basic Settings"
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var cfg = cell.defaultContentConfiguration()
-        cell.selectionStyle = .none
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PracticeSettingCell", for: indexPath) as! PracticeSettingCell
         
         switch Section(rawValue: indexPath.section)! {
-        case .practice:
-            switch PracticeRow(rawValue: indexPath.row)! {
+        case .practiceMode:
+            switch PracticeModeRow(rawValue: indexPath.row)! {
+            case .toggle:
+                cell.configure(
+                    title: "Practice Mode",
+                    value: settings.useProgressionMode ? "Progression" : "Simple",
+                    control: practiceModeSwitch
+                )
+            }
+        case .simple:
+            switch SimpleRow(rawValue: indexPath.row)! {
             case .repeats:
-                cfg.text = "Repeats per Clip"
-                cfg.secondaryText = "\(settings.globalRepeats)x"
-                cell.accessoryView = repeatsStepper
-            case .gap:
-                cfg.text = "Gap Between Repeats"
-                cfg.secondaryText = String(format: "%.1fs", settings.gapSeconds)
-                cell.accessoryView = gapSlider
-            case .interGap:
-                cfg.text = "Gap Between Clips"
-                cfg.secondaryText = String(format: "%.1fs", settings.interSegmentGapSeconds)
-                cell.accessoryView = interGapSlider
-            case .preroll:
-                cfg.text = "Preroll"
-                cfg.secondaryText = "\(settings.prerollMs) ms"
-                cell.accessoryView = prerollSeg
+                cell.configure(
+                    title: "Repeats per Clip",
+                    value: "\(settings.globalRepeats)x",
+                    control: repeatsStepper
+                )
             }
-            
-        case .speed:
-            let speedModeUsesN = settings.speedMode.usesN
-            var row = SpeedRow(rawValue: indexPath.row)!
-            
-            // Skip speedModeN row if mode doesn't use it
-            if indexPath.row >= SpeedRow.speedModeN.rawValue && !speedModeUsesN {
-                row = SpeedRow(rawValue: indexPath.row + 1)!
-            }
-            
-            switch row {
+        case .progression:
+            switch ProgressionRow(rawValue: indexPath.row)! {
+            case .progressionMinRepeats:
+                cell.configure(
+                    title: "Min Speed Repeats (M)",
+                    value: "\(settings.progressionMinRepeats)x",
+                    control: progressionMinRepeatsSlider
+                )
+            case .progressionLinearRepeats:
+                cell.configure(
+                    title: "Linear Progression Repeats (N)",
+                    value: "\(settings.progressionLinearRepeats)x",
+                    control: progressionLinearRepeatsSlider
+                )
+            case .progressionMaxRepeats:
+                cell.configure(
+                    title: "Max Speed Repeats (O)",
+                    value: "\(settings.progressionMaxRepeats)x",
+                    control: progressionMaxRepeatsSlider
+                )
             case .minSpeed:
-                cfg.text = "Minimum Speed"
-                cfg.secondaryText = String(format: "%.2fx", settings.minSpeed)
-                cell.accessoryView = minSpeedSlider
+                cell.configure(
+                    title: "Minimum Speed",
+                    value: String(format: "%.1fx", settings.minSpeed),
+                    control: minSpeedSlider
+                )
             case .maxSpeed:
-                cfg.text = "Maximum Speed"
-                cfg.secondaryText = String(format: "%.2fx", settings.maxSpeed)
-                cell.accessoryView = maxSpeedSlider
-            case .speedMode:
-                cfg.text = "Speed Progression"
-                cfg.secondaryText = settings.speedMode.label
-                cell.accessoryView = speedModeSeg
-            case .speedModeN:
-                cfg.text = "N Loops for Mode"
-                cfg.secondaryText = "\(settings.speedModeN)"
-                cell.accessoryView = speedModeNStepper
+                cell.configure(
+                    title: "Maximum Speed",
+                    value: String(format: "%.1fx", settings.maxSpeed),
+                    control: maxSpeedSlider
+                )
+            }
+        case .basic:
+            switch BasicRow(rawValue: indexPath.row)! {
+            case .gap:
+                cell.configure(
+                    title: "Gap Between Repeats",
+                    value: String(format: "%.1fs", settings.gapSeconds),
+                    control: gapSlider
+                )
+            case .interGap:
+                cell.configure(
+                    title: "Gap Between Clips",
+                    value: String(format: "%.1fs", settings.interSegmentGapSeconds),
+                    control: interGapSlider
+                )
+            case .preroll:
+                cell.configure(
+                    title: "Preroll",
+                    value: nil, // No redundant value label for segmented control
+                    control: prerollSeg
+                )
             }
         }
         
-        cell.contentConfiguration = cfg
         return cell
     }
     
@@ -190,75 +315,91 @@ final class PracticeSettingsViewController: UITableViewController {
     
     @objc private func repeatsChanged() {
         settings.globalRepeats = Int(repeatsStepper.value)
-        updateCellSecondaryText(section: .practice, row: PracticeRow.repeats.rawValue, text: "\(settings.globalRepeats)x")
+        updateCellSecondaryText(section: .simple, row: SimpleRow.repeats.rawValue, text: "\(settings.globalRepeats)x")
     }
     
     @objc private func gapChanged() {
         let stepped = Double(round(gapSlider.value * 10) / 10)
         gapSlider.value = Float(stepped)
         settings.gapSeconds = stepped
-        updateCellSecondaryText(section: .practice, row: PracticeRow.gap.rawValue, text: String(format: "%.1fs", stepped))
+        updateCellSecondaryText(section: .basic, row: BasicRow.gap.rawValue, text: String(format: "%.1fs", stepped))
     }
     
     @objc private func interGapChanged() {
         let stepped = Double(round(interGapSlider.value * 10) / 10)
         interGapSlider.value = Float(stepped)
         settings.interSegmentGapSeconds = stepped
-        updateCellSecondaryText(section: .practice, row: PracticeRow.interGap.rawValue, text: String(format: "%.1fs", stepped))
+        updateCellSecondaryText(section: .basic, row: BasicRow.interGap.rawValue, text: String(format: "%.1fs", stepped))
     }
     
     @objc private func prerollChanged() {
         let values = [0, 100, 200, 300]
         settings.prerollMs = values[prerollSeg.selectedSegmentIndex]
-        updateCellSecondaryText(section: .practice, row: PracticeRow.preroll.rawValue, text: "\(settings.prerollMs) ms")
+        updateCellSecondaryText(section: .basic, row: BasicRow.preroll.rawValue, text: "\(settings.prerollMs) ms")
+    }
+    
+    @objc private func practiceModeChanged() {
+        settings.useProgressionMode = practiceModeSwitch.isOn
+        updateCellSecondaryText(section: .practiceMode, row: PracticeModeRow.toggle.rawValue, text: settings.useProgressionMode ? "Progression" : "Simple")
+    }
+    
+    @objc private func progressionMinRepeatsChanged() {
+        let value = Int(progressionMinRepeatsSlider.value)
+        settings.progressionMinRepeats = value
+        updateCellSecondaryText(section: .progression, row: ProgressionRow.progressionMinRepeats.rawValue, text: "\(value)x")
+    }
+    
+    @objc private func progressionLinearRepeatsChanged() {
+        let value = Int(progressionLinearRepeatsSlider.value)
+        settings.progressionLinearRepeats = value
+        updateCellSecondaryText(section: .progression, row: ProgressionRow.progressionLinearRepeats.rawValue, text: "\(value)x")
+    }
+    
+    @objc private func progressionMaxRepeatsChanged() {
+        let value = Int(progressionMaxRepeatsSlider.value)
+        settings.progressionMaxRepeats = value
+        updateCellSecondaryText(section: .progression, row: ProgressionRow.progressionMaxRepeats.rawValue, text: "\(value)x")
     }
     
     @objc private func minSpeedChanged() {
-        let stepped = Float(round(minSpeedSlider.value * 100) / 100)
+        let stepped = Float(round(minSpeedSlider.value * 10) / 10)
         minSpeedSlider.value = stepped
         settings.minSpeed = stepped
-        updateCellSecondaryText(section: .speed, row: SpeedRow.minSpeed.rawValue, text: String(format: "%.2fx", stepped))
+        
+        // Ensure max speed is always >= min speed
+        if settings.maxSpeed < settings.minSpeed {
+            settings.maxSpeed = settings.minSpeed
+            maxSpeedSlider.value = settings.maxSpeed
+            updateCellSecondaryText(section: .progression, row: ProgressionRow.maxSpeed.rawValue, text: String(format: "%.1fx", settings.maxSpeed))
+        }
+        
+        updateCellSecondaryText(section: .progression, row: ProgressionRow.minSpeed.rawValue, text: String(format: "%.1fx", stepped))
     }
     
     @objc private func maxSpeedChanged() {
-        let stepped = Float(round(maxSpeedSlider.value * 100) / 100)
+        let stepped = Float(round(maxSpeedSlider.value * 10) / 10)
         maxSpeedSlider.value = stepped
         settings.maxSpeed = stepped
-        updateCellSecondaryText(section: .speed, row: SpeedRow.maxSpeed.rawValue, text: String(format: "%.2fx", stepped))
-    }
-    
-    @objc private func speedModeChanged() {
-        let newMode = SpeedMode.allCases[speedModeSeg.selectedSegmentIndex]
-        let oldMode = settings.speedMode
-        settings.speedMode = newMode
         
-        // Reload section if usesN changed to show/hide N stepper
-        // Use async to avoid conflicts with the control's event handling
-        if oldMode.usesN != newMode.usesN {
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadSections(IndexSet(integer: Section.speed.rawValue), with: .automatic)
-            }
-        } else {
-            updateCellSecondaryText(section: .speed, row: SpeedRow.speedMode.rawValue, text: newMode.label)
+        // Ensure max speed is always >= min speed
+        if settings.maxSpeed < settings.minSpeed {
+            settings.maxSpeed = settings.minSpeed
+            maxSpeedSlider.value = settings.maxSpeed
         }
-    }
-    
-    @objc private func speedModeNChanged() {
-        settings.speedModeN = Int(speedModeNStepper.value)
-        updateCellSecondaryText(section: .speed, row: SpeedRow.speedModeN.rawValue, text: "\(settings.speedModeN)")
+        
+        updateCellSecondaryText(section: .progression, row: ProgressionRow.maxSpeed.rawValue, text: String(format: "%.1fx", settings.maxSpeed))
     }
     
     // MARK: - Helpers
     
     private func updateCellSecondaryText(section: Section, row: Int, text: String) {
         let indexPath = IndexPath(row: row, section: section.rawValue)
-        guard let cell = tableView.cellForRow(at: indexPath),
-              var config = cell.contentConfiguration as? UIListContentConfiguration else {
+        guard let cell = tableView.cellForRow(at: indexPath) as? PracticeSettingCell else {
             return
         }
         
-        config.secondaryText = text
-        cell.contentConfiguration = config
+        // Update the value label in the custom cell
+        cell.updateValue(text)
     }
 }
 

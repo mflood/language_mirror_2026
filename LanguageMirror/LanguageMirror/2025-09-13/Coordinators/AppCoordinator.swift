@@ -29,6 +29,7 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     init(window: UIWindow, container: AppContainer) {
         self.window = window
         self.container = container
+        super.init()
         self.startObserving()
     }
     
