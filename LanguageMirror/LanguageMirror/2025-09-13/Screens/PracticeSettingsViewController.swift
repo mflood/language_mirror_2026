@@ -95,7 +95,7 @@ final class PracticeSettingsViewController: UITableViewController {
     private let settings: SettingsService
     
     // Controls
-    private let repeatsStepper = UIStepper()
+    private let repeatsSlider = UISlider()
     private let gapSlider = UISlider()
     private let interGapSlider = UISlider()
     private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
@@ -141,11 +141,10 @@ final class PracticeSettingsViewController: UITableViewController {
     
     private func configureControls() {
         // Repeats
-        repeatsStepper.minimumValue = 1
-        repeatsStepper.maximumValue = 100
-        repeatsStepper.stepValue = 1
-        repeatsStepper.value = Double(settings.globalRepeats)
-        repeatsStepper.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
+        repeatsSlider.minimumValue = 1
+        repeatsSlider.maximumValue = 100
+        repeatsSlider.value = Float(settings.globalRepeats)
+        repeatsSlider.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
         
         // Gap
         gapSlider.minimumValue = 0.0
@@ -241,9 +240,9 @@ final class PracticeSettingsViewController: UITableViewController {
             switch SimpleRow(rawValue: indexPath.row)! {
             case .repeats:
                 cell.configure(
-                    title: "Repeats per Clip",
+                    title: "Repeat Count",
                     value: "\(settings.globalRepeats)x",
-                    control: repeatsStepper
+                    control: repeatsSlider
                 )
             }
         case .progression:
@@ -314,8 +313,9 @@ final class PracticeSettingsViewController: UITableViewController {
     }
     
     @objc private func repeatsChanged() {
-        settings.globalRepeats = Int(repeatsStepper.value)
-        updateCellSecondaryText(section: .simple, row: SimpleRow.repeats.rawValue, text: "\(settings.globalRepeats)x")
+        let value = Int(repeatsSlider.value)
+        settings.globalRepeats = value
+        updateCellSecondaryText(section: .simple, row: SimpleRow.repeats.rawValue, text: "\(value)x")
     }
     
     @objc private func gapChanged() {

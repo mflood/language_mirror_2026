@@ -12,7 +12,6 @@ final class SettingsCell: UITableViewCell {
     
     // MARK: - Properties
     
-    private let cardView = UIView()
     private let titleLabel = UILabel()
     private let valueLabel = UILabel()
     private let controlContainerView = UIView()
@@ -31,64 +30,43 @@ final class SettingsCell: UITableViewCell {
     // MARK: - Setup
     
     private func setupUI() {
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
         selectionStyle = .none
-        
-        // Card view with soft shadows
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.backgroundColor = AppColors.cardBackground
-        cardView.layer.cornerRadius = 12
-        cardView.layer.cornerCurve = .continuous
-        contentView.addSubview(cardView)
         
         // Title label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = AppColors.primaryText
-        titleLabel.numberOfLines = 1
-        cardView.addSubview(titleLabel)
+        titleLabel.font = .systemFont(ofSize: 17, weight: .regular)
+        titleLabel.textColor = .label
+        contentView.addSubview(titleLabel)
         
-        // Value label (shows current value)
+        // Value label (for steppers and other controls that need value display)
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        valueLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        valueLabel.textColor = AppColors.secondaryText
-        valueLabel.numberOfLines = 1
-        cardView.addSubview(valueLabel)
+        valueLabel.font = .systemFont(ofSize: 15, weight: .medium)
+        valueLabel.textColor = .secondaryLabel
+        valueLabel.textAlignment = .right
+        contentView.addSubview(valueLabel)
         
-        // Control container (for stepper, slider, switch, etc.)
+        // Control container
         controlContainerView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(controlContainerView)
+        contentView.addSubview(controlContainerView)
         
-        // Layout
         NSLayoutConstraint.activate([
-            // Card view with margins
-            cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
-            cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
-            
-            // Title
-            titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-            titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
+            // Title label
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: valueLabel.leadingAnchor, constant: -8),
             
-            // Value label (for steppers and sliders)
-            valueLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
-            valueLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            // Value label (for steppers)
+            valueLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            valueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             valueLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
             
-            // Control container (below the title/value row)
+            // Control container
             controlContainerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            controlContainerView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-            controlContainerView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
-            controlContainerView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -12),
+            controlContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            controlContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            controlContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
             controlContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 30)
         ])
-        
-        // Apply shadow
-        cardView.applyAdaptiveShadow(radius: 8, opacity: 0.1)
     }
     
     // MARK: - Configuration
@@ -150,7 +128,7 @@ final class SettingsCell: UITableViewCell {
         super.traitCollectionDidChange(previousTraitCollection)
         
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            cardView.updateAdaptiveShadowForAppearance()
+            // No longer needed with flat design
         }
     }
 }

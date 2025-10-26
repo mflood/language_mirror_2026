@@ -13,7 +13,7 @@ final class SettingsViewController: UITableViewController {
     private let settings: SettingsService
 
     // Controls
-    private let repeatsStepper = UIStepper()
+    private let repeatsSlider = UISlider()
     private let gapSlider = UISlider()
     private let interGapSlider = UISlider()
     private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
@@ -40,22 +40,19 @@ final class SettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.primaryBackground
-        tableView.backgroundColor = AppColors.primaryBackground
+        view.backgroundColor = AppColors.calmBackground
+        tableView.backgroundColor = AppColors.calmBackground
         tableView.register(SettingsCell.self, forCellReuseIdentifier: "settingsCell")
-        tableView.separatorStyle = .none
-        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         configureControls()
     }
 
     private func configureControls() {
-        // Repeats stepper
-        repeatsStepper.minimumValue = 1
-        repeatsStepper.maximumValue = 100
-        repeatsStepper.stepValue = 1
-        repeatsStepper.value = Double(settings.globalRepeats)
-        repeatsStepper.tintColor = SimpleRow.repeats.iconColor
-        repeatsStepper.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
+        // Repeats slider
+        repeatsSlider.minimumValue = 1
+        repeatsSlider.maximumValue = 100
+        repeatsSlider.value = Float(settings.globalRepeats)
+        repeatsSlider.minimumTrackTintColor = SimpleRow.repeats.iconColor
+        repeatsSlider.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
 
         // Gap slider
         gapSlider.minimumValue = 0.0
@@ -188,7 +185,7 @@ final class SettingsViewController: UITableViewController {
             cell.configure(
                 title: row.title,
                 value: value,
-                control: repeatsStepper
+                control: repeatsSlider
             )
         }
     }
@@ -328,12 +325,13 @@ final class SettingsViewController: UITableViewController {
     // MARK: - Actions
 
     @objc private func repeatsChanged() {
-        settings.globalRepeats = Int(repeatsStepper.value)
+        let value = Int(repeatsSlider.value)
+        settings.globalRepeats = value
         updateSecondary(section: .simple, row: SimpleRow.repeats.rawValue)
         
         // Haptic feedback
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
+        let generator = UISelectionFeedbackGenerator()
+        generator.selectionChanged()
     }
 
     @objc private func gapChanged() {
@@ -529,8 +527,8 @@ extension SettingsViewController.BasicRow {
     var title: String {
         switch self {
         case .gap: return "Gap Between Repeats"
-        case .interGap: return "Gap Between Segments"
-        case .preroll: return "Preroll Delay"
+        case .interGap: return "Gap Between Clips"
+        case .preroll: return "Preroll"
         case .duck: return "Duck Other Audio"
         }
     }
