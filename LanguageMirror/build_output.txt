@@ -1,0 +1,818 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project LanguageMirror.xcodeproj -scheme LanguageMirror -configuration Debug clean build
+
+2025-10-25 19:45:04.837 xcodebuild[78304:31904009] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:macOS, arch:arm64, variant:Designed for [iPad,iPhone], id:00006001-0004296A0185801E, name:My Mac }
+{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
+{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
+{ platform:iOS Simulator, arch:arm64, id:E88BD6DC-F838-4925-B177-F4AC8E3234BA, OS:26.0, name:iPad (A16) }
+{ platform:iOS Simulator, arch:arm64, id:C55757F4-37B3-42CE-95C4-56DC1259F2D0, OS:26.0, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:42BB9949-C59C-45F3-844A-E94BA9182EE2, OS:26.0, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:9E93910C-8DB6-4F4F-A05D-6D25DC2D69B5, OS:26.0, name:iPad Pro 11-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:9981AC66-7E76-403C-A0F8-C34A2A165191, OS:26.0, name:iPad Pro 13-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:014D2FCD-2F14-482D-8C91-4673AE9E8A26, OS:26.0, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:arm64, id:015F7FE3-B596-4D9B-9CE4-8005F3624730, OS:26.0, name:iPhone 16e }
+{ platform:iOS Simulator, arch:arm64, id:CBDB1EEC-151B-4FE3-8309-0A66378B396D, OS:26.0, name:iPhone 17 }
+{ platform:iOS Simulator, arch:arm64, id:24D7D410-B299-45AF-9CD3-A80F30096644, OS:26.0, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:arm64, id:13C0438C-3971-4A8D-A986-7E7326B339D4, OS:26.0, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:arm64, id:A9D9FF0A-AAAE-4960-A2D5-AFE7F951D112, OS:26.0, name:iPhone Air }
+{ platform:iOS, arch:arm64, id:00008130-001C09E92293803A, name:Ice Fox }
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+** CLEAN SUCCEEDED **
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:macOS, arch:arm64, variant:Designed for [iPad,iPhone], id:00006001-0004296A0185801E, name:My Mac }
+{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
+{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
+{ platform:iOS Simulator, arch:arm64, id:E88BD6DC-F838-4925-B177-F4AC8E3234BA, OS:26.0, name:iPad (A16) }
+{ platform:iOS Simulator, arch:arm64, id:C55757F4-37B3-42CE-95C4-56DC1259F2D0, OS:26.0, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:42BB9949-C59C-45F3-844A-E94BA9182EE2, OS:26.0, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:9E93910C-8DB6-4F4F-A05D-6D25DC2D69B5, OS:26.0, name:iPad Pro 11-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:9981AC66-7E76-403C-A0F8-C34A2A165191, OS:26.0, name:iPad Pro 13-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:014D2FCD-2F14-482D-8C91-4673AE9E8A26, OS:26.0, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:arm64, id:015F7FE3-B596-4D9B-9CE4-8005F3624730, OS:26.0, name:iPhone 16e }
+{ platform:iOS Simulator, arch:arm64, id:CBDB1EEC-151B-4FE3-8309-0A66378B396D, OS:26.0, name:iPhone 17 }
+{ platform:iOS Simulator, arch:arm64, id:24D7D410-B299-45AF-9CD3-A80F30096644, OS:26.0, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:arm64, id:13C0438C-3971-4A8D-A986-7E7326B339D4, OS:26.0, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:arm64, id:A9D9FF0A-AAAE-4960-A2D5-AFE7F951D112, OS:26.0, name:iPhone Air }
+{ platform:iOS, arch:arm64, id:00008130-001C09E92293803A, name:Ice Fox }
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (2 targets)
+    Target 'LanguageMirror' in project 'LanguageMirror'
+        ➜ Explicit dependency on target 'LanguageMirrorShare' in project 'LanguageMirror'
+    Target 'LanguageMirrorShare' in project 'LanguageMirror' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/momc --dry-run --action generate --swift-version 5.0 --sdkroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk --iphoneos-deployment-target 18.6 --module LanguageMirror /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/LanguageMirror.xcdatamodeld /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/CoreDataGenerated/LanguageMirror
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 19055096579a73496ace847bd8730178
+Build description path: /tmp/xcode_DerivedData/Build/Intermediates.noindex/XCBuildData/19055096579a73496ace847bd8730178.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk /tmp/xcode_DerivedData/SDKStatCaches.noindex/iphoneos26.0-23A339-81ce72e5b06c9602b9d30b56f2eed08a.sdkstatcache
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -o /tmp/xcode_DerivedData/SDKStatCaches.noindex/iphoneos26.0-23A339-81ce72e5b06c9602b9d30b56f2eed08a.sdkstatcache
+
+CreateBuildDirectory /tmp/xcode_DerivedData/Build/Products
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    builtin-create-build-directory /tmp/xcode_DerivedData/Build/Products
+
+CreateBuildDirectory /tmp/xcode_DerivedData/Build/Intermediates.noindex
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    builtin-create-build-directory /tmp/xcode_DerivedData/Build/Intermediates.noindex
+
+CreateBuildDirectory /tmp/xcode_DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    builtin-create-build-directory /tmp/xcode_DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+CreateBuildDirectory /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    builtin-create-build-directory /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos
+
+CreateBuildDirectory /tmp/xcode_DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    builtin-create-build-directory /tmp/xcode_DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory /tmp/xcode_DerivedData/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    builtin-create-build-directory /tmp/xcode_DerivedData/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror-ef89ef6ba1112c3017b9eee01f8192dd-VFS-iphoneos/all-product-headers.yaml
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror.xcodeproj
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror-ef89ef6ba1112c3017b9eee01f8192dd-VFS-iphoneos/all-product-headers.yaml
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-all-non-framework-target-headers.hmap (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-project-headers.hmap (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-project-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-own-target-headers.hmap (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-own-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-generated-files.hmap (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-generated-files.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.hmap (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-all-target-headers.hmap (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-all-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources/Entitlements.plist (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources/Entitlements.plist
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare_const_extract_protocols.json (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare_const_extract_protocols.json
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.SwiftFileList (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.SwiftFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.LinkFileList (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.LinkFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.SwiftConstValuesFileList (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-OutputFileMap.json (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-OutputFileMap.json
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.DependencyStaticMetadataFileList (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.DependencyMetadataFileList (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.DependencyMetadataFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-DebugEntryPoint-normal-arm64.txt (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-DebugEntryPoint-normal-arm64.txt
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-DebugDylibPath-normal-arm64.txt (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-DebugDylibPath-normal-arm64.txt
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-DebugDylibInstallName-normal-arm64.txt (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-DebugDylibInstallName-normal-arm64.txt
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.hmap (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror_const_extract_protocols.json (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror_const_extract_protocols.json
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.LinkFileList (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.LinkFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.SwiftFileList (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.SwiftFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.SwiftConstValuesFileList (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror-OutputFileMap.json (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror-OutputFileMap.json
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.DependencyStaticMetadataFileList (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.DependencyMetadataFileList (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.DependencyMetadataFileList
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-project-headers.hmap (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-project-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-own-target-headers.hmap (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-own-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-generated-files.hmap (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-generated-files.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-all-target-headers.hmap (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-all-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-all-non-framework-target-headers.hmap (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-DebugDylibPath-normal-arm64.txt (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-DebugDylibPath-normal-arm64.txt
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-DebugDylibInstallName-normal-arm64.txt (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-DebugDylibInstallName-normal-arm64.txt
+
+WriteAuxiliaryFile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/Entitlements.plist (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    write-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/Entitlements.plist
+
+MkDir /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /bin/mkdir -p /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex
+
+MkDir /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /bin/mkdir -p /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app
+
+MkDir /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app/PlugIns (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /bin/mkdir -p /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app/PlugIns
+
+ProcessProductPackaging /Users/matthewflood/Library/Developer/Xcode/UserData/Provisioning\ Profiles/476eeb92-3ec6-4ae3-b16c-b222dfa046ce.mobileprovision /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex/embedded.mobileprovision (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-productPackagingUtility /Users/matthewflood/Library/Developer/Xcode/UserData/Provisioning\ Profiles/476eeb92-3ec6-4ae3-b16c-b222dfa046ce.mobileprovision -o /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex/embedded.mobileprovision
+
+ProcessProductPackaging /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirrorShare/LanguageMirrorShare.entitlements /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.appex.xcent (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "L8695SQ572.com.sixwandsstudios.LanguageMirror.LanguageMirrorShare";
+    "com.apple.developer.team-identifier" = L8695SQ572;
+    "com.apple.security.application-groups" =     (
+        "group.com.sixwandsstudios.LanguageMirror"
+    );
+    "get-task-allow" = 1;
+}
+    
+    builtin-productPackagingUtility /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirrorShare/LanguageMirrorShare.entitlements -entitlements -format xml -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.appex.xcent
+
+ProcessProductPackagingDER /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.appex.xcent /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.appex.xcent.der (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /usr/bin/derq query -f xml -i /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.appex.xcent -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare.appex.xcent.der --raw
+
+Ld /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex/__preview.dylib normal (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios18.6 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -O0 -L/tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -F/tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -install_name @rpath/LanguageMirrorShare.debug.dylib -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare_dependency_info.dat -Xlinker -no_adhoc_codesign -o /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex/__preview.dylib
+
+ProcessInfoPlistFile /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex/Info.plist /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/ShareExtension/Info.plist (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-infoPlistUtility /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/ShareExtension/Info.plist -producttype com.apple.product-type.app-extension -expandbuildsettings -format binary -platform iphoneos -requiredArchitecture arm64 -o /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.appex/Info.plist
+
+SwiftDriver LanguageMirrorShare normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LanguageMirrorShare -Onone -enforce-exclusivity\=checked @/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -target arm64-apple-ios18.6 -g -module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -application-extension -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /tmp/xcode_DerivedData/LanguageMirror-ccyyuwkqhyuooggumicraorkdlxp/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -F /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -emit-localized-strings -emit-localized-strings-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /tmp/xcode_DerivedData/SDKStatCaches.noindex/iphoneos26.0-23A339-81ce72e5b06c9602b9d30b56f2eed08a.sdkstatcache -output-file-map /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -sdk-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftmodule -validate-clang-modules-once -clang-build-session-file /tmp/xcode_DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare_const_extract_protocols.json -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-generated-files.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-own-target-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-project-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources-normal/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-Swift.h -working-directory /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ ShareViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/ShareExtension/ShareViewController.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/ShareExtension/ShareViewController.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ SharedImportManager.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportManager.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportManager.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ SharedImportModels.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportModels.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportModels.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ LanguageMirrorShare (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+EmitSwiftModule normal arm64 (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for LanguageMirrorShare (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+SwiftDriver\ Compilation\ Requirements LanguageMirrorShare normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LanguageMirrorShare -Onone -enforce-exclusivity\=checked @/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -target arm64-apple-ios18.6 -g -module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -application-extension -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /tmp/xcode_DerivedData/LanguageMirror-ccyyuwkqhyuooggumicraorkdlxp/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -F /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -emit-localized-strings -emit-localized-strings-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /tmp/xcode_DerivedData/SDKStatCaches.noindex/iphoneos26.0-23A339-81ce72e5b06c9602b9d30b56f2eed08a.sdkstatcache -output-file-map /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -sdk-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftmodule -validate-clang-modules-once -clang-build-session-file /tmp/xcode_DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare_const_extract_protocols.json -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-generated-files.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-own-target-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-project-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources-normal/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-Swift.h -working-directory /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror -experimental-emit-module-separately -disable-cmo
+
+SwiftMergeGeneratedHeaders /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources/LanguageMirrorShare-Swift.h /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-Swift.h (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-swiftHeaderTool -arch arm64 /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-Swift.h -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources/LanguageMirrorShare-Swift.h
+
+Copy /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/arm64-apple-ios.swiftmodule /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftmodule (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftmodule /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/arm64-apple-ios.swiftmodule
+
+Copy /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/arm64-apple-ios.swiftdoc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftdoc (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftdoc /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/arm64-apple-ios.swiftdoc
+
+Copy /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/arm64-apple-ios.abi.json /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.abi.json (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.abi.json /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/arm64-apple-ios.abi.json
+
+Copy /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftsourceinfo (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftsourceinfo /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirrorShare.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo
+
+ProcessProductPackaging /Users/matthewflood/Library/Developer/Xcode/UserData/Provisioning\ Profiles/dcc2cdde-3c41-4099-b78c-b4f44ce43f0d.mobileprovision /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app/embedded.mobileprovision (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-productPackagingUtility /Users/matthewflood/Library/Developer/Xcode/UserData/Provisioning\ Profiles/dcc2cdde-3c41-4099-b78c-b4f44ce43f0d.mobileprovision -o /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app/embedded.mobileprovision
+
+ProcessProductPackaging /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/LanguageMirror.entitlements /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.app.xcent (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "L8695SQ572.com.sixwandsstudios.LanguageMirror";
+    "com.apple.developer.team-identifier" = L8695SQ572;
+    "com.apple.security.application-groups" =     (
+        "group.com.sixwandsstudios.LanguageMirror"
+    );
+    "get-task-allow" = 1;
+}
+    
+    builtin-productPackagingUtility /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/LanguageMirror.entitlements -entitlements -format xml -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.app.xcent
+
+ProcessProductPackagingDER /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.app.xcent /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.app.xcent.der (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /usr/bin/derq query -f xml -i /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.app.xcent -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror.app.xcent.der --raw
+
+MkDir /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_output/thinned (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /bin/mkdir -p /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_output/thinned
+
+MkDir /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_output/unthinned (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /bin/mkdir -p /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_output/unthinned
+
+DataModelCompile /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app/ /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/LanguageMirror.xcdatamodeld (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /Applications/Xcode.app/Contents/Developer/usr/bin/momc --sdkroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk --iphoneos-deployment-target 18.6 --module LanguageMirror /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/LanguageMirror.xcdatamodeld /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app/
+LanguageMirror.xcdatamodel: note: Model LanguageMirror version checksum: 47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
+
+GenerateAssetSymbols /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Assets.xcassets (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Assets.xcassets --compile /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app --output-format human-readable-text --notices --warnings --export-dependency-info /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_dependencies --output-partial-info-plist /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_generated_info.plist --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 18.6 --platform iphoneos --bundle-identifier com.sixwandsstudios.LanguageMirror --generate-swift-asset-symbols /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols.h
+/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CompileAssetCatalogVariant thinned /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Assets.xcassets (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Assets.xcassets --compile /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_dependencies_thinned --output-partial-info-plist /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --filter-for-thinning-device-configuration MacFamily20,1 --filter-for-device-os-version 18.6 --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 18.6 --platform iphoneos
+/* com.apple.actool.compilation-results */
+/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_generated_info.plist_thinned
+
+
+SwiftDriver LanguageMirror normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LanguageMirror -Onone -enforce-exclusivity\=checked @/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -target arm64-apple-ios18.6 -g -module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /tmp/xcode_DerivedData/LanguageMirror-ccyyuwkqhyuooggumicraorkdlxp/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -F /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -emit-localized-strings -emit-localized-strings-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /tmp/xcode_DerivedData/SDKStatCaches.noindex/iphoneos26.0-23A339-81ce72e5b06c9602b9d30b56f2eed08a.sdkstatcache -output-file-map /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -sdk-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror.swiftmodule -validate-clang-modules-once -clang-build-session-file /tmp/xcode_DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror_const_extract_protocols.json -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-generated-files.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-own-target-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-project-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources-normal/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror-Swift.h -working-directory /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror -experimental-emit-module-separately -disable-cmo
+
+LinkAssetCatalog /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Assets.xcassets (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-linkAssetCatalog --thinned /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_output/thinned --thinned-dependencies /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_generated_info.plist_thinned --unthinned /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_output/unthinned --unthinned-dependencies /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_generated_info.plist_unthinned --output /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/LanguageMirror.app --plist-output /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/assetcatalog_generated_info.plist
+
+SwiftDriverJobDiscovery normal arm64 Compiling SharedImportModels.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+SwiftDriverJobDiscovery normal arm64 Compiling SharedImportManager.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 Compiling\ DateExtensions.swift,\ AudioRecorderViewController.swift,\ ClipEditorViewController.swift,\ ClipWaveformEditorViewController.swift,\ ImportViewController.swift,\ LibraryViewController.swift,\ PackSelectionViewController.swift,\ PracticeHomeViewController.swift,\ PracticeSettingsViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Extensions/DateExtensions.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/AudioRecorderViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ClipEditorViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ClipWaveformEditorViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ImportViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/LibraryViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PackSelectionViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeHomeViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeSettingsViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Extensions/DateExtensions.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/AudioRecorderViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ClipEditorViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ClipWaveformEditorViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ImportViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/LibraryViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PackSelectionViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeHomeViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeSettingsViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ AppDelegate.swift,\ SceneDelegate.swift,\ AppContainer.swift,\ AppCoordinator.swift,\ CoordinatorProtocol.swift,\ ImportCoordinator.swift,\ LibraryCoordinator.swift,\ PracticeCoordinator.swift,\ SettingsCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/AppDelegate.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/SceneDelegate.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppContainer.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/CoordinatorProtocol.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/ImportCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/SettingsCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+Failed frontend command:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/AppDelegate.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/SceneDelegate.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppContainer.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/CoordinatorProtocol.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/ImportCoordinator.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift -primary-file /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/SettingsCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Extensions/DateExtensions.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/AudioRecorderViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ClipEditorViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ClipWaveformEditorViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/ImportViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/LibraryViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PackSelectionViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeHomeViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeSettingsViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeTrackPickerViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/SettingsViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/TrackDetailViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/ImportAudioUrlDriver.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/IOS18UrlDownloader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/MockUrlDownloader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/UrlDownloaderFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/UrlDownloaderProtocol.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/EmbeddedBundleManifestLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/ImportEmbeddedSampleDriver.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/IOS18SampleImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/MockManifestLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/SampleImporterFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/AudioImporterFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/AudioImporting.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/ImportAudioUseCase.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/IOS18AudioImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/MockAudioImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/ImportVideoDriver.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/IOS18VideoAudioExtractor.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/MockVideoAudioExtractor.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/VideoAudioExtractorProtocol.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/VideoImporterFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/ImportRecordingUseCase.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/IOS18RecordingImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/MockRecordingImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/RecordingImporterFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/RecordingImporting.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/AudioPlayerService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/AudioPlayerServiceAVPlayer.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ClipService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ClipServiceJSON.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceLite.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/LibraryService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/LibraryServiceJSON.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/PracticeService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/PracticeServiceJSON.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/SettingsService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/SettingsServiceUserDefaults.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportManager.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportModels.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AppColors.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AudioLocator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AVAssetZeroCrossingSource.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/Notifications.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/SelectionLevelAnalyzer.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/TagHelpers.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/UuidTools.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ClipCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/EmptyStateView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ImportOptionCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ImportProgressView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/LevelMeterView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/SettingsCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/TrackCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/WaveformPlaceholderView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Models.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/ViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/MockDataLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/MockUserDataLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/UserDataManager.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/DownloadedContent/SiivDownloadedAudio.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/UserData/UserContainer.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/UserData/UserProfile.swift /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols.swift -supplementary-output-file-map /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/supplementaryOutputs-1 -emit-localized-strings -emit-localized-strings-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64 -target arm64-apple-ios18.6 -module-can-import-version DeveloperToolsSupport 23.0.4 23.0.4 -module-can-import-version SwiftUI 7.0.84.1 7.0.84 -module-can-import-version UIKit 9088.1.113 9088.1.113 -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libFoundationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#FoundationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libObservationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#ObservationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libPreviewsMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#PreviewsMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftUIMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftUIMacros -disable-implicit-swift-modules -Xcc -fno-implicit-modules -Xcc -fno-implicit-module-maps -explicit-swift-module-map-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror-dependencies-1.json -Xllvm -aarch64-use-tbi -enable-objc-interop -stack-check -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -I /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -F /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -no-color-diagnostics -Xcc -fno-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=5 -module-cache-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -profile-generate -profile-coverage-mapping -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LanguageMirror_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /tmp/xcode_DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror -enable-anonymous-context-mangled-names -file-compilation-dir /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -Xcc -ivfsstatcache -Xcc /tmp/xcode_DerivedData/SDKStatCaches.noindex/iphoneos26.0-23A339-81ce72e5b06c9602b9d30b56f2eed08a.sdkstatcache -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/swift-overrides.hmap -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-generated-files.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-own-target-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/LanguageMirror-project-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources-normal/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources -Xcc -DDEBUG\=1 -no-auto-bridging-header-chaining -module-name LanguageMirror -frontend-parseable-output -disable-clang-spi -target-sdk-version 26.0 -target-sdk-name iphoneos26.0 -clang-target arm64-apple-ios26.0 -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/AppDelegate.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/SceneDelegate.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/AppContainer.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/AppCoordinator.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/CoordinatorProtocol.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/ImportCoordinator.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LibraryCoordinator.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/PracticeCoordinator.o -o /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/SettingsCoordinator.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/AppDelegate.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/SceneDelegate.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/AppContainer.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/AppCoordinator.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/CoordinatorProtocol.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/ImportCoordinator.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/LibraryCoordinator.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/PracticeCoordinator.o -index-unit-output-path /LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/Objects-normal/arm64/SettingsCoordinator.o -index-store-path /tmp/xcode_DerivedData/LanguageMirror-ccyyuwkqhyuooggumicraorkdlxp/Index.noindex/DataStore -index-system-modules
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/AppDelegate.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/SceneDelegate.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppContainer.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift:11:13: error: cannot declare conformance to 'NSObjectProtocol' in Swift; 'AppCoordinator' should inherit 'NSObject' instead
+final class AppCoordinator: UITabBarControllerDelegate {
+            ^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift:11:13: note: add stubs for conformance
+final class AppCoordinator: UITabBarControllerDelegate {
+            ^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift:99:22: warning: call to main actor-isolated instance method 'highlightTrackInLibrary(trackId:)' in a synchronous nonisolated context
+                self.highlightTrackInLibrary(trackId: trackId)
+                     ^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift:140:18: note: calls to instance method 'highlightTrackInLibrary(trackId:)' from outside of its actor context are implicitly asynchronous
+    private func highlightTrackInLibrary(trackId: String) {
+                 ^
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/CoordinatorProtocol.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/ImportCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:71:31: warning: conformance of 'LibraryCoordinator' to protocol 'LibraryViewControllerDelegate' crosses into main actor-isolated code and can cause data races; this is an error in the Swift 6 language mode
+extension LibraryCoordinator: LibraryViewControllerDelegate {
+                              ^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:71:31: note: isolate this conformance to the main actor with '@MainActor'
+extension LibraryCoordinator: LibraryViewControllerDelegate {
+                              ^
+                              @MainActor 
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:71:1: note: mark all declarations used in the conformance 'nonisolated'
+extension LibraryCoordinator: LibraryViewControllerDelegate {
+^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:71:31: note: turn data races into runtime errors with '@preconcurrency'
+extension LibraryCoordinator: LibraryViewControllerDelegate {
+                              ^
+                              @preconcurrency 
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:72:10: note: main actor-isolated instance method 'libraryViewController(_:didSelect:)' cannot satisfy nonisolated requirement
+    func libraryViewController(_ vc: LibraryViewController, didSelect track: Track) {
+         ^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:85:31: warning: conformance of 'LibraryCoordinator' to protocol 'TrackDetailViewControllerDelegate' crosses into main actor-isolated code and can cause data races; this is an error in the Swift 6 language mode
+extension LibraryCoordinator: TrackDetailViewControllerDelegate {
+                              ^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:85:31: note: isolate this conformance to the main actor with '@MainActor'
+extension LibraryCoordinator: TrackDetailViewControllerDelegate {
+                              ^
+                              @MainActor 
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:85:1: note: mark all declarations used in the conformance 'nonisolated'
+extension LibraryCoordinator: TrackDetailViewControllerDelegate {
+^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:85:31: note: turn data races into runtime errors with '@preconcurrency'
+extension LibraryCoordinator: TrackDetailViewControllerDelegate {
+                              ^
+                              @preconcurrency 
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift:86:10: note: main actor-isolated instance method 'trackDetailViewController(_:didSelectPracticeSet:forTrack:)' cannot satisfy nonisolated requirement
+    func trackDetailViewController(_ vc: TrackDetailViewController, didSelectPracticeSet practiceSet: PracticeSet, forTrack track: Track) {
+         ^
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift:39:32: warning: conformance of 'PracticeCoordinator' to protocol 'PracticeHomeViewControllerDelegate' crosses into main actor-isolated code and can cause data races; this is an error in the Swift 6 language mode
+extension PracticeCoordinator: PracticeHomeViewControllerDelegate {
+                               ^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift:39:32: note: isolate this conformance to the main actor with '@MainActor'
+extension PracticeCoordinator: PracticeHomeViewControllerDelegate {
+                               ^
+                               @MainActor 
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift:39:1: note: mark all declarations used in the conformance 'nonisolated'
+extension PracticeCoordinator: PracticeHomeViewControllerDelegate {
+^
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift:39:32: note: turn data races into runtime errors with '@preconcurrency'
+extension PracticeCoordinator: PracticeHomeViewControllerDelegate {
+                               ^
+                               @preconcurrency 
+/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift:40:10: note: main actor-isolated instance method 'practiceHomeViewController(_:didSelectPracticeSet:forTrack:)' cannot satisfy nonisolated requirement
+    func practiceHomeViewController(_ vc: PracticeHomeViewController, didSelectPracticeSet practiceSet: PracticeSet, forTrack track: Track) {
+         ^
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/SettingsCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ PracticeTrackPickerViewController.swift,\ PracticeViewController.swift,\ SettingsViewController.swift,\ TrackDetailViewController.swift,\ ImportAudioUrlDriver.swift,\ IOS18UrlDownloader.swift,\ MockUrlDownloader.swift,\ UrlDownloaderFactory.swift,\ UrlDownloaderProtocol.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeTrackPickerViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/SettingsViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/TrackDetailViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/ImportAudioUrlDriver.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/IOS18UrlDownloader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/MockUrlDownloader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/UrlDownloaderFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/UrlDownloaderProtocol.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeTrackPickerViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/PracticeViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/SettingsViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Screens/TrackDetailViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/ImportAudioUrlDriver.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/IOS18UrlDownloader.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/MockUrlDownloader.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/UrlDownloaderFactory.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportAudioUrl/UrlDownloaderProtocol.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ LanguageMirror (in target 'LanguageMirror' from project 'LanguageMirror')
+
+EmitSwiftModule normal arm64 (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ LibraryService.swift,\ LibraryServiceJSON.swift,\ PracticeService.swift,\ PracticeServiceJSON.swift,\ SettingsService.swift,\ SettingsServiceUserDefaults.swift,\ SharedImportManager.swift,\ SharedImportModels.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/LibraryService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/LibraryServiceJSON.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/PracticeService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/PracticeServiceJSON.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/SettingsService.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/SettingsServiceUserDefaults.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportManager.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportModels.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/LibraryService.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/LibraryServiceJSON.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/PracticeService.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/PracticeServiceJSON.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/SettingsService.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/SettingsServiceUserDefaults.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportManager.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/SharedImport/SharedImportModels.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ EmptyStateView.swift,\ ImportOptionCell.swift,\ ImportProgressView.swift,\ LevelMeterView.swift,\ SettingsCell.swift,\ TrackCell.swift,\ WaveformPlaceholderView.swift,\ Models.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/EmptyStateView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ImportOptionCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ImportProgressView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/LevelMeterView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/SettingsCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/TrackCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/WaveformPlaceholderView.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Models.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/EmptyStateView.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ImportOptionCell.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ImportProgressView.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/LevelMeterView.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/SettingsCell.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/TrackCell.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/WaveformPlaceholderView.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Models.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ EmbeddedBundleManifestLoader.swift,\ ImportEmbeddedSampleDriver.swift,\ IOS18SampleImporter.swift,\ MockManifestLoader.swift,\ SampleImporterFactory.swift,\ AudioImporterFactory.swift,\ AudioImporting.swift,\ ImportAudioUseCase.swift,\ IOS18AudioImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/EmbeddedBundleManifestLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/ImportEmbeddedSampleDriver.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/IOS18SampleImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/MockManifestLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/SampleImporterFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/AudioImporterFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/AudioImporting.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/ImportAudioUseCase.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/IOS18AudioImporter.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/EmbeddedBundleManifestLoader.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/ImportEmbeddedSampleDriver.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/IOS18SampleImporter.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/MockManifestLoader.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportEmbeddedSample/SampleImporterFactory.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/AudioImporterFactory.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/AudioImporting.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/ImportAudioUseCase.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/IOS18AudioImporter.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ AppColors.swift,\ AudioLocator.swift,\ AVAssetZeroCrossingSource.swift,\ Notifications.swift,\ SelectionLevelAnalyzer.swift,\ TagHelpers.swift,\ UuidTools.swift,\ ClipCell.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AppColors.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AudioLocator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AVAssetZeroCrossingSource.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/Notifications.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/SelectionLevelAnalyzer.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/TagHelpers.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/UuidTools.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ClipCell.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AppColors.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AudioLocator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/AVAssetZeroCrossingSource.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/Notifications.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/SelectionLevelAnalyzer.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/TagHelpers.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Utils/UuidTools.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Views/ClipCell.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ MockAudioImporter.swift,\ ImportVideoDriver.swift,\ IOS18VideoAudioExtractor.swift,\ MockVideoAudioExtractor.swift,\ VideoAudioExtractorProtocol.swift,\ VideoImporterFactory.swift,\ ImportRecordingUseCase.swift,\ IOS18RecordingImporter.swift,\ MockRecordingImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/MockAudioImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/ImportVideoDriver.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/IOS18VideoAudioExtractor.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/MockVideoAudioExtractor.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/VideoAudioExtractorProtocol.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/VideoImporterFactory.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/ImportRecordingUseCase.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/IOS18RecordingImporter.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/MockRecordingImporter.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalAudio/MockAudioImporter.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/ImportVideoDriver.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/IOS18VideoAudioExtractor.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/MockVideoAudioExtractor.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/VideoAudioExtractorProtocol.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportLocalVideo/VideoImporterFactory.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/ImportRecordingUseCase.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/IOS18RecordingImporter.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Services/ImportServiceFeatures/ImportRecording/MockRecordingImporter.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 Compiling\ ViewController.swift,\ MockDataLoader.swift,\ MockUserDataLoader.swift,\ UserDataManager.swift,\ SiivDownloadedAudio.swift,\ UserContainer.swift,\ UserProfile.swift,\ GeneratedAssetSymbols.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/ViewController.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/MockDataLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/MockUserDataLoader.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/UserDataManager.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/DownloadedContent/SiivDownloadedAudio.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/UserData/UserContainer.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/UserData/UserProfile.swift /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/ViewController.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/MockDataLoader.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/MockUserDataLoader.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/Data/UserDataManager.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/DownloadedContent/SiivDownloadedAudio.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/UserData/UserContainer.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Models/UserData/UserProfile.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftCompile normal arm64 /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirror.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    
+
+SwiftDriverJobDiscovery normal arm64 Compiling ShareViewController.swift (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+
+SwiftDriver\ Compilation LanguageMirrorShare normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LanguageMirrorShare' from project 'LanguageMirror')
+    cd /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LanguageMirrorShare -Onone -enforce-exclusivity\=checked @/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk -target arm64-apple-ios18.6 -g -module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -application-extension -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /tmp/xcode_DerivedData/LanguageMirror-ccyyuwkqhyuooggumicraorkdlxp/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -F /tmp/xcode_DerivedData/Build/Products/Debug-iphoneos -emit-localized-strings -emit-localized-strings-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /tmp/xcode_DerivedData/SDKStatCaches.noindex/iphoneos26.0-23A339-81ce72e5b06c9602b9d30b56f2eed08a.sdkstatcache -output-file-map /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -sdk-module-cache-path /tmp/xcode_DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare.swiftmodule -validate-clang-modules-once -clang-build-session-file /tmp/xcode_DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare_const_extract_protocols.json -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-generated-files.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-own-target-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-all-target-headers.hmap -Xcc -iquote -Xcc /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/LanguageMirrorShare-project-headers.hmap -Xcc -I/tmp/xcode_DerivedData/Build/Products/Debug-iphoneos/include -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources-normal/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources/arm64 -Xcc -I/tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /tmp/xcode_DerivedData/Build/Intermediates.noindex/LanguageMirror.build/Debug-iphoneos/LanguageMirrorShare.build/Objects-normal/arm64/LanguageMirrorShare-Swift.h -working-directory /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror -experimental-emit-module-separately -disable-cmo
+
+warning: no rule to process file '/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Resources/library_seed.json' of type 'text.json' for architecture 'arm64' (in target 'LanguageMirror' from project 'LanguageMirror')
+warning: no rule to process file '/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Resources/sample_bundle.json' of type 'text.json' for architecture 'arm64' (in target 'LanguageMirror' from project 'LanguageMirror')
+warning: no rule to process file '/Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/Resources/data_2.json' of type 'text.json' for architecture 'arm64' (in target 'LanguageMirror' from project 'LanguageMirror')
+** BUILD FAILED **
+
+
+The following build commands failed:
+	SwiftCompile normal arm64 Compiling\ AppDelegate.swift,\ SceneDelegate.swift,\ AppContainer.swift,\ AppCoordinator.swift,\ CoordinatorProtocol.swift,\ ImportCoordinator.swift,\ LibraryCoordinator.swift,\ PracticeCoordinator.swift,\ SettingsCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/AppDelegate.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/App/SceneDelegate.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppContainer.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/CoordinatorProtocol.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/ImportCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/LibraryCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/PracticeCoordinator.swift /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/SettingsCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+	SwiftCompile normal arm64 /Users/matthewflood/workspace/six_wands_language_mirror/LanguageMirror/LanguageMirror/2025-09-13/Coordinators/AppCoordinator.swift (in target 'LanguageMirror' from project 'LanguageMirror')
+	Building project LanguageMirror with scheme LanguageMirror and configuration Debug
+(3 failures)

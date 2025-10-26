@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-final class AppCoordinator: UITabBarControllerDelegate {
+final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     private let window: UIWindow
     private let container: AppContainer
     private let tabBarController = UITabBarController()
