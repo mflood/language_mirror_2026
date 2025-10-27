@@ -101,7 +101,7 @@ final class PracticeSettingsViewController: UITableViewController {
     private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
     
     // Progression mode controls
-    private let practiceModeSwitch = UISwitch()
+    private let practiceModeSeg = UISegmentedControl(items: ["Simple", "Progression"])
     private let progressionMinRepeatsSlider = UISlider()
     private let progressionLinearRepeatsSlider = UISlider()
     private let progressionMaxRepeatsSlider = UISlider()
@@ -112,7 +112,7 @@ final class PracticeSettingsViewController: UITableViewController {
     private enum PracticeModeRow: Int, CaseIterable { case toggle }
     private enum SimpleRow: Int, CaseIterable { case repeats }
     private enum BasicRow: Int, CaseIterable { case gap, interGap, preroll }
-    private enum ProgressionRow: Int, CaseIterable { case progressionMinRepeats, progressionLinearRepeats, progressionMaxRepeats, minSpeed, maxSpeed }
+    private enum ProgressionRow: Int, CaseIterable { case minSpeed, progressionMinRepeats, progressionLinearRepeats, maxSpeed, progressionMaxRepeats }
     
     init(settings: SettingsService) {
         self.settings = settings
@@ -164,38 +164,43 @@ final class PracticeSettingsViewController: UITableViewController {
         prerollSeg.selectedSegmentIndex = idx
         prerollSeg.addTarget(self, action: #selector(prerollChanged), for: .valueChanged)
         
-        // Practice mode switch
-        practiceModeSwitch.isOn = settings.useProgressionMode
-        practiceModeSwitch.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
+        // Practice mode segmented control
+        practiceModeSeg.selectedSegmentIndex = settings.useProgressionMode ? 1 : 0
+        practiceModeSeg.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
         
         // Progression min repeats slider (0-100)
         progressionMinRepeatsSlider.minimumValue = 0
         progressionMinRepeatsSlider.maximumValue = 100
         progressionMinRepeatsSlider.value = Float(settings.progressionMinRepeats)
+        progressionMinRepeatsSlider.minimumTrackTintColor = .systemGreen
         progressionMinRepeatsSlider.addTarget(self, action: #selector(progressionMinRepeatsChanged), for: .valueChanged)
         
         // Progression linear repeats slider (0-100)
         progressionLinearRepeatsSlider.minimumValue = 0
         progressionLinearRepeatsSlider.maximumValue = 100
         progressionLinearRepeatsSlider.value = Float(settings.progressionLinearRepeats)
+        progressionLinearRepeatsSlider.minimumTrackTintColor = .systemYellow
         progressionLinearRepeatsSlider.addTarget(self, action: #selector(progressionLinearRepeatsChanged), for: .valueChanged)
         
         // Progression max repeats slider (1-100)
         progressionMaxRepeatsSlider.minimumValue = 1
         progressionMaxRepeatsSlider.maximumValue = 100
         progressionMaxRepeatsSlider.value = Float(settings.progressionMaxRepeats)
+        progressionMaxRepeatsSlider.minimumTrackTintColor = .systemRed
         progressionMaxRepeatsSlider.addTarget(self, action: #selector(progressionMaxRepeatsChanged), for: .valueChanged)
         
         // Min speed slider
         minSpeedSlider.minimumValue = 0.3
         minSpeedSlider.maximumValue = 1.0
         minSpeedSlider.value = settings.minSpeed
+        minSpeedSlider.minimumTrackTintColor = .systemGreen
         minSpeedSlider.addTarget(self, action: #selector(minSpeedChanged), for: .valueChanged)
         
         // Max speed slider
         maxSpeedSlider.minimumValue = 0.5
         maxSpeedSlider.maximumValue = 3.0
         maxSpeedSlider.value = settings.maxSpeed
+        maxSpeedSlider.minimumTrackTintColor = .systemRed
         maxSpeedSlider.addTarget(self, action: #selector(maxSpeedChanged), for: .valueChanged)
     }
     
@@ -232,8 +237,8 @@ final class PracticeSettingsViewController: UITableViewController {
             case .toggle:
                 cell.configure(
                     title: "Practice Mode",
-                    value: settings.useProgressionMode ? "Progression" : "Simple",
-                    control: practiceModeSwitch
+                    value: nil, // Segmented control shows the value itself
+                    control: practiceModeSeg
                 )
             }
         case .simple:
@@ -247,35 +252,35 @@ final class PracticeSettingsViewController: UITableViewController {
             }
         case .progression:
             switch ProgressionRow(rawValue: indexPath.row)! {
+            case .minSpeed:
+                cell.configure(
+                    title: "Starting Speed",
+                    value: String(format: "%.1fx", settings.minSpeed),
+                    control: minSpeedSlider
+                )
             case .progressionMinRepeats:
                 cell.configure(
-                    title: "Min Speed Repeats (M)",
+                    title: "Starting Speed Repeats",
                     value: "\(settings.progressionMinRepeats)x",
                     control: progressionMinRepeatsSlider
                 )
             case .progressionLinearRepeats:
                 cell.configure(
-                    title: "Linear Progression Repeats (N)",
+                    title: "Linear Progression Repeats",
                     value: "\(settings.progressionLinearRepeats)x",
                     control: progressionLinearRepeatsSlider
                 )
-            case .progressionMaxRepeats:
-                cell.configure(
-                    title: "Max Speed Repeats (O)",
-                    value: "\(settings.progressionMaxRepeats)x",
-                    control: progressionMaxRepeatsSlider
-                )
-            case .minSpeed:
-                cell.configure(
-                    title: "Minimum Speed",
-                    value: String(format: "%.1fx", settings.minSpeed),
-                    control: minSpeedSlider
-                )
             case .maxSpeed:
                 cell.configure(
-                    title: "Maximum Speed",
+                    title: "Ending Speed",
                     value: String(format: "%.1fx", settings.maxSpeed),
                     control: maxSpeedSlider
+                )
+            case .progressionMaxRepeats:
+                cell.configure(
+                    title: "Ending Speed Repeats",
+                    value: "\(settings.progressionMaxRepeats)x",
+                    control: progressionMaxRepeatsSlider
                 )
             }
         case .basic:
@@ -339,8 +344,7 @@ final class PracticeSettingsViewController: UITableViewController {
     }
     
     @objc private func practiceModeChanged() {
-        settings.useProgressionMode = practiceModeSwitch.isOn
-        updateCellSecondaryText(section: .practiceMode, row: PracticeModeRow.toggle.rawValue, text: settings.useProgressionMode ? "Progression" : "Simple")
+        settings.useProgressionMode = practiceModeSeg.selectedSegmentIndex == 1
     }
     
     @objc private func progressionMinRepeatsChanged() {

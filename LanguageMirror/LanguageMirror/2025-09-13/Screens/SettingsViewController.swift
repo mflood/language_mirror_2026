@@ -19,7 +19,7 @@ final class SettingsViewController: UITableViewController {
     private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
     
     // Progression mode controls
-    private let practiceModeSwitch = UISwitch()
+    private let practiceModeSeg = UISegmentedControl(items: ["Simple", "Progression"])
     private let progressionMinRepeatsSlider = UISlider()
     private let progressionLinearRepeatsSlider = UISlider()
     private let progressionMaxRepeatsSlider = UISlider()
@@ -30,7 +30,7 @@ final class SettingsViewController: UITableViewController {
     enum PracticeModeRow: Int, CaseIterable { case toggle }
     enum SimpleRow: Int, CaseIterable { case repeats }
     enum BasicRow: Int, CaseIterable { case gap, interGap, preroll, duck }
-    enum ProgressionRow: Int, CaseIterable { case progressionMinRepeats, progressionLinearRepeats, progressionMaxRepeats, minSpeed, maxSpeed }
+    enum ProgressionRow: Int, CaseIterable { case minSpeed, progressionMinRepeats, progressionLinearRepeats, maxSpeed, progressionMaxRepeats }
 
     init(settings: SettingsService) {
         self.settings = settings
@@ -75,10 +75,10 @@ final class SettingsViewController: UITableViewController {
         prerollSeg.selectedSegmentTintColor = BasicRow.preroll.iconColor
         prerollSeg.addTarget(self, action: #selector(prerollChanged), for: .valueChanged)
         
-        // Practice mode switch
-        practiceModeSwitch.isOn = settings.useProgressionMode
-        practiceModeSwitch.onTintColor = PracticeModeRow.toggle.iconColor
-        practiceModeSwitch.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
+        // Practice mode segmented control
+        practiceModeSeg.selectedSegmentIndex = settings.useProgressionMode ? 1 : 0
+        practiceModeSeg.selectedSegmentTintColor = PracticeModeRow.toggle.iconColor
+        practiceModeSeg.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
         
         // Progression min repeats slider (0-100)
         progressionMinRepeatsSlider.minimumValue = 0
@@ -169,11 +169,10 @@ final class SettingsViewController: UITableViewController {
     private func configurePracticeModeCell(_ cell: SettingsCell, for row: PracticeModeRow) {
         switch row {
         case .toggle:
-            let value = settings.useProgressionMode ? "Progression" : "Simple"
             cell.configure(
                 title: row.title,
-                value: value,
-                control: practiceModeSwitch
+                value: nil, // Segmented control shows the value itself
+                control: practiceModeSeg
             )
         }
     }
@@ -232,6 +231,14 @@ final class SettingsViewController: UITableViewController {
     
     private func configureProgressionCell(_ cell: SettingsCell, for row: ProgressionRow) {
         switch row {
+        case .minSpeed:
+            let value = String(format: "%.1fx", settings.minSpeed)
+            cell.configure(
+                title: row.title,
+                value: value,
+                control: minSpeedSlider
+            )
+            
         case .progressionMinRepeats:
             let value = "\(settings.progressionMinRepeats)x"
             cell.configure(
@@ -248,28 +255,20 @@ final class SettingsViewController: UITableViewController {
                 control: progressionLinearRepeatsSlider
             )
             
-        case .progressionMaxRepeats:
-            let value = "\(settings.progressionMaxRepeats)x"
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: progressionMaxRepeatsSlider
-            )
-            
-        case .minSpeed:
-            let value = String(format: "%.1fx", settings.minSpeed)
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: minSpeedSlider
-            )
-            
         case .maxSpeed:
             let value = String(format: "%.1fx", settings.maxSpeed)
             cell.configure(
                 title: row.title,
                 value: value,
                 control: maxSpeedSlider
+            )
+            
+        case .progressionMaxRepeats:
+            let value = "\(settings.progressionMaxRepeats)x"
+            cell.configure(
+                title: row.title,
+                value: value,
+                control: progressionMaxRepeatsSlider
             )
         }
     }
@@ -378,8 +377,7 @@ final class SettingsViewController: UITableViewController {
     }
     
     @objc private func practiceModeChanged() {
-        settings.useProgressionMode = practiceModeSwitch.isOn
-        updateSecondary(section: .practiceMode, row: PracticeModeRow.toggle.rawValue)
+        settings.useProgressionMode = practiceModeSeg.selectedSegmentIndex == 1
         
         // Haptic feedback
         let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -556,11 +554,11 @@ extension SettingsViewController.BasicRow {
 extension SettingsViewController.ProgressionRow {
     var title: String {
         switch self {
-        case .progressionMinRepeats: return "Min Speed Repeats (M)"
-        case .progressionLinearRepeats: return "Linear Progression Repeats (N)"
-        case .progressionMaxRepeats: return "Max Speed Repeats (O)"
-        case .minSpeed: return "Minimum Speed"
-        case .maxSpeed: return "Maximum Speed"
+        case .progressionMinRepeats: return "Starting Speed Repeats"
+        case .progressionLinearRepeats: return "Linear Progression Repeats"
+        case .progressionMaxRepeats: return "Ending Speed Repeats"
+        case .minSpeed: return "Starting Speed"
+        case .maxSpeed: return "Ending Speed"
         }
     }
     
@@ -576,11 +574,11 @@ extension SettingsViewController.ProgressionRow {
     
     var iconColor: UIColor {
         switch self {
-        case .progressionMinRepeats: return .systemRed
+        case .minSpeed: return .systemGreen
+        case .progressionMinRepeats: return .systemGreen
         case .progressionLinearRepeats: return .systemYellow
-        case .progressionMaxRepeats: return .systemGreen
-        case .minSpeed: return .systemBlue
-        case .maxSpeed: return .systemOrange
+        case .maxSpeed: return .systemRed
+        case .progressionMaxRepeats: return .systemRed
         }
     }
 }
