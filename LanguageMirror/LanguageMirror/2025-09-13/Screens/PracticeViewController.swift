@@ -118,12 +118,6 @@ final class PracticeViewController: UIViewController {
 
     private func setupUI() {
         // Navigation bar buttons
-        let settingsButton = UIBarButtonItem(
-            image: UIImage(systemName: "gearshape"),
-            style: .plain,
-            target: self,
-            action: #selector(settingsButtonTapped)
-        )
         
         favoriteButton = UIBarButtonItem(
             image: UIImage(systemName: "heart"),
@@ -132,7 +126,7 @@ final class PracticeViewController: UIViewController {
             action: #selector(favoriteButtonTapped)
         )
         
-        navigationItem.rightBarButtonItems = [settingsButton, favoriteButton!]
+        navigationItem.rightBarButtonItem = favoriteButton
         
         // Header
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -518,15 +512,6 @@ final class PracticeViewController: UIViewController {
         }
     }
     
-    @objc private func settingsButtonTapped() {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-        
-        // Switch to Settings tab instead of showing practice-specific settings
-        if let tabBarController = tabBarController {
-            tabBarController.selectedIndex = 3 // Settings tab
-        }
-    }
     
     @objc private func favoriteButtonTapped() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
