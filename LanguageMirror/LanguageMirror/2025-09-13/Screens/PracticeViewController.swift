@@ -307,7 +307,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             return
         }
 
-        title = t.title
+        updateTitle()
         
         let packId = t.packId
         let trackId = t.id
@@ -437,6 +437,22 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
         return String(format: "%d:%02d", minutes, seconds)
+    }
+    
+    private func updateTitle() {
+        guard let track = selectedTrack else {
+            title = "Practice"
+            return
+        }
+        
+        // Show loop count if we have an active session and are playing
+        if let session = currentSession, isPlaying, !workingClips.isEmpty {
+            let totalLoops = settings.globalRepeats
+            let currentLoop = session.currentLoopCount + 1  // +1 for display (1-indexed)
+            title = "\(track.title) (Loop \(currentLoop)/\(totalLoops))"
+        } else {
+            title = track.title
+        }
     }
     
     private func validateSplitButton() {
@@ -767,6 +783,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         }
         
         print("  Playback settings:")
+        print("    practice mode: \(settings.useProgressionMode)")
         print("    globalRepeats: \(settings.globalRepeats)")
         print("    gapSeconds: \(settings.gapSeconds)")
         print("    interSegmentGapSeconds: \(settings.interSegmentGapSeconds)")
@@ -829,6 +846,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             isPlaying = true
             isPaused = false
             updatePlayPauseButton()
+            updateTitle()
         } catch {
             print("❌ [PracticeViewController] Playback error: \(error.localizedDescription)")
             presentAlert("Playback Error", error.localizedDescription)
@@ -853,6 +871,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         isPaused = false
         isPlaying = false
         updatePlayPauseButton()
+        updateTitle()
         tableView.reloadData()
     }
     
@@ -901,6 +920,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
         
         updateProgressLabel()
+        updateTitle()
         validateMergeButton()
     }
     
@@ -916,6 +936,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         }
         
         updateProgressLabel()
+        updateTitle()
     }
     
     func audioPlayerSpeedDidChange(speed: Float) {
