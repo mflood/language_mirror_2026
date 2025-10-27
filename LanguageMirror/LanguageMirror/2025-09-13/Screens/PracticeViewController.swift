@@ -522,9 +522,10 @@ final class PracticeViewController: UIViewController {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         
-        let settingsVC = PracticeSettingsViewController(settings: settings)
-        let nav = UINavigationController(rootViewController: settingsVC)
-        present(nav, animated: true)
+        // Switch to Settings tab instead of showing practice-specific settings
+        if let tabBarController = tabBarController {
+            tabBarController.selectedIndex = 3 // Settings tab
+        }
     }
     
     @objc private func favoriteButtonTapped() {
