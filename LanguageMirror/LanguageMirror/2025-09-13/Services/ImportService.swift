@@ -100,7 +100,7 @@ protocol OldImportService: AnyObject {
 }
 
 protocol ImportService: AnyObject {
-    func performImport(source: ImportSource) async throws -> [Track]
+    func performImport(source: ImportSource, progress: (@Sendable (Float) -> Void)?) async throws -> [Track]
 }
 
 

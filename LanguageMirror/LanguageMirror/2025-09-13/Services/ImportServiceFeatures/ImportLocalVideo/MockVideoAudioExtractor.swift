@@ -35,7 +35,7 @@ public final class MockVideoAudioExtractor: VideoAudioExtractorProtocol {
         self.errorMode = errorMode
     }
 
-    public func extractAudio(from videoURL: URL) async throws -> URL {
+    public func extractAudio(from videoURL: URL, progress: (@Sendable (Float) -> Void)?) async throws -> URL {
         switch errorMode {
         case .immediate(let err):
             throw err
@@ -43,7 +43,7 @@ public final class MockVideoAudioExtractor: VideoAudioExtractorProtocol {
             break
         }
 
-        // Sleep in small cancellable chunks
+        // Sleep in small cancellable chunks with progress updates
         if totalDuration > 0 {
             var elapsed: TimeInterval = 0
             while elapsed < totalDuration {
@@ -51,6 +51,12 @@ public final class MockVideoAudioExtractor: VideoAudioExtractorProtocol {
                 let chunk = min(step, totalDuration - elapsed)
                 try await Task.sleep(nanoseconds: UInt64(chunk * 1_000_000_000))
                 elapsed += chunk
+                
+                // Report progress
+                if let progress = progress {
+                    let progressValue = Float(elapsed / totalDuration)
+                    progress(progressValue)
+                }
             }
         }
 
@@ -60,7 +66,7 @@ public final class MockVideoAudioExtractor: VideoAudioExtractorProtocol {
 
         // Return the local sample from main bundle
         guard let url = Bundle.main.url(forResource: "sample", withExtension: "mp3") else {
-            throw VideoImportError.exportFailed
+            throw VideoImportError.exportFailed(underlying: nil)
         }
         return url
     }

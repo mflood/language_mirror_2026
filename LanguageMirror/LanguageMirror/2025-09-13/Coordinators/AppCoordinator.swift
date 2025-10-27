@@ -116,7 +116,7 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         for pendingImport in pendingImports {
             do {
                 // Import the file using the import service
-                _ = try await container.importService.performImport(source: .audioFile(url: pendingImport.fileURL))
+                _ = try await container.importService.performImport(source: .audioFile(url: pendingImport.fileURL), progress: nil)
                 
                 // Clean up after successful import
                 SharedImportManager.deleteSharedFile(at: pendingImport.fileURL)

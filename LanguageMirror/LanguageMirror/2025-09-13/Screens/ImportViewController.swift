@@ -274,7 +274,11 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         present(host, animated: true)
 
         do {
-            let tracks = try await importer.performImport(source: src)
+            let tracks = try await importer.performImport(source: src) { progress in
+                DispatchQueue.main.async {
+                    progressView.updateState(.downloading(progress: progress))
+                }
+            }
             
             // Show success state
             let count = tracks.count
@@ -415,7 +419,7 @@ extension ImportViewController: PHPickerViewControllerDelegate {
                         }
 
                         guard let tempURL = tempURL else {
-                            continuation.resume(throwing: VideoImportError.exportFailed)
+                            continuation.resume(throwing: VideoImportError.exportFailed(underlying: nil))
                             return
                         }
 

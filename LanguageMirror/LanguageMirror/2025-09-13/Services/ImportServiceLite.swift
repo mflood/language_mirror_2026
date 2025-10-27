@@ -63,12 +63,12 @@ final class ImportServiceLite: ImportService {
     }
 
     // Only supports .videoFile; others alert + throw
-    func performImport(source: ImportSource) async throws -> [Track] {
+    func performImport(source: ImportSource, progress: (@Sendable (Float) -> Void)? = nil) async throws -> [Track] {
         try Task.checkCancellation()
             
         switch source {
         case .videoFile(let url):
-            return try await videoUseCase.run(videoURL: url, suggestedTitle: nil)
+            return try await videoUseCase.run(videoURL: url, suggestedTitle: nil, progress: progress)
 
         case .remoteURL(let url, let suggestedTitle):
             return try await importAudioUrlDriver.run(url: url, suggestedTitle: suggestedTitle)

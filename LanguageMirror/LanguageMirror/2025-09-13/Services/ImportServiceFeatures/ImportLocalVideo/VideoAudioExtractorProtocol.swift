@@ -10,5 +10,8 @@ import Foundation
 
 public protocol VideoAudioExtractorProtocol: Sendable {
     /// Extracts audio (m4a) from the given video URL and returns a temp audio file URL.
-    func extractAudio(from videoURL: URL) async throws -> URL
+    /// - Parameters:
+    ///   - videoURL: The source video file URL
+    ///   - progress: Optional callback for progress updates (0.0 to 1.0)
+    func extractAudio(from videoURL: URL, progress: (@Sendable (Float) -> Void)?) async throws -> URL
 }
