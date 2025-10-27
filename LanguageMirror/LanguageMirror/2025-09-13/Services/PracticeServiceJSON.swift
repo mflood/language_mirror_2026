@@ -132,12 +132,30 @@ final class PracticeServiceJSON: PracticeService {
         session.currentLoopCount = loopCount
         session.currentSpeed = speed
         session.lastUpdatedAt = Date()
+        
+        print("📊 [PracticeServiceJSON] updateProgress called:")
+        print("  ClipIndex: \(clipIndex)")
+        print("  LoopCount: \(loopCount)")
+        print("  Speed: \(speed)")
+        
         try saveSession(session)
     }
     
     func incrementClipPlayCount(session: inout PracticeSession, clipId: String) throws {
         let currentCount = session.clipPlayCounts[clipId] ?? 0
         session.clipPlayCounts[clipId] = currentCount + 1
+        
+        // Update currentLoopCount to reflect the loop being played (0-based)
+        // After completing a loop, we're now playing the next loop
+        // So currentLoopCount = completed loops (which is the loop we're about to play)
+        session.currentLoopCount = session.clipPlayCounts[clipId] ?? 0
+        
+        print("🔄 [PracticeServiceJSON] incrementClipPlayCount called:")
+        print("  ClipId: \(clipId)")
+        print("  Previous count: \(currentCount)")
+        print("  New count: \(session.clipPlayCounts[clipId] ?? 0)")
+        print("  Updated currentLoopCount to: \(session.currentLoopCount)")
+        
         session.lastUpdatedAt = Date()
         try saveSession(session)
     }

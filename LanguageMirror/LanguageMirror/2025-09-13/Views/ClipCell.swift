@@ -243,8 +243,8 @@ final class ClipCell: UITableViewCell {
         let endTime = formatTime(ms: clip.endMs)
         timeRangeLabel.text = "\(startTime) - \(endTime)"
         
-        // Loop progress
-        loopProgressLabel.text = "\(currentLoops)/\(totalLoops)"
+        // Loop progress - hide completely
+        loopProgressLabel.text = ""
         
         // Speed
         speedLabel.text = String(format: "%.2fx", currentSpeed)

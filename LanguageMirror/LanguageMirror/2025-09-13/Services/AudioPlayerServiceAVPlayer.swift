@@ -16,6 +16,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private var timeObserverToken: Any?
 
     private(set) var isPlaying: Bool = false
+    weak var delegate: AudioPlayerDelegate?
 
     // Scheduling
     private var pendingWorkItem: DispatchWorkItem?
@@ -110,7 +111,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     func resume() {
         player?.play()
         isPlaying = true
-        NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)
+        delegate?.audioPlayerDidResume()
     }
 
     func stop() {
@@ -130,7 +131,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         currentSession = nil
         foreverMode = false
 
-        NotificationCenter.default.post(name: .AudioPlayerDidStop, object: nil)
+        delegate?.audioPlayerDidStop()
     }
 
     // MARK: - Whole track
@@ -179,7 +180,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
 
         player?.play()
         isPlaying = true
-        NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)
+        delegate?.audioPlayerDidStart()
     }
 
     // MARK: - Clip mode
@@ -308,6 +309,18 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         } else {
             currentSegmentRepeatsRemaining = totalLoopsForCurrentClip
             print("    Starting fresh: total loops=\(totalLoopsForCurrentClip)")
+            
+            // Reset currentLoopCount to 0 for new clip
+            if var session = currentSession {
+                session.currentLoopCount = 0
+                do {
+                    try practiceService.saveSession(session)
+                    currentSession = session
+                    print("    Reset currentLoopCount to 0 for new clip")
+                } catch {
+                    print("    Failed to reset currentLoopCount: \(error)")
+                }
+            }
         }
 
         currentSegmentStart = CMTime(seconds: Double(seg.startMs) / 1000.0, preferredTimescale: 600)
@@ -366,20 +379,13 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                   rate: speed) // Media Player
             
             // Post clip change notification
-            NotificationCenter.default.post(
-                name: .AudioPlayerClipDidChange,
-                object: nil,
-                userInfo: ["clipIndex": self.currentSegmentIndex, "clipId": seg.id]
-            )
+            print("📢 [AudioPlayerServiceAVPlayer] Calling delegate clipDidChange")
+            delegate?.audioPlayerClipDidChange(clipIndex: self.currentSegmentIndex, clipId: seg.id)
             
             // Post speed change notification
-            NotificationCenter.default.post(
-                name: .AudioPlayerSpeedDidChange,
-                object: nil,
-                userInfo: ["speed": speed]
-            )
+            delegate?.audioPlayerSpeedDidChange(speed: speed)
             
-            NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)
+            delegate?.audioPlayerDidStart()
             print("    ✅ Clip playback started")
         }
     }
@@ -397,15 +403,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         let clipStartMs = Int(currentSegmentStart.seconds * 1000)
         let clipEndMs = Int(currentSegmentEnd.seconds * 1000)
         
-        NotificationCenter.default.post(
-            name: .AudioPlayerDidUpdateTime,
-            object: nil,
-            userInfo: [
-                "trackTimeMs": trackTimeMs,
-                "clipStartMs": clipStartMs,
-                "clipEndMs": clipEndMs
-            ]
-        )
+        delegate?.audioPlayerDidUpdateTime(trackTimeMs: trackTimeMs, clipStartMs: clipStartMs, clipEndMs: clipEndMs)
         
         if time.seconds >= currentSegmentEnd.seconds - epsilon {
             // Stop immediately to avoid hearing audio past end
@@ -416,22 +414,19 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             if var session = currentSession {
                 let seg = clipsQueue[currentSegmentIndex]
                 do {
+                    print("🔄 [AudioPlayerServiceAVPlayer] Calling incrementClipPlayCount for clip: \(seg.id)")
                     try practiceService.incrementClipPlayCount(session: &session, clipId: seg.id)
                     currentSession = session
+                    print("✅ [AudioPlayerServiceAVPlayer] Session updated successfully")
                 } catch {
                     print("Failed to increment clip play count: \(error)")
                 }
             }
 
             // Post loop complete notification
-            NotificationCenter.default.post(
-                name: .AudioPlayerLoopDidComplete,
-                object: nil,
-                userInfo: [
-                    "clipIndex": self.currentSegmentIndex,
-                    "loopCount": self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining + 1
-                ]
-            )
+            print("📢 [AudioPlayerServiceAVPlayer] Calling delegate loopDidComplete")
+            let loopCount = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining + 1
+            delegate?.audioPlayerLoopDidComplete(clipIndex: self.currentSegmentIndex, loopCount: loopCount)
 
             currentSegmentRepeatsRemaining -= 1
             if currentSegmentRepeatsRemaining > 0 {
@@ -474,15 +469,11 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                         }
                         
                         // Post speed change notification
-                        NotificationCenter.default.post(
-                            name: .AudioPlayerSpeedDidChange,
-                            object: nil,
-                            userInfo: ["speed": speed]
-                        )
+                        self.delegate?.audioPlayerSpeedDidChange(speed: speed)
                         
                         // reset elapsed for new loop
                         self.updateNowPlayingElapsed(0)
-                        NotificationCenter.default.post(name: .AudioPlayerDidStart, object: nil)
+                        self.delegate?.audioPlayerDidStart()
                     }
                 }
                 pendingWorkItem = work

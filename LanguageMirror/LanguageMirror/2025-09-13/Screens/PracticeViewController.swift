@@ -12,7 +12,7 @@ protocol PracticeViewControllerDelegate: AnyObject {
     func practiceViewController(_ vc: PracticeViewController, didTapTrackTitle track: Track)
 }
 
-final class PracticeViewController: UIViewController {
+final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
     private let settings: SettingsService
     private let library: LibraryService
@@ -81,6 +81,9 @@ final class PracticeViewController: UIViewController {
         self.player = audioPlayer
         self.practiceService = practiceService
         super.init(nibName: nil, bundle: nil)
+        
+        // Set delegate for audio player
+        audioPlayer.delegate = self
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -91,7 +94,6 @@ final class PracticeViewController: UIViewController {
         view.backgroundColor = AppColors.calmBackground
 
         setupUI()
-        setupNotifications()
         restoreLastTrackOrPickFirst()
     }
     
@@ -110,7 +112,6 @@ final class PracticeViewController: UIViewController {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
         stopCurrentPlayback()
     }
 
@@ -282,15 +283,6 @@ final class PracticeViewController: UIViewController {
         ])
     }
     
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStopped), name: .AudioPlayerDidStop, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStarted), name: .AudioPlayerDidStart, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleClipDidChange(_:)), name: .AudioPlayerClipDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLoopDidComplete(_:)), name: .AudioPlayerLoopDidComplete, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleSpeedDidChange(_:)), name: .AudioPlayerSpeedDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleTimeUpdate(_:)), name: .AudioPlayerDidUpdateTime, object: nil)
-    }
-
     private func restoreLastTrackOrPickFirst() {
         if let lastId = UserDefaults.standard.string(forKey: "practice.lastTrackId"),
            let t = try? library.loadTrack(id: lastId) {
@@ -394,13 +386,28 @@ final class PracticeViewController: UIViewController {
     }
     
     private func updateProgressLabel() {
+        print("📊 [PracticeViewController] updateProgressLabel called")
         guard let session = currentSession, !workingClips.isEmpty else {
             progressLabel.text = "Ready to practice"
+            print("  No session or clips, showing 'Ready to practice'")
             return
         }
         
         let clipIndex = min(session.currentClipIndex, workingClips.count - 1)
         let totalLoops = settings.globalRepeats
+        
+        print("  Current clip index: \(clipIndex)")
+        print("  Total loops: \(totalLoops)")
+        print("  Current loop count: \(session.currentLoopCount)")
+        print("  Session ID: \(session.id)")
+        
+        // Check clipPlayCounts for current clip
+        if clipIndex < workingClips.count {
+            let currentClip = workingClips[clipIndex]
+            let clipPlayCount = session.clipPlayCounts[currentClip.id] ?? 0
+            print("  Current clip ID: \(currentClip.id)")
+            print("  Clip play count: \(clipPlayCount)")
+        }
         
         // Format time displays
         var text = ""
@@ -419,9 +426,10 @@ final class PracticeViewController: UIViewController {
             text += "\n"
         }
         
-        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(session.currentLoopCount)/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
+        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(session.currentLoopCount + 1)/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
         
         progressLabel.text = text
+        print("  Updated progress label: \(text)")
     }
     
     private func formatTime(_ ms: Int) -> String {
@@ -833,30 +841,36 @@ final class PracticeViewController: UIViewController {
         playPauseButton.setImage(UIImage(systemName: imageName, withConfiguration: config), for: .normal)
     }
     
-    // MARK: - Notifications
+    // MARK: - AudioPlayerDelegate
     
-    @objc private func handlePlaybackStopped() {
+    func audioPlayerDidStart() {
+        isPaused = false
+        isPlaying = true
+        updatePlayPauseButton()
+    }
+    
+    func audioPlayerDidStop() {
         isPaused = false
         isPlaying = false
         updatePlayPauseButton()
         tableView.reloadData()
     }
     
-    @objc private func handlePlaybackStarted() {
+    func audioPlayerDidPause() {
+        isPaused = true
+        isPlaying = false
+        updatePlayPauseButton()
+    }
+    
+    func audioPlayerDidResume() {
         isPaused = false
         isPlaying = true
         updatePlayPauseButton()
     }
     
-    @objc private func handleClipDidChange(_ notification: Notification) {
-        // IMPORTANT: Index Management Strategy
-        // - Table view displays ALL clips (drill, skip, noise) from workingClips array
-        // - Audio player only receives/plays drill clips (filtered array)
-        // - Player tracks indices in the filtered drill clips array
-        // - Session needs to track indices in the full workingClips array for UI consistency
-        // - Solution: Use clipId from notification to find actual index in workingClips
-        
-        guard let clipId = notification.userInfo?["clipId"] as? String else { return }
+    func audioPlayerClipDidChange(clipIndex: Int, clipId: String) {
+        print("🎵 [PracticeViewController] audioPlayerClipDidChange called")
+        print("  ClipIndex: \(clipIndex), ClipId: \(clipId)")
         
         // Find the index of this clip in the full workingClips array
         guard let actualIndex = workingClips.firstIndex(where: { $0.id == clipId }) else {
@@ -864,18 +878,22 @@ final class PracticeViewController: UIViewController {
             return
         }
         
+        print("  Found clip at index: \(actualIndex)")
+        
         // Update session to reflect actual index in workingClips
         if var session = currentSession {
             session.currentClipIndex = actualIndex
             do {
                 try practiceService.saveSession(session)
                 currentSession = session
+                print("  Updated session currentClipIndex to: \(actualIndex)")
             } catch {
                 print("⚠️ [PracticeViewController] Failed to update session: \(error)")
             }
         }
         
         // Reload cells to update visual state
+        print("  Reloading table view...")
         tableView.reloadData()
         
         // Scroll to current clip using actual index
@@ -886,25 +904,25 @@ final class PracticeViewController: UIViewController {
         validateMergeButton()
     }
     
-    @objc private func handleLoopDidComplete(_ notification: Notification) {
+    func audioPlayerLoopDidComplete(clipIndex: Int, loopCount: Int) {
+        print("🔄 [PracticeViewController] audioPlayerLoopDidComplete called")
+        print("  ClipIndex: \(clipIndex), LoopCount: \(loopCount)")
+        
         // Reload current cell to update progress
         if let session = currentSession, session.currentClipIndex < workingClips.count {
             let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
+            print("  Reloading cell at index: \(session.currentClipIndex)")
             tableView.reloadRows(at: [indexPath], with: .none)
         }
         
         updateProgressLabel()
     }
     
-    @objc private func handleSpeedDidChange(_ notification: Notification) {
+    func audioPlayerSpeedDidChange(speed: Float) {
         updateProgressLabel()
     }
     
-    @objc private func handleTimeUpdate(_ notification: Notification) {
-        guard let trackTimeMs = notification.userInfo?["trackTimeMs"] as? Int,
-              let clipStartMs = notification.userInfo?["clipStartMs"] as? Int,
-              let clipEndMs = notification.userInfo?["clipEndMs"] as? Int else { return }
-        
+    func audioPlayerDidUpdateTime(trackTimeMs: Int, clipStartMs: Int, clipEndMs: Int) {
         currentTrackTimeMs = trackTimeMs
         currentClipStartMs = clipStartMs
         currentClipEndMs = clipEndMs

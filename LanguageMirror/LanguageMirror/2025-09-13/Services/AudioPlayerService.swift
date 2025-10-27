@@ -9,8 +9,20 @@
 
 import Foundation
 
+protocol AudioPlayerDelegate: AnyObject {
+    func audioPlayerDidStart()
+    func audioPlayerDidStop()
+    func audioPlayerDidPause()
+    func audioPlayerDidResume()
+    func audioPlayerClipDidChange(clipIndex: Int, clipId: String)
+    func audioPlayerLoopDidComplete(clipIndex: Int, loopCount: Int)
+    func audioPlayerSpeedDidChange(speed: Float)
+    func audioPlayerDidUpdateTime(trackTimeMs: Int, clipStartMs: Int, clipEndMs: Int)
+}
+
 protocol AudioPlayerService: AnyObject {
     var isPlaying: Bool { get }
+    var delegate: AudioPlayerDelegate? { get set }
     func play(track: Track, repeats: Int, gapSeconds: TimeInterval) throws
     
     /// Play only specific segments (typically .drill) in order.
