@@ -396,6 +396,64 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     }
     
     private func friendlyErrorMessage(for error: Error) -> String {
+        // Handle BundleManifestError specifically (manifest download errors)
+        // Note: BundleManifestError is defined in ImportBundleManifestDriver.swift
+        if let manifestError = error as? BundleManifestError {
+            switch manifestError {
+            case .invalidManifestURL(let reason):
+                return "Invalid manifest URL: \(reason)"
+            case .manifestDownloadFailed(let underlying):
+                // Unwrap underlying errors to provide specific messages
+                if let urlError = underlying as? URLError {
+                    switch urlError.code {
+                    case .cannotFindHost:
+                        return "Couldn't reach the server. Check your internet connection and the manifest URL."
+                    case .cannotConnectToHost:
+                        return "Couldn't connect to the server. Check your internet connection."
+                    case .networkConnectionLost:
+                        return "Network connection lost while downloading manifest. Please try again."
+                    case .timedOut:
+                        return "The manifest download timed out. The server may be slow or unreachable."
+                    case .notConnectedToInternet:
+                        return "No internet connection. Check your network settings."
+                    default:
+                        return "Failed to download manifest: \(urlError.localizedDescription)"
+                    }
+                }
+                return manifestError.localizedDescription
+            case .manifestNotJSON:
+                return "The downloaded file is not a valid JSON manifest. Please check that the URL points to a bundle.json file."
+            case .manifestParseFailed(let underlying):
+                if let decodingError = underlying as? DecodingError {
+                    // Provide more specific error messages for common decoding issues
+                    if case .typeMismatch(let type, let context) = decodingError {
+                        let path = context.codingPath.map { $0.stringValue }.joined(separator: ".")
+                        if path.contains("clips") && String(describing: type).contains("Dictionary") {
+                            return "Invalid 'clips' field in manifest. The 'clips' field must be either null or a PracticeSet object (not an array). See bundle.json documentation for the correct format."
+                        }
+                    }
+                    let path = decodingError.context.codingPath.map { $0.stringValue }.joined(separator: ".")
+                    return "The manifest file has invalid JSON format at \(path). Please check that the URL points to a valid bundle manifest."
+                }
+                return "Failed to parse the manifest file. Please check that the URL is correct and the JSON format matches the expected bundle manifest schema."
+            }
+        }
+        
+        // Handle RemoteImportError specifically
+        // Note: RemoteImportError is defined in IOS18UrlDownloader.swift
+        if let remoteError = error as? RemoteImportError {
+            switch remoteError {
+            case .notAudio:
+                return "This file format isn't supported. Try mp3, m4a, or wav."
+            case .httpStatus(let code):
+                if code == 404 {
+                    return "The file couldn't be found. Check the URL and try again."
+                } else {
+                    return "Server error (HTTP \(code)). Please try again later."
+                }
+            }
+        }
+        
         // Handle URLError specifically
         if let urlError = error as? URLError {
             switch urlError.code {
