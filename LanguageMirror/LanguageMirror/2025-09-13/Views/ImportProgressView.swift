@@ -13,7 +13,7 @@ final class ImportProgressView: UIView {
     // MARK: - State
     
     enum State {
-        case downloading(progress: Float)
+        case downloading(progress: Float, message: String)
         case processing
         case success(message: String)
         case error(message: String)
@@ -186,9 +186,9 @@ final class ImportProgressView: UIView {
     
     private func applyStateUI() {
         switch currentState {
-        case .downloading(let progress):
+        case .downloading(let progress, let message):
             titleLabel.text = "Downloading"
-            messageLabel.text = "Getting your audio file..."
+            messageLabel.text = message
             iconImageView.image = UIImage(systemName: "arrow.down.circle.fill")
             iconContainerView.backgroundColor = AppColors.primaryAccent.withAlphaComponent(0.2)
             iconImageView.tintColor = AppColors.primaryAccent

@@ -22,7 +22,7 @@ enum ImportLiteError: Error {
 
 final class ImportServiceLite: ImportService {
     private let fm = FileManager.default
-    private let library: LibraryService
+    let library: LibraryService  // Made internal to allow access from ImportViewController
     private let clipService: ClipService
     
     
@@ -31,6 +31,7 @@ final class ImportServiceLite: ImportService {
     private let audioUseCase: ImportAudioUseCase
     private let importEmbeddedSampleDriver: ImportEmbeddedSampleDriver
     private let recordingUseCase: ImportRecordingUseCase
+    private let importBundleManifestDriver: ImportBundleManifestDriver
     
     /// Optional hook the VC can pass in to show alerts.
     /// Signature: (title, message)
@@ -60,6 +61,11 @@ final class ImportServiceLite: ImportService {
         
         self.recordingUseCase = ImportRecordingUseCase(engine: RecordingImporterFactory.make(),
                                                        library: library)
+        
+        self.importBundleManifestDriver = ImportBundleManifestDriver(
+            urlDownloader: UrlDownloaderFactory.make(useMock: useMock),
+            library: library
+        )
     }
 
     // Only supports .videoFile; others alert + throw
@@ -88,8 +94,11 @@ final class ImportServiceLite: ImportService {
             let title = "Recording \(Date().formatted())"
             return try await recordingUseCase.run(sourceURL: url, title: title)
             
-        case .bundleManifest:
-            throw ImportLiteError.notImplemented
+        case .bundleManifest(let url):
+            // Bundle manifests support custom progress messages
+            // We'll pass nil for progressMessage here since the protocol doesn't support it
+            // ImportViewController will handle message updates directly
+            return try await importBundleManifestDriver.run(manifestURL: url, progress: progress, progressMessage: nil)
         }
     }
 }

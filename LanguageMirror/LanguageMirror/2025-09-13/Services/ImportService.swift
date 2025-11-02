@@ -40,6 +40,7 @@ struct BundleTrack: Codable {
     let filename: String?          // desired filename; default from url
     let durationMs: Int?
     let clips: PracticeSet?      // optional built-in clips
+    let transcripts: [TranscriptSpan]?  // optional transcriptions
 }
 
 

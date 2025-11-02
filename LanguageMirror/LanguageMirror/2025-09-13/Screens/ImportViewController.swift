@@ -32,7 +32,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             case .fromFiles: return "Import from Files"
             case .record: return "Record Audio"
             case .fromURL: return "Download from URL"
-            case .fromS3Bundle: return "Install S3 Bundle"
+            case .fromS3Bundle: return "Install Bundle"
             case .installSample: return "Install Free Packs"
             }
         }
@@ -43,7 +43,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             case .fromFiles: return "Browse Files app or use Share button"
             case .record: return "Record new audio with your mic"
             case .fromURL: return "Download mp3, m4a, or wav files"
-            case .fromS3Bundle: return "Load bundle from manifest URL"
+            case .fromS3Bundle: return "Download bundle from remote manifest"
             case .installSample: return "Pre-made learning packs"
             }
         }
@@ -194,11 +194,20 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
         a.addAction(UIAlertAction(title: "Download", style: .default, handler: { [weak self] _ in
-            guard
-                let self,
-                let s = a.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-                let u = URL(string: s)
-            else { return }
+            guard let self,
+                  let text = a.textFields?.first?.text else { return }
+            
+            let sanitized = self.sanitizeURLString(text)
+            guard !sanitized.isEmpty,
+                  let u = URL(string: sanitized) else {
+                self.alert("Invalid URL", "Please enter a valid URL starting with http:// or https://")
+                return
+            }
+            
+            guard self.validateURL(u) else {
+                self.alert("Invalid URL", "URL must start with http:// or https://")
+                return
+            }
 
             let title = a.textFields?[1].text
             let suggested = (title?.isEmpty == false) ? title : nil
@@ -215,13 +224,45 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
 
     private func promptForS3Manifest() {
-        let a = UIAlertController(title: "S3 Bundle Manifest", message: "Enter the URL of a JSON manifest.", preferredStyle: .alert)
-        a.addTextField { tf in tf.placeholder = "https://…/bundle.json" ; tf.keyboardType = .URL ; tf.autocapitalizationType = .none }
+        let a = UIAlertController(title: "Install Bundle", message: "Enter the URL of a JSON manifest.", preferredStyle: .alert)
+        a.addTextField { tf in 
+            tf.placeholder = "https://…/bundle.json" 
+            tf.keyboardType = .URL 
+            tf.autocapitalizationType = .none
+            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/bundle.json"
+        }
         a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         a.addAction(UIAlertAction(title: "Install", style: .default, handler: { [weak self] _ in
-            guard let s = a.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  let u = URL(string: s) else { return }
-            // self?.runImport(.bundleManifest(url: u))
+            guard let self,
+                  let text = a.textFields?.first?.text else { return }
+            
+            print("📦 [BundleImport] Raw URL input: '\(text)'")
+            let sanitized = self.sanitizeURLString(text)
+            print("📦 [BundleImport] Sanitized URL: '\(sanitized)'")
+            
+            guard !sanitized.isEmpty,
+                  let u = URL(string: sanitized) else {
+                print("❌ [BundleImport] Failed to parse URL from string: '\(sanitized)'")
+                self.alert("Invalid URL", "Please enter a valid URL starting with http:// or https://")
+                return
+            }
+            
+            print("📦 [BundleImport] Parsed URL: \(u.absoluteString)")
+            print("📦 [BundleImport] URL scheme: \(u.scheme ?? "nil")")
+            print("📦 [BundleImport] URL host: \(u.host ?? "nil")")
+            
+            guard self.validateURL(u) else {
+                print("❌ [BundleImport] Invalid URL scheme: \(u.scheme ?? "nil")")
+                self.alert("Invalid URL", "URL must start with http:// or https://")
+                return
+            }
+            
+            print("✅ [BundleImport] URL validation passed, starting import...")
+            // cancel any prior import and start a new async task
+            self.currentImportTask?.cancel()
+            self.currentImportTask = Task { @MainActor in
+                await self.runImport(.bundleManifest(url: u))
+            }
         }))
         present(a, animated: true)
     }
@@ -274,9 +315,46 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         present(host, animated: true)
 
         do {
-            let tracks = try await importer.performImport(source: src) { progress in
-                DispatchQueue.main.async {
-                    progressView.updateState(.downloading(progress: progress))
+            let tracks: [Track]
+            
+            // Special handling for bundle manifests to support progress messages
+            if case .bundleManifest(let url) = src,
+               let importServiceLite = importer as? ImportServiceLite {
+                // Access the bundle manifest driver directly to provide both progress and message callbacks
+                let libraryService = importServiceLite.library
+                let urlDownloader = UrlDownloaderFactory.make(useMock: false)
+                let bundleDriver = ImportBundleManifestDriver(urlDownloader: urlDownloader, library: libraryService)
+                
+                var currentMessage = "Downloading manifest..."
+                var lastProgress: Float = 0.1
+                
+                // Run the import off the main actor to avoid blocking UI
+                // The bundleDriver.run() is async and will run on background threads naturally,
+                // but we ensure file I/O operations are explicitly off the main actor
+                tracks = try await bundleDriver.run(
+                    manifestURL: url,
+                    progress: { progress in
+                        lastProgress = progress
+                        // Update UI on main actor
+                        Task { @MainActor in
+                            progressView.updateState(.downloading(progress: progress, message: currentMessage))
+                        }
+                    },
+                    progressMessage: { message in
+                        currentMessage = message
+                        // Immediately update UI with new message and last known progress
+                        Task { @MainActor in
+                            progressView.updateState(.downloading(progress: lastProgress, message: currentMessage))
+                        }
+                    }
+                )
+            } else {
+                // Standard import flow for other sources
+                tracks = try await importer.performImport(source: src) { progress in
+                    DispatchQueue.main.async {
+                        let defaultMessage = "Getting your audio file..."
+                        progressView.updateState(.downloading(progress: progress, message: defaultMessage))
+                    }
                 }
             }
             
@@ -318,6 +396,34 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     }
     
     private func friendlyErrorMessage(for error: Error) -> String {
+        // Handle URLError specifically
+        if let urlError = error as? URLError {
+            switch urlError.code {
+            case .unsupportedURL:
+                return "Invalid URL format. Make sure the URL starts with http:// or https://"
+            case .cannotFindHost:
+                return "Couldn't reach the server. Check your internet connection and the URL."
+            case .cannotConnectToHost:
+                return "Couldn't connect to the server. Check your internet connection."
+            case .networkConnectionLost:
+                return "Network connection lost. Check your internet connection and try again."
+            case .timedOut:
+                return "The request timed out. The server may be slow or unreachable."
+            case .notConnectedToInternet:
+                return "No internet connection. Check your network settings."
+            case .resourceUnavailable:
+                return "The resource is unavailable. The file may have been moved or deleted."
+            case .badServerResponse:
+                return "Server error. Please try again later."
+            case .httpTooManyRedirects:
+                return "Too many redirects. The URL may be incorrect."
+            case .appTransportSecurityRequiresSecureConnection:
+                return "Secure connection required. The URL must use https:// instead of http://"
+            default:
+                return urlError.localizedDescription.isEmpty ? "Network error occurred. Please try again." : urlError.localizedDescription
+            }
+        }
+        
         let description = error.localizedDescription
         
         // Provide friendlier messages for common errors
@@ -329,12 +435,41 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             return "Unable to access the file. Check permissions."
         } else if description.contains("format") || description.contains("codec") {
             return "This file format isn't supported. Try mp3, m4a, or wav."
+        } else if description.contains("unsupported") || description.lowercased().contains("url") {
+            return "Invalid URL. Make sure the URL starts with http:// or https://"
         } else {
             return description.isEmpty ? "Something went wrong. Please try again." : description
         }
     }
 
     // MARK: - Helpers
+    
+    /// Sanitizes a URL string by trimming whitespace and removing invalid prefix characters
+    private func sanitizeURLString(_ urlString: String) -> String {
+        var sanitized = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
+        print("🧹 [URLSanitizer] After trim: '\(sanitized)'")
+        
+        // Remove common invalid prefixes that might be accidentally included
+        let invalidPrefixes = ["@", "#", "!", "~"]
+        for prefix in invalidPrefixes {
+            if sanitized.hasPrefix(prefix) {
+                print("🧹 [URLSanitizer] Removing prefix '\(prefix)'")
+                sanitized = String(sanitized.dropFirst())
+            }
+        }
+        
+        // Trim again after removing prefix
+        sanitized = sanitized.trimmingCharacters(in: .whitespacesAndNewlines)
+        print("🧹 [URLSanitizer] Final sanitized: '\(sanitized)'")
+        
+        return sanitized
+    }
+    
+    /// Validates that a URL has a valid scheme (http or https)
+    private func validateURL(_ url: URL) -> Bool {
+        guard let scheme = url.scheme?.lowercased() else { return false }
+        return scheme == "http" || scheme == "https"
+    }
 
     @objc private func helpTapped() {
         let message = """
@@ -351,8 +486,8 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         🔗 Download from URL
         Direct links to audio files (mp3, m4a, wav)
         
-        ☁️ S3 Bundles
-        Load pre-configured track collections
+        ☁️ Install Bundle
+        Download bundles from remote JSON manifests
         
         🎁 Free Packs
         Pre-made learning content included with the app

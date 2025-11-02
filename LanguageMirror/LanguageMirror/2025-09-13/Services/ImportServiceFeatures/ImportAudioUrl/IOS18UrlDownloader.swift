@@ -18,8 +18,14 @@ public final class IOS18UrlDownloader: UrlDownloaderProtocol {
     public init() {}
 
     public func downloadAudio(from url: URL) async throws -> (url: URL, suggestedFilename: String) {
+        // Validate URL scheme before attempting download
+        guard let scheme = url.scheme?.lowercased(),
+              scheme == "http" || scheme == "https" else {
+            throw URLError(.unsupportedURL)
+        }
+        
         // Auto-cancellable with Task cancellation
-        let (tmpURL, response) = try await URLSession.shared.download(from: url)
+        let (tmpURL, response) = try await NetworkSession.shared.download(from: url)
 
         if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
             throw RemoteImportError.httpStatus(http.statusCode)
