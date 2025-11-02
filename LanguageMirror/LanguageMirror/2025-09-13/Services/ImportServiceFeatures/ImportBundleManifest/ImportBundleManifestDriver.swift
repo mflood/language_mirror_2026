@@ -335,7 +335,11 @@ final class ImportBundleManifestDriver {
                 
                 // Import practice sets
                 var trackPracticeSets: [PracticeSet] = []
-                if let clips = bundleTrack.clips {
+                
+                /* TODO: fix this
+                if let practiceSets = bundleTrack.practiceSets {
+                 
+                 
                     // Create practice set with correct IDs
                     let practiceSetId = clips.id.isEmpty 
                         ? uuid5(namespace: trackUUID, name: norm(clips.title ?? "Practice Set")).uuidString
@@ -351,6 +355,7 @@ final class ImportBundleManifestDriver {
                     )
                     trackPracticeSets.append(practiceSet)
                 }
+                 */
                 
                 // Import transcripts
                 let transcripts = bundleTrack.transcripts ?? []

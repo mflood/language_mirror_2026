@@ -207,7 +207,7 @@ def generate_manifest(
             "url": audio_url,
             "filename": audio_file.name,
             "durationMs": duration_ms,
-            "clips": [],
+            "practiceSets": [],
             "transcripts": []
         }
         

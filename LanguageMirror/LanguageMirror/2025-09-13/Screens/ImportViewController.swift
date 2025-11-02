@@ -187,7 +187,8 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             tf.placeholder = "https://…/file.mp3"
             tf.keyboardType = .URL
             tf.autocapitalizationType = .none
-            tf.text = "https://www.blcup.com/File/Res3/6d99a4e6-ac1a-420d-ac1b-fa0ac889a530.mp3"
+            // tf.text = "https://www.blcup.com/File/Res3/6d99a4e6-ac1a-420d-ac1b-fa0ac889a530.mp3"
+            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/문화가 있는 한국어 읽기 2_03.mp3"
         }
         a.addTextField { tf in tf.placeholder = "Optional title" }
 
@@ -432,8 +433,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
                             return "Invalid 'clips' field in manifest. The 'clips' field must be either null or a PracticeSet object (not an array). See bundle.json documentation for the correct format."
                         }
                     }
-                    let path = decodingError.context.codingPath.map { $0.stringValue }.joined(separator: ".")
-                    return "The manifest file has invalid JSON format at \(path). Please check that the URL points to a valid bundle manifest."
+                    return "Failed to parse the manifest file: \(decodingError)"
                 }
                 return "Failed to parse the manifest file. Please check that the URL is correct and the JSON format matches the expected bundle manifest schema."
             }
