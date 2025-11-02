@@ -75,6 +75,52 @@ def clean_track_title(filename: str) -> str:
     return name
 
 
+def create_full_track_practice_set(duration_ms: int, track_id_placeholder: str) -> Dict[str, Any]:
+    """
+    Create a default "Full Track" practice set with a single clip spanning the entire audio duration.
+    
+    Args:
+        duration_ms: Duration of the audio track in milliseconds
+        track_id_placeholder: Placeholder track ID (will be replaced during import)
+    
+    Returns:
+        Dictionary representing a PracticeSet matching Swift Models.swift structure
+    """
+    if duration_ms <= 0:
+        return {
+            "id": str(uuid.uuid4()),
+            "trackId": track_id_placeholder,
+            "displayOrder": 0,
+            "title": "Full Track",
+            "clips": [],
+            "isFavorite": False
+        }
+    
+    practice_set_id = str(uuid.uuid4())
+    clip_id = str(uuid.uuid4())
+    
+    return {
+        "id": practice_set_id,
+        "trackId": track_id_placeholder,
+        "displayOrder": 0,
+        "title": "Full Track",
+        "clips": [
+            {
+                "id": clip_id,
+                "startMs": 0,
+                "endMs": duration_ms,
+                "kind": "drill",
+                "title": "Full Track",
+                "repeats": None,
+                "startSpeed": None,
+                "endSpeed": None,
+                "languageCode": None
+            }
+        ],
+        "isFavorite": False
+    }
+
+
 def build_url(base_url: Optional[str], filename: str) -> str:
     """
     Build full URL for audio file.
@@ -201,13 +247,19 @@ def generate_manifest(
         # Build URL
         audio_url = build_url(base_url, audio_file.name)
         
+        # Generate placeholder track ID (will be replaced with deterministic UUID during import)
+        track_id_placeholder = str(uuid.uuid4())
+        
+        # Create default "Full Track" practice set
+        practice_set = create_full_track_practice_set(duration_ms, track_id_placeholder)
+        
         track = {
             "id": None,
             "title": track_title,
             "url": audio_url,
             "filename": audio_file.name,
             "durationMs": duration_ms,
-            "practiceSets": [],
+            "practiceSets": [practice_set],
             "transcripts": []
         }
         
@@ -321,6 +373,12 @@ Examples:
         help='S3 URI to upload bundle (e.g., s3://bucket/path/to/bundle/). Uploads manifest and all audio files.'
     )
     
+    parser.add_argument(
+        '--manifest-only',
+        action='store_true',
+        help='When used with --publish-s3, only upload the manifest file (skip audio files). Useful when audio files are already on S3.'
+    )
+    
     args = parser.parse_args()
     
     # Validate input folder
@@ -425,19 +483,25 @@ Examples:
                         print("Failed to upload manifest")
                         sys.exit(1)
                     
-                    # Upload audio files
-                    audio_files = find_audio_files(audio_folder)
-                    print(f"\nUploading {len(audio_files)} audio file(s):")
-                    uploaded = 0
-                    for audio_file in audio_files:
-                        audio_s3_key = f"{key_prefix}{audio_file.name}"
-                        if upload_to_s3(audio_file, bucket, audio_s3_key, s3_client):
-                            uploaded += 1
+                    # Upload audio files (unless --manifest-only flag is set)
+                    uploaded_audio = 0
+                    if not args.manifest_only:
+                        audio_files = find_audio_files(audio_folder)
+                        print(f"\nUploading {len(audio_files)} audio file(s):")
+                        for audio_file in audio_files:
+                            audio_s3_key = f"{key_prefix}{audio_file.name}"
+                            if upload_to_s3(audio_file, bucket, audio_s3_key, s3_client):
+                                uploaded_audio += 1
+                    else:
+                        print("\nSkipping audio file uploads (--manifest-only flag set)")
                     
                     print("\n" + "=" * 60)
                     print("S3 Upload Complete!")
                     print("=" * 60)
-                    print(f"Uploaded: {uploaded + 1} file(s) ({uploaded} audio + 1 manifest)")
+                    if args.manifest_only:
+                        print(f"Uploaded: 1 file (manifest only)")
+                    else:
+                        print(f"Uploaded: {uploaded_audio + 1} file(s) ({uploaded_audio} audio + 1 manifest)")
                     
                     # Generate public URL
                     if key_prefix:

@@ -1,0 +1,1 @@
+python generate_bundle.py --input ../culture_korean_2 --pack-title "Korean Culture 2" --base-url https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2a/ --publish-s3 s3://turned.rip/lmaudio/culture_korean_2a/
