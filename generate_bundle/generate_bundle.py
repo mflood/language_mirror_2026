@@ -11,6 +11,7 @@ import json
 import sys
 import argparse
 import uuid
+import hashlib
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 
@@ -219,6 +220,57 @@ def get_content_type(file_path: Path) -> str:
     return content_types.get(ext, 'application/octet-stream')
 
 
+def get_cache_dir(audio_folder: Path) -> Path:
+    """Get or create cache directory for transcription results"""
+    cache_dir = audio_folder / ".cache"
+    cache_dir.mkdir(exist_ok=True)
+    return cache_dir
+
+
+def get_cache_key(audio_file: Path, whisper_model: str, language_code: Optional[str] = None) -> str:
+    """
+    Generate a cache key based on file path, model, and language.
+    Uses file name and size (not content hash for speed).
+    """
+    # Use filename, size, model, and language for cache key
+    stat = audio_file.stat()
+    key_parts = [
+        audio_file.name,
+        str(stat.st_size),
+        whisper_model,
+        language_code or "auto"
+    ]
+    key_string = "|".join(key_parts)
+    # Create a short hash for the filename
+    return hashlib.md5(key_string.encode()).hexdigest()
+
+
+def get_cache_path(cache_dir: Path, cache_key: str, cache_type: str) -> Path:
+    """Get cache file path for a given cache key and type"""
+    return cache_dir / f"{cache_key}.{cache_type}.json"
+
+
+def load_from_cache(cache_path: Path) -> Optional[Dict[str, Any]]:
+    """Load data from cache file if it exists"""
+    if cache_path.exists():
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"  Warning: Failed to load cache {cache_path.name}: {e}")
+            return None
+    return None
+
+
+def save_to_cache(cache_path: Path, data: Dict[str, Any]) -> None:
+    """Save data to cache file"""
+    try:
+        with open(cache_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"  Warning: Failed to save cache {cache_path.name}: {e}")
+
+
 class TranscriptionProcessor:
     """Handles audio transcription using Whisper"""
     
@@ -410,7 +462,8 @@ def generate_manifest(
     transcriber: Optional[TranscriptionProcessor] = None,
     analyzer: Optional[GPTAnalyzer] = None,
     language_code: Optional[str] = None,
-    whisper_model: str = "base"
+    whisper_model: str = "base",
+    cache_dir: Optional[Path] = None
 ) -> Dict[str, Any]:
     """
     Generate bundle manifest from audio files in folder.
@@ -421,6 +474,7 @@ def generate_manifest(
         analyzer: GPTAnalyzer instance (required if transcribe=True)
         language_code: Optional language code for transcription (e.g., "ko-KR", "en-US")
         whisper_model: Whisper model to use (default: "base")
+        cache_dir: Optional cache directory for transcription results (auto-created if None and transcribe=True)
     """
     # Default titles from folder name if not provided
     folder_name = audio_folder.name
@@ -430,6 +484,11 @@ def generate_manifest(
     # Generate pack ID if not provided
     if not pack_id:
         pack_id = str(uuid.uuid4())
+    
+    # Set up cache directory if transcription is enabled
+    if transcribe and cache_dir is None:
+        cache_dir = get_cache_dir(audio_folder)
+        print(f"Using cache directory: {cache_dir}")
     
     # Find all audio files
     audio_files = find_audio_files(audio_folder)
@@ -469,21 +528,50 @@ def generate_manifest(
                 print("\nError: Transcription requires transcriber and analyzer instances")
                 raise ValueError("Transcription enabled but transcriber/analyzer not provided")
             
+            # Ensure cache_dir is set
+            if cache_dir is None:
+                cache_dir = get_cache_dir(audio_folder)
+            
             try:
-                # Detect language for Whisper (extract base language from language_code)
-                whisper_lang = None
-                if language_code:
-                    # Extract base language code (e.g., "ko" from "ko-KR")
-                    whisper_lang = language_code.split("-")[0] if "-" in language_code else language_code
+                # Generate cache keys
+                cache_key = get_cache_key(audio_file, whisper_model, language_code)
+                whisper_cache_path = get_cache_path(cache_dir, cache_key, "whisper")
+                analysis_cache_path = get_cache_path(cache_dir, cache_key, "analysis")
                 
-                # Step 1: Transcribe with Whisper
-                print(f"\n  Transcribing audio...")
-                transcription_result = transcriber.transcribe_audio(audio_file, language=whisper_lang)
+                # Step 1: Transcribe with Whisper (check cache first)
+                transcription_result = None
+                cached_transcription = load_from_cache(whisper_cache_path)
+                if cached_transcription:
+                    print(f"\n  Using cached Whisper transcription...")
+                    transcription_result = cached_transcription
+                else:
+                    print(f"\n  Transcribing audio...")
+                    # Detect language for Whisper (extract base language from language_code)
+                    whisper_lang = None
+                    if language_code:
+                        # Extract base language code (e.g., "ko" from "ko-KR")
+                        whisper_lang = language_code.split("-")[0] if "-" in language_code else language_code
+                    
+                    transcription_result = transcriber.transcribe_audio(audio_file, language=whisper_lang)
+                    # Save to cache
+                    save_to_cache(whisper_cache_path, transcription_result)
+                    print(f"  Transcription saved to cache")
+                
                 print(f"  Transcription complete. Detected {len(transcription_result.get('segments', []))} segments")
                 
-                # Step 2: Analyze with GPT
-                print(f"  Analyzing transcription...")
-                analysis = analyzer.analyze_transcription(transcription_result, duration_ms, language_code)
+                # Step 2: Analyze with GPT (check cache first)
+                analysis = None
+                cached_analysis = load_from_cache(analysis_cache_path)
+                if cached_analysis:
+                    print(f"  Using cached GPT analysis...")
+                    analysis = cached_analysis
+                else:
+                    print(f"  Analyzing transcription...")
+                    analysis = analyzer.analyze_transcription(transcription_result, duration_ms, language_code)
+                    # Save to cache
+                    save_to_cache(analysis_cache_path, analysis)
+                    print(f"  Analysis saved to cache")
+                
                 print(f"  Analysis complete:")
                 print(f"    - {len(analysis.get('transcripts', []))} transcript spans")
                 print(f"    - {len(analysis.get('clips', []))} clips")
