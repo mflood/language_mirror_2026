@@ -1,12 +1,15 @@
 //
-//  TrackViewController.swift
+//  TrackDetailViewController.swift
 //  LanguageMirror
 //
 //  Created by Matthew Flood on 9/14/25.
 //
-// path: Screens/TrackDetailViewController.swift
-// Replace the whole file with the updated version below (only differences: Start Routine calls repeats+gap,
-// plus Pause/Resume/Stop nav buttons and notification handling).
+//  Track detail view, upgraded to follow ADHD-friendly UI patterns:
+//  - Calm background
+//  - Single track info card (title, duration, language, filename)
+//  - Clear list of practice sets
+//
+
 import UIKit
 
 protocol TrackDetailViewControllerDelegate: AnyObject {
@@ -22,19 +25,18 @@ final class TrackDetailViewController: UITableViewController {
     private let library: LibraryService
     
     weak var delegate: TrackDetailViewControllerDelegate?
-
-    private var clipMap: PracticeSet!
     
-    // Playback config (temporary defaults; later from Settings)
-    private let defaultRepeats = 3
-    private let defaultGap: TimeInterval = 0.5
-    private let defaultInterClipGap: TimeInterval = 0.5  // NEW
-
-    // Local UI state
-    private var isPlaying: Bool = false
-    private var isPaused: Bool = false
-
-    init(track: Track, audioPlayer: AudioPlayerService, clipService: ClipService, settings: SettingsService, library: LibraryService) {
+    private enum Section: Int, CaseIterable {
+        case practiceSets
+    }
+    
+    // MARK: - Init
+    
+    init(track: Track,
+         audioPlayer: AudioPlayerService,
+         clipService: ClipService,
+         settings: SettingsService,
+         library: LibraryService) {
         self.track = track
         self.audioPlayer = audioPlayer
         self.clipService = clipService
@@ -43,33 +45,25 @@ final class TrackDetailViewController: UITableViewController {
         super.init(style: .insetGrouped)
         self.title = track.title
     }
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-    private enum Section: Int, CaseIterable { case overview, actions, practiceSets }
-    private enum OverviewRow: CaseIterable { case filename, duration, language }
-    private enum ActionRow: CaseIterable { case startRoutine, editClips }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = AppColors.calmBackground
         navigationItem.largeTitleDisplayMode = .never
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-
-        loadClips()
-        buildHeader()
         
-
-        // Observe playback end to reset buttons
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handlePlaybackStopped),
-                                               name: .AudioPlayerDidStop,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handlePlaybackStarted),
-                                               name: .AudioPlayerDidStart,
-                                               object: nil)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        
+        buildHeader()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -77,131 +71,156 @@ final class TrackDetailViewController: UITableViewController {
         if let updatedTrack = try? library.loadTrack(id: track.id) {
             track = updatedTrack
             title = track.title
-            loadClips()
         }
         
-        // Refresh Start Routine cell subtitle with current settings
-        if let actionsSection = Section.allCases.firstIndex(of: .actions) {
-            tableView.reloadSections(IndexSet(integer: actionsSection), with: .none)
-        }
-        
-        // Refresh practice sets section to show any new sets
-        if let practiceSetsSection = Section.allCases.firstIndex(of: .practiceSets) {
-            tableView.reloadSections(IndexSet(integer: practiceSetsSection), with: .none)
+        if let sectionIndex = Section.allCases.firstIndex(of: .practiceSets) {
+            tableView.reloadSections(IndexSet(integer: sectionIndex), with: .none)
+        } else {
+            tableView.reloadData()
         }
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
+    // MARK: - Header
+    
     private func buildHeader() {
-        let headerLabel = UILabel()
-        headerLabel.text = track.title
-        headerLabel.font = .systemFont(ofSize: 28, weight: .bold)
-        headerLabel.numberOfLines = 0
-
         let headerView = UIView()
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(headerLabel)
+        headerView.backgroundColor = .clear
+        
+        let cardView = UIView()
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.backgroundColor = AppColors.cardBackground
+        cardView.layer.cornerRadius = 16
+        cardView.layer.cornerCurve = .continuous
+        headerView.addSubview(cardView)
+        
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = track.title
+        titleLabel.font = .systemFont(ofSize: 22, weight: .semibold)
+        titleLabel.textColor = AppColors.primaryText
+        titleLabel.numberOfLines = 0
+        cardView.addSubview(titleLabel)
+        
+        let durationBadge = DurationBadge()
+        durationBadge.translatesAutoresizingMaskIntoConstraints = false
+        if let durationMs = track.durationMs {
+            durationBadge.configure(durationMs: durationMs)
+            durationBadge.isHidden = false
+        } else {
+            durationBadge.isHidden = true
+        }
+        cardView.addSubview(durationBadge)
+        
+        let languageTag = TagView()
+        languageTag.translatesAutoresizingMaskIntoConstraints = false
+        let languageText = trackLanguageDisplay()
+        if languageText == "—" {
+            languageTag.isHidden = true
+        } else {
+            languageTag.configure(text: languageText)
+            languageTag.isHidden = false
+        }
+        cardView.addSubview(languageTag)
+        
+        let filenameLabel = UILabel()
+        filenameLabel.translatesAutoresizingMaskIntoConstraints = false
+        filenameLabel.text = track.filename
+        filenameLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        filenameLabel.textColor = AppColors.secondaryText
+        filenameLabel.numberOfLines = 1
+        cardView.addSubview(filenameLabel)
+        
         NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 24),
-            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
-            headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
-            headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8)
+            cardView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
+            cardView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            cardView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            
+            titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: durationBadge.leadingAnchor, constant: -12),
+            
+            durationBadge.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
+            durationBadge.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            
+            languageTag.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            languageTag.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            
+            filenameLabel.topAnchor.constraint(equalTo: languageTag.bottomAnchor, constant: 8),
+            filenameLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            filenameLabel.trailingAnchor.constraint(lessThanOrEqualTo: cardView.trailingAnchor, constant: -16),
+            filenameLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16)
         ])
-
+        
+        cardView.applyAdaptiveShadow(radius: 10, opacity: 0.1)
+        
         tableView.tableHeaderView = headerView
         headerView.layoutIfNeeded()
         let size = headerView.systemLayoutSizeFitting(CGSize(width: tableView.bounds.width,
                                                              height: UIView.layoutFittingCompressedSize.height))
         headerView.frame = CGRect(origin: .zero, size: CGSize(width: size.width, height: size.height))
     }
-
-    private func loadClips() {
-        do {
-            
-            if track.practiceSets.isEmpty {
-                clipMap = PracticeSet.fullTrackFactory(trackId: track.id, displayOrder: 0, trackDurationMs: track.durationMs)
-            } else {
-                clipMap = track.practiceSets[0]
-            }
-            tableView.reloadData()
-        } catch {
-            clipMap = PracticeSet(id: UUID().uuidString, trackId: track.id, displayOrder: 0, clips: [])
-            tableView.reloadData()
-            presentError("Could not load segments", error: error)
-        }
-    }
-
+    
     // MARK: - Table
-
-    override func numberOfSections(in tableView: UITableView) -> Int { Section.allCases.count }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch Section(rawValue: section)! {
-        case .overview: return "Overview"
-        case .actions:  return "Actions"
-        case .practiceSets: return "Practice Sets"
-        }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        Section.allCases.count
     }
-
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        nil
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let container = UIView()
+        container.backgroundColor = .clear
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.textColor = AppColors.secondaryText
+        label.text = "Practice sets"
+        
+        container.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -20),
+            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4)
+        ])
+        
+        return container
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        32
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
-        case .overview: return OverviewRow.allCases.count
-        case .actions:  return ActionRow.allCases.count
-        case .practiceSets: return max(track.practiceSets.count, 1)
+        case .practiceSets:
+            return max(track.practiceSets.count, 1)
         }
     }
-
+    
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         var config = cell.defaultContentConfiguration()
-
+        
+        // Common ADHD-friendly style for all rows
+        cell.backgroundColor = .clear
+        let bgView = UIView()
+        bgView.backgroundColor = AppColors.cardBackground
+        bgView.layer.cornerRadius = 12
+        bgView.layer.cornerCurve = .continuous
+        cell.backgroundView = bgView
+        config.textProperties.color = AppColors.primaryText
+        config.secondaryTextProperties.color = AppColors.secondaryText
+        
         switch Section(rawValue: indexPath.section)! {
-        case .overview:
-            switch OverviewRow.allCases[indexPath.row] {
-            case .filename:
-                config.text = "File"
-                config.secondaryText = track.filename
-                cell.selectionStyle = .none
-            case .duration:
-                config.text = "Duration"
-                config.secondaryText = track.durationMs.map(msToClock) ?? "Unknown"
-                cell.selectionStyle = .none
-            case .language:
-                config.text = "Language"
-                config.secondaryText = trackLanguageDisplay()
-                cell.selectionStyle = .none
-            }
-
-        case .actions:
-            switch ActionRow.allCases[indexPath.row] {
-            case .startRoutine:
-                let n = settings.globalRepeats
-                let gap = settings.gapSeconds
-                let inter = settings.interSegmentGapSeconds
-                let pre = settings.prerollMs
-                let drillCount = clipMap.clips.filter { $0.kind == .drill }.count
-
-                config.text = "Start Routine"
-                if drillCount > 0 {
-                    config.secondaryText = "Drills: \(drillCount) • \(n)x • gap \(String(format: "%.1f", gap))s • inter \(String(format: "%.1f", inter))s • preroll \(pre)ms"
-                } else {
-                    config.secondaryText = "No drills defined (add segments)"
-                }
-                cell.accessoryType = .disclosureIndicator
-            case .editClips:
-                config.text = "Edit Segments"
-                config.secondaryText = "Open Segment Editor"
-                cell.accessoryType = .disclosureIndicator
-            }
-
         case .practiceSets:
             if track.practiceSets.isEmpty {
                 config.text = "No practice sets yet"
-                config.secondaryText = "Tap Edit Segments to create practice sets"
+                config.secondaryText = "Practice sets help you focus on the most useful parts of this track."
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
             } else {
@@ -213,69 +232,32 @@ final class TrackDetailViewController: UITableViewController {
                 cell.selectionStyle = .default
                 cell.accessoryType = .disclosureIndicator
                 
-                // Add favorite indicator
                 if practiceSet.isFavorite {
                     config.image = UIImage(systemName: "heart.fill")
-                    config.imageProperties.tintColor = .systemRed
+                    config.imageProperties.tintColor = AppColors.errorColor
+                } else {
+                    config.image = UIImage(systemName: "heart")
+                    config.imageProperties.tintColor = AppColors.secondaryText
                 }
             }
         }
-
+        
         cell.contentConfiguration = config
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         switch Section(rawValue: indexPath.section)! {
-        case .actions:
-            switch ActionRow.allCases[indexPath.row] {
-            case .startRoutine:
-                let drills = clipMap.clips.filter { $0.kind == .drill }
-                    guard !drills.isEmpty else {
-                        presentMessage("No Drills", "Add segments and mark some as Drill to practice.")
-                        return
-                    }
-                
-                do {
-                    try audioPlayer.play(track: track,
-                                         clips: drills,
-                                         globalRepeats: defaultRepeats,
-                                         gapSeconds: defaultGap,
-                                         interClipGapSeconds: defaultInterClipGap,
-                                         prerollMs: settings.prerollMs)
-                    isPlaying = true
-                    isPaused = false
-                    updatePlaybackButtons()
-                } catch {
-                    presentError("Playback Error", error: error)
-                }
-            case .editClips:
-                let editor = ClipEditorViewController(track: track, clipService: clipService,
-                
-                                                         audioPlayer: audioPlayer,          // NEW
-                                                         settings: settings                 // NEW
-                )
-                editor.onMapChanged = { [weak self] newMap in
-                    self?.clipMap = newMap
-                    if let section = Section.allCases.firstIndex(of: .practiceSets) {
-                        self?.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
-                    } else {
-                        self?.tableView.reloadData()
-                    }
-                }
-                navigationController?.pushViewController(editor, animated: true)
-            }
         case .practiceSets:
             guard !track.practiceSets.isEmpty else { return }
             let practiceSet = track.practiceSets[indexPath.row]
             delegate?.trackDetailViewController(self, didSelectPracticeSet: practiceSet, forTrack: track)
-        case .overview:
-            break
         }
     }
     
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(_ tableView: UITableView,
+                            trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         switch Section(rawValue: indexPath.section)! {
         case .practiceSets:
             guard !track.practiceSets.isEmpty else { return nil }
@@ -289,13 +271,10 @@ final class TrackDetailViewController: UITableViewController {
                 completion(true)
             }
             
-            favoriteAction.backgroundColor = practiceSet.isFavorite ? .systemRed : .systemBlue
+            favoriteAction.backgroundColor = practiceSet.isFavorite ? AppColors.errorColor : AppColors.primaryAccent
             favoriteAction.image = UIImage(systemName: actionImage)
             
             return UISwipeActionsConfiguration(actions: [favoriteAction])
-            
-        default:
-            return nil
         }
     }
     
@@ -303,12 +282,10 @@ final class TrackDetailViewController: UITableViewController {
         do {
             try library.togglePracticeSetFavorite(trackId: track.id, practiceSetId: practiceSet.id)
             
-            // Reload track data to get the updated practice set with new favorite status
             if let updatedTrack = try? library.loadTrack(id: track.id) {
                 track = updatedTrack
             }
             
-            // Reload the specific row to update the UI
             let indexPath = IndexPath(row: index, section: Section.practiceSets.rawValue)
             tableView.reloadRows(at: [indexPath], with: .automatic)
             
@@ -318,81 +295,22 @@ final class TrackDetailViewController: UITableViewController {
             presentMessage("Error", "Failed to toggle favorite: \(error.localizedDescription)")
         }
     }
-
-    // MARK: - Playback UI
-
-    private func updatePlaybackButtons() {
-        if isPlaying {
-            let pauseTitle = isPaused ? "Resume" : "Pause"
-            let pauseItem = UIBarButtonItem(title: pauseTitle, style: .plain, target: self, action: #selector(pauseResumeTapped))
-            let stopItem  = UIBarButtonItem(title: "Stop", style: .plain, target: self, action: #selector(stopTapped))
-            navigationItem.rightBarButtonItems = [stopItem, pauseItem]
-        } else {
-            navigationItem.rightBarButtonItems = nil
-        }
-    }
-
-    @objc private func pauseResumeTapped() {
-        if isPaused {
-            audioPlayer.resume()
-            isPaused = false
-            isPlaying = true
-        } else {
-            audioPlayer.pause()
-            isPaused = true
-            isPlaying = false
-        }
-        updatePlaybackButtons()
-    }
-
-    @objc private func stopTapped() {
-        audioPlayer.stop()
-        isPaused = false
-        isPlaying = false
-        updatePlaybackButtons()
-    }
-
-    @objc private func handlePlaybackStopped() {
-        isPaused = false
-        isPlaying = false
-        updatePlaybackButtons()
-    }
-
-    @objc private func handlePlaybackStarted() {
-        isPaused = false
-        isPlaying = true
-        updatePlaybackButtons()
-    }
-
+    
     // MARK: - Helpers
-
-    private func msToClock(_ ms: Int) -> String {
-        let totalSeconds = ms / 1000
-        let m = totalSeconds / 60
-        let s = totalSeconds % 60
-        return String(format: "%d:%02d", m, s)
-    }
-
-    private func formatTime(_ ms: Int) -> String {
-        let totalSeconds = Double(ms) / 1000.0
-        let m = Int(totalSeconds / 60.0)
-        let s = Int(totalSeconds) % 60
-        return String(format: "%d:%02d", m, s)
-    }
-
+    
     private func trackLanguageDisplay() -> String {
         if let code = track.languageCode?.trimmingCharacters(in: .whitespacesAndNewlines),
-           !code.isEmpty { return code }
+           !code.isEmpty {
+            return code
+        }
         return "—"
     }
-
-    private func presentError(_ title: String, error: Error) {
-        presentMessage(title, error.localizedDescription)
-    }
-
+    
     private func presentMessage(_ title: String, _ message: String) {
-        let a = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        a.addAction(UIAlertAction(title: "OK", style: .default))
-        present(a, animated: true)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
+
+
