@@ -230,7 +230,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             tf.placeholder = "https://…/bundle.json" 
             tf.keyboardType = .URL 
             tf.autocapitalizationType = .none
-            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/bundle.json"
+            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/bundle3.json"
         }
         a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         a.addAction(UIAlertAction(title: "Install", style: .default, handler: { [weak self] _ in

@@ -70,15 +70,14 @@ final class ImportBundleManifestDriver {
             print("⚠️ [BundleManifestDriver] This might be a manifest URL, continuing anyway...")
         }
         
-        print("📥 [BundleManifestDriver] Starting download from: \(manifestURL.absoluteString)")
         let downloadStartTime = Date()
         
-        // Download manifest (URLSession handles this asynchronously)
-        // IMPORTANT: We use NetworkSession.shared.download() directly, NOT urlDownloader.downloadAudio()
+        // Download manifest with detailed progress logging
+        // IMPORTANT: We use NetworkSession.shared.downloadWithProgress() directly, NOT urlDownloader.downloadAudio()
         // This ensures JSON manifests are never processed as audio files
         let (tempManifest, response): (URL, URLResponse)
         do {
-            (tempManifest, response) = try await NetworkSession.shared.download(from: manifestURL)
+            (tempManifest, response) = try await NetworkSession.shared.downloadWithProgress(from: manifestURL, logPrefix: "📥 [BundleManifestDriver]")
             let downloadDuration = Date().timeIntervalSince(downloadStartTime)
             print("✅ [BundleManifestDriver] Download completed in \(String(format: "%.2f", downloadDuration))s")
             print("📥 [BundleManifestDriver] Downloaded to temp file: \(tempManifest.path)")
@@ -336,26 +335,26 @@ final class ImportBundleManifestDriver {
                 // Import practice sets
                 var trackPracticeSets: [PracticeSet] = []
                 
-                /* TODO: fix this
                 if let practiceSets = bundleTrack.practiceSets {
-                 
-                 
-                    // Create practice set with correct IDs
-                    let practiceSetId = clips.id.isEmpty 
-                        ? uuid5(namespace: trackUUID, name: norm(clips.title ?? "Practice Set")).uuidString
-                        : clips.id
+                    print("📦 [BundleManifestDriver] Importing \(practiceSets.count) practice set(s) for track '\(bundleTrack.title)'")
                     
-                    let practiceSet = PracticeSet(
-                        id: practiceSetId,
-                        trackId: trackId,
-                        displayOrder: clips.displayOrder,
-                        title: clips.title,
-                        clips: clips.clips,
-                        isFavorite: clips.isFavorite
-                    )
-                    trackPracticeSets.append(practiceSet)
+                    for practiceSet in practiceSets {
+                        // Create a new PracticeSet with the correct trackId (replace placeholder from JSON)
+                        // Preserve all other fields (id, displayOrder, title, clips, isFavorite) from JSON
+                        let updatedPracticeSet = PracticeSet(
+                            id: practiceSet.id,
+                            trackId: trackId, // Use actual generated trackId, not placeholder from JSON
+                            displayOrder: practiceSet.displayOrder,
+                            title: practiceSet.title,
+                            clips: practiceSet.clips,
+                            isFavorite: practiceSet.isFavorite
+                        )
+                        trackPracticeSets.append(updatedPracticeSet)
+                        print("📦 [BundleManifestDriver] Added practice set '\(practiceSet.title ?? "Untitled")' (displayOrder: \(practiceSet.displayOrder), clips: \(practiceSet.clips.count))")
+                    }
+                } else {
+                    print("📦 [BundleManifestDriver] No practice sets found for track '\(bundleTrack.title)'")
                 }
-                 */
                 
                 // Import transcripts
                 let transcripts = bundleTrack.transcripts ?? []
