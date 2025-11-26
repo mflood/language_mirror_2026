@@ -152,6 +152,11 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         // Switch to Library tab (index 0)
         tabBarController.selectedIndex = 0
         
+        // Always start from a clean Library stack when jumping in from another tab
+        if let libraryNav = tabBarController.viewControllers?.first as? UINavigationController {
+            libraryNav.popToRootViewController(animated: false)
+        }
+        
         // Push TrackDetailViewController onto Library navigation stack
         libraryCoordinator?.showTrackDetail(for: track)
     }
@@ -173,6 +178,11 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     func navigateToPracticeFromHome(track: Track, practiceSet: PracticeSet) {
         // Switch to Library tab first
         tabBarController.selectedIndex = 0
+        
+        // Reset Library navigation stack so we don't keep stacking flows
+        if let libraryNav = tabBarController.viewControllers?.first as? UINavigationController {
+            libraryNav.popToRootViewController(animated: false)
+        }
         
         // Push TrackDetailViewController, then push PracticeViewController
         libraryCoordinator?.showTrackDetailAndPractice(for: track, practiceSet: practiceSet)

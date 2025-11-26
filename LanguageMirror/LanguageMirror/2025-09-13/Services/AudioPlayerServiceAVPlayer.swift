@@ -591,8 +591,19 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
 
     /// Effective loop target for a clip, honoring per-clip overrides when present.
     private func effectiveLoopTarget(for clip: Clip) -> Int {
-        let base = clip.repeats ?? globalRepeats
-        return max(1, base)
+        if settings.useProgressionMode {
+            // In progression mode, derive the loop target from the progression
+            // settings (M + N + O) unless the clip overrides it.
+            let progressionTotal = settings.progressionMinRepeats
+                + settings.progressionLinearRepeats
+                + settings.progressionMaxRepeats
+            let base = clip.repeats ?? progressionTotal
+            return max(1, base)
+        } else {
+            // In simple mode, fall back to globalRepeats (or per-clip override).
+            let base = clip.repeats ?? globalRepeats
+            return max(1, base)
+        }
     }
     
     /// Find the next clip index at or after `startingAt` whose play count is

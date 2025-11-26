@@ -446,7 +446,25 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             text += "\n"
         }
         
-        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(min(session.currentLoopCount + 1, totalLoops))/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
+        // Compute display speed. In progression mode, prefer a fresh calculation
+        // based on the current loop so the status text always matches the actual
+        // playback rate.
+        let displaySpeed: Float
+        if settings.useProgressionMode {
+            displaySpeed = practiceService.calculateSpeed(
+                useProgressionMode: settings.useProgressionMode,
+                currentLoop: session.currentLoopCount,
+                progressionMinRepeats: settings.progressionMinRepeats,
+                progressionLinearRepeats: settings.progressionLinearRepeats,
+                progressionMaxRepeats: settings.progressionMaxRepeats,
+                minSpeed: settings.minSpeed,
+                maxSpeed: settings.maxSpeed
+            )
+        } else {
+            displaySpeed = session.currentSpeed
+        }
+        
+        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(min(session.currentLoopCount + 1, totalLoops))/\(totalLoops) • \(String(format: "%.2fx", displaySpeed))"
         
         progressLabel.text = text
         print("  Updated progress label: \(text)")
@@ -806,9 +824,17 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             return
         }
         
+        // Determine per-clip loop target based on current practice mode.
+        // In simple mode, use the global repeat count.
+        // In progression mode, derive it from the progression settings (M + N + O).
+        let progressionTotal = settings.progressionMinRepeats
+            + settings.progressionLinearRepeats
+            + settings.progressionMaxRepeats
+        let baseGlobalRepeats = settings.useProgressionMode ? max(1, progressionTotal) : settings.globalRepeats
+        
         print("  Playback settings:")
         print("    practice mode: \(settings.useProgressionMode)")
-        print("    globalRepeats: \(settings.globalRepeats)")
+        print("    globalRepeats: \(baseGlobalRepeats)")
         print("    gapSeconds: \(settings.gapSeconds)")
         print("    interSegmentGapSeconds: \(settings.interSegmentGapSeconds)")
         print("    prerollMs: \(settings.prerollMs)")
@@ -848,7 +874,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
                 try playerWithSession.play(
                     track: track,
                     clips: drillClips,
-                    globalRepeats: settings.globalRepeats,
+                    globalRepeats: baseGlobalRepeats,
                     gapSeconds: settings.gapSeconds,
                     interClipGapSeconds: settings.interSegmentGapSeconds,
                     prerollMs: settings.prerollMs,
@@ -861,7 +887,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
                 try player.play(
                     track: track,
                     clips: drillClips,
-                    globalRepeats: settings.globalRepeats,
+                    globalRepeats: baseGlobalRepeats,
                     gapSeconds: settings.gapSeconds,
                     interClipGapSeconds: settings.interSegmentGapSeconds,
                     prerollMs: settings.prerollMs
@@ -1014,6 +1040,20 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     }
     
     func audioPlayerSpeedDidChange(speed: Float) {
+        // Keep our local session copy in sync with the player's reported speed so
+        // both the progress label and the active clip cell reflect the true rate.
+        if var session = currentSession {
+            session.currentSpeed = speed
+            currentSession = session
+            
+            if session.currentClipIndex < workingClips.count {
+                let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
+                tableView.reloadRows(at: [indexPath], with: .none)
+            } else {
+                tableView.reloadData()
+            }
+        }
+        
         updateProgressLabel()
     }
     
@@ -1189,8 +1229,38 @@ extension PracticeViewController: UITableViewDataSource {
         let totalLoops = effectiveLoopTarget(for: clip)
         let rawCurrentLoops = currentSession?.clipPlayCounts[clip.id] ?? 0
         let clampedCurrentLoops = max(0, min(rawCurrentLoops, totalLoops))
-        let currentSpeed = currentSession?.currentSpeed ?? 1.0
         let isCurrent = currentSession?.currentClipIndex == indexPath.row
+        
+        // Determine display speed per clip:
+        // - For the current clip, use the live speed derived from the current loop.
+        // - For other clips, show the baseline speed for the first loop (loop 0)
+        //   so the user can see how the clip will start in the current mode.
+        let displaySpeed: Float
+        if let session = currentSession, isCurrent {
+            if settings.useProgressionMode {
+                displaySpeed = practiceService.calculateSpeed(
+                    useProgressionMode: settings.useProgressionMode,
+                    currentLoop: session.currentLoopCount,
+                    progressionMinRepeats: settings.progressionMinRepeats,
+                    progressionLinearRepeats: settings.progressionLinearRepeats,
+                    progressionMaxRepeats: settings.progressionMaxRepeats,
+                    minSpeed: settings.minSpeed,
+                    maxSpeed: settings.maxSpeed
+                )
+            } else {
+                displaySpeed = session.currentSpeed
+            }
+        } else {
+            displaySpeed = practiceService.calculateSpeed(
+                useProgressionMode: settings.useProgressionMode,
+                currentLoop: 0,
+                progressionMinRepeats: settings.progressionMinRepeats,
+                progressionLinearRepeats: settings.progressionLinearRepeats,
+                progressionMaxRepeats: settings.progressionMaxRepeats,
+                minSpeed: settings.minSpeed,
+                maxSpeed: settings.maxSpeed
+            )
+        }
         let isCompleted = clipIsCompleted(clip, in: currentSession)
         let showForeverBadge = (currentSession?.foreverMode ?? false) && isCurrent && isPlaying
         
@@ -1199,7 +1269,7 @@ extension PracticeViewController: UITableViewDataSource {
             clip: clip,
             currentLoops: clampedCurrentLoops,
             totalLoops: totalLoops,
-            currentSpeed: currentSpeed,
+            currentSpeed: displaySpeed,
             isCurrent: isCurrent,
             isCompleted: isCompleted,
             showForeverBadge: showForeverBadge
@@ -1378,8 +1448,19 @@ extension PracticeViewController {
     
     /// Effective loop target for a clip, honoring per-clip overrides when present.
     private func effectiveLoopTarget(for clip: Clip) -> Int {
-        let base = clip.repeats ?? settings.globalRepeats
-        return max(1, base)
+        if settings.useProgressionMode {
+            // In progression mode, each clip's loop target is derived from the
+            // progression settings (M + N + O) unless the clip overrides it.
+            let progressionTotal = settings.progressionMinRepeats
+                + settings.progressionLinearRepeats
+                + settings.progressionMaxRepeats
+            let base = clip.repeats ?? progressionTotal
+            return max(1, base)
+        } else {
+            // In simple mode, use the global repeat count (or per-clip override).
+            let base = clip.repeats ?? settings.globalRepeats
+            return max(1, base)
+        }
     }
     
     /// Returns true if the clip has reached or exceeded its effective loop target.
