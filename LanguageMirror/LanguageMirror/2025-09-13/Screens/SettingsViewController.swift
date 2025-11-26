@@ -38,6 +38,16 @@ final class SettingsViewController: UITableViewController {
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+    // MARK: - Mode Helpers
+
+    private var isSimpleModeActive: Bool {
+        return !settings.useProgressionMode
+    }
+
+    private var isProgressionModeActive: Bool {
+        return settings.useProgressionMode
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.calmBackground
@@ -124,19 +134,32 @@ final class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch Section(rawValue: section)! {
-        case .practiceMode: return "Practice Mode"
-        case .simple: return "Simple Mode Settings"
-        case .progression: return "Progression Mode Settings"
-        case .basic: return "Basic Settings"
+        case .practiceMode:
+            return "Practice Mode"
+        case .simple:
+            // Only show header when Simple Mode section is active
+            return isSimpleModeActive ? "Simple Mode Settings" : nil
+        case .progression:
+            // Only show header when Progression Mode section is active
+            return isProgressionModeActive ? "Progression Mode Settings" : nil
+        case .basic:
+            return "Basic Settings"
         }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
-        case .practiceMode: return PracticeModeRow.allCases.count
-        case .simple: return SimpleRow.allCases.count
-        case .progression: return ProgressionRow.allCases.count
-        case .basic: return BasicRow.allCases.count
+        case .practiceMode:
+            return PracticeModeRow.allCases.count
+        case .simple:
+            // Only show Simple Mode Settings when simple mode is active
+            return isSimpleModeActive ? SimpleRow.allCases.count : 0
+        case .progression:
+            // Only show Progression Mode Settings when progression mode is active
+            return isProgressionModeActive ? ProgressionRow.allCases.count : 0
+        case .basic:
+            // Basic Settings are always visible
+            return BasicRow.allCases.count
         }
     }
 
@@ -378,7 +401,14 @@ final class SettingsViewController: UITableViewController {
     
     @objc private func practiceModeChanged() {
         settings.useProgressionMode = practiceModeSeg.selectedSegmentIndex == 1
-        
+
+        // Refresh Simple and Progression sections to reflect the new mode
+        let sectionsToReload = IndexSet([
+            Section.simple.rawValue,
+            Section.progression.rawValue
+        ])
+        tableView.reloadSections(sectionsToReload, with: .fade)
+
         // Haptic feedback
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
