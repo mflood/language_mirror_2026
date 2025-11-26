@@ -30,6 +30,8 @@ final class TrackDetailViewController: UITableViewController {
         case practiceSets
     }
     
+    private var headerContainerView: UIView?
+    
     // MARK: - Init
     
     init(track: Track,
@@ -58,8 +60,10 @@ final class TrackDetailViewController: UITableViewController {
         navigationItem.largeTitleDisplayMode = .never
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(PracticeSetCell.self, forCellReuseIdentifier: "PracticeSetCell")
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
         
         buildHeader()
     }
@@ -77,6 +81,23 @@ final class TrackDetailViewController: UITableViewController {
             tableView.reloadSections(IndexSet(integer: sectionIndex), with: .none)
         } else {
             tableView.reloadData()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Ensure header view is correctly sized after layout changes
+        guard let headerView = headerContainerView else { return }
+        
+        let targetSize = CGSize(width: tableView.bounds.width,
+                                height: UIView.layoutFittingCompressedSize.height)
+        let size = headerView.systemLayoutSizeFitting(targetSize,
+                                                      withHorizontalFittingPriority: .required,
+                                                      verticalFittingPriority: .fittingSizeLevel)
+        if headerView.frame.size.height != size.height {
+            headerView.frame = CGRect(origin: .zero, size: CGSize(width: size.width, height: size.height))
+            tableView.tableHeaderView = headerView
         }
     }
     
@@ -134,6 +155,7 @@ final class TrackDetailViewController: UITableViewController {
             cardView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
             cardView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
             cardView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            cardView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -16),
             
             titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
@@ -153,11 +175,8 @@ final class TrackDetailViewController: UITableViewController {
         
         cardView.applyAdaptiveShadow(radius: 10, opacity: 0.1)
         
+        headerContainerView = headerView
         tableView.tableHeaderView = headerView
-        headerView.layoutIfNeeded()
-        let size = headerView.systemLayoutSizeFitting(CGSize(width: tableView.bounds.width,
-                                                             height: UIView.layoutFittingCompressedSize.height))
-        headerView.frame = CGRect(origin: .zero, size: CGSize(width: size.width, height: size.height))
     }
     
     // MARK: - Table
@@ -203,47 +222,45 @@ final class TrackDetailViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        var config = cell.defaultContentConfiguration()
-        
-        // Common ADHD-friendly style for all rows
-        cell.backgroundColor = .clear
-        let bgView = UIView()
-        bgView.backgroundColor = AppColors.cardBackground
-        bgView.layer.cornerRadius = 12
-        bgView.layer.cornerCurve = .continuous
-        cell.backgroundView = bgView
-        config.textProperties.color = AppColors.primaryText
-        config.secondaryTextProperties.color = AppColors.secondaryText
-        
         switch Section(rawValue: indexPath.section)! {
         case .practiceSets:
             if track.practiceSets.isEmpty {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+                var config = cell.defaultContentConfiguration()
+                
+                // Empty state style
+                cell.backgroundColor = .clear
+                let bgView = UIView()
+                bgView.backgroundColor = AppColors.cardBackground
+                bgView.layer.cornerRadius = 12
+                bgView.layer.cornerCurve = .continuous
+                cell.backgroundView = bgView
+                config.textProperties.color = AppColors.primaryText
+                config.secondaryTextProperties.color = AppColors.secondaryText
                 config.text = "No practice sets yet"
                 config.secondaryText = "Practice sets help you focus on the most useful parts of this track."
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
+                
+                cell.contentConfiguration = config
+                return cell
             } else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "PracticeSetCell", for: indexPath) as? PracticeSetCell else {
+                    return UITableViewCell()
+                }
+                
                 let practiceSet = track.practiceSets[indexPath.row]
                 let title = practiceSet.title?.isEmpty == false ? practiceSet.title! : "Practice Set \(indexPath.row + 1)"
                 let drillCount = practiceSet.clips.filter { $0.kind == .drill }.count
-                config.text = title
-                config.secondaryText = "\(practiceSet.clips.count) clips • \(drillCount) drills"
-                cell.selectionStyle = .default
-                cell.accessoryType = .disclosureIndicator
+                let detailText = "\(practiceSet.clips.count) clips • \(drillCount) drills"
                 
-                if practiceSet.isFavorite {
-                    config.image = UIImage(systemName: "heart.fill")
-                    config.imageProperties.tintColor = AppColors.errorColor
-                } else {
-                    config.image = UIImage(systemName: "heart")
-                    config.imageProperties.tintColor = AppColors.secondaryText
-                }
+                cell.configure(title: title, detailText: detailText, isFavorite: practiceSet.isFavorite)
+                cell.selectionStyle = .default
+                cell.delegate = self
+                
+                return cell
             }
         }
-        
-        cell.contentConfiguration = config
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -258,24 +275,8 @@ final class TrackDetailViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView,
                             trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        switch Section(rawValue: indexPath.section)! {
-        case .practiceSets:
-            guard !track.practiceSets.isEmpty else { return nil }
-            
-            let practiceSet = track.practiceSets[indexPath.row]
-            let actionTitle = practiceSet.isFavorite ? "Unfavorite" : "Favorite"
-            let actionImage = practiceSet.isFavorite ? "heart.slash" : "heart"
-            
-            let favoriteAction = UIContextualAction(style: .normal, title: actionTitle) { [weak self] _, _, completion in
-                self?.toggleFavorite(practiceSet: practiceSet, at: indexPath.row)
-                completion(true)
-            }
-            
-            favoriteAction.backgroundColor = practiceSet.isFavorite ? AppColors.errorColor : AppColors.primaryAccent
-            favoriteAction.image = UIImage(systemName: actionImage)
-            
-            return UISwipeActionsConfiguration(actions: [favoriteAction])
-        }
+        // Swipe-to-favorite has been removed; favoriting is done via the visible heart button.
+        return nil
     }
     
     private func toggleFavorite(practiceSet: PracticeSet, at index: Int) {
@@ -312,5 +313,19 @@ final class TrackDetailViewController: UITableViewController {
         present(alert, animated: true)
     }
 }
+
+// MARK: - PracticeSetCellDelegate
+
+extension TrackDetailViewController: PracticeSetCellDelegate {
+    func practiceSetCellDidTapFavorite(_ cell: PracticeSetCell) {
+        guard let indexPath = tableView.indexPath(for: cell),
+              Section(rawValue: indexPath.section) == .practiceSets,
+              !track.practiceSets.isEmpty else { return }
+        
+        let practiceSet = track.practiceSets[indexPath.row]
+        toggleFavorite(practiceSet: practiceSet, at: indexPath.row)
+    }
+}
+
 
 
