@@ -117,11 +117,24 @@ class GPTAnalyzer:
                 {"role": "user", "content": prompt}
             ],
             temperature=0.3,
-            max_tokens=4096
+            max_tokens=16384
         )
         
         # Parse GPT's response
+        finish_reason = response.choices[0].finish_reason
         response_text = response.choices[0].message.content
+        
+        # Check if response was truncated
+        if finish_reason == "length":
+            response_length = len(response_text)
+            print(f"WARNING: GPT response was truncated (finish_reason='length'). Response length: {response_length} characters")
+            raise ValueError(
+                f"GPT response was truncated at {response_length} characters. "
+                f"The response exceeded the max_tokens limit. Consider increasing max_tokens or processing in smaller chunks."
+            )
+        
+        # Log response length for debugging
+        print(f"GPT response received: {len(response_text)} characters")
         
         # Extract JSON from response (GPT might wrap it in markdown)
         response_text = response_text.strip()
@@ -138,7 +151,27 @@ class GPTAnalyzer:
             return analysis
         except json.JSONDecodeError as e:
             print(f"Error parsing GPT response: {e}")
-            print(f"Response: {response_text[:500]}")
+            
+            # Detect incomplete JSON patterns
+            response_length = len(response_text)
+            if response_text.count('{') != response_text.count('}'):
+                print(f"WARNING: Mismatched braces - opening: {response_text.count('{')}, closing: {response_text.count('}')}")
+            if response_text.count('[') != response_text.count(']'):
+                print(f"WARNING: Mismatched brackets - opening: {response_text.count('[')}, closing: {response_text.count(']')}")
+            
+            # Show more context around the error
+            error_pos = getattr(e, 'pos', None)
+            if error_pos is not None:
+                start = max(0, error_pos - 200)
+                end = min(response_length, error_pos + 200)
+                print(f"Error position: {error_pos} (showing context from {start} to {end}):")
+                print(f"{response_text[start:end]}")
+            else:
+                # Show last 1000 characters if we can't find the exact position
+                print(f"Response (last 1000 characters): {response_text[-1000:]}")
+            
+            # Also show first 500 for context
+            print(f"Response (first 500 characters): {response_text[:500]}")
             raise
     
     def _build_analysis_prompt(self, segments: List[Dict], audio_duration_ms: int) -> str:
