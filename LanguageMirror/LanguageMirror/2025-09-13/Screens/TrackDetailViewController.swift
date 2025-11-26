@@ -31,6 +31,7 @@ final class TrackDetailViewController: UITableViewController {
     }
     
     private var headerContainerView: UIView?
+    private weak var headerTitleLabel: UILabel?
     
     // MARK: - Init
     
@@ -65,6 +66,7 @@ final class TrackDetailViewController: UITableViewController {
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
         
+        configureNavigationItems()
         buildHeader()
     }
     
@@ -121,6 +123,7 @@ final class TrackDetailViewController: UITableViewController {
         titleLabel.textColor = AppColors.primaryText
         titleLabel.numberOfLines = 0
         cardView.addSubview(titleLabel)
+        headerTitleLabel = titleLabel
         
         let durationBadge = DurationBadge()
         durationBadge.translatesAutoresizingMaskIntoConstraints = false
@@ -151,6 +154,14 @@ final class TrackDetailViewController: UITableViewController {
         filenameLabel.numberOfLines = 1
         cardView.addSubview(filenameLabel)
         
+        let subtitleLabel = UILabel()
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.text = "Tap a practice set below to start practicing."
+        subtitleLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        subtitleLabel.textColor = AppColors.secondaryText
+        subtitleLabel.numberOfLines = 2
+        cardView.addSubview(subtitleLabel)
+        
         NSLayoutConstraint.activate([
             cardView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
             cardView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
@@ -170,13 +181,34 @@ final class TrackDetailViewController: UITableViewController {
             filenameLabel.topAnchor.constraint(equalTo: languageTag.bottomAnchor, constant: 8),
             filenameLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             filenameLabel.trailingAnchor.constraint(lessThanOrEqualTo: cardView.trailingAnchor, constant: -16),
-            filenameLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16)
+            
+            subtitleLabel.topAnchor.constraint(equalTo: filenameLabel.bottomAnchor, constant: 6),
+            subtitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: cardView.trailingAnchor, constant: -16),
+            subtitleLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16)
         ])
         
         cardView.applyAdaptiveShadow(radius: 10, opacity: 0.1)
         
         headerContainerView = headerView
         tableView.tableHeaderView = headerView
+    }
+    
+    // MARK: - Navigation Items
+    
+    private func configureNavigationItems() {
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add,
+                                        target: self,
+                                        action: #selector(didTapAddPracticeSet))
+        addButton.accessibilityLabel = "Add practice set"
+        
+        let moreButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"),
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(didTapMoreOptions))
+        moreButton.accessibilityLabel = "Track options"
+        
+        navigationItem.rightBarButtonItems = [moreButton, addButton]
     }
     
     // MARK: - Table
@@ -252,9 +284,12 @@ final class TrackDetailViewController: UITableViewController {
                 let practiceSet = track.practiceSets[indexPath.row]
                 let title = practiceSet.title?.isEmpty == false ? practiceSet.title! : "Practice Set \(indexPath.row + 1)"
                 let drillCount = practiceSet.clips.filter { $0.kind == .drill }.count
-                let detailText = "\(practiceSet.clips.count) clips • \(drillCount) drills"
+                let clipCount = practiceSet.clips.count
                 
-                cell.configure(title: title, detailText: detailText, isFavorite: practiceSet.isFavorite)
+                cell.configure(title: title,
+                               clipCount: clipCount,
+                               drillCount: drillCount,
+                               isFavorite: practiceSet.isFavorite)
                 cell.selectionStyle = .default
                 cell.delegate = self
                 
@@ -267,16 +302,33 @@ final class TrackDetailViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         switch Section(rawValue: indexPath.section)! {
         case .practiceSets:
-            guard !track.practiceSets.isEmpty else { return }
-            let practiceSet = track.practiceSets[indexPath.row]
-            delegate?.trackDetailViewController(self, didSelectPracticeSet: practiceSet, forTrack: track)
+            if track.practiceSets.isEmpty {
+                // Tapping the empty state can be a shortcut to creating the first practice set.
+                didTapAddPracticeSet()
+            } else {
+                let practiceSet = track.practiceSets[indexPath.row]
+                delegate?.trackDetailViewController(self, didSelectPracticeSet: practiceSet, forTrack: track)
+            }
         }
     }
     
     override func tableView(_ tableView: UITableView,
                             trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        // Swipe-to-favorite has been removed; favoriting is done via the visible heart button.
-        return nil
+        guard Section(rawValue: indexPath.section) == .practiceSets,
+              !track.practiceSets.isEmpty else {
+            return nil
+        }
+        
+        let practiceSet = track.practiceSets[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+            self?.confirmDeletePracticeSet(practiceSet, at: indexPath, completion: completion)
+        }
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = true
+        return configuration
     }
     
     private func toggleFavorite(practiceSet: PracticeSet, at index: Int) {
@@ -298,6 +350,154 @@ final class TrackDetailViewController: UITableViewController {
     }
     
     // MARK: - Helpers
+    
+    @objc private func didTapAddPracticeSet() {
+        let alert = UIAlertController(title: "New Practice Set",
+                                      message: "Give this practice set a name (optional).",
+                                      preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.placeholder = "e.g. Fast review, Sentence drills"
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            let rawTitle = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            self.createPracticeSet(withTitle: rawTitle.isEmpty ? nil : rawTitle)
+        }))
+        
+        present(alert, animated: true)
+    }
+    
+    @objc private func didTapMoreOptions() {
+        let sheet = UIAlertController(title: "Track options",
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        
+        sheet.addAction(UIAlertAction(title: "Rename track", style: .default, handler: { [weak self] _ in
+            self?.presentRenameTrackAlert()
+        }))
+        
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        // iPad popover configuration
+        if let popover = sheet.popoverPresentationController,
+           let barButton = navigationItem.rightBarButtonItems?.first {
+            popover.barButtonItem = barButton
+        }
+        
+        present(sheet, animated: true)
+    }
+    
+    private func presentRenameTrackAlert() {
+        let alert = UIAlertController(title: "Rename Track",
+                                      message: "Update how this track appears in your library.",
+                                      preferredStyle: .alert)
+        alert.addTextField { [weak self] textField in
+            textField.text = self?.track.title
+            textField.clearButtonMode = .whileEditing
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            let newTitle = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard !newTitle.isEmpty, newTitle != self.track.title else { return }
+            self.renameTrack(to: newTitle)
+        }))
+        
+        present(alert, animated: true)
+    }
+    
+    private func renameTrack(to newTitle: String) {
+        var updatedTrack = track
+        updatedTrack.title = newTitle
+        
+        do {
+            try library.updateTrack(updatedTrack)
+            track = updatedTrack
+            title = updatedTrack.title
+            headerTitleLabel?.text = updatedTrack.title
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        } catch {
+            presentMessage("Error", "Failed to rename track: \(error.localizedDescription)")
+        }
+    }
+    
+    private func createPracticeSet(withTitle title: String?) {
+        // Choose the next display order after the current maximum
+        let nextDisplayOrder = (track.practiceSets.map { $0.displayOrder }.max() ?? -1) + 1
+        var newSet = PracticeSet.fullTrackFactory(trackId: track.id,
+                                                  displayOrder: nextDisplayOrder,
+                                                  trackDurationMs: track.durationMs)
+        if let title = title, !title.isEmpty {
+            newSet.title = title
+        }
+        
+        do {
+            try library.addPracticeSet(newSet, to: track.id)
+            reloadTrackAndPracticeSets(animatedScrollToLast: true)
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        } catch {
+            presentMessage("Error", "Failed to create practice set: \(error.localizedDescription)")
+        }
+    }
+    
+    private func confirmDeletePracticeSet(_ practiceSet: PracticeSet,
+                                          at indexPath: IndexPath,
+                                          completion: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: "Delete practice set?",
+                                      message: "This will remove all clips in this set. This can't be undone.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            completion(false)
+        }))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+            self?.deletePracticeSet(practiceSet, at: indexPath, completion: completion)
+        }))
+        
+        present(alert, animated: true)
+    }
+    
+    private func deletePracticeSet(_ practiceSet: PracticeSet,
+                                   at indexPath: IndexPath,
+                                   completion: @escaping (Bool) -> Void) {
+        do {
+            try library.deletePracticeSet(id: practiceSet.id, from: track.id)
+            reloadTrackAndPracticeSets(animatedScrollToLast: false)
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            completion(true)
+        } catch {
+            presentMessage("Error", "Failed to delete practice set: \(error.localizedDescription)")
+            completion(false)
+        }
+    }
+    
+    private func reloadTrackAndPracticeSets(animatedScrollToLast: Bool) {
+        if let updatedTrack = try? library.loadTrack(id: track.id) {
+            track = updatedTrack
+            title = track.title
+            headerTitleLabel?.text = track.title
+        }
+        
+        if let sectionIndex = Section.allCases.firstIndex(of: .practiceSets) {
+            tableView.reloadSections(IndexSet(integer: sectionIndex), with: .automatic)
+        } else {
+            tableView.reloadData()
+        }
+        
+        guard animatedScrollToLast,
+              !track.practiceSets.isEmpty else { return }
+        
+        let lastRow = track.practiceSets.count - 1
+        let indexPath = IndexPath(row: lastRow, section: Section.practiceSets.rawValue)
+        tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+    }
     
     private func trackLanguageDisplay() -> String {
         if let code = track.languageCode?.trimmingCharacters(in: .whitespacesAndNewlines),

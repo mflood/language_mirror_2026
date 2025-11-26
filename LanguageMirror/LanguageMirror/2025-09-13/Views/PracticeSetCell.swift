@@ -21,6 +21,7 @@ final class PracticeSetCell: UITableViewCell {
     private let cardView = UIView()
     private let titleLabel = UILabel()
     private let detailLabel = UILabel()
+    private let badgeStackView = UIStackView()
     private let favoriteButton = UIButton(type: .system)
     
     private var isFavorite: Bool = false
@@ -64,6 +65,13 @@ final class PracticeSetCell: UITableViewCell {
         detailLabel.numberOfLines = 2
         cardView.addSubview(detailLabel)
         
+        // Badges for quick visual stats
+        badgeStackView.translatesAutoresizingMaskIntoConstraints = false
+        badgeStackView.axis = .horizontal
+        badgeStackView.spacing = 6
+        badgeStackView.distribution = .fillProportionally
+        cardView.addSubview(badgeStackView)
+        
         // Favorite button
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         favoriteButton.tintColor = AppColors.secondaryText
@@ -95,7 +103,12 @@ final class PracticeSetCell: UITableViewCell {
             detailLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
             detailLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             detailLabel.trailingAnchor.constraint(lessThanOrEqualTo: favoriteButton.leadingAnchor, constant: -8),
-            detailLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -10)
+            
+            // Badges
+            badgeStackView.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 6),
+            badgeStackView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            badgeStackView.trailingAnchor.constraint(lessThanOrEqualTo: favoriteButton.leadingAnchor, constant: -8),
+            badgeStackView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -10)
         ])
         
         cardView.applyAdaptiveShadow(radius: 8, opacity: 0.1)
@@ -103,11 +116,33 @@ final class PracticeSetCell: UITableViewCell {
     
     // MARK: - Configuration
     
-    func configure(title: String, detailText: String, isFavorite: Bool) {
+    func configure(title: String, clipCount: Int, drillCount: Int, isFavorite: Bool) {
         titleLabel.text = title
-        detailLabel.text = detailText
+        detailLabel.text = "\(clipCount) clips • \(drillCount) drills"
         self.isFavorite = isFavorite
+        configureBadges(clipCount: clipCount, drillCount: drillCount)
         updateFavoriteAppearance(animated: false)
+    }
+    
+    private func configureBadges(clipCount: Int, drillCount: Int) {
+        // Clear any existing badges
+        badgeStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        // Clip count badge
+        if clipCount > 0 {
+            let clipsTag = TagView()
+            clipsTag.configure(text: "\(clipCount) clips")
+            badgeStackView.addArrangedSubview(clipsTag)
+        }
+        
+        // Drill count badge
+        if drillCount > 0 {
+            let drillsTag = TagView()
+            drillsTag.configure(text: "\(drillCount) drills")
+            badgeStackView.addArrangedSubview(drillsTag)
+        }
+        
+        badgeStackView.isHidden = badgeStackView.arrangedSubviews.isEmpty
     }
     
     // MARK: - Actions
