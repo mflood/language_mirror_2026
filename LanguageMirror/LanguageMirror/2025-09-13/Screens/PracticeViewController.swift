@@ -92,22 +92,38 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = AppColors.calmBackground
-
         setupUI()
         restoreLastTrackOrPickFirst()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Settings may have changed while this screen was off-screen (e.g. in Settings).
+        // Refresh any UI that depends on global settings such as repeat count.
+        updateTitle()
+        updateUI()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // Stop playback when navigating away from Practice screen
-        // This prevents edge cases where audio continues playing for a different track
+        // When the Practice screen is dismissed or popped (e.g. to edit Settings),
+        // we treat that as the end of the current on-screen practice session.
+        // To keep behavior predictable:
+        // 1. Always stop playback so audio is not left running in the background.
+        // 2. Persist the current PracticeSession state so resuming later picks up
+        //    from the most recent known state.
         if isMovingFromParent || isBeingDismissed {
             stopCurrentPlayback()
+            
+            if let session = currentSession {
+                do {
+                    try practiceService.saveSession(session)
+                } catch {
+                    print("⚠️ [PracticeViewController] Failed to save session on exit: \(error)")
+                }
+            }
         }
     }
 
@@ -368,6 +384,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         updateProgressLabel()
         validateMergeButton()
         updateFavoriteButtonState()
+        updateTitle()
     }
     
     private func updateForeverButton() {
@@ -865,6 +882,10 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         isPaused = false
         isPlaying = true
         updatePlayPauseButton()
+        updateProgressLabel()
+        validateSplitButton()
+        validateMergeButton()
+        tableView.reloadData()
     }
     
     func audioPlayerDidStop() {
@@ -879,12 +900,16 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         isPaused = true
         isPlaying = false
         updatePlayPauseButton()
+        updateProgressLabel()
+        validateSplitButton()
     }
     
     func audioPlayerDidResume() {
         isPaused = false
         isPlaying = true
         updatePlayPauseButton()
+        updateProgressLabel()
+        validateSplitButton()
     }
     
     func audioPlayerClipDidChange(clipIndex: Int, clipId: String) {
@@ -928,10 +953,36 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         print("🔄 [PracticeViewController] audioPlayerLoopDidComplete called")
         print("  ClipIndex: \(clipIndex), LoopCount: \(loopCount)")
         
-        // Reload current cell to update progress
-        if let session = currentSession, session.currentClipIndex < workingClips.count {
-            let indexPath = IndexPath(row: session.currentClipIndex, section: 0)
-            print("  Reloading cell at index: \(session.currentClipIndex)")
+        // Sync in-memory session with loop progress from the player.
+        // The AudioPlayerService updates its own PracticeSession instance via
+        // PracticeService.incrementClipPlayCount, but PracticeViewController
+        // holds a separate copy. We derive the UI-facing progress from the
+        // loopCount callback to keep them in sync.
+        if var session = currentSession,
+           session.currentClipIndex < workingClips.count {
+            
+            let index = session.currentClipIndex
+            let clip = workingClips[index]
+            let previousCount = session.clipPlayCounts[clip.id] ?? 0
+            let newCount = max(previousCount, loopCount)
+            
+            print("  Updating session progress for clipId=\(clip.id)")
+            print("    Previous play count: \(previousCount)")
+            print("    New play count (from loopCount): \(newCount)")
+            
+            session.clipPlayCounts[clip.id] = newCount
+            session.currentLoopCount = newCount
+            
+            do {
+                try practiceService.saveSession(session)
+                currentSession = session
+            } catch {
+                print("⚠️ [PracticeViewController] Failed to save session after loop complete: \(error)")
+            }
+            
+            // Reload current cell to update per-clip progress bar and checkmark
+            let indexPath = IndexPath(row: index, section: 0)
+            print("  Reloading cell at index: \(index)")
             tableView.reloadRows(at: [indexPath], with: .none)
         }
         
@@ -1112,17 +1163,18 @@ extension PracticeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClipCell", for: indexPath) as! ClipCell
         
         let clip = workingClips[indexPath.row]
-        let totalLoops = settings.globalRepeats
+        let totalLoops = max(1, settings.globalRepeats)
         let currentLoops = currentSession?.clipPlayCounts[clip.id] ?? 0
+        let clampedCurrentLoops = max(0, currentLoops)
         let currentSpeed = currentSession?.currentSpeed ?? 1.0
         let isCurrent = currentSession?.currentClipIndex == indexPath.row
-        let isCompleted = currentLoops >= totalLoops
+        let isCompleted = clampedCurrentLoops >= totalLoops
         let showForeverBadge = (currentSession?.foreverMode ?? false) && isCurrent && isPlaying
         
         cell.configure(
             index: indexPath.row,
             clip: clip,
-            currentLoops: currentLoops,
+            currentLoops: clampedCurrentLoops,
             totalLoops: totalLoops,
             currentSpeed: currentSpeed,
             isCurrent: isCurrent,
