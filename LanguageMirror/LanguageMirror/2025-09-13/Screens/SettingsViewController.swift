@@ -127,38 +127,68 @@ final class SettingsViewController: UITableViewController {
     }
 
     // MARK: - Table
+    
+    // We expose three visible sections:
+    // 0: Practice Mode
+    // 1: Simple OR Progression (depending on current mode)
+    // 2: Basic Settings
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
 
-    override func numberOfSections(in tableView: UITableView) -> Int { 
-        Section.allCases.count 
+    private func sectionType(for visibleSection: Int) -> Section {
+        switch visibleSection {
+        case 0:
+            return .practiceMode
+        case 1:
+            // This middle section swaps between Simple and Progression
+            return isSimpleModeActive ? .simple : .progression
+        case 2:
+            return .basic
+        default:
+            fatalError("Invalid section index: \(visibleSection)")
+        }
+    }
+
+    private func visibleSectionIndex(for section: Section) -> Int? {
+        switch section {
+        case .practiceMode:
+            return 0
+        case .basic:
+            return 2
+        case .simple:
+            return isSimpleModeActive ? 1 : nil
+        case .progression:
+            return isProgressionModeActive ? 1 : nil
+        }
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch Section(rawValue: section)! {
+        let sectionType = sectionType(for: section)
+
+        switch sectionType {
         case .practiceMode:
             return "Practice Mode"
         case .simple:
-            // Only show header when Simple Mode section is active
-            return isSimpleModeActive ? "Simple Mode Settings" : nil
+            return "Simple Mode Settings"
         case .progression:
-            // Only show header when Progression Mode section is active
-            return isProgressionModeActive ? "Progression Mode Settings" : nil
+            return "Progression Mode Settings"
         case .basic:
             return "Basic Settings"
         }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section)! {
+        let sectionType = sectionType(for: section)
+
+        switch sectionType {
         case .practiceMode:
             return PracticeModeRow.allCases.count
         case .simple:
-            // Only show Simple Mode Settings when simple mode is active
-            return isSimpleModeActive ? SimpleRow.allCases.count : 0
+            return SimpleRow.allCases.count
         case .progression:
-            // Only show Progression Mode Settings when progression mode is active
-            return isProgressionModeActive ? ProgressionRow.allCases.count : 0
+            return ProgressionRow.allCases.count
         case .basic:
-            // Basic Settings are always visible
             return BasicRow.allCases.count
         }
     }
@@ -169,9 +199,9 @@ final class SettingsViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        let section = Section(rawValue: indexPath.section)!
+        let sectionType = sectionType(for: indexPath.section)
         
-        switch section {
+        switch sectionType {
         case .practiceMode:
             let row = PracticeModeRow(rawValue: indexPath.row)!
             configurePracticeModeCell(cell, for: row)
@@ -297,7 +327,8 @@ final class SettingsViewController: UITableViewController {
     }
     
     private func updateSecondary(section: Section, row: Int) {
-        let indexPath = IndexPath(row: row, section: section.rawValue)
+        guard let sectionIndex = visibleSectionIndex(for: section) else { return }
+        let indexPath = IndexPath(row: row, section: sectionIndex)
         guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else { return }
 
         // Only update value label for rows that have one
@@ -401,12 +432,9 @@ final class SettingsViewController: UITableViewController {
     
     @objc private func practiceModeChanged() {
         settings.useProgressionMode = practiceModeSeg.selectedSegmentIndex == 1
-
-        // Refresh Simple and Progression sections to reflect the new mode
-        let sectionsToReload = IndexSet([
-            Section.simple.rawValue,
-            Section.progression.rawValue
-        ])
+        
+        // Refresh the practice mode and middle (Simple/Progression) sections
+        let sectionsToReload = IndexSet(integer: 0).union(IndexSet(integer: 1))
         tableView.reloadSections(sectionsToReload, with: .fade)
 
         // Haptic feedback
