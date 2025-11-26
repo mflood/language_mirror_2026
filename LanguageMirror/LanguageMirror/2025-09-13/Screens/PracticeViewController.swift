@@ -69,6 +69,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     private var currentTrackTimeMs: Int?
     private var currentClipStartMs: Int?
     private var currentClipEndMs: Int?
+    /// When true, the next `startPractice()` call will force the current clip
+    /// to play once even if its loop target has already been reached.
+    private var forcePlayCurrentClipOnce = false
 
     init(settings: SettingsService,
          libraryService: LibraryService,
@@ -409,9 +412,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             print("  No session or clips, showing 'Ready to practice'")
             return
         }
-        
         let clipIndex = min(session.currentClipIndex, workingClips.count - 1)
-        let totalLoops = settings.globalRepeats
+        let clip = workingClips[clipIndex]
+        let totalLoops = effectiveLoopTarget(for: clip)
         
         print("  Current clip index: \(clipIndex)")
         print("  Total loops: \(totalLoops)")
@@ -443,7 +446,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             text += "\n"
         }
         
-        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(session.currentLoopCount + 1)/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
+        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(min(session.currentLoopCount + 1, totalLoops))/\(totalLoops) • \(String(format: "%.2fx", session.currentSpeed))"
         
         progressLabel.text = text
         print("  Updated progress label: \(text)")
@@ -463,9 +466,13 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         }
         
         // Show loop count if we have an active session and are playing
-        if let session = currentSession, isPlaying, !workingClips.isEmpty {
-            let totalLoops = settings.globalRepeats
-            let currentLoop = session.currentLoopCount + 1  // +1 for display (1-indexed)
+        if let session = currentSession,
+           isPlaying,
+           !workingClips.isEmpty,
+           session.currentClipIndex < workingClips.count {
+            let clip = workingClips[session.currentClipIndex]
+            let totalLoops = effectiveLoopTarget(for: clip)
+            let currentLoop = min(session.currentLoopCount + 1, totalLoops)  // +1 for display (1-indexed)
             title = "\(track.title) (Loop \(currentLoop)/\(totalLoops))"
         } else {
             title = track.title
@@ -845,8 +852,11 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
                     gapSeconds: settings.gapSeconds,
                     interClipGapSeconds: settings.interSegmentGapSeconds,
                     prerollMs: settings.prerollMs,
-                    session: session
+                    session: session,
+                    forcePlayFirstClipOnce: forcePlayCurrentClipOnce
                 )
+                // Flag is one-shot; clear it after starting playback
+                forcePlayCurrentClipOnce = false
             } else {
                 try player.play(
                     track: track,
@@ -856,6 +866,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
                     interClipGapSeconds: settings.interSegmentGapSeconds,
                     prerollMs: settings.prerollMs
                 )
+                forcePlayCurrentClipOnce = false
             }
             
             print("✅ [PracticeViewController] Playback started successfully")
@@ -886,6 +897,18 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         validateSplitButton()
         validateMergeButton()
         tableView.reloadData()
+    }
+
+    func audioPlayerSessionDidReset(_ session: PracticeSession) {
+        // Called when the player has created a brand new practice session
+        // (e.g., when forever mode completes all clips and restarts).
+        print("♻️ [PracticeViewController] audioPlayerSessionDidReset called with session id: \(session.id)")
+        currentSession = session
+        forcePlayCurrentClipOnce = false
+        tableView.reloadData()
+        updateForeverButton()
+        updateProgressLabel()
+        updateTitle()
     }
     
     func audioPlayerDidStop() {
@@ -1163,12 +1186,12 @@ extension PracticeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClipCell", for: indexPath) as! ClipCell
         
         let clip = workingClips[indexPath.row]
-        let totalLoops = max(1, settings.globalRepeats)
-        let currentLoops = currentSession?.clipPlayCounts[clip.id] ?? 0
-        let clampedCurrentLoops = max(0, currentLoops)
+        let totalLoops = effectiveLoopTarget(for: clip)
+        let rawCurrentLoops = currentSession?.clipPlayCounts[clip.id] ?? 0
+        let clampedCurrentLoops = max(0, min(rawCurrentLoops, totalLoops))
         let currentSpeed = currentSession?.currentSpeed ?? 1.0
         let isCurrent = currentSession?.currentClipIndex == indexPath.row
-        let isCompleted = clampedCurrentLoops >= totalLoops
+        let isCompleted = clipIsCompleted(clip, in: currentSession)
         let showForeverBadge = (currentSession?.foreverMode ?? false) && isCurrent && isPlaying
         
         cell.configure(
@@ -1219,7 +1242,13 @@ extension PracticeViewController: UITableViewDelegate {
             session.currentClipIndex = indexPath.row
         }
         
-        session.currentLoopCount = 0  // Reset loop count for new clip
+        // Determine if this clip is already completed under current settings.
+        // If so, we still want to play it once, then resume normal progression.
+        let wasCompleted = clipIsCompleted(selectedClip, in: session)
+        forcePlayCurrentClipOnce = wasCompleted
+        
+        // Reset loop count for new clip; actual play count is kept in clipPlayCounts.
+        session.currentLoopCount = 0
         
         do {
             try practiceService.saveSession(session)
@@ -1343,5 +1372,21 @@ extension PracticeViewController {
         
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
+    }
+    
+    // MARK: - Loop/completion helpers
+    
+    /// Effective loop target for a clip, honoring per-clip overrides when present.
+    private func effectiveLoopTarget(for clip: Clip) -> Int {
+        let base = clip.repeats ?? settings.globalRepeats
+        return max(1, base)
+    }
+    
+    /// Returns true if the clip has reached or exceeded its effective loop target.
+    private func clipIsCompleted(_ clip: Clip, in session: PracticeSession?) -> Bool {
+        guard let session else { return false }
+        let target = effectiveLoopTarget(for: clip)
+        let played = max(0, session.clipPlayCounts[clip.id] ?? 0)
+        return played >= target
     }
 }

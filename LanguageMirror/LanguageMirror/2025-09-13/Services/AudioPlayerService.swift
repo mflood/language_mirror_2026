@@ -18,6 +18,14 @@ protocol AudioPlayerDelegate: AnyObject {
     func audioPlayerLoopDidComplete(clipIndex: Int, loopCount: Int)
     func audioPlayerSpeedDidChange(speed: Float)
     func audioPlayerDidUpdateTime(trackTimeMs: Int, clipStartMs: Int, clipEndMs: Int)
+    func audioPlayerSessionDidReset(_ session: PracticeSession)
+}
+
+// Default no-op implementations for optional-style delegate methods
+extension AudioPlayerDelegate {
+    /// Called when a practice session is reset (e.g., in forever mode) and a
+    /// brand new `PracticeSession` has been created.
+    func audioPlayerSessionDidReset(_ session: PracticeSession) {}
 }
 
 protocol AudioPlayerService: AnyObject {

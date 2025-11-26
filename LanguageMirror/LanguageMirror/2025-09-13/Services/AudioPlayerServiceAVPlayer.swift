@@ -45,7 +45,10 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private let settings: SettingsService
     private var currentSession: PracticeSession?
     private var totalLoopsForCurrentClip: Int = 0
-    private var foreverMode: Bool = false
+    /// When true, the first clip in the next `startSegments` run should be
+    /// played once even if its historical play count already meets the
+    /// effective loop target.
+    private var forcePlayFirstClipOnce: Bool = false
     
     // MARK: - Media Player
     
@@ -82,7 +85,8 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                           gap: gapSeconds,
                           interGap: interClipGapSeconds,
                           prerollMs: prerollMs,
-                          session: nil)
+                          session: nil,
+                          forcePlayFirstClipOnce: false)
     }
     
     func play(track: Track,
@@ -91,14 +95,16 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
               gapSeconds: TimeInterval,
               interClipGapSeconds: TimeInterval,
               prerollMs: Int,
-              session: PracticeSession?) throws {
+              session: PracticeSession?,
+              forcePlayFirstClipOnce: Bool = false) throws {
         try startSegments(track: track,
                           clips: clips,
                           globalRepeats: globalRepeats,
                           gap: gapSeconds,
                           interGap: interClipGapSeconds,
                           prerollMs: prerollMs,
-                          session: session)
+                          session: session,
+                          forcePlayFirstClipOnce: forcePlayFirstClipOnce)
     }
 
     func pause() {
@@ -129,7 +135,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         currentTrack = nil
         trackURL = nil
         currentSession = nil
-        foreverMode = false
+        forcePlayFirstClipOnce = false
 
         delegate?.audioPlayerDidStop()
     }
@@ -191,7 +197,8 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                gap: TimeInterval,
                                interGap: TimeInterval,
                                prerollMs: Int,
-                               session: PracticeSession?) throws {
+                               session: PracticeSession?,
+                               forcePlayFirstClipOnce: Bool) throws {
         print("🎵 [AudioPlayerServiceAVPlayer] startSegments called:")
         print("  Track filename: \(track.filename)")
         print("  Track ID: \(track.id)")
@@ -230,7 +237,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         
         // Practice session handling
         self.currentSession = session
-        self.foreverMode = session?.foreverMode ?? false
+        self.forcePlayFirstClipOnce = forcePlayFirstClipOnce
         if let session = session {
             currentSegmentIndex = session.currentClipIndex
             print("  Using session clip index: \(currentSegmentIndex)")
@@ -258,18 +265,11 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     private func startCurrentSegment() {
         print("  🎬 [AudioPlayerServiceAVPlayer] startCurrentSegment - index: \(currentSegmentIndex)")
         
-        // Check bounds and handle forever mode
+        // Check bounds – if we're past the end, treat as \"all clips completed\"
         if currentSegmentIndex < 0 || currentSegmentIndex >= clipsQueue.count {
             print("    ⚠️ Clip index out of bounds: \(currentSegmentIndex) (queue size: \(clipsQueue.count))")
-            // If forever mode and at end, loop back to first clip
-            if foreverMode && !clipsQueue.isEmpty {
-                print("    Forever mode enabled, looping back to clip 0")
-                currentSegmentIndex = 0
-            } else {
-                print("    Stopping playback (end of queue)")
-                stop()
-                return
-            }
+            handleAllClipsCompleted()
+            return
         }
         
         guard let player = player, let track = currentTrack else {
@@ -301,27 +301,44 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         // Clamp end time to track duration to prevent seeking beyond file
         let clampedEndMs = min(seg.endMs, trackDurationMs)
         
-        // Determine total loops and restore progress if resuming session
-        totalLoopsForCurrentClip = max(1, seg.repeats ?? globalRepeats)
-        if let session = currentSession, session.currentClipIndex == currentSegmentIndex {
-            currentSegmentRepeatsRemaining = totalLoopsForCurrentClip - session.currentLoopCount
-            print("    Resuming session: loops remaining=\(currentSegmentRepeatsRemaining)")
-        } else {
-            currentSegmentRepeatsRemaining = totalLoopsForCurrentClip
-            print("    Starting fresh: total loops=\(totalLoopsForCurrentClip)")
+        // Determine total loops and remaining loops based on session history
+        totalLoopsForCurrentClip = effectiveLoopTarget(for: seg)
+        var loopsRemaining: Int
+        
+        if let session = currentSession {
+            let played = max(0, session.clipPlayCounts[seg.id] ?? 0)
+            loopsRemaining = max(totalLoopsForCurrentClip - played, 0)
             
-            // Reset currentLoopCount to 0 for new clip
-            if var session = currentSession {
-                session.currentLoopCount = 0
-                do {
-                    try practiceService.saveSession(session)
-                    currentSession = session
-                    print("    Reset currentLoopCount to 0 for new clip")
-                } catch {
-                    print("    Failed to reset currentLoopCount: \(error)")
-                }
+            // One-time override: if caller requested that the first clip be
+            // played once even when completed, honor that here.
+            if forcePlayFirstClipOnce && loopsRemaining == 0 {
+                print("    Force-playing completed clip once (forcePlayFirstClipOnce=true)")
+                loopsRemaining = 1
             }
+            
+            // Clear the override after first use so it doesn't leak to later clips.
+            if forcePlayFirstClipOnce {
+                forcePlayFirstClipOnce = false
+            }
+            
+            if loopsRemaining == 0 {
+                print("    Clip already completed under current settings, searching for next incomplete clip...")
+                if let nextIndex = findNextIncompleteClip(startingAt: currentSegmentIndex + 1, session: session) {
+                    print("    Moving to next incomplete clip at index \(nextIndex)")
+                    currentSegmentIndex = nextIndex
+                    startCurrentSegment()
+                } else {
+                    print("    No incomplete clips remain")
+                    handleAllClipsCompleted()
+                }
+                return
+            }
+        } else {
+            // No persistent session – fall back to simple repeat behavior.
+            loopsRemaining = totalLoopsForCurrentClip
         }
+        
+        currentSegmentRepeatsRemaining = loopsRemaining
 
         currentSegmentStart = CMTime(seconds: Double(seg.startMs) / 1000.0, preferredTimescale: 600)
         currentSegmentEnd   = CMTime(seconds: Double(clampedEndMs)   / 1000.0, preferredTimescale: 600)
@@ -355,7 +372,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             self.player?.rate = speed
             self.isPlaying = true
             
-            // Update session with current speed
+            // Update session with current speed and loop index
             if var session = self.currentSession {
                 do {
                     try self.practiceService.updateProgress(
@@ -410,7 +427,6 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             player?.pause()
             isPlaying = false
 
-            // Update practice session - increment play count for this clip
             if var session = currentSession {
                 let seg = clipsQueue[currentSegmentIndex]
                 do {
@@ -421,71 +437,123 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                 } catch {
                     print("Failed to increment clip play count: \(error)")
                 }
-            }
+                
+                // Recompute remaining loops using up-to-date play counts
+                let target = effectiveLoopTarget(for: seg)
+                let played = max(0, session.clipPlayCounts[seg.id] ?? 0)
+                totalLoopsForCurrentClip = target
+                currentSegmentRepeatsRemaining = max(target - played, 0)
+                
+                // Post loop complete notification with the true play count
+                print("📢 [AudioPlayerServiceAVPlayer] Calling delegate loopDidComplete")
+                delegate?.audioPlayerLoopDidComplete(clipIndex: currentSegmentIndex, loopCount: played)
+                
+                if currentSegmentRepeatsRemaining > 0 {
+                    // repeat same clip after gap
+                    let work = DispatchWorkItem { [weak self] in
+                        guard let self else { return }
 
-            // Post loop complete notification
-            print("📢 [AudioPlayerServiceAVPlayer] Calling delegate loopDidComplete")
-            let loopCount = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining + 1
-            delegate?.audioPlayerLoopDidComplete(clipIndex: self.currentSegmentIndex, loopCount: loopCount)
-
-            currentSegmentRepeatsRemaining -= 1
-            if currentSegmentRepeatsRemaining > 0 {
-                // repeat same clip after gap
-                let work = DispatchWorkItem { [weak self] in
-                    guard let self else { return }
-
-                    let seekStart = max(0, self.currentSegmentStart.seconds - self.prerollSeconds)
-                    let seekTime = CMTime(seconds: seekStart, preferredTimescale: 600)
-                    
-                    // Calculate speed for next loop
-                    let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
-                    let speed = self.practiceService.calculateSpeed(
-                        useProgressionMode: self.settings.useProgressionMode,
-                        currentLoop: currentLoop,
-                        progressionMinRepeats: self.settings.progressionMinRepeats,
-                        progressionLinearRepeats: self.settings.progressionLinearRepeats,
-                        progressionMaxRepeats: self.settings.progressionMaxRepeats,
-                        minSpeed: self.settings.minSpeed,
-                        maxSpeed: self.settings.maxSpeed
-                    )
-
-                    self.player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { _ in
-                        self.player?.rate = speed
-                        self.isPlaying = true
+                        let seekStart = max(0, self.currentSegmentStart.seconds - self.prerollSeconds)
+                        let seekTime = CMTime(seconds: seekStart, preferredTimescale: 600)
                         
-                        // Update session with current loop and speed
-                        if var session = self.currentSession {
-                            do {
-                                try self.practiceService.updateProgress(
-                                    session: &session,
-                                    clipIndex: self.currentSegmentIndex,
-                                    loopCount: currentLoop,
-                                    speed: speed
-                                )
-                                self.currentSession = session
-                            } catch {
-                                print("Failed to update practice session: \(error)")
+                        // Calculate speed for next loop
+                        let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
+                        let speed = self.practiceService.calculateSpeed(
+                            useProgressionMode: self.settings.useProgressionMode,
+                            currentLoop: currentLoop,
+                            progressionMinRepeats: self.settings.progressionMinRepeats,
+                            progressionLinearRepeats: self.settings.progressionLinearRepeats,
+                            progressionMaxRepeats: self.settings.progressionMaxRepeats,
+                            minSpeed: self.settings.minSpeed,
+                            maxSpeed: self.settings.maxSpeed
+                        )
+
+                        self.player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { _ in
+                            self.player?.rate = speed
+                            self.isPlaying = true
+                            
+                            // Update session with current loop and speed
+                            if var session = self.currentSession {
+                                do {
+                                    try self.practiceService.updateProgress(
+                                        session: &session,
+                                        clipIndex: self.currentSegmentIndex,
+                                        loopCount: currentLoop,
+                                        speed: speed
+                                    )
+                                    self.currentSession = session
+                                } catch {
+                                    print("Failed to update practice session: \(error)")
+                                }
                             }
+                            
+                            // Post speed change notification
+                            self.delegate?.audioPlayerSpeedDidChange(speed: speed)
+                            
+                            // reset elapsed for new loop
+                            self.updateNowPlayingElapsed(0)
+                            self.delegate?.audioPlayerDidStart()
                         }
-                        
-                        // Post speed change notification
-                        self.delegate?.audioPlayerSpeedDidChange(speed: speed)
-                        
-                        // reset elapsed for new loop
-                        self.updateNowPlayingElapsed(0)
-                        self.delegate?.audioPlayerDidStart()
                     }
+                    pendingWorkItem = work
+                    DispatchQueue.main.asyncAfter(deadline: .now() + gapSeconds, execute: work)
+                } else {
+                    // advance to next incomplete clip after inter-clip gap
+                    let work = DispatchWorkItem { [weak self] in
+                        guard let self else { return }
+                        if let nextIndex = self.findNextIncompleteClip(startingAt: self.currentSegmentIndex + 1, session: self.currentSession) {
+                            self.currentSegmentIndex = nextIndex
+                            self.startCurrentSegment()
+                        } else {
+                            self.handleAllClipsCompleted()
+                        }
+                    }
+                    pendingWorkItem = work
+                    DispatchQueue.main.asyncAfter(deadline: .now() + interClipGapSeconds, execute: work)
                 }
-                pendingWorkItem = work
-                DispatchQueue.main.asyncAfter(deadline: .now() + gapSeconds, execute: work)
             } else {
-                // advance to next clip after inter-clip gap
-                currentSegmentIndex += 1
-                let work = DispatchWorkItem { [weak self] in
-                    self?.startCurrentSegment()
+                // No persistent session – fall back to simple repeat behavior using in-memory counters.
+                print("📢 [AudioPlayerServiceAVPlayer] Loop complete (no session)")
+                let loopCount = totalLoopsForCurrentClip - currentSegmentRepeatsRemaining + 1
+                delegate?.audioPlayerLoopDidComplete(clipIndex: currentSegmentIndex, loopCount: loopCount)
+
+                currentSegmentRepeatsRemaining -= 1
+                if currentSegmentRepeatsRemaining > 0 {
+                    let work = DispatchWorkItem { [weak self] in
+                        guard let self else { return }
+
+                        let seekStart = max(0, self.currentSegmentStart.seconds - self.prerollSeconds)
+                        let seekTime = CMTime(seconds: seekStart, preferredTimescale: 600)
+                        
+                        let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
+                        let speed = self.practiceService.calculateSpeed(
+                            useProgressionMode: self.settings.useProgressionMode,
+                            currentLoop: currentLoop,
+                            progressionMinRepeats: self.settings.progressionMinRepeats,
+                            progressionLinearRepeats: self.settings.progressionLinearRepeats,
+                            progressionMaxRepeats: self.settings.progressionMaxRepeats,
+                            minSpeed: self.settings.minSpeed,
+                            maxSpeed: self.settings.maxSpeed
+                        )
+
+                        self.player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { _ in
+                            self.player?.rate = speed
+                            self.isPlaying = true
+                            self.delegate?.audioPlayerSpeedDidChange(speed: speed)
+                            self.updateNowPlayingElapsed(0)
+                            self.delegate?.audioPlayerDidStart()
+                        }
+                    }
+                    pendingWorkItem = work
+                    DispatchQueue.main.asyncAfter(deadline: .now() + gapSeconds, execute: work)
+                } else {
+                    currentSegmentIndex += 1
+                    let work = DispatchWorkItem { [weak self] in
+                        self?.startCurrentSegment()
+                    }
+                    pendingWorkItem = work
+                    DispatchQueue.main.asyncAfter(deadline: .now() + interClipGapSeconds, execute: work)
                 }
-                pendingWorkItem = work
-                DispatchQueue.main.asyncAfter(deadline: .now() + interClipGapSeconds, execute: work)
             }
         }
     }
@@ -520,6 +588,70 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     }
 
     // MARK: - Utilities
+
+    /// Effective loop target for a clip, honoring per-clip overrides when present.
+    private func effectiveLoopTarget(for clip: Clip) -> Int {
+        let base = clip.repeats ?? globalRepeats
+        return max(1, base)
+    }
+    
+    /// Find the next clip index at or after `startingAt` whose play count is
+    /// still below its effective loop target. Returns `nil` if none found.
+    private func findNextIncompleteClip(startingAt index: Int, session: PracticeSession?) -> Int? {
+        guard let session = session, !clipsQueue.isEmpty else { return nil }
+        guard index >= 0 else { return nil }
+        
+        var i = index
+        while i < clipsQueue.count {
+            let clip = clipsQueue[i]
+            let target = effectiveLoopTarget(for: clip)
+            let played = max(0, session.clipPlayCounts[clip.id] ?? 0)
+            if played < target {
+                return i
+            }
+            i += 1
+        }
+        return nil
+    }
+
+    /// Handle the situation where there are no remaining clips that still need
+    /// practice under the current repeat settings.
+    private func handleAllClipsCompleted() {
+        guard let session = currentSession else {
+            print("    No session; stopping playback")
+            stop()
+            return
+        }
+        
+        if session.foreverMode {
+            print("    Forever mode ON – creating a brand new practice session and restarting from first clip")
+            
+            // Create a brand new session with the same practiceSet/pack/track,
+            // but fresh play counts. Preserve foreverMode so behavior continues.
+            var newSession = PracticeSession(
+                practiceSetId: session.practiceSetId,
+                packId: session.packId,
+                trackId: session.trackId
+            )
+            newSession.foreverMode = true
+            
+            do {
+                try practiceService.saveSession(newSession)
+                currentSession = newSession
+                // Notify delegates so any UI (e.g., PracticeViewController) can
+                // update their local `currentSession` reference and refresh UI.
+                delegate?.audioPlayerSessionDidReset(newSession)
+            } catch {
+                print("    ⚠️ Failed to save new session while resetting for forever mode: \(error)")
+            }
+            
+            currentSegmentIndex = 0
+            startCurrentSegment()
+        } else {
+            print("    All clips completed; stopping playback (forever mode OFF)")
+            stop()
+        }
+    }
 
     private func configureSession() throws {
         let session = AVAudioSession.sharedInstance()
