@@ -270,17 +270,12 @@ final class ClipCell: UITableViewCell {
             titleLabel.attributedText = nil
             titleLabel.text = clip.title ?? "Clip \(index + 1)"
         } else {
-            // Skip/Noise clips - grayed out with strikethrough
+            // Skip/Noise clips - grayed out (no strikethrough)
             titleLabel.alpha = 0.5
             timeRangeLabel.alpha = 0.5
             indexCircle.alpha = 0.5
-            
-            let text = clip.title ?? "Clip \(index + 1)"
-            let attributes: [NSAttributedString.Key: Any] = [
-                .strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                .strikethroughColor: AppColors.tertiaryText
-            ]
-            titleLabel.attributedText = NSAttributedString(string: text, attributes: attributes)
+            titleLabel.attributedText = nil
+            titleLabel.text = clip.title ?? "Clip \(index + 1)"
         }
         
         // Current clip state
@@ -374,6 +369,10 @@ final class ClipCell: UITableViewCell {
         cardView.layer.borderWidth = 0
         cardView.transform = .identity
         cardView.alpha = 1.0
+        titleLabel.attributedText = nil
+        titleLabel.alpha = 1.0
+        timeRangeLabel.alpha = 1.0
+        indexCircle.alpha = 1.0
         checkmarkImageView.alpha = 0
         infinityBadge.alpha = 0
         indexLabel.alpha = 1.0
