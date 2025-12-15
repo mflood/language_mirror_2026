@@ -112,10 +112,10 @@ def _curated_to_practice_set(curated: dict[str, Any], language_code: str | None)
     return transcripts, ps
 
 
-def assemble_manifest(work_root: Path, bundle_id: str) -> tuple[BundleManifest, Path]:
+def assemble_manifest(work_root: Path, bundle_id: str, config_path: Path | None = None) -> tuple[BundleManifest, Path]:
     wp = WorkPaths(work_root=work_root, bundle_id=bundle_id)
     logger.info("Assembling manifest: bundle_id=%s work_root=%s", bundle_id, str(work_root))
-    cfg = BundleConfig.load(wp.config_path)
+    cfg = BundleConfig.load(config_path or wp.config_path)
     publish_cfg = PublishConfig.load(cfg.publish_config_path)
 
     audio_files = find_audio_files(wp.audio_dir)

@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 
 try:
-    import soundfile as sf
+    import soundfile as sf  # type: ignore[import-not-found]
 except Exception:  # pragma: no cover
     sf = None
 

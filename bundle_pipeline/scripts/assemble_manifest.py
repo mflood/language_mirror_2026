@@ -39,7 +39,7 @@ def main() -> int:
         str(cfg_path),
         str(out),
     )
-    _manifest, written = assemble_manifest(work_root=args.work_root, bundle_id=args.bundle_id)
+    _manifest, written = assemble_manifest(work_root=args.work_root, bundle_id=args.bundle_id, config_path=cfg_path)
     if written != out:
         # If the caller requested a different output path, copy the file.
         out.parent.mkdir(parents=True, exist_ok=True)
