@@ -1,0 +1,5 @@
+publish_bucket: turned.rip
+publish_prefix_template: lmaudio/{bundle_id}
+cloudfront_https_base: https://d1ni0tk3ua6bwo.cloudfront.net
+cloudfront_prefix_template: /lmaudio/{bundle_id}
+

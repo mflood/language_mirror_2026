@@ -1,0 +1,6 @@
+boto3
+soundfile
+openai-whisper
+openai
+pyyaml
+qrcode[pil]
