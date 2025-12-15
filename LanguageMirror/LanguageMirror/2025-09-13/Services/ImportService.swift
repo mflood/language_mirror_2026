@@ -20,6 +20,9 @@ enum ImportSource {
 }
 
 struct BundleManifest: Codable {
+    /// Stable bundle identifier used for deterministic imports and publishing paths.
+    /// Optional for backward compatibility with older manifests.
+    let id: String?
     let title: String
     let packs: [BundlePack]
 }
@@ -39,6 +42,7 @@ struct BundleTrack: Codable {
     let url: String?               // remote audio URL
     let filename: String?          // desired filename; default from url
     let durationMs: Int?
+    let languageCode: String?      // e.g. "ko-KR" | "en-US" | "zh-CN" | "es-ES"
     let practiceSets: [PracticeSet]?      // optional built-in clips
     let transcripts: [TranscriptSpan]?  // optional transcriptions
 }

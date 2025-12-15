@@ -28,6 +28,7 @@ final class TrackDetailViewController: UITableViewController {
     
     private enum Section: Int, CaseIterable {
         case practiceSets
+        case transcripts
     }
     
     private var headerContainerView: UIView?
@@ -229,7 +230,12 @@ final class TrackDetailViewController: UITableViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 15, weight: .semibold)
         label.textColor = AppColors.secondaryText
-        label.text = "Practice sets"
+        switch Section(rawValue: section)! {
+        case .practiceSets:
+            label.text = "Practice sets"
+        case .transcripts:
+            label.text = "Transcripts"
+        }
         
         container.addSubview(label)
         NSLayoutConstraint.activate([
@@ -249,6 +255,9 @@ final class TrackDetailViewController: UITableViewController {
         switch Section(rawValue: section)! {
         case .practiceSets:
             return max(track.practiceSets.count, 1)
+        case .transcripts:
+            // Single row that navigates to transcript list (or empty state if none)
+            return 1
         }
     }
     
@@ -295,6 +304,28 @@ final class TrackDetailViewController: UITableViewController {
                 
                 return cell
             }
+        case .transcripts:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            var config = cell.defaultContentConfiguration()
+            
+            cell.backgroundColor = .clear
+            let bgView = UIView()
+            bgView.backgroundColor = AppColors.cardBackground
+            bgView.layer.cornerRadius = 12
+            bgView.layer.cornerCurve = .continuous
+            cell.backgroundView = bgView
+            
+            config.textProperties.color = AppColors.primaryText
+            config.secondaryTextProperties.color = AppColors.secondaryText
+            
+            let count = track.transcripts.count
+            config.text = "View transcripts"
+            config.secondaryText = count == 0 ? "None" : "\(count) span(s)"
+            
+            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .default
+            cell.contentConfiguration = config
+            return cell
         }
     }
     
@@ -309,6 +340,9 @@ final class TrackDetailViewController: UITableViewController {
                 let practiceSet = track.practiceSets[indexPath.row]
                 delegate?.trackDetailViewController(self, didSelectPracticeSet: practiceSet, forTrack: track)
             }
+        case .transcripts:
+            let vc = TranscriptListViewController(trackTitle: track.title, transcripts: track.transcripts)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

@@ -225,7 +225,9 @@ final class ImportBundleManifestDriver {
         
         // Use DNS namespace for deterministic UUID generation
         let bundleNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
-        let bundleUUID = uuid5(namespace: bundleNamespace, name: norm(bundleManifest.title))
+        // Prefer stable manifest id for deterministic imports (backward compatible with older manifests)
+        let bundleStableId = bundleManifest.id ?? bundleManifest.title
+        let bundleUUID = uuid5(namespace: bundleNamespace, name: norm(bundleStableId))
         
         var allTracks: [Track] = []
         let totalPacks = bundleManifest.packs.count
@@ -360,7 +362,7 @@ final class ImportBundleManifestDriver {
                 let transcripts = bundleTrack.transcripts ?? []
                 
                 // Generate tags
-                let tags = autoTagsForTrack(sourceType: .textbook, languageCode: nil, fileExtension: fileExtension)
+                let tags = autoTagsForTrack(sourceType: .textbook, languageCode: bundleTrack.languageCode, fileExtension: fileExtension)
                 
                 // Create track
                 let track = Track(
@@ -370,7 +372,7 @@ final class ImportBundleManifestDriver {
                     filename: filename,
                     localUrl: dest,
                     durationMs: durationMs,
-                    languageCode: nil,
+                    languageCode: bundleTrack.languageCode,
                     practiceSets: trackPracticeSets,
                     transcripts: transcripts,
                     tags: tags,

@@ -189,6 +189,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             tf.autocapitalizationType = .none
             tf.text = "https://www.blcup.com/File/Res3/6d99a4e6-ac1a-420d-ac1b-fa0ac889a530.mp3"
             tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/문화가 있는 한국어 읽기 2_03.mp3"
+            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/int-kor-beg-01-r1/bundle.json"
             // tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_3/culture_3_enhanced.json"
         }
         a.addTextField { tf in tf.placeholder = "Optional title" }
@@ -235,6 +236,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             // tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/bundle3.json"
             tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_3a/bundle.json"
             tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_3/culture_3_enhanced.json"
+            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/int-kor-beg-01-r1/bundle.json"
         }
         a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         a.addAction(UIAlertAction(title: "Install", style: .default, handler: { [weak self] _ in
