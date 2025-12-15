@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import logging
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 def _require(d: dict[str, Any], key: str) -> Any:
@@ -22,6 +25,7 @@ class PublishConfig:
     def load(path: Path) -> "PublishConfig":
         import yaml  # dependency: pyyaml
 
+        logger.debug("Reading publish config: %s", str(path))
         data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         return PublishConfig(
             publish_bucket=str(_require(data, "publish_bucket")),
@@ -65,6 +69,7 @@ class BundleConfig:
     def load(path: Path) -> "BundleConfig":
         import yaml  # dependency: pyyaml
 
+        logger.debug("Reading bundle config: %s", str(path))
         data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         bundle_id = str(_require(data, "bundle_id"))
         bundle_title = str(data.get("bundle_title") or bundle_id)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import uuid
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,8 @@ from .models import (
     TranscriptSpan,
 )
 from .paths import WorkPaths
+
+logger = logging.getLogger(__name__)
 
 
 def _audio_https_url(publish_cfg: PublishConfig, bundle_id: str, filename: str) -> str:
@@ -111,19 +114,23 @@ def _curated_to_practice_set(curated: dict[str, Any], language_code: str | None)
 
 def assemble_manifest(work_root: Path, bundle_id: str) -> tuple[BundleManifest, Path]:
     wp = WorkPaths(work_root=work_root, bundle_id=bundle_id)
+    logger.info("Assembling manifest: bundle_id=%s work_root=%s", bundle_id, str(work_root))
     cfg = BundleConfig.load(wp.config_path)
     publish_cfg = PublishConfig.load(cfg.publish_config_path)
 
     audio_files = find_audio_files(wp.audio_dir)
     if not audio_files:
         raise ValueError(f"No audio files found in {wp.audio_dir}")
+    logger.info("Found %d audio file(s) in %s", len(audio_files), str(wp.audio_dir))
 
     tracks: list[BundleTrack] = []
     for audio_path in audio_files:
+        logger.debug("Processing track: %s", str(audio_path))
         duration_ms = get_audio_duration_ms(audio_path)
         title = clean_track_title(audio_path.name)
 
         curated_path = artifact_path(wp.curated_dir, audio_path.name, "curated")
+        logger.debug("Loading curated artifact (if present): %s", str(curated_path))
         curated = load_json_if_exists(curated_path)
 
         practice_sets: list[PracticeSet] = []
@@ -159,7 +166,9 @@ def assemble_manifest(work_root: Path, bundle_id: str) -> tuple[BundleManifest, 
 
     manifest = BundleManifest(id=cfg.bundle_id, title=cfg.bundle_title, packs=[pack])
     out_path = wp.manifest_path
+    logger.debug("Writing manifest JSON: %s", str(out_path))
     out_path.write_text(json.dumps(manifest.to_json(), ensure_ascii=False, indent=2), encoding="utf-8")
+    logger.info("Assembled manifest: %s", str(out_path))
     return manifest, out_path
 
 

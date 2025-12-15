@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 try:
     import soundfile as sf
 except Exception:  # pragma: no cover
     sf = None
+
+logger = logging.getLogger(__name__)
 
 
 AUDIO_EXTENSIONS = {".mp3", ".m4a", ".wav", ".aac", ".flac", ".ogg", ".opus"}
@@ -19,6 +22,7 @@ def natural_sort_key(filename: str) -> tuple:
 
 
 def find_audio_files(folder: Path) -> list[Path]:
+    logger.debug("Scanning audio folder: %s", str(folder))
     audio_files: list[Path] = []
     for f in folder.iterdir():
         if f.is_file() and f.suffix.lower() in AUDIO_EXTENSIONS:
@@ -42,6 +46,7 @@ def get_audio_duration_ms(audio_path: Path) -> int:
     if sf is None:
         raise ImportError("soundfile is required. Install with: pip install soundfile")
     try:
+        logger.debug("Reading audio metadata (duration): %s", str(audio_path))
         info = sf.info(str(audio_path))
         return int(info.duration * 1000)
     except Exception:
