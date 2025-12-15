@@ -9,3 +9,6 @@ Breakpoints_v2.xcbkptlist
 UserInterfaceState.xcuserstate
 UserInterfaceState.xcuserstate
 culture_korean_3
+
+*.pyc
+myworkroot
