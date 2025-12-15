@@ -73,15 +73,32 @@ def curate_with_openai(model: str, prompt: str) -> dict[str, Any]:
         raise RuntimeError("OPENAI_API_KEY environment variable not set")
 
     client = OpenAI(api_key=api_key)
-    resp = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "You are an expert in language transcription analysis."},
-            {"role": "user", "content": prompt},
-        ],
-        temperature=0.3,
-        max_tokens=8192,
-    )
+    # Newer OpenAI models require `max_completion_tokens` (and reject `max_tokens`).
+    # Some older models/servers may still expect `max_tokens`, so we retry once if needed.
+    try:
+        resp = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "You are an expert in language transcription analysis."},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.3,
+            max_completion_tokens=8192,
+        )
+    except Exception as e:
+        msg = str(e)
+        if "Unsupported parameter" in msg and "max_completion_tokens" in msg:
+            resp = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "You are an expert in language transcription analysis."},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.3,
+                max_tokens=8192,
+            )
+        else:
+            raise
     text = (resp.choices[0].message.content or "").strip()
     if text.startswith("```json"):
         text = text[7:]
