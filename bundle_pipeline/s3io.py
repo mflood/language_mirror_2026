@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import logging
 from pathlib import Path
 from typing import Iterable
 
@@ -27,12 +28,19 @@ def _iter_s3_objects(s3_client, bucket: str, prefix: str) -> Iterable[dict]:
             yield obj
 
 
-def download_prefix_to_dir(source_s3: str, dest_dir: Path) -> list[Path]:
+def download_prefix_to_dir(
+    source_s3: str,
+    dest_dir: Path,
+    match: str | None = None,
+    logger: logging.Logger | None = None,
+) -> list[Path]:
     """
     Downloads all objects under a given S3 prefix into dest_dir (flat).
     Returns list of downloaded file paths.
     """
     import boto3
+
+    log = logger or logging.getLogger(__name__)
 
     bucket, key_prefix = parse_s3_uri(source_s3)
     if key_prefix and not key_prefix.endswith("/"):
@@ -47,7 +55,11 @@ def download_prefix_to_dir(source_s3: str, dest_dir: Path) -> list[Path]:
         if key.endswith("/"):
             continue
         filename = key.split("/")[-1]
+        if match is not None and match not in filename:
+            log.debug("Skipping (no match): %s", filename)
+            continue
         out_path = dest_dir / filename
+        log.debug("Downloading %s -> %s", f"s3://{bucket}/{key}", out_path)
         s3.download_file(bucket, key, str(out_path))
         downloaded.append(out_path)
     return downloaded
