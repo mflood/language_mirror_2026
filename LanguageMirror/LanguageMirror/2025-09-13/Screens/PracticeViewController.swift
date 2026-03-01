@@ -50,6 +50,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     // UI Components
     private let headerView = UIView()
     private let foreverButton = UIButton(type: .system)
+    private let modeToggleButton = UIButton(type: .system)
     private let saveButton = UIButton(type: .system)
     private let discardButton = UIButton(type: .system)
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -106,6 +107,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         
         // Settings may have changed while this screen was off-screen (e.g. in Settings).
         // Refresh any UI that depends on global settings such as repeat count.
+        updateModeToggleButton()
         updateSpeedStripVisibility()
         practiceSpeedStrip.updateSelection(settings.simpleSpeed)
         updateTitle()
@@ -164,7 +166,17 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         foreverButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         foreverButton.addTarget(self, action: #selector(foreverButtonTapped), for: .touchUpInside)
         headerView.addSubview(foreverButton)
-        
+
+        // Mode toggle button (Simple / Progression)
+        modeToggleButton.translatesAutoresizingMaskIntoConstraints = false
+        modeToggleButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
+        modeToggleButton.layer.cornerRadius = 12
+        modeToggleButton.layer.cornerCurve = .continuous
+        modeToggleButton.contentEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
+        modeToggleButton.addTarget(self, action: #selector(modeToggleButtonTapped), for: .touchUpInside)
+        updateModeToggleButton()
+        headerView.addSubview(modeToggleButton)
+
         // Save button
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.setTitle("Save", for: .normal)
@@ -274,8 +286,11 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             foreverButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             foreverButton.widthAnchor.constraint(equalToConstant: 44),
             foreverButton.heightAnchor.constraint(equalToConstant: 44),
-            
-            saveButton.leadingAnchor.constraint(equalTo: foreverButton.trailingAnchor, constant: 8),
+
+            modeToggleButton.leadingAnchor.constraint(equalTo: foreverButton.trailingAnchor, constant: 4),
+            modeToggleButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+
+            saveButton.leadingAnchor.constraint(equalTo: modeToggleButton.trailingAnchor, constant: 8),
             saveButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             
             discardButton.leadingAnchor.constraint(equalTo: saveButton.trailingAnchor, constant: 8),
@@ -420,6 +435,19 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     private func updateSpeedStripVisibility() {
         let show = !settings.useProgressionMode
         speedStripContainer.isHidden = !show
+    }
+
+    private func updateModeToggleButton() {
+        let isProgression = settings.useProgressionMode
+        let title = isProgression ? "Prog" : "Simple"
+        modeToggleButton.setTitle(title, for: .normal)
+        modeToggleButton.setTitleColor(
+            isProgression ? .white : AppColors.primaryAccent,
+            for: .normal
+        )
+        modeToggleButton.backgroundColor = isProgression
+            ? AppColors.primaryAccent
+            : AppColors.primaryAccent.withAlphaComponent(0.12)
     }
 
     private func updateForeverButton() {
@@ -610,8 +638,19 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             print("Failed to save session: \(error)")
         }
     }
-    
-    
+
+    @objc private func modeToggleButtonTapped() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.selectionChanged()
+
+        settings.useProgressionMode.toggle()
+        updateModeToggleButton()
+        updateSpeedStripVisibility()
+        updateProgressLabel()
+        updateTitle()
+        tableView.reloadData()
+    }
+
     @objc private func favoriteButtonTapped() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
