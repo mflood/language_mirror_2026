@@ -59,7 +59,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     private let mergeButton = UIButton(type: .system)
     private let progressLabel = UILabel()
     private let emptyStateView = EmptyStateView()
-    
+    private let speedStripContainer = UIView()
+    private let practiceSpeedStrip = SpeedPresetStrip()
+
     // Navigation bar buttons
     private var favoriteButton: UIBarButtonItem?
     
@@ -104,6 +106,8 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         
         // Settings may have changed while this screen was off-screen (e.g. in Settings).
         // Refresh any UI that depends on global settings such as repeat count.
+        updateSpeedStripVisibility()
+        practiceSpeedStrip.updateSelection(settings.simpleSpeed)
         updateTitle()
         updateUI()
     }
@@ -195,6 +199,23 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         emptyStateView.isHidden = true
         view.addSubview(emptyStateView)
         
+        // Speed strip container (between table and bottom bar)
+        speedStripContainer.translatesAutoresizingMaskIntoConstraints = false
+        speedStripContainer.backgroundColor = AppColors.cardBackground
+        view.addSubview(speedStripContainer)
+
+        practiceSpeedStrip.translatesAutoresizingMaskIntoConstraints = false
+        practiceSpeedStrip.configure(speeds: type(of: settings).speedPresets, selected: settings.simpleSpeed)
+        practiceSpeedStrip.delegate = self
+        speedStripContainer.addSubview(practiceSpeedStrip)
+
+        NSLayoutConstraint.activate([
+            practiceSpeedStrip.topAnchor.constraint(equalTo: speedStripContainer.topAnchor, constant: 4),
+            practiceSpeedStrip.leadingAnchor.constraint(equalTo: speedStripContainer.leadingAnchor),
+            practiceSpeedStrip.trailingAnchor.constraint(equalTo: speedStripContainer.trailingAnchor),
+            practiceSpeedStrip.bottomAnchor.constraint(equalTo: speedStripContainer.bottomAnchor, constant: -4),
+        ])
+
         // Bottom bar
         bottomBar.translatesAutoresizingMaskIntoConstraints = false
         bottomBar.backgroundColor = AppColors.cardBackground
@@ -260,6 +281,12 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             discardButton.leadingAnchor.constraint(equalTo: saveButton.trailingAnchor, constant: 8),
             discardButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             
+            // Speed strip container
+            speedStripContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            speedStripContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            speedStripContainer.bottomAnchor.constraint(equalTo: bottomBar.topAnchor),
+            speedStripContainer.heightAnchor.constraint(equalToConstant: 48),
+
             // Bottom bar
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -292,13 +319,13 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomBar.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: speedStripContainer.topAnchor),
             
             // Empty state
             emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             emptyStateView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            emptyStateView.bottomAnchor.constraint(equalTo: bottomBar.topAnchor),
+            emptyStateView.bottomAnchor.constraint(equalTo: speedStripContainer.topAnchor),
         ])
     }
     
@@ -390,6 +417,11 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         updateTitle()
     }
     
+    private func updateSpeedStripVisibility() {
+        let show = !settings.useProgressionMode
+        speedStripContainer.isHidden = !show
+    }
+
     private func updateForeverButton() {
         let isForever = currentSession?.foreverMode ?? false
         foreverButton.setTitleColor(isForever ? AppColors.primaryAccent : AppColors.secondaryText, for: .normal)
@@ -453,6 +485,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         if settings.useProgressionMode {
             displaySpeed = practiceService.calculateSpeed(
                 useProgressionMode: settings.useProgressionMode,
+                simpleSpeed: settings.simpleSpeed,
                 currentLoop: session.currentLoopCount,
                 progressionMinRepeats: settings.progressionMinRepeats,
                 progressionLinearRepeats: settings.progressionLinearRepeats,
@@ -461,15 +494,15 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
                 maxSpeed: settings.maxSpeed
             )
         } else {
-            displaySpeed = session.currentSpeed
+            displaySpeed = settings.simpleSpeed
         }
-        
+
         text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(min(session.currentLoopCount + 1, totalLoops))/\(totalLoops) • \(String(format: "%.2fx", displaySpeed))"
-        
+
         progressLabel.text = text
         print("  Updated progress label: \(text)")
     }
-    
+
     private func formatTime(_ ms: Int) -> String {
         let totalSeconds = ms / 1000
         let minutes = totalSeconds / 60
@@ -1240,6 +1273,7 @@ extension PracticeViewController: UITableViewDataSource {
             if settings.useProgressionMode {
                 displaySpeed = practiceService.calculateSpeed(
                     useProgressionMode: settings.useProgressionMode,
+                    simpleSpeed: settings.simpleSpeed,
                     currentLoop: session.currentLoopCount,
                     progressionMinRepeats: settings.progressionMinRepeats,
                     progressionLinearRepeats: settings.progressionLinearRepeats,
@@ -1248,11 +1282,12 @@ extension PracticeViewController: UITableViewDataSource {
                     maxSpeed: settings.maxSpeed
                 )
             } else {
-                displaySpeed = session.currentSpeed
+                displaySpeed = settings.simpleSpeed
             }
         } else {
             displaySpeed = practiceService.calculateSpeed(
                 useProgressionMode: settings.useProgressionMode,
+                simpleSpeed: settings.simpleSpeed,
                 currentLoop: 0,
                 progressionMinRepeats: settings.progressionMinRepeats,
                 progressionLinearRepeats: settings.progressionLinearRepeats,
@@ -1469,5 +1504,17 @@ extension PracticeViewController {
         let target = effectiveLoopTarget(for: clip)
         let played = max(0, session.clipPlayCounts[clip.id] ?? 0)
         return played >= target
+    }
+}
+
+// MARK: - SpeedPresetStripDelegate
+
+extension PracticeViewController: SpeedPresetStripDelegate {
+    func speedPresetStrip(_ strip: SpeedPresetStrip, didSelectSpeed speed: Float) {
+        settings.simpleSpeed = speed
+        if player.isPlaying {
+            player.setPlaybackSpeed(speed)
+        }
+        updateProgressLabel()
     }
 }

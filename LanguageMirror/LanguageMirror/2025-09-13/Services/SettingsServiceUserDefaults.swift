@@ -19,6 +19,7 @@ final class SettingsServiceUserDefaults: SettingsService {
         case progressionMinRepeats = "settings.progressionMinRepeats"
         case progressionLinearRepeats = "settings.progressionLinearRepeats"
         case progressionMaxRepeats = "settings.progressionMaxRepeats"
+        case simpleSpeed = "settings.simpleSpeed"
         case minSpeed = "settings.minSpeed"
         case maxSpeed = "settings.maxSpeed"
     }
@@ -33,6 +34,7 @@ final class SettingsServiceUserDefaults: SettingsService {
     private let defaultProgressionMinRepeats = 5
     private let defaultProgressionLinearRepeats = 10
     private let defaultProgressionMaxRepeats = 5
+    private let defaultSimpleSpeed: Float = 1.0
     private let defaultMinSpeed: Float = 0.6
     private let defaultMaxSpeed: Float = 1.0
 
@@ -70,6 +72,14 @@ final class SettingsServiceUserDefaults: SettingsService {
         set { d.set(newValue, forKey: Key.duckOthers.rawValue) }
     }
     
+    var simpleSpeed: Float {
+        get {
+            let v = d.object(forKey: Key.simpleSpeed.rawValue) as? Float
+            return v ?? defaultSimpleSpeed
+        }
+        set { d.set(max(0.3, min(newValue, 3.0)), forKey: Key.simpleSpeed.rawValue) }
+    }
+
     var minSpeed: Float {
         get {
             let v = d.object(forKey: Key.minSpeed.rawValue) as? Float

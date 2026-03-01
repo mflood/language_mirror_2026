@@ -107,6 +107,12 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                           forcePlayFirstClipOnce: forcePlayFirstClipOnce)
     }
 
+    func setPlaybackSpeed(_ speed: Float) {
+        guard isPlaying, let player = player else { return }
+        player.rate = speed
+        delegate?.audioPlayerSpeedDidChange(speed: speed)
+    }
+
     func pause() {
         pendingWorkItem?.cancel()
         player?.pause()
@@ -354,6 +360,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         let currentLoop = totalLoopsForCurrentClip - currentSegmentRepeatsRemaining
         let speed = practiceService.calculateSpeed(
             useProgressionMode: settings.useProgressionMode,
+            simpleSpeed: settings.simpleSpeed,
             currentLoop: currentLoop,
             progressionMinRepeats: settings.progressionMinRepeats,
             progressionLinearRepeats: settings.progressionLinearRepeats,
@@ -460,6 +467,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                         let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
                         let speed = self.practiceService.calculateSpeed(
                             useProgressionMode: self.settings.useProgressionMode,
+                            simpleSpeed: self.settings.simpleSpeed,
                             currentLoop: currentLoop,
                             progressionMinRepeats: self.settings.progressionMinRepeats,
                             progressionLinearRepeats: self.settings.progressionLinearRepeats,
@@ -528,6 +536,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                         let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
                         let speed = self.practiceService.calculateSpeed(
                             useProgressionMode: self.settings.useProgressionMode,
+                            simpleSpeed: self.settings.simpleSpeed,
                             currentLoop: currentLoop,
                             progressionMinRepeats: self.settings.progressionMinRepeats,
                             progressionLinearRepeats: self.settings.progressionLinearRepeats,

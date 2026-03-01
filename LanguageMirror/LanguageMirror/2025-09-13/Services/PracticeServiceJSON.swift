@@ -202,9 +202,9 @@ final class PracticeServiceJSON: PracticeService {
         )
     }
 
-    func calculateSpeed(useProgressionMode: Bool, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float {
-        // If not using progression mode, return normal speed (1.0)
-        guard useProgressionMode else { return 1.0 }
+    func calculateSpeed(useProgressionMode: Bool, simpleSpeed: Float, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float {
+        // If not using progression mode, return the user's chosen simple speed
+        guard useProgressionMode else { return simpleSpeed }
         
         // Ensure we have at least 1 loop to avoid division by zero
         guard currentLoop >= 0 else { return minSpeed }

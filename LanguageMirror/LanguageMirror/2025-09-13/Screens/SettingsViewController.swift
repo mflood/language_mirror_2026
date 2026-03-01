@@ -8,635 +8,445 @@
 // path: Screens/SettingsViewController.swift
 import UIKit
 
-final class SettingsViewController: UITableViewController {
+final class SettingsViewController: UIViewController {
 
     private let settings: SettingsService
 
-    // Controls
-    private let repeatsSlider = UISlider()
-    private let gapSlider = UISlider()
-    private let interGapSlider = UISlider()
-    private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
-    
-    // Progression mode controls
-    private let practiceModeSeg = UISegmentedControl(items: ["Simple", "Progression"])
-    private let progressionMinRepeatsSlider = UISlider()
-    private let progressionLinearRepeatsSlider = UISlider()
-    private let progressionMaxRepeatsSlider = UISlider()
-    private let minSpeedSlider = UISlider()
-    private let maxSpeedSlider = UISlider()
+    // Scroll / stack layout
+    private let scrollView = UIScrollView()
+    private let contentStack = UIStackView()
 
-    private enum Section: Int, CaseIterable { case practiceMode, simple, progression, basic }
-    enum PracticeModeRow: Int, CaseIterable { case toggle }
-    enum SimpleRow: Int, CaseIterable { case repeats }
-    enum BasicRow: Int, CaseIterable { case gap, interGap, preroll, duck }
-    enum ProgressionRow: Int, CaseIterable { case minSpeed, progressionMinRepeats, progressionLinearRepeats, maxSpeed, progressionMaxRepeats }
+    // Mode toggle
+    private let practiceModeSeg = UISegmentedControl(items: ["Simple", "Progression"])
+
+    // Simple mode section
+    private let simpleSection = UIStackView()
+    private let speedStrip = SpeedPresetStrip()
+    private let repeatsSlider = UISlider()
+    private let repeatsValueLabel = UILabel()
+
+    // Progression mode section
+    private let progressionSection = UIStackView()
+    private let curveView = ProgressionCurveView()
+    private let startCard = PhaseCard(phase: .start)
+    private let rampCard = PhaseCard(phase: .ramp)
+    private let endCard = PhaseCard(phase: .end)
+
+    // Basic section
+    private let gapSlider = UISlider()
+    private let gapValueLabel = UILabel()
+    private let interGapSlider = UISlider()
+    private let interGapValueLabel = UILabel()
+    private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
+    private let duckSwitch = UISwitch()
+    private let duckValueLabel = UILabel()
 
     init(settings: SettingsService) {
         self.settings = settings
-        super.init(style: .insetGrouped)
+        super.init(nibName: nil, bundle: nil)
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-    // MARK: - Mode Helpers
-
-    private var isSimpleModeActive: Bool {
-        return !settings.useProgressionMode
-    }
-
-    private var isProgressionModeActive: Bool {
-        return settings.useProgressionMode
-    }
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Settings"
         view.backgroundColor = AppColors.calmBackground
-        tableView.backgroundColor = AppColors.calmBackground
-        tableView.register(SettingsCell.self, forCellReuseIdentifier: "settingsCell")
+        buildLayout()
         configureControls()
+        syncModeVisibility(animated: false)
     }
 
+    // MARK: - Layout
+
+    private func buildLayout() {
+        // Scroll view
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.alwaysBounceVertical = true
+        scrollView.keyboardDismissMode = .onDrag
+        view.addSubview(scrollView)
+
+        // Content stack
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+        contentStack.axis = .vertical
+        contentStack.spacing = 24
+        scrollView.addSubview(contentStack)
+
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            contentStack.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 16),
+            contentStack.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 16),
+            contentStack.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -16),
+            contentStack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -24),
+            contentStack.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -32),
+        ])
+
+        // --- Practice Mode Section ---
+        let modeSection = makeSectionStack(header: "Practice Mode")
+        practiceModeSeg.translatesAutoresizingMaskIntoConstraints = false
+        modeSection.addArrangedSubview(practiceModeSeg)
+        contentStack.addArrangedSubview(modeSection)
+
+        // --- Simple Mode Section ---
+        simpleSection.axis = .vertical
+        simpleSection.spacing = 16
+        simpleSection.translatesAutoresizingMaskIntoConstraints = false
+
+        let simpleHeader = makeSectionHeaderLabel("Simple Mode")
+        simpleSection.addArrangedSubview(simpleHeader)
+
+        let speedLabel = makeFieldLabel("Speed")
+        simpleSection.addArrangedSubview(speedLabel)
+
+        speedStrip.translatesAutoresizingMaskIntoConstraints = false
+        speedStrip.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        simpleSection.addArrangedSubview(speedStrip)
+
+        let repeatsRow = makeSliderRow(title: "Repeat Count", valueLabel: repeatsValueLabel, slider: repeatsSlider)
+        simpleSection.addArrangedSubview(repeatsRow)
+
+        contentStack.addArrangedSubview(simpleSection)
+
+        // --- Progression Mode Section ---
+        progressionSection.axis = .vertical
+        progressionSection.spacing = 16
+        progressionSection.translatesAutoresizingMaskIntoConstraints = false
+
+        let progressionHeader = makeSectionHeaderLabel("Progression Mode")
+        progressionSection.addArrangedSubview(progressionHeader)
+
+        curveView.translatesAutoresizingMaskIntoConstraints = false
+        curveView.heightAnchor.constraint(equalToConstant: 140).isActive = true
+        progressionSection.addArrangedSubview(curveView)
+
+        startCard.translatesAutoresizingMaskIntoConstraints = false
+        rampCard.translatesAutoresizingMaskIntoConstraints = false
+        endCard.translatesAutoresizingMaskIntoConstraints = false
+        progressionSection.addArrangedSubview(startCard)
+        progressionSection.addArrangedSubview(rampCard)
+        progressionSection.addArrangedSubview(endCard)
+
+        contentStack.addArrangedSubview(progressionSection)
+
+        // --- Basic Section ---
+        let basicSection = makeSectionStack(header: "Playback")
+
+        let gapRow = makeSliderRow(title: "Gap Between Repeats", valueLabel: gapValueLabel, slider: gapSlider)
+        basicSection.addArrangedSubview(gapRow)
+
+        let interGapRow = makeSliderRow(title: "Gap Between Clips", valueLabel: interGapValueLabel, slider: interGapSlider)
+        basicSection.addArrangedSubview(interGapRow)
+
+        let prerollRow = makeControlRow(title: "Preroll", control: prerollSeg)
+        basicSection.addArrangedSubview(prerollRow)
+
+        let duckRow = makeSwitchRow(title: "Duck Other Audio", valueLabel: duckValueLabel, toggle: duckSwitch)
+        basicSection.addArrangedSubview(duckRow)
+
+        contentStack.addArrangedSubview(basicSection)
+    }
+
+    // MARK: - Configure Controls
+
     private func configureControls() {
-        // Repeats slider
+        // Mode toggle
+        practiceModeSeg.selectedSegmentIndex = settings.useProgressionMode ? 1 : 0
+        practiceModeSeg.selectedSegmentTintColor = .systemIndigo
+        practiceModeSeg.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
+
+        // Speed strip
+        speedStrip.configure(speeds: type(of: settings).speedPresets, selected: settings.simpleSpeed)
+        speedStrip.delegate = self
+
+        // Repeats
         repeatsSlider.minimumValue = 1
         repeatsSlider.maximumValue = 100
         repeatsSlider.value = Float(settings.globalRepeats)
-        repeatsSlider.minimumTrackTintColor = SimpleRow.repeats.iconColor
+        repeatsSlider.minimumTrackTintColor = .systemBlue
         repeatsSlider.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
+        repeatsValueLabel.text = "\(settings.globalRepeats)x"
 
-        // Gap slider
+        // Phase cards
+        startCard.configure(speed: settings.minSpeed, repeats: settings.progressionMinRepeats)
+        rampCard.configure(speed: nil, repeats: settings.progressionLinearRepeats)
+        endCard.configure(speed: settings.maxSpeed, repeats: settings.progressionMaxRepeats)
+
+        startCard.onSpeedChanged = { [weak self] speed in
+            guard let self else { return }
+            self.settings.minSpeed = speed
+            if self.settings.maxSpeed < speed {
+                self.settings.maxSpeed = speed
+                self.endCard.configure(speed: self.settings.maxSpeed, repeats: self.settings.progressionMaxRepeats)
+            }
+            self.refreshCurve()
+        }
+        startCard.onRepeatsChanged = { [weak self] val in
+            self?.settings.progressionMinRepeats = val
+            self?.refreshCurve()
+        }
+        rampCard.onRepeatsChanged = { [weak self] val in
+            self?.settings.progressionLinearRepeats = val
+            self?.refreshCurve()
+        }
+        endCard.onSpeedChanged = { [weak self] speed in
+            guard let self else { return }
+            self.settings.maxSpeed = speed
+            if speed < self.settings.minSpeed {
+                self.settings.maxSpeed = self.settings.minSpeed
+                self.endCard.configure(speed: self.settings.maxSpeed, repeats: self.settings.progressionMaxRepeats)
+            }
+            self.refreshCurve()
+        }
+        endCard.onRepeatsChanged = { [weak self] val in
+            self?.settings.progressionMaxRepeats = val
+            self?.refreshCurve()
+        }
+
+        refreshCurve()
+
+        // Gap
         gapSlider.minimumValue = 0.0
         gapSlider.maximumValue = 2.0
         gapSlider.value = Float(settings.gapSeconds)
-        gapSlider.minimumTrackTintColor = BasicRow.gap.iconColor
+        gapSlider.minimumTrackTintColor = .systemGreen
         gapSlider.addTarget(self, action: #selector(gapChanged), for: .valueChanged)
+        gapValueLabel.text = String(format: "%.1fs", settings.gapSeconds)
 
-        // Inter-segment gap slider
+        // Inter-gap
         interGapSlider.minimumValue = 0.0
         interGapSlider.maximumValue = 2.0
         interGapSlider.value = Float(settings.interSegmentGapSeconds)
-        interGapSlider.minimumTrackTintColor = BasicRow.interGap.iconColor
+        interGapSlider.minimumTrackTintColor = .systemPurple
         interGapSlider.addTarget(self, action: #selector(interGapChanged), for: .valueChanged)
+        interGapValueLabel.text = String(format: "%.1fs", settings.interSegmentGapSeconds)
 
-        // Preroll segmented control
+        // Preroll
         let ms = settings.prerollMs
-        let idx = [0,100,200,300].firstIndex(of: max(0, min(ms, 300))) ?? 0
+        let idx = [0, 100, 200, 300].firstIndex(of: max(0, min(ms, 300))) ?? 0
         prerollSeg.selectedSegmentIndex = idx
-        prerollSeg.selectedSegmentTintColor = BasicRow.preroll.iconColor
+        prerollSeg.selectedSegmentTintColor = .systemOrange
         prerollSeg.addTarget(self, action: #selector(prerollChanged), for: .valueChanged)
-        
-        // Practice mode segmented control
-        practiceModeSeg.selectedSegmentIndex = settings.useProgressionMode ? 1 : 0
-        practiceModeSeg.selectedSegmentTintColor = PracticeModeRow.toggle.iconColor
-        practiceModeSeg.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
-        
-        // Progression min repeats slider (0-100)
-        progressionMinRepeatsSlider.minimumValue = 0
-        progressionMinRepeatsSlider.maximumValue = 100
-        progressionMinRepeatsSlider.value = Float(settings.progressionMinRepeats)
-        progressionMinRepeatsSlider.minimumTrackTintColor = ProgressionRow.progressionMinRepeats.iconColor
-        progressionMinRepeatsSlider.addTarget(self, action: #selector(progressionMinRepeatsChanged), for: .valueChanged)
-        
-        // Progression linear repeats slider (0-100)
-        progressionLinearRepeatsSlider.minimumValue = 0
-        progressionLinearRepeatsSlider.maximumValue = 100
-        progressionLinearRepeatsSlider.value = Float(settings.progressionLinearRepeats)
-        progressionLinearRepeatsSlider.minimumTrackTintColor = ProgressionRow.progressionLinearRepeats.iconColor
-        progressionLinearRepeatsSlider.addTarget(self, action: #selector(progressionLinearRepeatsChanged), for: .valueChanged)
-        
-        // Progression max repeats slider (1-100)
-        progressionMaxRepeatsSlider.minimumValue = 1
-        progressionMaxRepeatsSlider.maximumValue = 100
-        progressionMaxRepeatsSlider.value = Float(settings.progressionMaxRepeats)
-        progressionMaxRepeatsSlider.minimumTrackTintColor = ProgressionRow.progressionMaxRepeats.iconColor
-        progressionMaxRepeatsSlider.addTarget(self, action: #selector(progressionMaxRepeatsChanged), for: .valueChanged)
-        
-        // Min speed slider
-        minSpeedSlider.minimumValue = 0.3
-        minSpeedSlider.maximumValue = 1.0
-        minSpeedSlider.value = settings.minSpeed
-        minSpeedSlider.minimumTrackTintColor = ProgressionRow.minSpeed.iconColor
-        minSpeedSlider.addTarget(self, action: #selector(minSpeedChanged), for: .valueChanged)
-        
-        // Max speed slider
-        maxSpeedSlider.minimumValue = 0.5
-        maxSpeedSlider.maximumValue = 3.0
-        maxSpeedSlider.value = settings.maxSpeed
-        maxSpeedSlider.minimumTrackTintColor = ProgressionRow.maxSpeed.iconColor
-        maxSpeedSlider.addTarget(self, action: #selector(maxSpeedChanged), for: .valueChanged)
+
+        // Duck
+        duckSwitch.isOn = settings.duckOthers
+        duckSwitch.onTintColor = .systemTeal
+        duckSwitch.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
+        duckValueLabel.text = settings.duckOthers ? "Enabled" : "Disabled"
     }
 
-    // MARK: - Table
-    
-    // We expose three visible sections:
-    // 0: Practice Mode
-    // 1: Simple OR Progression (depending on current mode)
-    // 2: Basic Settings
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
+    // MARK: - Mode Toggle
 
-    private func sectionType(for visibleSection: Int) -> Section {
-        switch visibleSection {
-        case 0:
-            return .practiceMode
-        case 1:
-            // This middle section swaps between Simple and Progression
-            return isSimpleModeActive ? .simple : .progression
-        case 2:
-            return .basic
-        default:
-            fatalError("Invalid section index: \(visibleSection)")
+    private func syncModeVisibility(animated: Bool) {
+        let isSimple = !settings.useProgressionMode
+        let work = {
+            self.simpleSection.isHidden = !isSimple
+            self.simpleSection.alpha = isSimple ? 1 : 0
+            self.progressionSection.isHidden = isSimple
+            self.progressionSection.alpha = isSimple ? 0 : 1
         }
-    }
-
-    private func visibleSectionIndex(for section: Section) -> Int? {
-        switch section {
-        case .practiceMode:
-            return 0
-        case .basic:
-            return 2
-        case .simple:
-            return isSimpleModeActive ? 1 : nil
-        case .progression:
-            return isProgressionModeActive ? 1 : nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionType = sectionType(for: section)
-
-        switch sectionType {
-        case .practiceMode:
-            return "Practice Mode"
-        case .simple:
-            return "Simple Mode Settings"
-        case .progression:
-            return "Progression Mode Settings"
-        case .basic:
-            return "Basic Settings"
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionType = sectionType(for: section)
-
-        switch sectionType {
-        case .practiceMode:
-            return PracticeModeRow.allCases.count
-        case .simple:
-            return SimpleRow.allCases.count
-        case .progression:
-            return ProgressionRow.allCases.count
-        case .basic:
-            return BasicRow.allCases.count
-        }
-    }
-
-    override func tableView(_ tableView: UITableView,
-                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as? SettingsCell else {
-            return UITableViewCell()
-        }
-
-        let sectionType = sectionType(for: indexPath.section)
-        
-        switch sectionType {
-        case .practiceMode:
-            let row = PracticeModeRow(rawValue: indexPath.row)!
-            configurePracticeModeCell(cell, for: row)
-        case .simple:
-            let row = SimpleRow(rawValue: indexPath.row)!
-            configureSimpleCell(cell, for: row)
-        case .progression:
-            let row = ProgressionRow(rawValue: indexPath.row)!
-            configureProgressionCell(cell, for: row)
-        case .basic:
-            let row = BasicRow(rawValue: indexPath.row)!
-            configureBasicCell(cell, for: row)
-        }
-        
-        return cell
-    }
-    
-    private func configurePracticeModeCell(_ cell: SettingsCell, for row: PracticeModeRow) {
-        switch row {
-        case .toggle:
-            cell.configure(
-                title: row.title,
-                value: nil, // Segmented control shows the value itself
-                control: practiceModeSeg
-            )
-        }
-    }
-    
-    private func configureSimpleCell(_ cell: SettingsCell, for row: SimpleRow) {
-        switch row {
-        case .repeats:
-            let value = "\(settings.globalRepeats)x"
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: repeatsSlider
-            )
-        }
-    }
-    
-    private func configureBasicCell(_ cell: SettingsCell, for row: BasicRow) {
-        switch row {
-        case .gap:
-            let value = String(format: "%.1f seconds", settings.gapSeconds)
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: gapSlider
-            )
-
-        case .interGap:
-            let value = String(format: "%.1f seconds", settings.interSegmentGapSeconds)
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: interGapSlider
-            )
-
-        case .preroll:
-            cell.configure(
-                title: row.title,
-                value: nil, // No redundant value label for segmented control
-                control: prerollSeg
-            )
-            
-        case .duck:
-            let sw = UISwitch()
-            sw.isOn = settings.duckOthers
-            sw.onTintColor = .systemBlue
-            sw.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
-            
-            let value = settings.duckOthers ? "Enabled" : "Disabled"
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: sw
-            )
-        }
-    }
-    
-    private func configureProgressionCell(_ cell: SettingsCell, for row: ProgressionRow) {
-        switch row {
-        case .minSpeed:
-            let value = String(format: "%.1fx", settings.minSpeed)
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: minSpeedSlider
-            )
-            
-        case .progressionMinRepeats:
-            let value = "\(settings.progressionMinRepeats)x"
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: progressionMinRepeatsSlider
-            )
-            
-        case .progressionLinearRepeats:
-            let value = "\(settings.progressionLinearRepeats)x"
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: progressionLinearRepeatsSlider
-            )
-            
-        case .maxSpeed:
-            let value = String(format: "%.1fx", settings.maxSpeed)
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: maxSpeedSlider
-            )
-            
-        case .progressionMaxRepeats:
-            let value = "\(settings.progressionMaxRepeats)x"
-            cell.configure(
-                title: row.title,
-                value: value,
-                control: progressionMaxRepeatsSlider
-            )
-        }
-    }
-    
-    private func updateSecondary(section: Section, row: Int) {
-        guard let sectionIndex = visibleSectionIndex(for: section) else { return }
-        let indexPath = IndexPath(row: row, section: sectionIndex)
-        guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else { return }
-
-        // Only update value label for rows that have one
-        switch section {
-        case .practiceMode:
-            let practiceModeRow = PracticeModeRow(rawValue: row)!
-            switch practiceModeRow {
-            case .toggle:
-                cell.updateValue(settings.useProgressionMode ? "Progression" : "Simple", animated: true)
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+                work()
+                self.contentStack.layoutIfNeeded()
             }
-        case .simple:
-            let simpleRow = SimpleRow(rawValue: row)!
-            switch simpleRow {
-            case .repeats:
-                cell.updateValue("\(settings.globalRepeats)x", animated: true)
-            }
-        case .progression:
-            let progressionRow = ProgressionRow(rawValue: row)!
-            switch progressionRow {
-            case .progressionMinRepeats:
-                cell.updateValue("\(settings.progressionMinRepeats)x", animated: true)
-            case .progressionLinearRepeats:
-                cell.updateValue("\(settings.progressionLinearRepeats)x", animated: true)
-            case .progressionMaxRepeats:
-                cell.updateValue("\(settings.progressionMaxRepeats)x", animated: true)
-            case .minSpeed:
-                cell.updateValue(String(format: "%.1fx", settings.minSpeed), animated: true)
-            case .maxSpeed:
-                cell.updateValue(String(format: "%.1fx", settings.maxSpeed), animated: true)
-            }
-        case .basic:
-            let basicRow = BasicRow(rawValue: row)!
-            switch basicRow {
-            case .gap:
-                cell.updateValue(String(format: "%.1f seconds", settings.gapSeconds), animated: true)
-            case .interGap:
-                cell.updateValue(String(format: "%.1f seconds", settings.interSegmentGapSeconds), animated: true)
-            case .preroll:
-                // No value label for preroll (segmented control shows the value)
-                break
-            case .duck:
-                cell.updateValue(settings.duckOthers ? "Enabled" : "Disabled", animated: true)
-            }
+        } else {
+            work()
         }
     }
-    
+
+    // MARK: - Helpers
+
+    private func refreshCurve() {
+        curveView.update(
+            minSpeed: settings.minSpeed,
+            maxSpeed: settings.maxSpeed,
+            minRepeats: settings.progressionMinRepeats,
+            linearRepeats: settings.progressionLinearRepeats,
+            maxRepeats: settings.progressionMaxRepeats
+        )
+    }
+
+    private func makeSectionStack(header: String) -> UIStackView {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 12
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        let label = makeSectionHeaderLabel(header)
+        stack.addArrangedSubview(label)
+        return stack
+    }
+
+    private func makeSectionHeaderLabel(_ text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text.uppercased()
+        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        label.textColor = AppColors.secondaryText
+        return label
+    }
+
+    private func makeFieldLabel(_ text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = .systemFont(ofSize: 15, weight: .medium)
+        label.textColor = AppColors.primaryText
+        return label
+    }
+
+    private func makeSliderRow(title: String, valueLabel: UILabel, slider: UISlider) -> UIView {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 15, weight: .medium)
+        titleLabel.textColor = AppColors.primaryText
+        container.addSubview(titleLabel)
+
+        valueLabel.translatesAutoresizingMaskIntoConstraints = false
+        valueLabel.font = .monospacedSystemFont(ofSize: 14, weight: .semibold)
+        valueLabel.textColor = AppColors.secondaryText
+        valueLabel.textAlignment = .right
+        container.addSubview(valueLabel)
+
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(slider)
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: container.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            valueLabel.topAnchor.constraint(equalTo: container.topAnchor),
+            valueLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            valueLabel.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 8),
+            slider.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
+            slider.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            slider.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            slider.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+        ])
+        return container
+    }
+
+    private func makeControlRow(title: String, control: UIView) -> UIView {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 15, weight: .medium)
+        titleLabel.textColor = AppColors.primaryText
+        container.addSubview(titleLabel)
+
+        control.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(control)
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: container.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            control.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
+            control.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            control.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            control.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+        ])
+        return container
+    }
+
+    private func makeSwitchRow(title: String, valueLabel: UILabel, toggle: UISwitch) -> UIView {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 15, weight: .medium)
+        titleLabel.textColor = AppColors.primaryText
+        container.addSubview(titleLabel)
+
+        valueLabel.translatesAutoresizingMaskIntoConstraints = false
+        valueLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        valueLabel.textColor = AppColors.secondaryText
+        container.addSubview(valueLabel)
+
+        toggle.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(toggle)
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
+            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
+
+            valueLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            valueLabel.trailingAnchor.constraint(equalTo: toggle.leadingAnchor, constant: -8),
+
+            toggle.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            toggle.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+        ])
+        return container
+    }
+
     // MARK: - Actions
+
+    @objc private func practiceModeChanged() {
+        settings.useProgressionMode = practiceModeSeg.selectedSegmentIndex == 1
+        syncModeVisibility(animated: true)
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
 
     @objc private func repeatsChanged() {
         let value = Int(repeatsSlider.value)
         settings.globalRepeats = value
-        updateSecondary(section: .simple, row: SimpleRow.repeats.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
+        repeatsValueLabel.text = "\(value)x"
+        UISelectionFeedbackGenerator().selectionChanged()
     }
 
     @objc private func gapChanged() {
-        // snap to 0.1s for nicer values
-        let stepped = Double(round(gapSlider.value * 10) / 10)
-        gapSlider.value = Float(stepped)
-        settings.gapSeconds = Double(gapSlider.value)
-        updateSecondary(section: .basic, row: BasicRow.gap.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
+        let stepped = Float(round(gapSlider.value * 10) / 10)
+        gapSlider.value = stepped
+        settings.gapSeconds = Double(stepped)
+        gapValueLabel.text = String(format: "%.1fs", stepped)
+        UISelectionFeedbackGenerator().selectionChanged()
     }
 
     @objc private func interGapChanged() {
-        let stepped = Double(round(interGapSlider.value * 10) / 10)
-        interGapSlider.value = Float(stepped)
-        settings.interSegmentGapSeconds = Double(interGapSlider.value)
-        updateSecondary(section: .basic, row: BasicRow.interGap.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
+        let stepped = Float(round(interGapSlider.value * 10) / 10)
+        interGapSlider.value = stepped
+        settings.interSegmentGapSeconds = Double(stepped)
+        interGapValueLabel.text = String(format: "%.1fs", stepped)
+        UISelectionFeedbackGenerator().selectionChanged()
     }
 
     @objc private func prerollChanged() {
         let values = [0, 100, 200, 300]
         settings.prerollMs = values[prerollSeg.selectedSegmentIndex]
-        updateSecondary(section: .basic, row: BasicRow.preroll.rawValue)
-        
-        // Haptic feedback
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
 
-    
     @objc private func duckToggled(_ sw: UISwitch) {
         settings.duckOthers = sw.isOn
-        updateSecondary(section: .basic, row: BasicRow.duck.rawValue)
-        
-        // Haptic feedback
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
+        duckValueLabel.text = sw.isOn ? "Enabled" : "Disabled"
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
-    
-    @objc private func practiceModeChanged() {
-        settings.useProgressionMode = practiceModeSeg.selectedSegmentIndex == 1
-        
-        // Refresh the practice mode and middle (Simple/Progression) sections
-        let sectionsToReload = IndexSet(integer: 0).union(IndexSet(integer: 1))
-        tableView.reloadSections(sectionsToReload, with: .fade)
 
-        // Haptic feedback
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-    }
-    
-    @objc private func progressionMinRepeatsChanged() {
-        let value = Int(progressionMinRepeatsSlider.value)
-        settings.progressionMinRepeats = value
-        updateSecondary(section: .progression, row: ProgressionRow.progressionMinRepeats.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
-    }
-    
-    @objc private func progressionLinearRepeatsChanged() {
-        let value = Int(progressionLinearRepeatsSlider.value)
-        settings.progressionLinearRepeats = value
-        updateSecondary(section: .progression, row: ProgressionRow.progressionLinearRepeats.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
-    }
-    
-    @objc private func progressionMaxRepeatsChanged() {
-        let value = Int(progressionMaxRepeatsSlider.value)
-        settings.progressionMaxRepeats = value
-        updateSecondary(section: .progression, row: ProgressionRow.progressionMaxRepeats.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
-    }
-    
-    @objc private func minSpeedChanged() {
-        // Snap to 0.1x for nicer values
-        let stepped = Float(round(minSpeedSlider.value * 10) / 10)
-        minSpeedSlider.value = stepped
-        settings.minSpeed = stepped
-        
-        // Ensure max speed is always >= min speed
-        if settings.maxSpeed < settings.minSpeed {
-            settings.maxSpeed = settings.minSpeed
-            maxSpeedSlider.value = settings.maxSpeed
-            updateSecondary(section: .progression, row: ProgressionRow.maxSpeed.rawValue)
-        }
-        
-        updateSecondary(section: .progression, row: ProgressionRow.minSpeed.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
-    }
-    
-    @objc private func maxSpeedChanged() {
-        // Snap to 0.1x for nicer values
-        let stepped = Float(round(maxSpeedSlider.value * 10) / 10)
-        maxSpeedSlider.value = stepped
-        settings.maxSpeed = stepped
-        
-        // Ensure max speed is always >= min speed
-        if settings.maxSpeed < settings.minSpeed {
-            settings.maxSpeed = settings.minSpeed
-            maxSpeedSlider.value = settings.maxSpeed
-        }
-        
-        updateSecondary(section: .progression, row: ProgressionRow.maxSpeed.rawValue)
-        
-        // Haptic feedback
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
-    }
-    
-    
-    // MARK: - Table View Height
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-    
     // MARK: - Trait Collection
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            // Update colors for dark mode transition
-            view.backgroundColor = AppColors.primaryBackground
-            tableView.backgroundColor = AppColors.primaryBackground
-        }
-    }
-
-}
-
-// MARK: - PracticeModeRow
-extension SettingsViewController.PracticeModeRow {
-    var title: String {
-        switch self {
-        case .toggle: return "Practice Mode"
-        }
-    }
-    
-    var iconName: String {
-        switch self {
-        case .toggle: return "chart.line.uptrend.xyaxis"
-        }
-    }
-    
-    var iconColor: UIColor {
-        switch self {
-        case .toggle: return .systemIndigo
+            view.backgroundColor = AppColors.calmBackground
         }
     }
 }
 
-// MARK: - SimpleRow
-extension SettingsViewController.SimpleRow {
-    var title: String {
-        switch self {
-        case .repeats: return "Repeat Count"
-        }
-    }
-    
-    var iconName: String {
-        switch self {
-        case .repeats: return "arrow.clockwise.circle.fill"
-        }
-    }
-    
-    var iconColor: UIColor {
-        switch self {
-        case .repeats: return .systemBlue
-        }
-    }
-}
+// MARK: - SpeedPresetStripDelegate
 
-// MARK: - BasicRow
-extension SettingsViewController.BasicRow {
-    var title: String {
-        switch self {
-        case .gap: return "Gap Between Repeats"
-        case .interGap: return "Gap Between Clips"
-        case .preroll: return "Preroll"
-        case .duck: return "Duck Other Audio"
-        }
-    }
-    
-    var iconName: String {
-        switch self {
-        case .gap: return "timer"
-        case .interGap: return "arrow.left.and.right"
-        case .preroll: return "play.circle.fill"
-        case .duck: return "speaker.wave.2.fill"
-        }
-    }
-    
-    var iconColor: UIColor {
-        switch self {
-        case .gap: return .systemGreen
-        case .interGap: return .systemPurple
-        case .preroll: return .systemOrange
-        case .duck: return .systemTeal
-        }
-    }
-}
-
-// MARK: - ProgressionRow
-extension SettingsViewController.ProgressionRow {
-    var title: String {
-        switch self {
-        case .progressionMinRepeats: return "Starting Speed Repeats"
-        case .progressionLinearRepeats: return "Linear Progression Repeats"
-        case .progressionMaxRepeats: return "Ending Speed Repeats"
-        case .minSpeed: return "Starting Speed"
-        case .maxSpeed: return "Ending Speed"
-        }
-    }
-    
-    var iconName: String {
-        switch self {
-        case .progressionMinRepeats: return "1.circle.fill"
-        case .progressionLinearRepeats: return "2.circle.fill"
-        case .progressionMaxRepeats: return "3.circle.fill"
-        case .minSpeed: return "tortoise.fill"
-        case .maxSpeed: return "hare.fill"
-        }
-    }
-    
-    var iconColor: UIColor {
-        switch self {
-        case .minSpeed: return .systemGreen
-        case .progressionMinRepeats: return .systemGreen
-        case .progressionLinearRepeats: return .systemYellow
-        case .maxSpeed: return .systemRed
-        case .progressionMaxRepeats: return .systemRed
-        }
+extension SettingsViewController: SpeedPresetStripDelegate {
+    func speedPresetStrip(_ strip: SpeedPresetStrip, didSelectSpeed speed: Float) {
+        settings.simpleSpeed = speed
     }
 }

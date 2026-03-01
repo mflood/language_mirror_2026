@@ -37,7 +37,7 @@ protocol PracticeService: AnyObject {
     func loadSessionSummary(packId: String, trackId: String, libraryService: LibraryService) -> PracticeSessionSummary?
     
     /// Calculate the current speed based on progression mode and settings
-    func calculateSpeed(useProgressionMode: Bool, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float
+    func calculateSpeed(useProgressionMode: Bool, simpleSpeed: Float, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float
 }
 
 enum PracticeServiceError: Error, LocalizedError {

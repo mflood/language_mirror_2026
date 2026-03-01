@@ -23,7 +23,12 @@ protocol SettingsService: AnyObject {
     var progressionMaxRepeats: Int { get set }         // O repeats at maximum speed (1-100)
     
     // Speed settings
+    var simpleSpeed: Float { get set }                 // 0.3..3.0, default 1.0
     var minSpeed: Float { get set }                    // 0.3..1.0
     var maxSpeed: Float { get set }                    // 0.5..3.0
+}
+
+extension SettingsService {
+    static var speedPresets: [Float] { [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.5, 2.0] }
 }
 

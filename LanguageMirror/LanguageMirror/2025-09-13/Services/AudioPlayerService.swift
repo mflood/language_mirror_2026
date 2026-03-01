@@ -46,6 +46,7 @@ protocol AudioPlayerService: AnyObject {
               interClipGapSeconds: TimeInterval,
               prerollMs: Int) throws
     
+    func setPlaybackSpeed(_ speed: Float)
     func pause()
     func resume()
     func stop()
