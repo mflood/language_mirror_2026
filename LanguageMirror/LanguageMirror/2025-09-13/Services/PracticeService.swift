@@ -32,6 +32,9 @@ protocol PracticeService: AnyObject {
     
     /// List recent practice sessions sorted by most recent first
     func listRecentSessions(limit: Int) -> [(packId: String, trackId: String, lastUpdated: Date)]
+
+    /// Load a summary of a practice session for display in the library
+    func loadSessionSummary(packId: String, trackId: String, libraryService: LibraryService) -> PracticeSessionSummary?
     
     /// Calculate the current speed based on progression mode and settings
     func calculateSpeed(useProgressionMode: Bool, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float

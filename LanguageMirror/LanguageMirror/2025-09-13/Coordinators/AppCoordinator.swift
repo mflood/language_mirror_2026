@@ -188,6 +188,11 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         libraryCoordinator?.showTrackDetailAndPractice(for: track, practiceSet: practiceSet)
     }
     
+    func switchToImportTab() {
+        // Switch to Import tab (index 1)
+        tabBarController.selectedIndex = 1
+    }
+    
     // MARK: - UITabBarControllerDelegate
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {

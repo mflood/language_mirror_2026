@@ -129,6 +129,15 @@ struct ClipPlayCount: Codable, Equatable {
     var playCount: Int
 }
 
+struct PracticeSessionSummary: Hashable {
+    let packId: String
+    let trackId: String
+    let practiceSetId: String
+    let currentClipIndex: Int
+    let totalClips: Int
+    let lastUpdatedAt: Date
+}
+
 struct PracticeSession: Codable, Equatable {
     let id: String
     let packId: String

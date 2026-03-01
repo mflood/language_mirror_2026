@@ -12,26 +12,25 @@ final class LibraryCoordinator: Coordinator {
     let navigationController = UINavigationController()
     private let container: AppContainer
     private weak var appCoordinator: AppCoordinator?
-    
+
     init(container: AppContainer, appCoordinator: AppCoordinator) {
         self.container = container
         self.appCoordinator = appCoordinator
     }
 
     func start() -> UINavigationController {
-        let vc = LibraryViewController(service: container.libraryService)
-        // self.viewController = vc
+        let vc = LibraryViewController(libraryService: container.libraryService, practiceService: container.practiceService)
         vc.title = "Library"
         vc.delegate = self
         navigationController.viewControllers = [vc]
         navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }
-    
+
     deinit {
         print("LibraryCoordinator deinit")
     }
-    
+
     func showTrackDetail(for track: Track) {
         let detail = TrackDetailViewController(
             track: track,
@@ -43,7 +42,7 @@ final class LibraryCoordinator: Coordinator {
         detail.delegate = self
         navigationController.pushViewController(detail, animated: true)
     }
-    
+
     func showTrackDetailAndPractice(for track: Track, practiceSet: PracticeSet) {
         let detail = TrackDetailViewController(
             track: track,
@@ -54,7 +53,7 @@ final class LibraryCoordinator: Coordinator {
         )
         detail.delegate = self
         navigationController.pushViewController(detail, animated: true)
-        
+
         // Immediately push the practice view controller
         let practiceVC = PracticeViewController(
             settings: container.settings,
@@ -69,7 +68,7 @@ final class LibraryCoordinator: Coordinator {
 }
 
 extension LibraryCoordinator: LibraryViewControllerDelegate {
-    func libraryViewController(_ vc: LibraryViewController, didSelect track: Track) {
+    func libraryViewController(_ vc: LibraryViewController, didSelectTrack track: Track) {
         let detail = TrackDetailViewController(
             track: track,
             audioPlayer: container.audioPlayer,
@@ -79,6 +78,14 @@ extension LibraryCoordinator: LibraryViewControllerDelegate {
         )
         detail.delegate = self
         navigationController.pushViewController(detail, animated: true)
+    }
+
+    func libraryViewController(_ vc: LibraryViewController, didRequestResumePractice track: Track, practiceSet: PracticeSet) {
+        showTrackDetailAndPractice(for: track, practiceSet: practiceSet)
+    }
+
+    func libraryViewControllerDidRequestImport(_ vc: LibraryViewController) {
+        appCoordinator?.switchToImportTab()
     }
 }
 
@@ -93,12 +100,12 @@ extension LibraryCoordinator: TrackDetailViewControllerDelegate {
         print("  Practice Set ID: \(practiceSet.id)")
         print("  Practice Set Title: \(practiceSet.title ?? "nil")")
         print("  Practice Set Clips Count: \(practiceSet.clips.count)")
-        
+
         // Log each clip's details
         for (index, clip) in practiceSet.clips.enumerated() {
             print("  Clip[\(index)]: startMs=\(clip.startMs), endMs=\(clip.endMs), kind=\(clip.kind.rawValue), title=\(clip.title ?? "nil")")
         }
-        
+
         // Push practice view onto Library nav stack for contextual navigation
         let practiceVC = PracticeViewController(
             settings: container.settings,
@@ -109,7 +116,7 @@ extension LibraryCoordinator: TrackDetailViewControllerDelegate {
         )
         practiceVC.loadTrackAndPracticeSet(track: track, practiceSet: practiceSet)
         navigationController.pushViewController(practiceVC, animated: true)
-        
+
         // Sync Practice tab state so it shows the same session
         appCoordinator?.practiceSessionStartedFromLibrary(track: track, practiceSet: practiceSet)
     }

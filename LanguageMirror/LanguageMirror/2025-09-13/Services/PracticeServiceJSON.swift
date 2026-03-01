@@ -184,6 +184,24 @@ final class PracticeServiceJSON: PracticeService {
         return Array(sessions.prefix(limit))
     }
     
+    func loadSessionSummary(packId: String, trackId: String, libraryService: LibraryService) -> PracticeSessionSummary? {
+        guard let session = try? loadSession(packId: packId, trackId: trackId) else { return nil }
+
+        // Resolve practice set from library to get total clip count
+        let practiceSets = libraryService.listPracticeSets(in: trackId)
+        let practiceSet = practiceSets.first(where: { $0.id == session.practiceSetId })
+        let totalClips = practiceSet?.clips.filter({ $0.kind == .drill }).count ?? 0
+
+        return PracticeSessionSummary(
+            packId: session.packId,
+            trackId: session.trackId,
+            practiceSetId: session.practiceSetId,
+            currentClipIndex: session.currentClipIndex,
+            totalClips: totalClips,
+            lastUpdatedAt: session.lastUpdatedAt
+        )
+    }
+
     func calculateSpeed(useProgressionMode: Bool, currentLoop: Int, progressionMinRepeats: Int, progressionLinearRepeats: Int, progressionMaxRepeats: Int, minSpeed: Float, maxSpeed: Float) -> Float {
         // If not using progression mode, return normal speed (1.0)
         guard useProgressionMode else { return 1.0 }

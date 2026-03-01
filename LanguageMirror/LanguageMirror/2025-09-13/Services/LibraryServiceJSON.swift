@@ -336,6 +336,17 @@ final class LibraryServiceJSON: LibraryService {
         throw LibraryError.notFound // Not implemented
     }
     
+    // MARK: - Recently Added
+
+    func listRecentlyAddedTracks(limit: Int, withinDays: Int) -> [Track] {
+        let cutoff = Calendar.current.date(byAdding: .day, value: -withinDays, to: Date()) ?? Date.distantPast
+        return cache.allTracks()
+            .filter { ($0.createdAt ?? Date.distantPast) >= cutoff }
+            .sorted { ($0.createdAt ?? Date.distantPast) > ($1.createdAt ?? Date.distantPast) }
+            .prefix(limit)
+            .map { $0 }
+    }
+
     // MARK: - Favorite Methods
     
     func getAllFavoritePracticeSets() -> [(track: Track, practiceSet: PracticeSet)] {
