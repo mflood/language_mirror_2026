@@ -51,6 +51,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     private let headerView = UIView()
     private let foreverButton = UIButton(type: .system)
     private let modeToggleButton = UIButton(type: .system)
+    private let editButton = UIButton(type: .system)
     private let saveButton = UIButton(type: .system)
     private let discardButton = UIButton(type: .system)
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -65,8 +66,14 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
     // Navigation bar buttons
     private var favoriteButton: UIBarButtonItem?
-    
+
+    // Switchable constraint for progress label leading edge
+    private var progressLabelLeadingConstraint: NSLayoutConstraint?
+
     // State
+    private var isEditMode: Bool = false {
+        didSet { guard oldValue != isEditMode else { return }; applyEditModeTransition() }
+    }
     private var isPlaying = false
     private var isPaused = false
     private var currentTrackTimeMs: Int?
@@ -123,9 +130,14 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         // 1. Always stop playback so audio is not left running in the background.
         // 2. Persist the current PracticeSession state so resuming later picks up
         //    from the most recent known state.
+        // Silently exit edit mode when navigating away
+        if isEditMode {
+            isEditMode = false
+        }
+
         if isMovingFromParent || isBeingDismissed {
             stopCurrentPlayback()
-            
+
             if let session = currentSession {
                 do {
                     try practiceService.saveSession(session)
@@ -176,6 +188,14 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         modeToggleButton.addTarget(self, action: #selector(modeToggleButtonTapped), for: .touchUpInside)
         updateModeToggleButton()
         headerView.addSubview(modeToggleButton)
+
+        // Edit button (trailing edge of header)
+        editButton.translatesAutoresizingMaskIntoConstraints = false
+        editButton.setTitle("Edit", for: .normal)
+        editButton.setTitleColor(AppColors.primaryAccent, for: .normal)
+        editButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        headerView.addSubview(editButton)
 
         // Save button
         saveButton.translatesAutoresizingMaskIntoConstraints = false
@@ -267,11 +287,11 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         
         // Progress label (status display)
         progressLabel.translatesAutoresizingMaskIntoConstraints = false
-        progressLabel.font = .monospacedSystemFont(ofSize: 11, weight: .medium)
+        progressLabel.font = .monospacedSystemFont(ofSize: 12, weight: .medium)
         progressLabel.textColor = AppColors.secondaryText
         progressLabel.text = "Ready to practice"
         progressLabel.textAlignment = .left
-        progressLabel.numberOfLines = 2
+        progressLabel.numberOfLines = 1
         bottomBar.addSubview(progressLabel)
         
         // Layout
@@ -290,10 +310,15 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             modeToggleButton.leadingAnchor.constraint(equalTo: foreverButton.trailingAnchor, constant: 4),
             modeToggleButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
 
-            saveButton.leadingAnchor.constraint(equalTo: modeToggleButton.trailingAnchor, constant: 8),
+            // Edit button (trailing edge)
+            editButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            editButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+
+            // Save/Discard anchored from edit button's leading
+            saveButton.trailingAnchor.constraint(equalTo: editButton.leadingAnchor, constant: -8),
             saveButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            discardButton.leadingAnchor.constraint(equalTo: saveButton.trailingAnchor, constant: 8),
+
+            discardButton.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -8),
             discardButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             
             // Speed strip container
@@ -306,29 +331,27 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            bottomBar.heightAnchor.constraint(equalToConstant: 92),
+            bottomBar.heightAnchor.constraint(equalToConstant: 56),
             
-            // Control buttons (top section of bottom bar)
+            // Control buttons (inline row in bottom bar)
             playPauseButton.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor, constant: 16),
-            playPauseButton.topAnchor.constraint(equalTo: bottomBar.topAnchor, constant: 8),
+            playPauseButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             playPauseButton.widthAnchor.constraint(equalToConstant: 44),
             playPauseButton.heightAnchor.constraint(equalToConstant: 44),
-            
+
             splitButton.leadingAnchor.constraint(equalTo: playPauseButton.trailingAnchor, constant: 12),
-            splitButton.topAnchor.constraint(equalTo: playPauseButton.topAnchor),
+            splitButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             splitButton.widthAnchor.constraint(equalToConstant: 44),
             splitButton.heightAnchor.constraint(equalToConstant: 44),
-            
+
             mergeButton.leadingAnchor.constraint(equalTo: splitButton.trailingAnchor, constant: 12),
-            mergeButton.topAnchor.constraint(equalTo: playPauseButton.topAnchor),
+            mergeButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             mergeButton.widthAnchor.constraint(equalToConstant: 44),
             mergeButton.heightAnchor.constraint(equalToConstant: 44),
-            
-            // Status display (bottom section of bottom bar)
-            progressLabel.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor, constant: 16),
+
+            // Progress label (inline, trailing edge always fixed)
             progressLabel.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor, constant: -16),
-            progressLabel.topAnchor.constraint(equalTo: playPauseButton.bottomAnchor, constant: 4),
-            progressLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomBar.bottomAnchor, constant: -8),
+            progressLabel.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
             
             // Table view
             tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
@@ -342,6 +365,16 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             emptyStateView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             emptyStateView.bottomAnchor.constraint(equalTo: speedStripContainer.topAnchor),
         ])
+
+        // Switchable leading constraint for progress label (practice mode: after play button)
+        progressLabelLeadingConstraint = progressLabel.leadingAnchor.constraint(equalTo: playPauseButton.trailingAnchor, constant: 12)
+        progressLabelLeadingConstraint?.isActive = true
+
+        // Split/merge hidden by default (shown only in edit mode)
+        splitButton.isHidden = true
+        splitButton.alpha = 0
+        mergeButton.isHidden = true
+        mergeButton.alpha = 0
     }
     
     private func restoreLastTrackOrPickFirst() {
@@ -466,49 +499,15 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     }
     
     private func updateProgressLabel() {
-        print("📊 [PracticeViewController] updateProgressLabel called")
         guard let session = currentSession, !workingClips.isEmpty else {
             progressLabel.text = "Ready to practice"
-            print("  No session or clips, showing 'Ready to practice'")
             return
         }
         let clipIndex = min(session.currentClipIndex, workingClips.count - 1)
         let clip = workingClips[clipIndex]
         let totalLoops = effectiveLoopTarget(for: clip)
-        
-        print("  Current clip index: \(clipIndex)")
-        print("  Total loops: \(totalLoops)")
-        print("  Current loop count: \(session.currentLoopCount)")
-        print("  Session ID: \(session.id)")
-        
-        // Check clipPlayCounts for current clip
-        if clipIndex < workingClips.count {
-            let currentClip = workingClips[clipIndex]
-            let clipPlayCount = session.clipPlayCounts[currentClip.id] ?? 0
-            print("  Current clip ID: \(currentClip.id)")
-            print("  Clip play count: \(clipPlayCount)")
-        }
-        
-        // Format time displays
-        var text = ""
-        
-        // Add clip time if available
-        if let trackMs = currentTrackTimeMs, let startMs = currentClipStartMs, let endMs = currentClipEndMs {
-            let clipElapsed = max(0, trackMs - startMs)
-            let clipDuration = max(0, endMs - startMs)
-            text += "Clip: \(formatTime(clipElapsed))/\(formatTime(clipDuration)) • "
-        }
-        
-        // Add track time if available
-        if let trackMs = currentTrackTimeMs, let track = selectedTrack, let durationMs = track.durationMs {
-            text += "Track: \(formatTime(trackMs))/\(formatTime(durationMs))\n"
-        } else {
-            text += "\n"
-        }
-        
-        // Compute display speed. In progression mode, prefer a fresh calculation
-        // based on the current loop so the status text always matches the actual
-        // playback rate.
+
+        // Compute display speed
         let displaySpeed: Float
         if settings.useProgressionMode {
             displaySpeed = practiceService.calculateSpeed(
@@ -525,10 +524,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             displaySpeed = settings.simpleSpeed
         }
 
-        text += "Clip \(clipIndex + 1)/\(workingClips.count) • Loop \(min(session.currentLoopCount + 1, totalLoops))/\(totalLoops) • \(String(format: "%.2fx", displaySpeed))"
-
+        // Single-line format: "Clip 3/10 · Loop 5/8 · 1.25x"
+        let text = "Clip \(clipIndex + 1)/\(workingClips.count) · Loop \(min(session.currentLoopCount + 1, totalLoops))/\(totalLoops) · \(String(format: "%.2fx", displaySpeed))"
         progressLabel.text = text
-        print("  Updated progress label: \(text)")
     }
 
     private func formatTime(_ ms: Int) -> String {
@@ -559,7 +557,8 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     }
     
     private func validateSplitButton() {
-        guard isPlaying,
+        guard isEditMode,
+              isPlaying,
               let trackMs = currentTrackTimeMs,
               let startMs = currentClipStartMs,
               let endMs = currentClipEndMs,
@@ -567,25 +566,26 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
               trackMs < endMs - 500 else {
             splitButton.isEnabled = false
             splitButton.tintColor = AppColors.tertiaryText
-            splitButton.alpha = 0.4
+            splitButton.alpha = isEditMode ? 0.4 : 0
             return
         }
-        
+
         splitButton.isEnabled = true
         splitButton.tintColor = AppColors.primaryAccent
         splitButton.alpha = 1.0
     }
-    
+
     private func validateMergeButton() {
-        guard let session = currentSession,
+        guard isEditMode,
+              let session = currentSession,
               session.currentClipIndex > 0,
               workingClips.count > 1 else {
             mergeButton.isEnabled = false
             mergeButton.tintColor = AppColors.tertiaryText
-            mergeButton.alpha = 0.4
+            mergeButton.alpha = isEditMode ? 0.4 : 0
             return
         }
-        
+
         mergeButton.isEnabled = true
         mergeButton.tintColor = AppColors.primaryAccent
         mergeButton.alpha = 1.0
@@ -651,10 +651,73 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         tableView.reloadData()
     }
 
+    @objc private func editButtonTapped() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.selectionChanged()
+
+        if isEditMode && hasUnsavedChanges {
+            // Prompt before leaving edit mode with unsaved changes
+            let alert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved clip edits.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+                self?.saveButtonTapped()
+                self?.isEditMode = false
+            })
+            alert.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+                self?.discardChanges()
+                self?.isEditMode = false
+            })
+            alert.addAction(UIAlertAction(title: "Keep Editing", style: .cancel))
+            present(alert, animated: true)
+        } else {
+            isEditMode.toggle()
+        }
+    }
+
+    private func applyEditModeTransition() {
+        // Update edit button title
+        editButton.setTitle(isEditMode ? "Done" : "Edit", for: .normal)
+
+        // Animate split/merge visibility
+        if isEditMode {
+            splitButton.isHidden = false
+            mergeButton.isHidden = false
+        }
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+            self.splitButton.alpha = self.isEditMode ? 1.0 : 0
+            self.mergeButton.alpha = self.isEditMode ? (self.mergeButton.isEnabled ? 1.0 : 0.4) : 0
+            // Tint header background
+            self.headerView.backgroundColor = self.isEditMode
+                ? AppColors.primaryAccent.withAlphaComponent(0.08)
+                : AppColors.primaryBackground
+        } completion: { _ in
+            if !self.isEditMode {
+                self.splitButton.isHidden = true
+                self.mergeButton.isHidden = true
+            }
+        }
+
+        // Swap progress label leading constraint
+        progressLabelLeadingConstraint?.isActive = false
+        if isEditMode {
+            progressLabelLeadingConstraint = progressLabel.leadingAnchor.constraint(equalTo: mergeButton.trailingAnchor, constant: 12)
+        } else {
+            progressLabelLeadingConstraint = progressLabel.leadingAnchor.constraint(equalTo: playPauseButton.trailingAnchor, constant: 12)
+        }
+        progressLabelLeadingConstraint?.isActive = true
+
+        // Reload table to enable/disable swipe actions
+        tableView.reloadData()
+
+        // Validate edit-mode buttons
+        validateSplitButton()
+        validateMergeButton()
+        updateSaveDiscardButtons()
+    }
+
     @objc private func favoriteButtonTapped() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
-        
+
         guard let track = selectedTrack, let practiceSet = practiceSet else { return }
         
         do {
@@ -739,7 +802,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     }
     
     private func updateSaveDiscardButtons() {
-        let shouldShow = hasUnsavedChanges
+        let shouldShow = hasUnsavedChanges && isEditMode
         
         // When showing buttons, unhide them BEFORE animating alpha
         // (hidden views don't render, so alpha animation has no effect)
@@ -1411,6 +1474,7 @@ extension PracticeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard isEditMode else { return nil }
         let resetAction = UIContextualAction(style: .destructive, title: "Reset") { [weak self] _, _, completion in
             self?.resetClipToZero(at: indexPath.row)
             completion(true)
@@ -1423,6 +1487,7 @@ extension PracticeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard isEditMode else { return nil }
         let clip = workingClips[indexPath.row]
         var actions: [UIContextualAction] = []
         

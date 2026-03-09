@@ -40,5 +40,9 @@ extension PracticeCoordinator: PracticeHomeViewControllerDelegate {
     func practiceHomeViewController(_ vc: PracticeHomeViewController, didSelectPracticeSet practiceSet: PracticeSet, forTrack track: Track) {
         appCoordinator?.navigateToPracticeFromHome(track: track, practiceSet: practiceSet)
     }
+
+    func practiceHomeViewControllerDidRequestBrowseLibrary(_ vc: PracticeHomeViewController) {
+        appCoordinator?.switchToLibraryTab()
+    }
 }
 
