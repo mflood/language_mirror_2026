@@ -291,7 +291,7 @@ final class TrackDetailViewController: UITableViewController {
                 }
                 
                 let practiceSet = track.practiceSets[indexPath.row]
-                let title = practiceSet.title?.isEmpty == false ? practiceSet.title! : "Practice Set \(indexPath.row + 1)"
+                let title = practiceSet.title?.isEmpty == false ? practiceSet.title ?? "Practice Set \(indexPath.row + 1)" : "Practice Set \(indexPath.row + 1)"
                 let drillCount = practiceSet.clips.filter { $0.kind == .drill }.count
                 let clipCount = practiceSet.clips.count
                 
