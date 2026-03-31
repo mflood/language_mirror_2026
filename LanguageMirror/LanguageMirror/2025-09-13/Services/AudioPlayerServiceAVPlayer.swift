@@ -396,11 +396,16 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             
             // Update Now Playing for this clip (duration is clip length)
             let segDuration = self.currentSegmentEnd.seconds - self.currentSegmentStart.seconds // Media Player
+            let currentLoop = self.totalLoopsForCurrentClip - self.currentSegmentRepeatsRemaining
             self.updateNowPlaying(track: track,
                                   segmentTitle: seg.title,
                                   elapsed: 0,
                                   duration: max(0.01, segDuration),
-                                  rate: speed) // Media Player
+                                  rate: speed,
+                                  clipIndex: self.currentSegmentIndex,
+                                  clipCount: self.clipsQueue.count,
+                                  currentLoop: currentLoop,
+                                  totalLoops: self.totalLoopsForCurrentClip) // Media Player
             
             // Post clip change notification
             print("📢 [AudioPlayerServiceAVPlayer] Calling delegate clipDidChange")
@@ -434,8 +439,9 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             player?.pause()
             isPlaying = false
 
+            let seg = clipsQueue[currentSegmentIndex]
+            guard let track = currentTrack else { return }
             if var session = currentSession {
-                let seg = clipsQueue[currentSegmentIndex]
                 do {
                     print("🔄 [AudioPlayerServiceAVPlayer] Calling incrementClipPlayCount for clip: \(seg.id)")
                     try practiceService.incrementClipPlayCount(session: &session, clipId: seg.id)
@@ -497,9 +503,18 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                             
                             // Post speed change notification
                             self.delegate?.audioPlayerSpeedDidChange(speed: speed)
-                            
-                            // reset elapsed for new loop
-                            self.updateNowPlayingElapsed(0)
+
+                            // Update lock screen with current loop progress
+                            let segDuration = self.currentSegmentEnd.seconds - self.currentSegmentStart.seconds
+                            self.updateNowPlaying(track: track,
+                                                  segmentTitle: seg.title,
+                                                  elapsed: 0,
+                                                  duration: max(0.01, segDuration),
+                                                  rate: speed,
+                                                  clipIndex: self.currentSegmentIndex,
+                                                  clipCount: self.clipsQueue.count,
+                                                  currentLoop: currentLoop,
+                                                  totalLoops: self.totalLoopsForCurrentClip)
                             self.delegate?.audioPlayerDidStart()
                         }
                     }
@@ -549,7 +564,18 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                             self.player?.rate = speed
                             self.isPlaying = true
                             self.delegate?.audioPlayerSpeedDidChange(speed: speed)
-                            self.updateNowPlayingElapsed(0)
+
+                            // Update lock screen with current loop progress
+                            let segDuration = self.currentSegmentEnd.seconds - self.currentSegmentStart.seconds
+                            self.updateNowPlaying(track: track,
+                                                  segmentTitle: seg.title,
+                                                  elapsed: 0,
+                                                  duration: max(0.01, segDuration),
+                                                  rate: speed,
+                                                  clipIndex: self.currentSegmentIndex,
+                                                  clipCount: self.clipsQueue.count,
+                                                  currentLoop: currentLoop,
+                                                  totalLoops: self.totalLoopsForCurrentClip)
                             self.delegate?.audioPlayerDidStart()
                         }
                     }
@@ -860,11 +886,10 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
             return .success 
         }
 
-        // (Optional) Next/Previous as clip skip:
-        // center.nextTrackCommand.isEnabled = true
-        // center.previousTrackCommand.isEnabled = true
-        // center.nextTrackCommand.addTarget { [weak self] _ in self?.skipToNextSegment(); return .success }
-        // center.previousTrackCommand.addTarget { [weak self] _ in self?.skipToPreviousSegment(); return .success }
+        center.nextTrackCommand.isEnabled = true
+        center.previousTrackCommand.isEnabled = true
+        center.nextTrackCommand.addTarget { [weak self] _ in self?.skipToNextSegment(); return .success }
+        center.previousTrackCommand.addTarget { [weak self] _ in self?.skipToPreviousSegment(); return .success }
     }
 
     private func disableRemoteCommands() {
@@ -878,8 +903,10 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         center.playCommand.isEnabled = false
         center.pauseCommand.isEnabled = false
         center.stopCommand.isEnabled = false
-        // center.nextTrackCommand.isEnabled = false
-        // center.previousTrackCommand.isEnabled = false
+        center.nextTrackCommand.isEnabled = false
+        center.previousTrackCommand.isEnabled = false
+        center.nextTrackCommand.removeTarget(nil)
+        center.previousTrackCommand.removeTarget(nil)
     }
 
     // MARK: - Now Playing
@@ -888,9 +915,13 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                   segmentTitle: String?,
                                   elapsed: Double,
                                   duration: Double,
-                                  rate: Float) {
+                                  rate: Float,
+                                  clipIndex: Int? = nil,
+                                  clipCount: Int? = nil,
+                                  currentLoop: Int? = nil,
+                                  totalLoops: Int? = nil) {
         var info: [String: Any] = [:]
-        
+
         // Track/clip title - unwrap segmentTitle properly
         let displayTitle: String
         if let segment = segmentTitle, !segment.isEmpty {
@@ -898,10 +929,20 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         } else {
             displayTitle = track.title
         }
-        
+
+        // Artist line: loop and clip progress
+        var artistParts: [String] = []
+        if let loop = currentLoop, let total = totalLoops {
+            artistParts.append("Loop \(loop)/\(total)")
+        }
+        if let idx = clipIndex, let count = clipCount {
+            artistParts.append("Clip \(idx + 1)/\(count)")
+        }
+        let artistText = artistParts.isEmpty ? "Practice Session" : artistParts.joined(separator: " · ")
+
         info[MPMediaItemPropertyTitle] = displayTitle
-        info[MPMediaItemPropertyAlbumTitle] = "LanguageMirror"
-        info[MPMediaItemPropertyArtist] = "Practice Session"
+        info[MPMediaItemPropertyAlbumTitle] = track.title
+        info[MPMediaItemPropertyArtist] = artistText
         
         // Playback info
         info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsed
@@ -965,9 +1006,35 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
     }
 
-    // (Optional) clip skip for remote next/prev:
-    // private func skipToNextSegment() { currentSegmentIndex = min(currentSegmentIndex+1, clipsQueue.count); startCurrentSegment() }
-    // private func skipToPreviousSegment() { currentSegmentIndex = max(0, currentSegmentIndex-1); startCurrentSegment() }
+    private func skipToNextSegment() {
+        guard !clipsQueue.isEmpty else { return }
+        pendingWorkItem?.cancel()
+        player?.pause()
+        isPlaying = false
+        currentSegmentIndex = min(currentSegmentIndex + 1, clipsQueue.count - 1)
+        if var session = currentSession {
+            session.currentClipIndex = currentSegmentIndex
+            session.currentLoopCount = 0
+            try? practiceService.saveSession(session)
+            currentSession = session
+        }
+        startCurrentSegment()
+    }
+
+    private func skipToPreviousSegment() {
+        guard !clipsQueue.isEmpty else { return }
+        pendingWorkItem?.cancel()
+        player?.pause()
+        isPlaying = false
+        currentSegmentIndex = max(0, currentSegmentIndex - 1)
+        if var session = currentSession {
+            session.currentClipIndex = currentSegmentIndex
+            session.currentLoopCount = 0
+            try? practiceService.saveSession(session)
+            currentSession = session
+        }
+        startCurrentSegment()
+    }
 
 
 

@@ -1461,10 +1461,8 @@ extension PracticeViewController: UITableViewDelegate {
             try practiceService.saveSession(session)
             currentSession = session
             
-            // If currently playing, restart playback at new clip
-            if isPlaying {
-                startPractice()
-            }
+            // Start (or restart) playback at the tapped clip
+            startPractice()
             
             tableView.reloadData()
             updateProgressLabel()
