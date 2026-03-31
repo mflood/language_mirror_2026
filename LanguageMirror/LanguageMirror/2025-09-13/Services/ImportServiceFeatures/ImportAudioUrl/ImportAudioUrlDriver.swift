@@ -72,7 +72,7 @@ public final class ImportAudioUrlDriver {
         let ext = dest.pathExtension
         let tags = autoTagsForTrack(sourceType: .youtube, languageCode: nil, fileExtension: ext)
         
-        let emptyPracticeSet = PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)
+        let emptyPracticeSet = PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0, trackDurationMs: ms)
         
         let track = Track(
             id: trackId,

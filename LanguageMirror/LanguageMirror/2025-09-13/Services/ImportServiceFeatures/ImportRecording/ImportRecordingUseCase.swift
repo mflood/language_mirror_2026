@@ -56,7 +56,7 @@ public final class ImportRecordingUseCase {
             localUrl: dest,
             durationMs: ms,
             languageCode: nil,
-            practiceSets: [PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0)],
+            practiceSets: [PracticeSet.fullTrackFactory(trackId: trackId, displayOrder: 0, trackDurationMs: ms)],
             transcripts: [],
             tags: tags,
             sourceType: .localRecording,

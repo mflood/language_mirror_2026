@@ -92,7 +92,7 @@ public final class ImportVideoDriver {
             localUrl: audioURL,
             durationMs: durationMs,
             languageCode: nil,
-            practiceSets: [PracticeSet.fullTrackFactory(trackId: id, displayOrder: 0)],
+            practiceSets: [PracticeSet.fullTrackFactory(trackId: id, displayOrder: 0, trackDurationMs: durationMs)],
             transcripts: [],
             tags: tags,
             sourceType: .videoExtract,
