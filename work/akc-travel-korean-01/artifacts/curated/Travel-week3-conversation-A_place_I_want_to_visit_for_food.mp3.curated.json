@@ -1,0 +1,132 @@
+{
+  "transcripts": [
+    {
+      "startMs": 0,
+      "endMs": 3440,
+      "text": "맛있는 음식 때문에 가고 싶은 곳이 있어요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 4360,
+      "endMs": 7840,
+      "text": "네, 저는 광장시장에 가고 싶어요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 8580,
+      "endMs": 11280,
+      "text": "아, 거기에서 무슨 음식을 먹고 싶어요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 12160,
+      "endMs": 13480,
+      "text": "6개를 먹고 싶어요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 14260,
+      "endMs": 15700,
+      "text": "6개만 먹고 싶어요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 16900,
+      "endMs": 19640,
+      "text": "아니요. 빈대 떡도 같이 먹고 싶어요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 20780,
+      "endMs": 22280,
+      "text": "광장시장은 자주 가요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 23080,
+      "endMs": 24680,
+      "text": "아니요, 자주 가지는 않아요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 25300,
+      "endMs": 27620,
+      "text": "그럼 왜 다시 가고 싶어요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 28620,
+      "endMs": 30660,
+      "text": "맛있는 음식도 정말 많고요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 31060,
+      "endMs": 32720,
+      "text": "구경거리도 많아서요.",
+      "speaker": "Speaker 1"
+    }
+  ],
+  "clips": [
+    {
+      "startMs": 0,
+      "endMs": 3440,
+      "kind": "drill",
+      "title": "Sentence 1"
+    },
+    {
+      "startMs": 4360,
+      "endMs": 7840,
+      "kind": "drill",
+      "title": "Sentence 2"
+    },
+    {
+      "startMs": 8580,
+      "endMs": 11280,
+      "kind": "drill",
+      "title": "Sentence 3"
+    },
+    {
+      "startMs": 12160,
+      "endMs": 13480,
+      "kind": "drill",
+      "title": "Sentence 4"
+    },
+    {
+      "startMs": 14260,
+      "endMs": 15700,
+      "kind": "drill",
+      "title": "Sentence 5"
+    },
+    {
+      "startMs": 16900,
+      "endMs": 19640,
+      "kind": "drill",
+      "title": "Sentence 6"
+    },
+    {
+      "startMs": 20780,
+      "endMs": 22280,
+      "kind": "drill",
+      "title": "Sentence 7"
+    },
+    {
+      "startMs": 23080,
+      "endMs": 24680,
+      "kind": "drill",
+      "title": "Sentence 8"
+    },
+    {
+      "startMs": 25300,
+      "endMs": 27620,
+      "kind": "drill",
+      "title": "Sentence 9"
+    },
+    {
+      "startMs": 28620,
+      "endMs": 30660,
+      "kind": "drill",
+      "title": "Sentence 10"
+    }
+  ]
+}

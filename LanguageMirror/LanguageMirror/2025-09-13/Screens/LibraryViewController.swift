@@ -201,21 +201,30 @@ final class LibraryViewController: UIViewController {
     }
 
     private func makeAllContentSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        listConfig.showsSeparators = false
+        listConfig.backgroundColor = .clear
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        listConfig.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+            guard let self,
+                  let item = self.dataSource.itemIdentifier(for: indexPath),
+                  case .packTrack(_, let trackId) = item,
+                  let track = try? self.libraryService.loadTrack(id: trackId) else { return nil }
 
-        let section = NSCollectionLayoutSection(group: group)
+            let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
+                self.confirmDeleteTrack(track)
+                completion(true)
+            }
+            deleteAction.image = UIImage(systemName: "trash")
+            return UISwipeActionsConfiguration(actions: [deleteAction])
+        }
+
+        let section = NSCollectionLayoutSection.list(using: listConfig, layoutEnvironment: environment)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
 
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(72))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: LibrarySectionHeaderView.elementKind, alignment: .top)
         section.boundarySupplementaryItems = [header]
-
-        // Swipe-to-delete
-        section.visibleItemsInvalidationHandler = nil
 
         return section
     }

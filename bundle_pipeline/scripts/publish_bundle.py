@@ -9,7 +9,7 @@ from bundle_pipeline.config import BundleConfig
 from bundle_pipeline.paths import WorkPaths
 from bundle_pipeline.config import PublishConfig
 from bundle_pipeline.s3io import upload_files
-from bundle_pipeline.qrcode_tools import write_qr_png
+from bundle_pipeline.qrcode_tools import write_qr_png, build_app_url
 
 
 def parse_args() -> argparse.Namespace:
@@ -66,8 +66,11 @@ def main() -> int:
         logger.info("Upload complete.")
 
     manifest_url = publish_cfg.manifest_https_url(cfg.bundle_id, manifest_filename=manifest_path.name)
+    app_url = build_app_url(manifest_url)
     print(f"Manifest URL: {manifest_url}")
+    print(f"App URL:      {app_url}")
     logger.info("Manifest URL: %s", manifest_url)
+    logger.info("App URL: %s", app_url)
     write_qr_png(manifest_url, wp.qr_path)
     print(f"QR code: {wp.qr_path}")
     logger.info("QR code: %s", str(wp.qr_path))

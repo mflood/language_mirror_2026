@@ -16,16 +16,26 @@ final class ImportCoordinator: Coordinator {
         self.container = container
     }
 
+    private var importViewController: ImportViewController?
+
     func start() -> UINavigationController {
         let vc = ImportViewController(importService: container.importService)
         vc.title = "Import"
+        self.importViewController = vc
         navigationController.viewControllers = [vc]
         navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }
-    
+
+    /// Programmatically trigger a bundle manifest import (called from URL scheme handling)
+    func importBundle(from manifestURL: URL) {
+        // Pop to root so the import progress shows cleanly
+        navigationController.popToRootViewController(animated: false)
+        // Dismiss any presented view controllers (e.g. alerts, pickers)
+        navigationController.presentedViewController?.dismiss(animated: false)
+        importViewController?.importBundleFromURL(manifestURL)
+    }
+
     deinit {
-        
-        
         print("ImportCoordinator deinit") }
 }

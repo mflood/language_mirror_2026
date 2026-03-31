@@ -26,7 +26,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             self.appCoordinator = coordinator
             coordinator.start()
+
+            // Handle URL if app was launched via URL scheme (cold launch)
+            if let urlContext = connectionOptions.urlContexts.first {
+                coordinator.handleURL(urlContext.url)
+            }
         }
+    }
+
+    // Handle URL when app is already running (warm launch)
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else { return }
+        appCoordinator?.handleURL(url)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

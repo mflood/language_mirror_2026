@@ -24,8 +24,8 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     private enum Row: Int, CaseIterable {
-        case fromVideo, fromFiles, record, fromURL, fromS3Bundle, installSample
-        
+        case fromVideo, fromFiles, record, fromURL, fromS3Bundle
+
         var title: String {
             switch self {
             case .fromVideo: return "Import from Video"
@@ -33,10 +33,9 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             case .record: return "Record Audio"
             case .fromURL: return "Download from URL"
             case .fromS3Bundle: return "Install Bundle"
-            case .installSample: return "Install Free Packs"
             }
         }
-        
+
         var description: String {
             switch self {
             case .fromVideo: return "Extract audio from video files"
@@ -44,10 +43,9 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             case .record: return "Record new audio with your mic"
             case .fromURL: return "Download mp3, m4a, or wav files"
             case .fromS3Bundle: return "Download bundle from remote manifest"
-            case .installSample: return "Pre-made learning packs"
             }
         }
-        
+
         var iconName: String {
             switch self {
             case .fromVideo: return "video.fill"
@@ -55,10 +53,9 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             case .record: return "mic.fill"
             case .fromURL: return "link"
             case .fromS3Bundle: return "cloud.fill"
-            case .installSample: return "gift.fill"
             }
         }
-        
+
         var iconColor: UIColor {
             switch self {
             case .fromVideo: return .systemPurple
@@ -66,7 +63,6 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             case .record: return .systemRed
             case .fromURL: return .systemGreen
             case .fromS3Bundle: return .systemCyan
-            case .installSample: return .systemOrange
             }
         }
     }
@@ -140,7 +136,16 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         case .record: presentRecorder()
         case .fromURL: promptForURL()
         case .fromS3Bundle: promptForS3Manifest()
-        case .installSample: runEmbeddedSample()
+        }
+    }
+
+    // MARK: - Programmatic Import (URL scheme)
+
+    /// Trigger a bundle manifest import programmatically (e.g. from a URL scheme)
+    func importBundleFromURL(_ manifestURL: URL) {
+        currentImportTask?.cancel()
+        currentImportTask = Task { @MainActor in
+            await runImport(.bundleManifest(url: manifestURL))
         }
     }
 
@@ -187,10 +192,6 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             tf.placeholder = "https://…/file.mp3"
             tf.keyboardType = .URL
             tf.autocapitalizationType = .none
-            tf.text = "https://www.blcup.com/File/Res3/6d99a4e6-ac1a-420d-ac1b-fa0ac889a530.mp3"
-            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/문화가 있는 한국어 읽기 2_03.mp3"
-            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/int-kor-beg-01-r1/bundle.json"
-            // tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_3/culture_3_enhanced.json"
         }
         a.addTextField { tf in tf.placeholder = "Optional title" }
 
@@ -228,15 +229,10 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
     private func promptForS3Manifest() {
         let a = UIAlertController(title: "Install Bundle", message: "Enter the URL of a JSON manifest.", preferredStyle: .alert)
-        a.addTextField { tf in 
-            tf.placeholder = "https://…/bundle.json" 
-            tf.keyboardType = .URL 
+        a.addTextField { tf in
+            tf.placeholder = "https://…/bundle.json"
+            tf.keyboardType = .URL
             tf.autocapitalizationType = .none
-            // tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/bundle3.json"
-            // tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_2/bundle3.json"
-            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_3a/bundle.json"
-            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/culture_korean_3/culture_3_enhanced.json"
-            tf.text = "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/int-kor-beg-01-r1/bundle.json"
         }
         a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         a.addAction(UIAlertAction(title: "Install", style: .default, handler: { [weak self] _ in
@@ -272,24 +268,6 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             }
         }))
         present(a, animated: true)
-    }
-
-    private func runEmbeddedSample() {
-        // Show pack selection screen
-        let manifestLoader = SampleImporterFactory.make(useMock: false)
-        let packSelectionVC = PackSelectionViewController(manifestLoader: manifestLoader)
-        
-        packSelectionVC.onPackSelected = { [weak self] packId in
-            guard let self = self else { return }
-            // Cancel any in-flight import
-            self.currentImportTask?.cancel()
-            self.currentImportTask = Task {
-                await self.runImport(.embeddedPack(packId: packId))
-            }
-        }
-        
-        let nav = UINavigationController(rootViewController: packSelectionVC)
-        present(nav, animated: true)
     }
 
     // MARK: - Import runner with beautiful progress UI
@@ -539,22 +517,19 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         let message = """
         📹 Import from Video
         Extract audio from any video file
-        
+
         📁 Import from Files
         • Tap Share button in Voice Memos → LanguageMirror
         • Or browse: Files → On My iPhone → Voice Memos
-        
+
         🎤 Record Audio
         Create new tracks with your microphone
-        
+
         🔗 Download from URL
         Direct links to audio files (mp3, m4a, wav)
-        
+
         ☁️ Install Bundle
         Download bundles from remote JSON manifests
-        
-        🎁 Free Packs
-        Pre-made learning content included with the app
         """
         
         alert("Import Help", message)

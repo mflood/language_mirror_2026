@@ -18,6 +18,7 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     // Store coordinator references for cross-tab navigation
     private var libraryCoordinator: LibraryCoordinator?
     private var practiceCoordinator: PracticeCoordinator?
+    private var importCoordinator: ImportCoordinator?
     
     // token for observing library changes
     // Non-isolated storage for the token
@@ -50,6 +51,7 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         
         // Store references for cross-tab navigation
         self.libraryCoordinator = libraryCoordinator
+        self.importCoordinator = importCoordinator
         self.practiceCoordinator = practiceCoordinator
         
         self.coordinators = [libraryCoordinator, importCoordinator, practiceCoordinator, settingsCoordinator]
@@ -195,6 +197,37 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     func switchToImportTab() {
         // Switch to Import tab (index 1)
         tabBarController.selectedIndex = 1
+    }
+
+    // MARK: - URL Scheme Handling
+
+    /// Handle incoming URL (languagemirror://bundle?url=<encoded_manifest_url>)
+    /// Returns true if the URL was handled.
+    @discardableResult
+    func handleURL(_ url: URL) -> Bool {
+        guard url.scheme == "languagemirror" else { return false }
+
+        switch url.host {
+        case "bundle":
+            guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+                  let manifestString = components.queryItems?.first(where: { $0.name == "url" })?.value,
+                  let manifestURL = URL(string: manifestString) else {
+                print("⚠️ [URLScheme] Missing or invalid 'url' parameter in: \(url)")
+                return false
+            }
+            print("📦 [URLScheme] Importing bundle from: \(manifestURL)")
+            importBundle(from: manifestURL)
+            return true
+        default:
+            print("⚠️ [URLScheme] Unknown host: \(url.host ?? "nil")")
+            return false
+        }
+    }
+
+    private func importBundle(from manifestURL: URL) {
+        // Switch to Import tab and trigger the import
+        tabBarController.selectedIndex = 1
+        importCoordinator?.importBundle(from: manifestURL)
     }
     
     // MARK: - UITabBarControllerDelegate

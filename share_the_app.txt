@@ -1,0 +1,37 @@
+
+
+
+
+  1. Set version/build number — In the project target's General tab, bump the version and build number
+  2. Select device — Choose "Any iOS Device (arm64)" as the destination (not a simulator)
+  3. Archive — Product → Archive (builds a release archive)
+  4. Distribute — When the Organizer window opens, select the archive → "Distribute App" → "App Store Connect" → follow the prompts
+  5. TestFlight / Submit — In https://appstoreconnect.apple.com, the build appears under your app's TestFlight tab. From there you can
+  test or submit for review.
+
+
+  # 1. Archive
+  cd LanguageMirror
+  xcodebuild archive \
+    -scheme LanguageMirror \
+    -archivePath ./build/LanguageMirror.xcarchive \
+    -destination 'generic/platform=iOS'
+
+  # 2. Export for App Store upload
+  xcodebuild -exportArchive \
+    -archivePath ./build/LanguageMirror.xcarchive \
+    -exportPath ./build/export \
+    -exportOptionsPlist ExportOptions.plist
+
+  # 3. Upload to App Store Connect
+  xcrun altool --upload-app \
+    -f ./build/export/LanguageMirror.ipa \
+    -u your@apple.id \
+    -p @keychain:AC_PASSWORD
+
+
+  1. Archive & upload to App Store Connect (the steps I just described)
+  2. In https://appstoreconnect.apple.com, go to your app → TestFlight tab
+  3. Add her Apple ID email as an external tester (or create a group)
+  4. Apple does a quick beta review (usually <24 hours for the first build)
+  5. She gets an email invite → installs the TestFlight app from the App Store → taps the link → done

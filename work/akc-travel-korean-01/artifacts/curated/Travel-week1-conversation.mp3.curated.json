@@ -1,0 +1,186 @@
+{
+  "transcripts": [
+    {
+      "startMs": 0,
+      "endMs": 2780,
+      "text": "서울에서 데이트하기 좋은 곳이 있을까요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 3660,
+      "endMs": 5420,
+      "text": "음, 익선 동의 한 번 가보세요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 6540,
+      "endMs": 7940,
+      "text": "익선 동은 어떤 곳이에요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 8860,
+      "endMs": 11620,
+      "text": "작은 골목길에 한옥 가게가 많아요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 12080,
+      "endMs": 13120,
+      "text": "조용한 편이에요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 14320,
+      "endMs": 15820,
+      "text": "아주 조용하지는 않아요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 16560,
+      "endMs": 19400,
+      "text": "특히 주말에는 사람들이 많이 와요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 20480,
+      "endMs": 22080,
+      "text": "데이트하기 뭐가 좋아요?",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 23040,
+      "endMs": 27800,
+      "text": "분위기 좋은 카페도 많고 예쁜 식당들이랑 술집도 많아요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 27800,
+      "endMs": 32700,
+      "text": "아, 그럼 낙과 밤 중에 언제 가는 게 더 좋아요?",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 33440,
+      "endMs": 37840,
+      "text": "둘 다 좋지만 저는 저녁분이가 정말 좋은 것 같아요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 38700,
+      "endMs": 40980,
+      "text": "수제맥주 한잔 하기도 참 좋아요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 41560,
+      "endMs": 42680,
+      "text": "오, 좋네요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 43160,
+      "endMs": 44240,
+      "text": "한 번 가보고 싶어요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 44700,
+      "endMs": 47200,
+      "text": "네, 데이트 장소로 정말 괜찮아요.",
+      "speaker": "Speaker 1"
+    }
+  ],
+  "clips": [
+    {
+      "startMs": 0,
+      "endMs": 2780,
+      "kind": "drill",
+      "title": "Sentence 1"
+    },
+    {
+      "startMs": 3660,
+      "endMs": 5420,
+      "kind": "drill",
+      "title": "Sentence 2"
+    },
+    {
+      "startMs": 6540,
+      "endMs": 7940,
+      "kind": "drill",
+      "title": "Sentence 3"
+    },
+    {
+      "startMs": 8860,
+      "endMs": 11620,
+      "kind": "drill",
+      "title": "Sentence 4"
+    },
+    {
+      "startMs": 12080,
+      "endMs": 13120,
+      "kind": "drill",
+      "title": "Sentence 5"
+    },
+    {
+      "startMs": 14320,
+      "endMs": 15820,
+      "kind": "drill",
+      "title": "Sentence 6"
+    },
+    {
+      "startMs": 16560,
+      "endMs": 19400,
+      "kind": "drill",
+      "title": "Sentence 7"
+    },
+    {
+      "startMs": 20480,
+      "endMs": 22080,
+      "kind": "drill",
+      "title": "Sentence 8"
+    },
+    {
+      "startMs": 23040,
+      "endMs": 27800,
+      "kind": "drill",
+      "title": "Sentence 9"
+    },
+    {
+      "startMs": 27800,
+      "endMs": 32700,
+      "kind": "drill",
+      "title": "Sentence 10"
+    },
+    {
+      "startMs": 33440,
+      "endMs": 37840,
+      "kind": "drill",
+      "title": "Sentence 11"
+    },
+    {
+      "startMs": 38700,
+      "endMs": 40980,
+      "kind": "drill",
+      "title": "Sentence 12"
+    },
+    {
+      "startMs": 41560,
+      "endMs": 42680,
+      "kind": "drill",
+      "title": "Sentence 13"
+    },
+    {
+      "startMs": 43160,
+      "endMs": 44240,
+      "kind": "drill",
+      "title": "Sentence 14"
+    },
+    {
+      "startMs": 44700,
+      "endMs": 47200,
+      "kind": "drill",
+      "title": "Sentence 15"
+    }
+  ]
+}

@@ -1,0 +1,2493 @@
+{
+  "id": "akc-travel-korean-01",
+  "title": "AKC Travel Korean",
+  "packs": [
+    {
+      "id": "akc-travel-korean-01",
+      "title": "AKC Travel Korean",
+      "author": "AKC",
+      "coverUrl": null,
+      "coverFilename": null,
+      "tracks": [
+        {
+          "id": "Travel-week1-conversation.mp3",
+          "title": "Travel Week1 Conversation",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week1-conversation.mp3",
+          "filename": "Travel-week1-conversation.mp3",
+          "durationMs": 48382,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "0e73580b-90ab-4388-b535-d8380800c8a2",
+              "trackId": "c789aef5-d0bb-4691-8d3c-d3e067b3e301",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "00b76b88-fe3b-469f-8302-9158d5540295",
+                  "startMs": 0,
+                  "endMs": 48382,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "a53f31a7-ccd9-4cd1-89ac-4df03cbfee6b",
+              "trackId": "19100ba6-f873-412d-be53-447625f10fdc",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "18b7c6f4-190c-4782-9852-c4003d4214d2",
+                  "startMs": 0,
+                  "endMs": 2780,
+                  "kind": "drill",
+                  "title": "Sentence 1",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "119f1fc3-3378-49b4-8925-217b7d7fac3b",
+                  "startMs": 3660,
+                  "endMs": 5420,
+                  "kind": "drill",
+                  "title": "Sentence 2",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "6ef57e8c-f475-4e2c-bce8-ff2b31232e86",
+                  "startMs": 6540,
+                  "endMs": 7940,
+                  "kind": "drill",
+                  "title": "Sentence 3",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "588d90f9-199c-44a8-81b1-f9187617db96",
+                  "startMs": 8860,
+                  "endMs": 11620,
+                  "kind": "drill",
+                  "title": "Sentence 4",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "13cf963d-bbe2-4a1f-a6bc-0305cd53e3c0",
+                  "startMs": 12080,
+                  "endMs": 13120,
+                  "kind": "drill",
+                  "title": "Sentence 5",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e56f0289-2db4-4f8f-9b48-469488f717b1",
+                  "startMs": 14320,
+                  "endMs": 15820,
+                  "kind": "drill",
+                  "title": "Sentence 6",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "ffb1ee93-bd18-4588-a881-a41d51b37324",
+                  "startMs": 16560,
+                  "endMs": 19400,
+                  "kind": "drill",
+                  "title": "Sentence 7",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e46f9623-13b4-45f8-a8e3-714a0eb9984a",
+                  "startMs": 20480,
+                  "endMs": 22080,
+                  "kind": "drill",
+                  "title": "Sentence 8",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "4459459e-cce7-4f05-be08-be58bb088040",
+                  "startMs": 23040,
+                  "endMs": 27800,
+                  "kind": "drill",
+                  "title": "Sentence 9",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "3ed3dc05-034d-4eab-977c-d19ccfe06ad6",
+                  "startMs": 27800,
+                  "endMs": 32700,
+                  "kind": "drill",
+                  "title": "Sentence 10",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "127f4bde-7477-475a-aa0b-20f7ae1cabcf",
+                  "startMs": 33440,
+                  "endMs": 37840,
+                  "kind": "drill",
+                  "title": "Sentence 11",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a9d03aaa-87f2-4711-95c8-f7f7c043fa77",
+                  "startMs": 38700,
+                  "endMs": 40980,
+                  "kind": "drill",
+                  "title": "Sentence 12",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "3f4fb361-9e1a-4d81-aa5c-3e2e1867922d",
+                  "startMs": 41560,
+                  "endMs": 42680,
+                  "kind": "drill",
+                  "title": "Sentence 13",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "71cf3dfd-9a09-4a3c-9ed0-32d0a47d0c02",
+                  "startMs": 43160,
+                  "endMs": 44240,
+                  "kind": "drill",
+                  "title": "Sentence 14",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e8a01ecf-c6fd-40ed-a227-0501aac0ffa5",
+                  "startMs": 44700,
+                  "endMs": 47200,
+                  "kind": "drill",
+                  "title": "Sentence 15",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 2780,
+              "text": "서울에서 데이트하기 좋은 곳이 있을까요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 3660,
+              "endMs": 5420,
+              "text": "음, 익선 동의 한 번 가보세요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 6540,
+              "endMs": 7940,
+              "text": "익선 동은 어떤 곳이에요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 8860,
+              "endMs": 11620,
+              "text": "작은 골목길에 한옥 가게가 많아요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 12080,
+              "endMs": 13120,
+              "text": "조용한 편이에요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 14320,
+              "endMs": 15820,
+              "text": "아주 조용하지는 않아요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 16560,
+              "endMs": 19400,
+              "text": "특히 주말에는 사람들이 많이 와요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 20480,
+              "endMs": 22080,
+              "text": "데이트하기 뭐가 좋아요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 23040,
+              "endMs": 27800,
+              "text": "분위기 좋은 카페도 많고 예쁜 식당들이랑 술집도 많아요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 27800,
+              "endMs": 32700,
+              "text": "아, 그럼 낙과 밤 중에 언제 가는 게 더 좋아요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 33440,
+              "endMs": 37840,
+              "text": "둘 다 좋지만 저는 저녁분이가 정말 좋은 것 같아요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 38700,
+              "endMs": 40980,
+              "text": "수제맥주 한잔 하기도 참 좋아요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 41560,
+              "endMs": 42680,
+              "text": "오, 좋네요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 43160,
+              "endMs": 44240,
+              "text": "한 번 가보고 싶어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 44700,
+              "endMs": 47200,
+              "text": "네, 데이트 장소로 정말 괜찮아요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        },
+        {
+          "id": "Travel-week1-story-Hidden_spot.mp3",
+          "title": "Travel Week1 Story Hidden Spot",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week1-story-Hidden_spot.mp3",
+          "filename": "Travel-week1-story-Hidden_spot.mp3",
+          "durationMs": 112173,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "31bdc3c8-ba05-4596-9a0f-d9d6977662a8",
+              "trackId": "d9df1a9a-2855-4d0a-afbc-c59e15b5cb16",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "9ec908e4-50c3-46c1-b993-bc55c7d599ad",
+                  "startMs": 0,
+                  "endMs": 112173,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "284aa30f-fb57-4561-acc8-e9cee72d078f",
+              "trackId": "65168e77-b8c3-4419-becc-026067b3a87e",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "e62caf17-2929-47e4-8b45-a66b37023c83",
+                  "startMs": 0,
+                  "endMs": 4420,
+                  "kind": "drill",
+                  "title": "Sentence 1",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "56023357-29b5-4b4f-8001-9f81802272d5",
+                  "startMs": 4920,
+                  "endMs": 10580,
+                  "kind": "drill",
+                  "title": "Sentence 2",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "48c53fdc-47fb-40c4-b344-74f70bf9b676",
+                  "startMs": 11220,
+                  "endMs": 14700,
+                  "kind": "drill",
+                  "title": "Sentence 3",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "1eecc152-5688-4e33-84d7-c478265b2b80",
+                  "startMs": 15380,
+                  "endMs": 19620,
+                  "kind": "drill",
+                  "title": "Sentence 4",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "6361d40f-ef76-408d-8327-8b62a6474834",
+                  "startMs": 20300,
+                  "endMs": 24020,
+                  "kind": "drill",
+                  "title": "Sentence 5",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "ca922dbc-ba1b-4079-b859-cb397ce6a1ba",
+                  "startMs": 24680,
+                  "endMs": 27660,
+                  "kind": "drill",
+                  "title": "Sentence 6",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "fe9690bf-e308-4b9a-a7be-681d1a822567",
+                  "startMs": 28460,
+                  "endMs": 34780,
+                  "kind": "drill",
+                  "title": "Sentence 7",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "994c2041-342d-4af3-9b74-74b6e0d3e2ae",
+                  "startMs": 34860,
+                  "endMs": 38860,
+                  "kind": "drill",
+                  "title": "Sentence 8",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "38c5b03a-f86a-4693-9c54-b293189ec04b",
+                  "startMs": 39840,
+                  "endMs": 41700,
+                  "kind": "drill",
+                  "title": "Sentence 9",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "064c8446-474f-43e2-b528-0743dca35085",
+                  "startMs": 42140,
+                  "endMs": 47860,
+                  "kind": "drill",
+                  "title": "Sentence 10",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d0295bc9-3dec-4697-9357-fb6504c3b6e5",
+                  "startMs": 48620,
+                  "endMs": 52320,
+                  "kind": "drill",
+                  "title": "Sentence 11",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "86c695c3-8e7e-48a9-8832-1df70f4df0a9",
+                  "startMs": 53320,
+                  "endMs": 57900,
+                  "kind": "drill",
+                  "title": "Sentence 12",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0f8825ff-a7c3-487b-9572-4f88f7dbf2da",
+                  "startMs": 58260,
+                  "endMs": 60540,
+                  "kind": "drill",
+                  "title": "Sentence 13",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "48ac2594-30e6-4a47-95e8-d2504fcfb34d",
+                  "startMs": 61340,
+                  "endMs": 64420,
+                  "kind": "drill",
+                  "title": "Sentence 14",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "ec66ace6-f6a8-4e0a-8b68-fc52f852193a",
+                  "startMs": 65120,
+                  "endMs": 70680,
+                  "kind": "drill",
+                  "title": "Sentence 15",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "ccf2fb04-7b41-4d0c-93cb-784f346fc21d",
+                  "startMs": 71280,
+                  "endMs": 74520,
+                  "kind": "drill",
+                  "title": "Sentence 16",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "fc5fae98-9665-472f-a11b-367c2be532f5",
+                  "startMs": 75380,
+                  "endMs": 79220,
+                  "kind": "drill",
+                  "title": "Sentence 17",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e9710c35-67a5-432f-8b08-b193be950857",
+                  "startMs": 80020,
+                  "endMs": 83820,
+                  "kind": "drill",
+                  "title": "Sentence 18",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0236b027-b38d-4f1b-b411-75b6f55d4e60",
+                  "startMs": 84360,
+                  "endMs": 87300,
+                  "kind": "drill",
+                  "title": "Sentence 19",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dc975509-6886-4e8d-9fa5-cfd2ae31e9ae",
+                  "startMs": 87880,
+                  "endMs": 94560,
+                  "kind": "drill",
+                  "title": "Sentence 20",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "bcf862bc-238d-4766-9869-7e2ae8d11b2f",
+                  "startMs": 95220,
+                  "endMs": 98540,
+                  "kind": "drill",
+                  "title": "Sentence 21",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "8b6d5029-9c44-4e5b-a5ac-7d5da96de02c",
+                  "startMs": 99040,
+                  "endMs": 102540,
+                  "kind": "drill",
+                  "title": "Sentence 22",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "ca0dadac-a7cc-4ba8-baaf-661bb1ae8da6",
+                  "startMs": 103400,
+                  "endMs": 108160,
+                  "kind": "drill",
+                  "title": "Sentence 23",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "4de70a1f-1c36-4387-bc74-5cbefef7a007",
+                  "startMs": 108160,
+                  "endMs": 110320,
+                  "kind": "drill",
+                  "title": "Sentence 24",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 4420,
+              "text": "오늘은 서울에서 갈만한 숨겨진 장소를 소개해 드릴게요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 4920,
+              "endMs": 10580,
+              "text": "그 장소는 한국적인 분위기가 느껴지면서 겉기에도 좋은 곳이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 11220,
+              "endMs": 14700,
+              "text": "한국적인 분위기는 한옥에서 쉽게 느낄 수 있는데요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 15380,
+              "endMs": 19620,
+              "text": "한옥으로 가장 유명한 곳은 삼총동과 북총이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 20300,
+              "endMs": 24020,
+              "text": "두 곳은 서로 가까이 있는데 분위기는 조금 달라요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 24680,
+              "endMs": 27660,
+              "text": "삼총동은 길이 조금 더 넓은 편이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 28460,
+              "endMs": 34780,
+              "text": "그래서 전체 분위기가 더 정돈대 보이고 조금 더 도시적으로 느껴져요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 34860,
+              "endMs": 38860,
+              "text": "그런 분위기 때문에 한옥도 더 모델하게 보일 때가 있어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 39840,
+              "endMs": 41700,
+              "text": "북촌은 느낌이 조금 달라요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 42140,
+              "endMs": 47860,
+              "text": "조금 골목을 따라 걷다보면 한옥의 분위기를 더 가까이 느낄 수 있어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 48620,
+              "endMs": 52320,
+              "text": "언덕길도 있어서 풍경이 더 예쁘게 보이는 면도 있고요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 53320,
+              "endMs": 57900,
+              "text": "그래서 북촌에서 찍은 사진은 관광객들에게 인기가 많아요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 58260,
+              "endMs": 60540,
+              "text": "하지만 조금 아쉬운 점도 있어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 61340,
+              "endMs": 64420,
+              "text": "북촌은 실제로 사람들이 살고 있는 동네거든요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 65120,
+              "endMs": 70680,
+              "text": "그래서 관광객은 한옥 안에서 어떻게 생활하는지 직접 볼 수가 없어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 71280,
+              "endMs": 74520,
+              "text": "그래서 저는 익선 동도 추천하고 싶어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 75380,
+              "endMs": 79220,
+              "text": "익선 동은 조금 더 작고 특별한 느낌이 있는 동네예요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 80020,
+              "endMs": 83820,
+              "text": "북촌처럼 작은 골목길에서 한옥을 만날 수 있는데",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 84360,
+              "endMs": 87300,
+              "text": "그 안에 직접 들어가 볼 수도 있거든요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 87880,
+              "endMs": 94560,
+              "text": "왜냐하면 많은 한옥이 카페나 식당, 예쁜 가게로 사용되고 있기 때문이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 95220,
+              "endMs": 98540,
+              "text": "작고, 좁고, 아기작이한 한옥.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 99040,
+              "endMs": 102540,
+              "text": "저는 그 점이 익선 동의 큰 매력이라고 생각해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 103400,
+              "endMs": 108160,
+              "text": "한옥을 조금 더 가까이에서 그리고 조금 더 특별하게 즐기고 싶다면",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 108160,
+              "endMs": 110320,
+              "text": "익선 동의 한 번 가보세요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        },
+        {
+          "id": "Travel-week2-Conversation-My_Bucket_List_Place_in_Korea.mp3",
+          "title": "Travel Week2 Conversation My Bucket List Place In Korea",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week2-Conversation-My_Bucket_List_Place_in_Korea.mp3",
+          "filename": "Travel-week2-Conversation-My_Bucket_List_Place_in_Korea.mp3",
+          "durationMs": 37120,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "383d9f93-8b06-46ba-adf4-043b48cc72e3",
+              "trackId": "c049cad4-2532-4be1-bd40-2d16156cf1cb",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "0a8d7aa9-272e-4061-b4b2-241f30a1f348",
+                  "startMs": 0,
+                  "endMs": 37120,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "3dc73577-a0f7-4b07-97cf-ef07f05adf4b",
+              "trackId": "2fc8e1c5-c015-472a-9180-ba94f1546b4e",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "6f2b2e81-53d2-4b5d-8faf-ce99cf3562c4",
+                  "startMs": 0,
+                  "endMs": 4040,
+                  "kind": "drill",
+                  "title": "Sentence 1",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "19da44ed-084c-431c-8250-8046208f187e",
+                  "startMs": 4700,
+                  "endMs": 6980,
+                  "kind": "drill",
+                  "title": "Sentence 2",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dda925c9-e5cb-45e1-bf60-429d4f0fdb79",
+                  "startMs": 7860,
+                  "endMs": 9640,
+                  "kind": "drill",
+                  "title": "Sentence 3",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "95e29998-681c-4d90-8c64-af28cfe89354",
+                  "startMs": 10560,
+                  "endMs": 12120,
+                  "kind": "drill",
+                  "title": "Sentence 4",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a4e82334-ae84-4bc0-9d44-a08243404197",
+                  "startMs": 12780,
+                  "endMs": 13240,
+                  "kind": "drill",
+                  "title": "Sentence 5",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "4c920bd2-9885-4328-b200-9d449ce56064",
+                  "startMs": 14080,
+                  "endMs": 16340,
+                  "kind": "drill",
+                  "title": "Sentence 6",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e01cff85-ccd1-4294-8f0b-3bef7ecec37e",
+                  "startMs": 16900,
+                  "endMs": 19340,
+                  "kind": "drill",
+                  "title": "Sentence 7",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "5c3e51c5-c59a-4704-884e-c21205e860cc",
+                  "startMs": 20200,
+                  "endMs": 22180,
+                  "kind": "drill",
+                  "title": "Sentence 8",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a53902ab-9341-49bb-8c19-5d976ad5d4e3",
+                  "startMs": 22880,
+                  "endMs": 24320,
+                  "kind": "drill",
+                  "title": "Sentence 9",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "58cdb966-293c-4e2c-a23d-e8065f34466f",
+                  "startMs": 24840,
+                  "endMs": 28040,
+                  "kind": "drill",
+                  "title": "Sentence 10",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "1df75edd-cf55-46b8-94e2-f180071f35ae",
+                  "startMs": 29040,
+                  "endMs": 29840,
+                  "kind": "drill",
+                  "title": "Sentence 11",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "c22b9425-113d-4a6c-bdc3-b1fed257c7a9",
+                  "startMs": 30480,
+                  "endMs": 32180,
+                  "kind": "drill",
+                  "title": "Sentence 12",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "c1e78b76-6337-4443-8f2a-4fc210428ca7",
+                  "startMs": 0,
+                  "endMs": 0,
+                  "kind": "skip",
+                  "title": "Intro silence",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                },
+                {
+                  "id": "b27cc560-d5b2-49ad-8dc6-ec43b91c631c",
+                  "startMs": 37120,
+                  "endMs": 37120,
+                  "kind": "skip",
+                  "title": "Outro silence",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 4040,
+              "text": "한국에 가보고 싶은 드라마 촬영지가 있어요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 4700,
+              "endMs": 6980,
+              "text": "네, 강릉에 가보고 싶어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 7860,
+              "endMs": 9640,
+              "text": "강릉 어디에 가보고 싶어요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 10560,
+              "endMs": 12120,
+              "text": "주문진 방파제요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 12780,
+              "endMs": 13240,
+              "text": "왜요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 14080,
+              "endMs": 16340,
+              "text": "드라마 독게 비에 나온 곳이거든요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 16900,
+              "endMs": 19340,
+              "text": "제가 그 드라마에 정말 좋아해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 20200,
+              "endMs": 22180,
+              "text": "아, 거기서 뭐라고 싶어요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 22880,
+              "endMs": 24320,
+              "text": "바다를 보고 싶어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 24840,
+              "endMs": 28040,
+              "text": "그리고 꽃을 가져가서 사진도 찍고 싶어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 29040,
+              "endMs": 29840,
+              "text": "좋네요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 30480,
+              "endMs": 32180,
+              "text": "그럼 정말 예쁠 것 같아요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 33040,
+              "endMs": 35920,
+              "text": "네, 정말 제 버킷리스예요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        },
+        {
+          "id": "Travel-week2-story-A_Place_Ive_Visited_Three_Times_Because_of_K-Dramas.mp3",
+          "title": "Travel Week2 Story A Place Ive Visited Three Times Because Of K Dramas",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week2-story-A_Place_Ive_Visited_Three_Times_Because_of_K-Dramas.mp3",
+          "filename": "Travel-week2-story-A_Place_Ive_Visited_Three_Times_Because_of_K-Dramas.mp3",
+          "durationMs": 134818,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "9059d9e3-f4ab-4d87-a094-70cc889f46d2",
+              "trackId": "a8570339-8efd-4e09-87db-b5122ad04147",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "d454d674-aa87-4455-91b0-b59b20d0736b",
+                  "startMs": 0,
+                  "endMs": 134818,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "1ecaa272-c061-4d43-8c8b-eddac4a7af12",
+              "trackId": "5dfeaf63-0827-42b8-b606-32c2c48d3d8e",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "15fad263-aafd-43e1-8aee-5d9c878daf2c",
+                  "startMs": 0,
+                  "endMs": 5120,
+                  "kind": "drill",
+                  "title": "Sentence 1",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d76d2709-e673-43c7-9bbc-e40529550caf",
+                  "startMs": 5460,
+                  "endMs": 9880,
+                  "kind": "drill",
+                  "title": "Sentence 2",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f6d39808-f0be-475d-b17e-5b206d4f201c",
+                  "startMs": 10640,
+                  "endMs": 14480,
+                  "kind": "drill",
+                  "title": "Sentence 3",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "775fd9b6-3998-43ef-9be6-69faaa203d0d",
+                  "startMs": 15140,
+                  "endMs": 17560,
+                  "kind": "drill",
+                  "title": "Sentence 4",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "52fccb56-30b4-4c19-951c-096e6b0d9868",
+                  "startMs": 18320,
+                  "endMs": 24340,
+                  "kind": "drill",
+                  "title": "Sentence 5",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "abdd56a9-82c6-4001-b6e4-2b8d8471a60e",
+                  "startMs": 25340,
+                  "endMs": 29700,
+                  "kind": "drill",
+                  "title": "Sentence 6",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d28cda22-4a19-470f-ad4a-a14457ca892d",
+                  "startMs": 30360,
+                  "endMs": 34600,
+                  "kind": "drill",
+                  "title": "Sentence 7",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "b2306c0b-21bf-41ed-95f7-191515e13745",
+                  "startMs": 35300,
+                  "endMs": 38020,
+                  "kind": "drill",
+                  "title": "Sentence 8",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "216df136-de12-46a6-a774-f965d60e3ffb",
+                  "startMs": 38960,
+                  "endMs": 42400,
+                  "kind": "drill",
+                  "title": "Sentence 9",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "05ae3072-ef11-474b-a861-b578e5a3cd6e",
+                  "startMs": 43480,
+                  "endMs": 49040,
+                  "kind": "drill",
+                  "title": "Sentence 10",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "215046a9-d588-42b6-9ac7-c9b784e182c5",
+                  "startMs": 50040,
+                  "endMs": 54320,
+                  "kind": "drill",
+                  "title": "Sentence 11",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "50f42928-aa7b-42be-9ff8-8f34ffca7153",
+                  "startMs": 54520,
+                  "endMs": 60780,
+                  "kind": "drill",
+                  "title": "Sentence 12",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dd59bbcb-d371-4b1c-9bfa-0d3b0e32c6c9",
+                  "startMs": 61400,
+                  "endMs": 63760,
+                  "kind": "drill",
+                  "title": "Sentence 13",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "95188337-3a55-4feb-8609-134e434a0a8a",
+                  "startMs": 64720,
+                  "endMs": 68960,
+                  "kind": "drill",
+                  "title": "Sentence 14",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d34a70ad-5c43-4506-8de8-ae277757ef43",
+                  "startMs": 69740,
+                  "endMs": 73860,
+                  "kind": "drill",
+                  "title": "Sentence 15",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "7779513e-42d5-45a0-b03f-2629ecb7404b",
+                  "startMs": 74860,
+                  "endMs": 81220,
+                  "kind": "drill",
+                  "title": "Sentence 16",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a5fdefd8-0b07-4a26-a337-3213526509e5",
+                  "startMs": 81800,
+                  "endMs": 84500,
+                  "kind": "drill",
+                  "title": "Sentence 17",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a75552ae-4dff-4ebb-8e14-c4bf13da96fc",
+                  "startMs": 85100,
+                  "endMs": 90540,
+                  "kind": "drill",
+                  "title": "Sentence 18",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "160aeb55-ab2f-4ccd-8a47-a5ab7638da7c",
+                  "startMs": 91480,
+                  "endMs": 96720,
+                  "kind": "drill",
+                  "title": "Sentence 19",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "9c17697f-c8b5-43e7-9955-ac815d99d738",
+                  "startMs": 97380,
+                  "endMs": 99940,
+                  "kind": "drill",
+                  "title": "Sentence 20",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "829f347a-40a4-4691-a5e7-4e5557afee57",
+                  "startMs": 99940,
+                  "endMs": 103480,
+                  "kind": "drill",
+                  "title": "Sentence 21",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "59cea66d-b858-41e8-a694-7b3d36b8a462",
+                  "startMs": 103480,
+                  "endMs": 107700,
+                  "kind": "drill",
+                  "title": "Sentence 22",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "2933accf-01a1-4cea-8a17-f110a9018bed",
+                  "startMs": 107940,
+                  "endMs": 110200,
+                  "kind": "drill",
+                  "title": "Sentence 23",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a1c8c0d1-a5e7-4c45-8484-6ee3030d1f24",
+                  "startMs": 110940,
+                  "endMs": 114960,
+                  "kind": "drill",
+                  "title": "Sentence 24",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0749ba2e-025d-47e2-b277-98cbfb1d46ce",
+                  "startMs": 115940,
+                  "endMs": 119800,
+                  "kind": "drill",
+                  "title": "Sentence 25",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "243ee2e7-7a00-4747-9468-35e527d66af9",
+                  "startMs": 120140,
+                  "endMs": 123500,
+                  "kind": "drill",
+                  "title": "Sentence 26",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "134529ec-36c6-42ee-9f5d-e9ece926ecb3",
+                  "startMs": 124080,
+                  "endMs": 127640,
+                  "kind": "drill",
+                  "title": "Sentence 27",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f4622e56-e38e-4f1c-80c8-19defad2fb45",
+                  "startMs": 127640,
+                  "endMs": 129760,
+                  "kind": "drill",
+                  "title": "Sentence 28",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0cc5336c-a5e7-4d85-bbd3-fb429f0fa135",
+                  "startMs": 130140,
+                  "endMs": 133640,
+                  "kind": "drill",
+                  "title": "Sentence 29",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 5120,
+              "text": "저는 좋아하는 영화나 드라마 촬영지에 직접 가보는 걸 좋아해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 5460,
+              "endMs": 9880,
+              "text": "그 중에서도 제가 여러 번 갔던 곳은 수원 화성 근처에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 10640,
+              "endMs": 14480,
+              "text": "처음 이곳에 간 이유는 드라마 그에 우리는 때문이었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 15140,
+              "endMs": 17560,
+              "text": "저는 그 드라마를 정말 좋아했어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 18320,
+              "endMs": 24340,
+              "text": "그래서 드라마에 나왔던 구경수집이랑 최웅집에 직접 가보고 싶었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 25340,
+              "endMs": 29700,
+              "text": "구경수집 앞에 가보니 제 예전 연애 시절이 떠올랐어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 30360,
+              "endMs": 34600,
+              "text": "남자친구가 집 앞에서 저를 기다리고 있던 그런 추억이요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 35300,
+              "endMs": 38020,
+              "text": "그래서 그 곳이 더 특별하게 느껴졌어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 38960,
+              "endMs": 42400,
+              "text": "손에 한 번 다녀오고 나니까 그 곳이 더 좋아졌어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 43480,
+              "endMs": 49040,
+              "text": "그래서 나중에는 이상한 변호사 우영우에 나왔던 장소를 또 보러갔어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 50040,
+              "endMs": 54320,
+              "text": "그때는 우영우 아빠가 운영하던 김밥집을 찾아갔어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 54520,
+              "endMs": 60780,
+              "text": "실제로는 김밥집이 아니라 다른 가기였는데 그래도 직접 가보니 재미있었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 61400,
+              "endMs": 63760,
+              "text": "당연히 그 앞에서 사진도 찍었고요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 64720,
+              "endMs": 68960,
+              "text": "다음에는 선제업고 티어를 보고 나서 또 가고 싶어졌어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 69740,
+              "endMs": 73860,
+              "text": "그 드라마에서도 수원 화성 근처가 정말 예쁘게 나왔거든요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 74860,
+              "endMs": 81220,
+              "text": "특히 선제가 골목길에서 임소래계 처음 반하는 장면이 정말 인상적이었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 81800,
+              "endMs": 84500,
+              "text": "실제로 가보니 사람이 정말 많았어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 85100,
+              "endMs": 90540,
+              "text": "그만큼 많은 사람들이 그 드라마를 좋아했구나 하는 생각이 들었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 91480,
+              "endMs": 96720,
+              "text": "이렇게 보면 저는 수원 화성 근처에 드라마 때문에 세 번이나 간 것 같아요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 97380,
+              "endMs": 99940,
+              "text": "처음에는 그게 우리는 때문에 갔고",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 99940,
+              "endMs": 103480,
+              "text": "그 다음에는 이상한 변호사 우영우 때문에 갔고",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 103480,
+              "endMs": 107700,
+              "text": "또 선제업고 티어를 보고나서도 다시 갔으니까요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 107940,
+              "endMs": 110200,
+              "text": "그런데 이제는 드라마 때문이 아니라",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 110940,
+              "endMs": 114960,
+              "text": "수원 화성이라는 장소 자체가 좋아서 또 가고 싶은 곳이 되었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 115940,
+              "endMs": 119800,
+              "text": "특히 봄이 되면 저는 꼭 수원에 가고 싶어져요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 120140,
+              "endMs": 123500,
+              "text": "거기만 해도 기분이 좋아지는 그런 장소거든요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 124080,
+              "endMs": 127640,
+              "text": "그래서 이번 봄에도 우리 딸이랑 같이 갈 예정이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 127640,
+              "endMs": 129760,
+              "text": "여러분은 어때요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 130140,
+              "endMs": 133640,
+              "text": "가보고 싶은 드라마나 영화 촬영지가 있나요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        },
+        {
+          "id": "Travel-week3-conversation-A_place_I_want_to_visit_for_food.mp3",
+          "title": "Travel Week3 Conversation A Place I Want To Visit For Food",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week3-conversation-A_place_I_want_to_visit_for_food.mp3",
+          "filename": "Travel-week3-conversation-A_place_I_want_to_visit_for_food.mp3",
+          "durationMs": 34007,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "4d8d9e0d-8871-407c-844b-621f7793a36e",
+              "trackId": "26fda7c2-def3-4cde-988a-d29a18a84d12",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "ff0bef0b-5309-4a5b-a131-493ffa3a4d85",
+                  "startMs": 0,
+                  "endMs": 34007,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "7c418121-967f-4da1-aee8-0a0765cef344",
+              "trackId": "aa0a798a-f94f-4628-ba3f-a30334f86036",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "2f094ff6-1a31-4c00-8f44-1c8cb8a74162",
+                  "startMs": 0,
+                  "endMs": 3440,
+                  "kind": "drill",
+                  "title": "Sentence 1",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "2a0a08f9-981c-4dd4-b3ef-91925c232f83",
+                  "startMs": 4360,
+                  "endMs": 7840,
+                  "kind": "drill",
+                  "title": "Sentence 2",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0dc9bbbd-7634-4c45-a7fe-c9a541e7cd66",
+                  "startMs": 8580,
+                  "endMs": 11280,
+                  "kind": "drill",
+                  "title": "Sentence 3",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "65990406-39c9-4155-a40a-b654b56cf0c8",
+                  "startMs": 12160,
+                  "endMs": 13480,
+                  "kind": "drill",
+                  "title": "Sentence 4",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "94dd0b97-c7ba-4175-8e46-95ba8ec21355",
+                  "startMs": 14260,
+                  "endMs": 15700,
+                  "kind": "drill",
+                  "title": "Sentence 5",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "bda9ce26-c7ea-49c5-b5c0-05ab2a8d4f0f",
+                  "startMs": 16900,
+                  "endMs": 19640,
+                  "kind": "drill",
+                  "title": "Sentence 6",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "96501bc6-5a90-4291-a96e-1ad5a507c6d9",
+                  "startMs": 20780,
+                  "endMs": 22280,
+                  "kind": "drill",
+                  "title": "Sentence 7",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "310924ad-5d57-47f9-86c2-fc0a6c3b652f",
+                  "startMs": 23080,
+                  "endMs": 24680,
+                  "kind": "drill",
+                  "title": "Sentence 8",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "8454c55c-fe57-4ca8-8f0e-4d329d25e06c",
+                  "startMs": 25300,
+                  "endMs": 27620,
+                  "kind": "drill",
+                  "title": "Sentence 9",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a5517140-ec14-4286-b172-cc90aa627145",
+                  "startMs": 28620,
+                  "endMs": 30660,
+                  "kind": "drill",
+                  "title": "Sentence 10",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 3440,
+              "text": "맛있는 음식 때문에 가고 싶은 곳이 있어요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 4360,
+              "endMs": 7840,
+              "text": "네, 저는 광장시장에 가고 싶어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 8580,
+              "endMs": 11280,
+              "text": "아, 거기에서 무슨 음식을 먹고 싶어요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 12160,
+              "endMs": 13480,
+              "text": "6개를 먹고 싶어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 14260,
+              "endMs": 15700,
+              "text": "6개만 먹고 싶어요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 16900,
+              "endMs": 19640,
+              "text": "아니요. 빈대 떡도 같이 먹고 싶어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 20780,
+              "endMs": 22280,
+              "text": "광장시장은 자주 가요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 23080,
+              "endMs": 24680,
+              "text": "아니요, 자주 가지는 않아요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 25300,
+              "endMs": 27620,
+              "text": "그럼 왜 다시 가고 싶어요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 28620,
+              "endMs": 30660,
+              "text": "맛있는 음식도 정말 많고요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 31060,
+              "endMs": 32720,
+              "text": "구경거리도 많아서요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        },
+        {
+          "id": "Travel-week3-story-The_Place_I_Still_Crave_After_Two_Years.mp3",
+          "title": "Travel Week3 Story The Place I Still Crave After Two Years",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week3-story-The_Place_I_Still_Crave_After_Two_Years.mp3",
+          "filename": "Travel-week3-story-The_Place_I_Still_Crave_After_Two_Years.mp3",
+          "durationMs": 171773,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "3d2dc3fd-52bf-40ff-a4ce-7b1ee005ec22",
+              "trackId": "0634a976-6d3a-46ed-8c95-b521d4c1d7ba",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "38592197-92a7-4d1c-adc1-42608ae4f5d9",
+                  "startMs": 0,
+                  "endMs": 171773,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "cc2a598d-7834-49c5-b967-3ce058e20246",
+              "trackId": "55a800cc-0bf4-4f83-be2a-3f32f72857a6",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "f10e0af2-0565-45b0-80d8-3a23f720c5c2",
+                  "startMs": 0,
+                  "endMs": 4400,
+                  "kind": "drill",
+                  "title": "Sentence 1",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d16da07d-5fd7-4938-b634-7bd372d44cb7",
+                  "startMs": 4960,
+                  "endMs": 12560,
+                  "kind": "drill",
+                  "title": "Sentence 2",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e3b3cb02-303a-41d5-aed6-3de3bb924b18",
+                  "startMs": 13380,
+                  "endMs": 16320,
+                  "kind": "drill",
+                  "title": "Sentence 3",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a060ab01-0b8a-4c8f-b1f5-208a5733b6d1",
+                  "startMs": 16940,
+                  "endMs": 22380,
+                  "kind": "drill",
+                  "title": "Sentence 4",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dfc150b1-123d-475e-9d73-5fed466d7744",
+                  "startMs": 23000,
+                  "endMs": 27220,
+                  "kind": "drill",
+                  "title": "Sentence 5",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "4c7d1e40-c126-4af0-9929-f0c7fe4b84e1",
+                  "startMs": 27940,
+                  "endMs": 34040,
+                  "kind": "drill",
+                  "title": "Sentence 6",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "2e36b031-eb55-4492-bfc1-6e7584b52932",
+                  "startMs": 34480,
+                  "endMs": 40940,
+                  "kind": "drill",
+                  "title": "Sentence 7",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f705bd45-23f3-4d78-862f-c5740acfc586",
+                  "startMs": 41420,
+                  "endMs": 44320,
+                  "kind": "drill",
+                  "title": "Sentence 8",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a186a5db-ed2d-4df2-9541-3f5bbeb8e2f1",
+                  "startMs": 45100,
+                  "endMs": 49080,
+                  "kind": "drill",
+                  "title": "Sentence 9",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d77759ac-ce42-4593-9119-45663a6c0476",
+                  "startMs": 49560,
+                  "endMs": 52940,
+                  "kind": "drill",
+                  "title": "Sentence 10",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d607439c-2a97-4c9b-a8f5-6219ca6b9893",
+                  "startMs": 53660,
+                  "endMs": 58500,
+                  "kind": "drill",
+                  "title": "Sentence 11",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "7c027c96-8b62-4669-a8c1-732a90b7bcee",
+                  "startMs": 59020,
+                  "endMs": 64700,
+                  "kind": "drill",
+                  "title": "Sentence 12",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "b242accc-469c-42a5-9f0d-4c9dc5ffe1bc",
+                  "startMs": 65320,
+                  "endMs": 70460,
+                  "kind": "drill",
+                  "title": "Sentence 13",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "2f9a2b47-0b7a-4d00-8586-c9f8cfe9ecec",
+                  "startMs": 70980,
+                  "endMs": 76300,
+                  "kind": "drill",
+                  "title": "Sentence 14",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e2c97cab-7f1c-46ab-86be-bb2223d19e60",
+                  "startMs": 76760,
+                  "endMs": 80960,
+                  "kind": "drill",
+                  "title": "Sentence 15",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "b4309c42-ff32-4de6-a987-6153e753566c",
+                  "startMs": 81600,
+                  "endMs": 84960,
+                  "kind": "drill",
+                  "title": "Sentence 16",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dbed2cf4-0231-47a6-8e4d-039e815eac23",
+                  "startMs": 84960,
+                  "endMs": 88980,
+                  "kind": "drill",
+                  "title": "Sentence 17",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0c6d32e5-6db5-4f5f-b45f-ae504958a2ac",
+                  "startMs": 89740,
+                  "endMs": 94880,
+                  "kind": "drill",
+                  "title": "Sentence 18",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f85a41c0-980c-48f6-a5c4-4601f51cea66",
+                  "startMs": 95580,
+                  "endMs": 100900,
+                  "kind": "drill",
+                  "title": "Sentence 19",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "5331cbf6-3129-4e2b-ab6f-a2a4322952f2",
+                  "startMs": 101740,
+                  "endMs": 108220,
+                  "kind": "drill",
+                  "title": "Sentence 20",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "939f30db-3e29-41ab-8803-9df609909670",
+                  "startMs": 108940,
+                  "endMs": 114320,
+                  "kind": "drill",
+                  "title": "Sentence 21",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "4ecd9951-e779-442e-a187-e14e2549a2e7",
+                  "startMs": 114680,
+                  "endMs": 119100,
+                  "kind": "drill",
+                  "title": "Sentence 22",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "71cfb1f0-54a8-42f4-8903-cf46aec93fc6",
+                  "startMs": 119680,
+                  "endMs": 124000,
+                  "kind": "drill",
+                  "title": "Sentence 23",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "b5dd618f-8606-4ed0-9942-b819eb84493f",
+                  "startMs": 124640,
+                  "endMs": 130460,
+                  "kind": "drill",
+                  "title": "Sentence 24",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "8f5093ec-1978-44eb-a278-dd8d020a1c45",
+                  "startMs": 130980,
+                  "endMs": 134500,
+                  "kind": "drill",
+                  "title": "Sentence 25",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "12d672d2-1aca-4032-91ed-23cabdadc9d2",
+                  "startMs": 135460,
+                  "endMs": 141320,
+                  "kind": "drill",
+                  "title": "Sentence 26",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "27cb321c-432d-4e89-a117-c9f7fd5c5837",
+                  "startMs": 141880,
+                  "endMs": 148300,
+                  "kind": "drill",
+                  "title": "Sentence 27",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "de644d59-faf9-46dd-a9b5-5823eb3dbfd2",
+                  "startMs": 148880,
+                  "endMs": 154040,
+                  "kind": "drill",
+                  "title": "Sentence 28",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "32fa7b93-9bd7-42a5-ac66-8cd1068de605",
+                  "startMs": 154720,
+                  "endMs": 161060,
+                  "kind": "drill",
+                  "title": "Sentence 29",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "6f8c3dde-beeb-477b-aa8a-2adc4a5b3537",
+                  "startMs": 162020,
+                  "endMs": 163160,
+                  "kind": "drill",
+                  "title": "Sentence 30",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "3a023b94-5833-4b56-84cc-2d382737b2d6",
+                  "startMs": 163700,
+                  "endMs": 166220,
+                  "kind": "drill",
+                  "title": "Sentence 31",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d3906931-86e4-4fee-b84c-8bd9c16b69a0",
+                  "startMs": 166540,
+                  "endMs": 169900,
+                  "kind": "drill",
+                  "title": "Sentence 32",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 4400,
+              "text": "저는 음식 때문에 멍고까지 여행을 가는 편은 아니에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 4960,
+              "endMs": 12560,
+              "text": "그런데 단일치기로 단여울 수 있는 곳이라면 먹고 싶은 음식 때문에 목적지를 정할 때가 있어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 13380,
+              "endMs": 16320,
+              "text": "건대 입구는 저에게 그런 곳 중 하나예요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 16940,
+              "endMs": 22380,
+              "text": "건대 입구에는 저랑 남편이 정말 좋아하는 중국식당에 있어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 23000,
+              "endMs": 27220,
+              "text": "그곳에는 도상면이랑 딜섬이 정말 맛있어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 27940,
+              "endMs": 34040,
+              "text": "특히 도상면은 국물이 매콤하면서 또 새콤하고 면은 정말 쫄깃해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 34480,
+              "endMs": 40940,
+              "text": "딜섬도 진짜 맛있는데 저는 그 식당에서만 느낄 수 있는 특별한 맛이라고 생각해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 41420,
+              "endMs": 44320,
+              "text": "처음부터 그 식당을 알고 있었던 건 아니에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 45100,
+              "endMs": 49080,
+              "text": "예전에 외국인 친구 한 명이 그곳을 소개해줬어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 49560,
+              "endMs": 52940,
+              "text": "그 친구는 중국어도 잘하고 한국어도 잘했는데",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 53660,
+              "endMs": 58500,
+              "text": "자기가 좋아하는 중국 음식은 건대 입구 근처에서 먹는다고 했어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 59020,
+              "endMs": 64700,
+              "text": "그래서 어느 날 저희를 직접 데리고 가서 중국어로 메뉴를 주문해줬어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 65320,
+              "endMs": 70460,
+              "text": "그때 저는 향신료가 강한 현지 중국 음식을 처음 먹어봤어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 70980,
+              "endMs": 76300,
+              "text": "평소에 먹던 한국식 중국 음식과는 많이 달라서 정말 신기했어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 76760,
+              "endMs": 80960,
+              "text": "그 뒤로 건대 입구에 가는 날이 점점 더 많아졌어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 81600,
+              "endMs": 84960,
+              "text": "그러다가 나중에는 도상면이 너무 맛있어서",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 84960,
+              "endMs": 88980,
+              "text": "오직 그 음식만 생각하며 주말을 기다리기도 했어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 89740,
+              "endMs": 94880,
+              "text": "도상면을 먹은 날은 배가 너무 불러서 다른 건 더 먹을 수가 없어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 95580,
+              "endMs": 100900,
+              "text": "그래서 소화를 시키기 위해서 근처를 많이 걸으면서 구경하는 편이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 101740,
+              "endMs": 108220,
+              "text": "중국식품이나 중국 간식을 파는 곳에 들어가서 신기한 음료랑 과자를 보기도 하고요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 108940,
+              "endMs": 114320,
+              "text": "또 근처를 걷다가 점고 감각적인 소품샵에 들어가서 구경하기도 해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 114680,
+              "endMs": 119100,
+              "text": "가끔 파급스토어에서 재밌는 이벤트에 참여하기도 하고요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 119680,
+              "endMs": 124000,
+              "text": "그래서 저에게 건대 입구는 단순히 밥만 먹는 곳은 아니에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 124640,
+              "endMs": 130460,
+              "text": "맛있는 음식을 먹고 많이 먹고 새로운 분위기를 느낄 수 있는 곳이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 130980,
+              "endMs": 134500,
+              "text": "지금도 그 도상면이 생각나서 입에 침이 고이는데요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 135460,
+              "endMs": 141320,
+              "text": "제 딸을 임신한 이유로 가본 적이 없으니까 2년 넘게 그 맛을 못 본 거네요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 141880,
+              "endMs": 148300,
+              "text": "찾아갈 때마다 한 시간 이상 웨이틴을 가고 하고 가는 거라서 아기랑 가기 어려웠는데요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 148880,
+              "endMs": 154040,
+              "text": "그래도 날이 더 따뜻해지면 올해는 꼭 한 번 다시 가보고 싶어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 154720,
+              "endMs": 161060,
+              "text": "한 살인 우리 딸이 매운드 오상면을 먹을 수는 없겠지만 아마 김성은 좋아할 것 같아요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 162020,
+              "endMs": 163160,
+              "text": "여러분은 어때요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 163700,
+              "endMs": 166220,
+              "text": "먹고 싶은 음식 때문에 가보고 싶은 곳?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 166540,
+              "endMs": 169900,
+              "text": "혹은 또 또 가보고 싶은 곳이 있나요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

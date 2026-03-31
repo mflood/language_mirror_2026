@@ -1,0 +1,168 @@
+{
+  "transcripts": [
+    {
+      "startMs": 0,
+      "endMs": 4040,
+      "text": "한국에 가보고 싶은 드라마 촬영지가 있어요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 4700,
+      "endMs": 6980,
+      "text": "네, 강릉에 가보고 싶어요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 7860,
+      "endMs": 9640,
+      "text": "강릉 어디에 가보고 싶어요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 10560,
+      "endMs": 12120,
+      "text": "주문진 방파제요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 12780,
+      "endMs": 13240,
+      "text": "왜요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 14080,
+      "endMs": 16340,
+      "text": "드라마 독게 비에 나온 곳이거든요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 16900,
+      "endMs": 19340,
+      "text": "제가 그 드라마에 정말 좋아해요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 20200,
+      "endMs": 22180,
+      "text": "아, 거기서 뭐라고 싶어요?",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 22880,
+      "endMs": 24320,
+      "text": "바다를 보고 싶어요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 24840,
+      "endMs": 28040,
+      "text": "그리고 꽃을 가져가서 사진도 찍고 싶어요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 29040,
+      "endMs": 29840,
+      "text": "좋네요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 30480,
+      "endMs": 32180,
+      "text": "그럼 정말 예쁠 것 같아요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 33040,
+      "endMs": 35920,
+      "text": "네, 정말 제 버킷리스예요.",
+      "speaker": "Speaker 1"
+    }
+  ],
+  "clips": [
+    {
+      "startMs": 0,
+      "endMs": 4040,
+      "kind": "drill",
+      "title": "Sentence 1"
+    },
+    {
+      "startMs": 4700,
+      "endMs": 6980,
+      "kind": "drill",
+      "title": "Sentence 2"
+    },
+    {
+      "startMs": 7860,
+      "endMs": 9640,
+      "kind": "drill",
+      "title": "Sentence 3"
+    },
+    {
+      "startMs": 10560,
+      "endMs": 12120,
+      "kind": "drill",
+      "title": "Sentence 4"
+    },
+    {
+      "startMs": 12780,
+      "endMs": 13240,
+      "kind": "drill",
+      "title": "Sentence 5"
+    },
+    {
+      "startMs": 14080,
+      "endMs": 16340,
+      "kind": "drill",
+      "title": "Sentence 6"
+    },
+    {
+      "startMs": 16900,
+      "endMs": 19340,
+      "kind": "drill",
+      "title": "Sentence 7"
+    },
+    {
+      "startMs": 20200,
+      "endMs": 22180,
+      "kind": "drill",
+      "title": "Sentence 8"
+    },
+    {
+      "startMs": 22880,
+      "endMs": 24320,
+      "kind": "drill",
+      "title": "Sentence 9"
+    },
+    {
+      "startMs": 24840,
+      "endMs": 28040,
+      "kind": "drill",
+      "title": "Sentence 10"
+    },
+    {
+      "startMs": 29040,
+      "endMs": 29840,
+      "kind": "drill",
+      "title": "Sentence 11"
+    },
+    {
+      "startMs": 30480,
+      "endMs": 32180,
+      "kind": "drill",
+      "title": "Sentence 12"
+    },
+    {
+      "startMs": 0,
+      "endMs": 0,
+      "kind": "skip",
+      "title": "Intro silence"
+    },
+    {
+      "startMs": 37120,
+      "endMs": 37120,
+      "kind": "skip",
+      "title": "Outro silence"
+    }
+  ]
+}
