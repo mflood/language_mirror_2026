@@ -1,0 +1,63 @@
+Six Wands Studios — Visual Style Guide (for AI image prompts)
+
+Studio: Six Wands Studios — independent iOS game studio. The name comes from I Ching Hexagram 1 (乾), The Creative: six unbroken yang lines, heaven over heaven.
+
+Core Symbol: Six solid horizontal lines stacked vertically (the hexagram). Always six, always unbroken.
+
+---
+
+THE FEELING
+
+Pop surrealism meets Eastern mysticism. Storybook-gothic. Beautiful but a little eerie — like something you found in an attic that you're not sure you were supposed to open. Cute with depth underneath. Playful on the surface, esoteric underneath.
+
+Think: Mark Ryden, old grimoires, Victorian children's books, ukiyo-e woodblock prints, mist over pine trees, glowing sigils, whispered secrets, big-eyed doll-like figures holding arcane books, wands radiating in sunburst patterns.
+
+Not: Corporate tech, neon gamer, flat/minimal SaaS, bright and cheerful, cartoon/Pixar, photorealistic.
+
+---
+
+COLOR PALETTE
+
+- Black: #0a0a0c (deep, near-true black)
+- White: #e8e4df (warm parchment, not clinical white)
+- Red (primary): #8b2d3a (deep, desaturated, like dried blood or old velvet)
+- Red deep: #5a1a28 (shadows, dark accents)
+- Red light: #c44058 (highlights, glows)
+- Cream: #d4cec4 (aged paper tone)
+- Red glow: rgba(196, 64, 88, 0.25) (for soft luminous effects)
+
+The palette is desaturated and moody. Reds are deep, not bright. Whites are warm parchment. Never: pure white, bright red, amber, gold, blue, neon.
+
+---
+
+TYPOGRAPHY FEEL
+
+- Headings/titles: elegant serif (Cormorant Garamond) — literary, slightly old-world
+- Body: light, airy sans-serif (Raleway weight 300) — modern and quiet
+- The contrast between ornate serif and minimal sans is intentional
+
+---
+
+APP ICON GUIDELINES
+
+- Should feel like a small mysterious artifact, not a generic app icon
+- Desaturated palette with selective red or cream accents
+- Can incorporate: hexagram lines, sigils, esoteric geometry, storybook imagery
+- Rounded corners (iOS standard: 20% radius of icon size)
+- Should read well at small sizes — keep compositions simple with one strong focal element
+- Dark backgrounds preferred, with subject emerging from shadow
+
+---
+
+REFERENCE IMAGE
+
+The studio's hero image depicts: a pale, big-eyed girl with white hair and red flower accents, wearing dark Victorian clothing, holding an open arcane book. A glowing hexagram floats before her. Six wands radiate outward in a sunburst behind her. Misty East Asian pine landscape in the background. Muted, nearly monochrome with selective warm accents. This is the target aesthetic.
+
+
+Please create an app icon for our language mirror app:
+
+  A minimal, modern iOS app icon for a language learning app called "Language Mirror." Two overlapping speech bubbles       
+  mirrored/reflected across a subtle horizontal axis — one in a warm coral/salmon tone, one in a soft teal/blue. The bubbles
+   suggest conversation and reflection. Clean flat design with gentle rounded shapes, no text, no gradients, solid calm     
+  background (soft off-white or deep navy). Suitable for a 1024x1024 app icon with large simple shapes that read well at 
+  small sizes. No photorealism, no 3D effects.

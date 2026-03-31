@@ -420,11 +420,12 @@
 				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8695SQ572;
+				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Language Mirror";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Recording practice audio.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -456,7 +457,7 @@
 					"$(PROJECT_DIR)/LanguageMirror/2025-09-13/.scripts/venv/lib/python3.13/site-packages/torch/lib",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sixwandsstudios.LanguageMirror;
+				PRODUCT_BUNDLE_IDENTIFIER = sixwandsstudios.LanguageMirror;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -472,11 +473,12 @@
 				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8695SQ572;
+				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Language Mirror";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Recording practice audio.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -508,7 +510,7 @@
 					"$(PROJECT_DIR)/LanguageMirror/2025-09-13/.scripts/venv/lib/python3.13/site-packages/torch/lib",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sixwandsstudios.LanguageMirror;
+				PRODUCT_BUNDLE_IDENTIFIER = sixwandsstudios.LanguageMirror;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -717,10 +719,10 @@
 				CODE_SIGN_ENTITLEMENTS = LanguageMirrorShare/LanguageMirrorShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8695SQ572;
+				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LanguageMirror/2025-09-13/ShareExtension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = LanguageMirrorShare;
+				INFOPLIST_KEY_CFBundleDisplayName = LanguageMirror;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -729,7 +731,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sixwandsstudios.LanguageMirror.LanguageMirrorShare;
+				PRODUCT_BUNDLE_IDENTIFIER = sixwandsstudios.LanguageMirror.LanguageMirrorShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -747,10 +749,10 @@
 				CODE_SIGN_ENTITLEMENTS = LanguageMirrorShare/LanguageMirrorShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8695SQ572;
+				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LanguageMirror/2025-09-13/ShareExtension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = LanguageMirrorShare;
+				INFOPLIST_KEY_CFBundleDisplayName = LanguageMirror;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -759,7 +761,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sixwandsstudios.LanguageMirror.LanguageMirrorShare;
+				PRODUCT_BUNDLE_IDENTIFIER = sixwandsstudios.LanguageMirror.LanguageMirrorShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
