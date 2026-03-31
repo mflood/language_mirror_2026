@@ -40,31 +40,31 @@
       "startMs": 16560,
       "endMs": 19400,
       "text": "특히 주말에는 사람들이 많이 와요.",
-      "speaker": "Speaker 1"
+      "speaker": "Speaker 2"
     },
     {
       "startMs": 20480,
       "endMs": 22080,
       "text": "데이트하기 뭐가 좋아요?",
-      "speaker": "Speaker 2"
+      "speaker": "Speaker 1"
     },
     {
       "startMs": 23040,
       "endMs": 27800,
       "text": "분위기 좋은 카페도 많고 예쁜 식당들이랑 술집도 많아요.",
-      "speaker": "Speaker 1"
+      "speaker": "Speaker 2"
     },
     {
       "startMs": 27800,
       "endMs": 32700,
       "text": "아, 그럼 낙과 밤 중에 언제 가는 게 더 좋아요?",
-      "speaker": "Speaker 2"
+      "speaker": "Speaker 1"
     },
     {
       "startMs": 33440,
       "endMs": 37840,
       "text": "둘 다 좋지만 저는 저녁분이가 정말 좋은 것 같아요.",
-      "speaker": "Speaker 1"
+      "speaker": "Speaker 2"
     },
     {
       "startMs": 38700,
@@ -82,13 +82,13 @@
       "startMs": 43160,
       "endMs": 44240,
       "text": "한 번 가보고 싶어요.",
-      "speaker": "Speaker 2"
+      "speaker": "Speaker 1"
     },
     {
       "startMs": 44700,
       "endMs": 47200,
       "text": "네, 데이트 장소로 정말 괜찮아요.",
-      "speaker": "Speaker 1"
+      "speaker": "Speaker 2"
     }
   ],
   "clips": [
@@ -171,16 +171,16 @@
       "title": "13. 오, 좋네요."
     },
     {
-      "startMs": 43160,
-      "endMs": 44240,
-      "kind": "drill",
-      "title": "14. 한 번 가보고 싶어요."
+      "startMs": 0,
+      "endMs": 3660,
+      "kind": "skip",
+      "title": "Intro silence"
     },
     {
-      "startMs": 44700,
-      "endMs": 47200,
-      "kind": "drill",
-      "title": "15. 네, 데이트 장소로 정말 괜찮아요."
+      "startMs": 47200,
+      "endMs": 48382,
+      "kind": "skip",
+      "title": "Outro silence"
     }
   ]
 }

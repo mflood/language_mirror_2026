@@ -10,7 +10,7 @@ from bundle_pipeline.paths import WorkPaths
 from bundle_pipeline.audio import find_audio_files, get_audio_duration_ms
 from bundle_pipeline.artifacts import artifact_path, load_json_if_exists, write_json
 from bundle_pipeline.whisper_tools import extract_segments_for_llm
-from bundle_pipeline.openai_tools import build_curation_prompt, curate_with_openai
+from bundle_pipeline.openai_tools import build_curation_prompt, curate_with_openai, enrich_clip_titles
 
 logger = logging.getLogger(__name__)
 
@@ -78,6 +78,7 @@ def main() -> int:
         logger.debug("Prepared LLM input for %s: duration_ms=%d segments=%d", audio_path.name, duration_ms, len(segments))
         prompt = build_curation_prompt(segments, audio_duration_ms=duration_ms, language_code=cfg.language_code)
         curated = curate_with_openai(model=model_name, prompt=prompt)
+        curated = enrich_clip_titles(curated)
         write_json(out_path, curated)
         done += 1
         transcripts_n = len(curated.get("transcripts", []) or [])

@@ -45,7 +45,7 @@ Output Format (JSON):
       \"startMs\": <start time in milliseconds>,
       \"endMs\": <end time in milliseconds>,
       \"kind\": \"drill\" or \"skip\" or \"noise\",
-      \"title\": \"<brief description, e.g., 'Sentence 1' or 'Intro music'>\"
+      \"title\": \"<brief label, e.g., 'Sentence 1' or 'Intro music'>\"
     }}
   ]
 }}
@@ -59,6 +59,45 @@ Guidelines:
 - Keep speaker labels consistent throughout
 
 Respond ONLY with the JSON structure, no additional text."""
+
+
+MAX_SNIPPET_LEN = 25
+
+
+def enrich_clip_titles(curated: dict[str, Any]) -> dict[str, Any]:
+    """Replace generic 'Sentence N' clip titles with numbered transcript snippets.
+
+    For each drill clip, find the transcript span that overlaps its time range
+    and set the title to  ``"<N>. <snippet…>"``.  Non-drill clips (skip, noise)
+    are left unchanged.
+    """
+    transcripts = curated.get("transcripts") or []
+    clips = curated.get("clips") or []
+
+    drill_num = 0
+    for clip in clips:
+        if clip.get("kind") != "drill":
+            continue
+        drill_num += 1
+        # Find best-matching transcript by time overlap
+        best_text = ""
+        best_overlap = 0
+        c_start = clip["startMs"]
+        c_end = clip["endMs"]
+        for t in transcripts:
+            overlap_start = max(c_start, t["startMs"])
+            overlap_end = min(c_end, t["endMs"])
+            overlap = max(0, overlap_end - overlap_start)
+            if overlap > best_overlap:
+                best_overlap = overlap
+                best_text = t.get("text", "")
+        if best_text:
+            snippet = best_text if len(best_text) <= MAX_SNIPPET_LEN else best_text[:MAX_SNIPPET_LEN] + "…"
+            clip["title"] = f"{drill_num}. {snippet}"
+        else:
+            clip["title"] = f"Sentence {drill_num}"
+
+    return curated
 
 
 def curate_with_openai(model: str, prompt: str) -> dict[str, Any]:

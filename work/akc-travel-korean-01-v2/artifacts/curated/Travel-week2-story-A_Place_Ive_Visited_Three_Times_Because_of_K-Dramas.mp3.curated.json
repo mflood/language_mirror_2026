@@ -346,15 +346,15 @@
     },
     {
       "startMs": 0,
-      "endMs": 500,
+      "endMs": 5460,
       "kind": "skip",
-      "title": "Intro noise"
+      "title": "Intro silence"
     },
     {
-      "startMs": 134000,
+      "startMs": 130140,
       "endMs": 134818,
       "kind": "skip",
-      "title": "Outro noise"
+      "title": "Outro silence"
     }
   ]
 }

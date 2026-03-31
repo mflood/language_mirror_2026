@@ -154,15 +154,15 @@
     },
     {
       "startMs": 0,
-      "endMs": 0,
+      "endMs": 400,
       "kind": "skip",
-      "title": "Intro music"
+      "title": "Intro silence"
     },
     {
       "startMs": 37120,
       "endMs": 37120,
-      "kind": "skip",
-      "title": "Outro music"
+      "kind": "noise",
+      "title": "End silence"
     }
   ]
 }

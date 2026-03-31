@@ -1,9 +1,9 @@
 {
-  "id": "akc-travel-korean-01",
+  "id": "akc-travel-korean-01-v2",
   "title": "AKC Travel Korean",
   "packs": [
     {
-      "id": "akc-travel-korean-01",
+      "id": "akc-travel-korean-01-v2",
       "title": "AKC Travel Korean",
       "author": "AKC",
       "coverUrl": null,
@@ -12,19 +12,19 @@
         {
           "id": "Travel-week1-conversation.mp3",
           "title": "Travel Week1 Conversation",
-          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week1-conversation.mp3",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01-v2/Travel-week1-conversation.mp3",
           "filename": "Travel-week1-conversation.mp3",
           "durationMs": 48382,
           "languageCode": "ko-KR",
           "practiceSets": [
             {
-              "id": "186a2cf0-5e00-4c30-ad70-1f55d71bcee2",
-              "trackId": "7051ec29-a095-4e37-b065-8a1aa5b97810",
+              "id": "26b9adb2-a875-47fc-8d80-599bfd44b047",
+              "trackId": "85387185-0872-46e2-aebc-ca055a83354f",
               "displayOrder": 0,
               "title": "Full Track",
               "clips": [
                 {
-                  "id": "f82acd93-c664-4e2d-8901-d5d2f8242cea",
+                  "id": "18a3f51e-3daa-4ea8-b7cb-4c1f5beb01c0",
                   "startMs": 0,
                   "endMs": 48382,
                   "kind": "drill",
@@ -38,13 +38,13 @@
               "isFavorite": false
             },
             {
-              "id": "2bfdc472-4233-4fd1-8ad8-db8c7bd5c7a8",
-              "trackId": "646969dd-4a91-46e5-900b-27bc4ff88fbb",
+              "id": "afa52baf-a4b5-442d-ac3a-9b38221f6b24",
+              "trackId": "4605db43-6eb6-4051-9ab4-935309a555f1",
               "displayOrder": 1,
               "title": "Practice Set",
               "clips": [
                 {
-                  "id": "9900b14f-b4d3-4058-b5d1-f2a943ccb85c",
+                  "id": "5a6151a1-bcb7-476a-84ce-6351a8b2f949",
                   "startMs": 0,
                   "endMs": 2780,
                   "kind": "drill",
@@ -55,7 +55,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "43f56163-21e5-4e96-b3b1-d0c89f33e696",
+                  "id": "970aacbc-e3af-450e-9773-f79f4385c9e2",
                   "startMs": 3660,
                   "endMs": 5420,
                   "kind": "drill",
@@ -66,7 +66,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "75369c27-5345-48db-ba0c-ed34ca86a199",
+                  "id": "b6c4744e-d1e6-4adf-a072-adf30e62d99d",
                   "startMs": 6540,
                   "endMs": 7940,
                   "kind": "drill",
@@ -77,7 +77,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "c531bf74-4d0d-40a2-bec4-5ce0b1ff40e4",
+                  "id": "b53ba2f0-4ba1-404d-8f2a-8b4517125c0d",
                   "startMs": 8860,
                   "endMs": 11620,
                   "kind": "drill",
@@ -88,7 +88,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "36f69021-e3b3-446c-9f61-0e72d37b3e7e",
+                  "id": "9ea3e9bf-e435-43a6-a57c-e7859b0325ca",
                   "startMs": 12080,
                   "endMs": 13120,
                   "kind": "drill",
@@ -99,7 +99,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "99a5b86e-da7d-4003-96a8-e1459a520774",
+                  "id": "f5e635f3-46c5-48ab-bc07-bc1c191c62a2",
                   "startMs": 14320,
                   "endMs": 15820,
                   "kind": "drill",
@@ -110,7 +110,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "2172105f-4ec0-44c9-b5af-a2efbb3fd1d9",
+                  "id": "b5da52f1-befa-4030-8d2d-58588e67e1c6",
                   "startMs": 16560,
                   "endMs": 19400,
                   "kind": "drill",
@@ -121,7 +121,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "38f36b78-c28f-4247-9074-d902dfe1ad92",
+                  "id": "5f5dc46c-cf7a-40a1-b979-c6593e204624",
                   "startMs": 20480,
                   "endMs": 22080,
                   "kind": "drill",
@@ -132,7 +132,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "5f77b11a-3eaa-442e-b876-fe2f94db6d57",
+                  "id": "0838d407-c90e-42a4-95ab-4250b5f508b4",
                   "startMs": 23040,
                   "endMs": 27800,
                   "kind": "drill",
@@ -143,7 +143,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "778004a7-fb94-45c9-bfe0-4ba47af126be",
+                  "id": "c1d2837f-dd32-4509-aa3e-6ca02a18ad72",
                   "startMs": 27800,
                   "endMs": 32700,
                   "kind": "drill",
@@ -154,7 +154,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "dd1e4b0b-0cfe-4606-8c74-782c49dc069d",
+                  "id": "8602670a-ebe2-4af2-958d-63b7aebe48dd",
                   "startMs": 33440,
                   "endMs": 37840,
                   "kind": "drill",
@@ -165,7 +165,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "af5b56d7-8d89-4d35-aac8-db6034b5e20c",
+                  "id": "1dcec62a-a800-4ca1-bba5-377f4a5abe48",
                   "startMs": 38700,
                   "endMs": 40980,
                   "kind": "drill",
@@ -176,7 +176,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "a0c44ad7-c210-401e-a0c5-4e2db12b4c73",
+                  "id": "d5bf814b-045c-439f-ac00-2437e886dbd6",
                   "startMs": 41560,
                   "endMs": 42680,
                   "kind": "drill",
@@ -187,26 +187,26 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "4d8c1c71-722d-42ee-827b-73666cb73bfc",
-                  "startMs": 43160,
-                  "endMs": 44240,
-                  "kind": "drill",
-                  "title": "14. 한 번 가보고 싶어요.",
+                  "id": "239183d3-a3a0-416d-9a07-bd4beceebb35",
+                  "startMs": 0,
+                  "endMs": 3660,
+                  "kind": "skip",
+                  "title": "Intro silence",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
-                  "languageCode": "ko-KR"
+                  "languageCode": null
                 },
                 {
-                  "id": "7d179ace-c350-44e7-9d8c-f702742f0fde",
-                  "startMs": 44700,
-                  "endMs": 47200,
-                  "kind": "drill",
-                  "title": "15. 네, 데이트 장소로 정말 괜찮아요.",
+                  "id": "12375cfc-2234-4233-9a8c-fcf1f7816a12",
+                  "startMs": 47200,
+                  "endMs": 48382,
+                  "kind": "skip",
+                  "title": "Outro silence",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
-                  "languageCode": "ko-KR"
+                  "languageCode": null
                 }
               ],
               "isFavorite": false
@@ -259,35 +259,35 @@
               "startMs": 16560,
               "endMs": 19400,
               "text": "특히 주말에는 사람들이 많이 와요.",
-              "speaker": "Speaker 1",
+              "speaker": "Speaker 2",
               "languageCode": "ko-KR"
             },
             {
               "startMs": 20480,
               "endMs": 22080,
               "text": "데이트하기 뭐가 좋아요?",
-              "speaker": "Speaker 2",
+              "speaker": "Speaker 1",
               "languageCode": "ko-KR"
             },
             {
               "startMs": 23040,
               "endMs": 27800,
               "text": "분위기 좋은 카페도 많고 예쁜 식당들이랑 술집도 많아요.",
-              "speaker": "Speaker 1",
+              "speaker": "Speaker 2",
               "languageCode": "ko-KR"
             },
             {
               "startMs": 27800,
               "endMs": 32700,
               "text": "아, 그럼 낙과 밤 중에 언제 가는 게 더 좋아요?",
-              "speaker": "Speaker 2",
+              "speaker": "Speaker 1",
               "languageCode": "ko-KR"
             },
             {
               "startMs": 33440,
               "endMs": 37840,
               "text": "둘 다 좋지만 저는 저녁분이가 정말 좋은 것 같아요.",
-              "speaker": "Speaker 1",
+              "speaker": "Speaker 2",
               "languageCode": "ko-KR"
             },
             {
@@ -308,14 +308,14 @@
               "startMs": 43160,
               "endMs": 44240,
               "text": "한 번 가보고 싶어요.",
-              "speaker": "Speaker 2",
+              "speaker": "Speaker 1",
               "languageCode": "ko-KR"
             },
             {
               "startMs": 44700,
               "endMs": 47200,
               "text": "네, 데이트 장소로 정말 괜찮아요.",
-              "speaker": "Speaker 1",
+              "speaker": "Speaker 2",
               "languageCode": "ko-KR"
             }
           ]
@@ -323,19 +323,19 @@
         {
           "id": "Travel-week1-story-Hidden_spot.mp3",
           "title": "Travel Week1 Story Hidden Spot",
-          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week1-story-Hidden_spot.mp3",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01-v2/Travel-week1-story-Hidden_spot.mp3",
           "filename": "Travel-week1-story-Hidden_spot.mp3",
           "durationMs": 112173,
           "languageCode": "ko-KR",
           "practiceSets": [
             {
-              "id": "1c86a9c5-d944-4fb4-9610-d07acb2557f8",
-              "trackId": "01e006b0-aff6-4ed1-930e-22f23437d0be",
+              "id": "dc89ae4f-5683-4d3e-aec7-db829d3793d8",
+              "trackId": "d30b51a8-5013-4921-bc48-bc3077c7033f",
               "displayOrder": 0,
               "title": "Full Track",
               "clips": [
                 {
-                  "id": "795f8628-0bf8-437a-a64c-cb6fb0d05f24",
+                  "id": "b2efa43c-aade-4b86-995a-791c92b0463d",
                   "startMs": 0,
                   "endMs": 112173,
                   "kind": "drill",
@@ -349,13 +349,13 @@
               "isFavorite": false
             },
             {
-              "id": "a426847f-948d-4808-873b-27a746a304be",
-              "trackId": "a407bd56-e5bc-4d2f-a1ad-13fda685cdd2",
+              "id": "f03ba4b2-12a0-446a-8d46-9b935671cc91",
+              "trackId": "32491edd-56bd-4f65-8b8a-55ce879715b4",
               "displayOrder": 1,
               "title": "Practice Set",
               "clips": [
                 {
-                  "id": "1c97e4ea-2631-4401-a7f1-ec8f4269a888",
+                  "id": "64d69f79-1653-4e17-ad38-af288129122c",
                   "startMs": 0,
                   "endMs": 4420,
                   "kind": "drill",
@@ -366,7 +366,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "b1a06ba5-fdc7-4a37-8a58-c72e76e72489",
+                  "id": "486f6aa6-9cf9-4e65-a9a0-28ec2dae4928",
                   "startMs": 4920,
                   "endMs": 10580,
                   "kind": "drill",
@@ -377,7 +377,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "37601856-6c45-4b17-83bd-758e44ce3bd6",
+                  "id": "89838ba7-f88f-409b-a128-1885bf1a7e80",
                   "startMs": 11220,
                   "endMs": 14700,
                   "kind": "drill",
@@ -388,7 +388,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "592fe215-05ca-4a05-ae66-043ae9c956c2",
+                  "id": "a46efea3-16ff-46c3-82a6-0b925e466b29",
                   "startMs": 15380,
                   "endMs": 19620,
                   "kind": "drill",
@@ -399,7 +399,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "099d439f-0f56-4cd8-b3f1-959fff5d21e7",
+                  "id": "85b29dc8-3520-4d49-b77e-ddc8e43a4bd0",
                   "startMs": 20300,
                   "endMs": 24020,
                   "kind": "drill",
@@ -410,7 +410,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "9dde420d-241e-4373-ad8e-347d34ec34aa",
+                  "id": "6c4e7efe-dcbb-4105-a0a2-61e83822b6e0",
                   "startMs": 24680,
                   "endMs": 27660,
                   "kind": "drill",
@@ -421,7 +421,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "8b19288e-e7a0-4680-8ed0-3aea8b8aa2d1",
+                  "id": "cb6e6dff-3efd-4dd2-a4c5-74931b676e52",
                   "startMs": 28460,
                   "endMs": 34780,
                   "kind": "drill",
@@ -432,7 +432,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "5cf7ffe7-9215-40fb-a288-42e4970aaf9a",
+                  "id": "9080b198-bf70-4c44-8e94-752f2b4bed08",
                   "startMs": 34860,
                   "endMs": 38860,
                   "kind": "drill",
@@ -443,7 +443,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "47dae431-f118-4704-97e1-984b5576410e",
+                  "id": "53d23e3c-a095-4aee-8c97-b177b9b7b799",
                   "startMs": 39840,
                   "endMs": 41700,
                   "kind": "drill",
@@ -454,7 +454,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "97c1cc6b-cbaf-481a-9ffb-f3744f7e28cb",
+                  "id": "a3921212-02eb-4286-ace0-857a3e0882db",
                   "startMs": 42140,
                   "endMs": 47860,
                   "kind": "drill",
@@ -465,7 +465,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "509f19d8-3e98-4d10-a6c3-03e0cb46ce01",
+                  "id": "1d57a1ad-54a9-4e84-8024-3bd8adfdfc90",
                   "startMs": 48620,
                   "endMs": 52320,
                   "kind": "drill",
@@ -476,7 +476,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "6abe4d8a-bf82-47cc-9e8e-fe4c8ca5dea7",
+                  "id": "6cdf90b9-23fd-4989-8bb6-174ef525f293",
                   "startMs": 53320,
                   "endMs": 57900,
                   "kind": "drill",
@@ -487,7 +487,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "e2fc025d-3241-4774-b830-98f44b24c338",
+                  "id": "5402846b-af61-4cfa-99c7-79f50b302e15",
                   "startMs": 58260,
                   "endMs": 60540,
                   "kind": "drill",
@@ -498,7 +498,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "1ae656fb-d3cc-4f71-8a88-55e97fb73c5e",
+                  "id": "11ce1119-957d-4b22-bbe1-a330e86a9da4",
                   "startMs": 61340,
                   "endMs": 64420,
                   "kind": "drill",
@@ -509,7 +509,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "9ff0ede2-a064-4fa8-93ef-6fb37cbaae07",
+                  "id": "b1985aa1-84d8-40ca-a240-a009237e8dfa",
                   "startMs": 65120,
                   "endMs": 70680,
                   "kind": "drill",
@@ -520,7 +520,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "8db3737b-6e53-45cc-adee-08f5d0cab661",
+                  "id": "a417135b-d52a-4346-9fe9-f4e95f301dfe",
                   "startMs": 71280,
                   "endMs": 74520,
                   "kind": "drill",
@@ -531,7 +531,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "a45fc495-c9de-4a3f-a8a8-d092fcbafe8d",
+                  "id": "5487ff05-f215-4cf2-a342-c098c1f9d234",
                   "startMs": 75380,
                   "endMs": 79220,
                   "kind": "drill",
@@ -542,7 +542,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "59871dba-28f7-4063-bfba-245a5daeb956",
+                  "id": "7a8e8d70-8f8f-4d96-9da8-50fbdaa3653a",
                   "startMs": 80020,
                   "endMs": 83820,
                   "kind": "drill",
@@ -553,7 +553,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "96b6c7ac-fd78-48d4-a7d6-7a13f7d6a2e5",
+                  "id": "26e044e9-d654-4e18-9ff7-bfa37529dc38",
                   "startMs": 84360,
                   "endMs": 87300,
                   "kind": "drill",
@@ -564,7 +564,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "ff29addb-f903-4cec-9e42-3275d3bc8653",
+                  "id": "d3d902b2-3d96-474f-812b-3bb7191d947c",
                   "startMs": 87880,
                   "endMs": 94560,
                   "kind": "drill",
@@ -575,7 +575,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "fcd20e72-2e08-4fe6-9be8-c96851cb022e",
+                  "id": "73b7070b-f004-4375-8518-c3a829a63d38",
                   "startMs": 95220,
                   "endMs": 98540,
                   "kind": "drill",
@@ -586,7 +586,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "3c40fda9-ffa4-4911-994f-3cef5decba00",
+                  "id": "743f9ed3-f839-4c14-84a9-28346aea7538",
                   "startMs": 99040,
                   "endMs": 102540,
                   "kind": "drill",
@@ -597,7 +597,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "f29325b8-9253-4177-8ab1-be971e154d53",
+                  "id": "3000eb83-291e-440b-afed-f78c5a81453c",
                   "startMs": 103400,
                   "endMs": 108160,
                   "kind": "drill",
@@ -608,7 +608,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "d00dd826-ed4e-4d21-a778-33a28951fabd",
+                  "id": "1ddef98b-25b0-466d-a12c-69827cae004a",
                   "startMs": 108160,
                   "endMs": 110320,
                   "kind": "drill",
@@ -796,19 +796,19 @@
         {
           "id": "Travel-week2-Conversation-My_Bucket_List_Place_in_Korea.mp3",
           "title": "Travel Week2 Conversation My Bucket List Place In Korea",
-          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week2-Conversation-My_Bucket_List_Place_in_Korea.mp3",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01-v2/Travel-week2-Conversation-My_Bucket_List_Place_in_Korea.mp3",
           "filename": "Travel-week2-Conversation-My_Bucket_List_Place_in_Korea.mp3",
           "durationMs": 37120,
           "languageCode": "ko-KR",
           "practiceSets": [
             {
-              "id": "1b379680-4885-40da-a7e9-e2c65d5f8ffa",
-              "trackId": "fcf8669e-d4a1-4247-bf2d-a97ec51a15c6",
+              "id": "a3b36f23-e5d7-4c1c-9a0e-6ebee73b7e92",
+              "trackId": "f8180e86-4de2-4a8d-9f17-7361d94425c9",
               "displayOrder": 0,
               "title": "Full Track",
               "clips": [
                 {
-                  "id": "4e2e2b91-6fa2-40b7-a878-f747bf226969",
+                  "id": "71979bac-b4a9-42d4-ba6a-8bee492e2adf",
                   "startMs": 0,
                   "endMs": 37120,
                   "kind": "drill",
@@ -822,13 +822,13 @@
               "isFavorite": false
             },
             {
-              "id": "bcb1ec1f-0ef2-4a0d-a1ed-32e33f5cd993",
-              "trackId": "34fc38e7-aabb-456e-872d-570e798d1282",
+              "id": "3f241daf-a09f-4da9-bf5b-cc484d3bf6d0",
+              "trackId": "865a0ec2-07fb-4d15-a69c-8eeb2818fadb",
               "displayOrder": 1,
               "title": "Practice Set",
               "clips": [
                 {
-                  "id": "dd36bd10-3acc-41ca-8ada-d45d2479605f",
+                  "id": "ff429399-1880-44ef-bcdf-7bff097fd45d",
                   "startMs": 0,
                   "endMs": 4040,
                   "kind": "drill",
@@ -839,7 +839,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "022a8741-ae02-438c-8274-29655c61a4aa",
+                  "id": "ffd8aca2-9283-4e25-93bb-360aded3f249",
                   "startMs": 4700,
                   "endMs": 6980,
                   "kind": "drill",
@@ -850,7 +850,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "448739a4-033d-40d6-bf2e-41e76bf001c6",
+                  "id": "cbe2ea57-a903-4b85-9ef8-409e0d88f0fd",
                   "startMs": 7860,
                   "endMs": 9640,
                   "kind": "drill",
@@ -861,7 +861,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "5eb427d8-0d8d-4010-aeec-f977f50d85ac",
+                  "id": "5d84935b-0ab1-47b2-88d2-e780ce4f9fba",
                   "startMs": 10560,
                   "endMs": 12120,
                   "kind": "drill",
@@ -872,7 +872,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "c5181a1c-a53e-4dac-956c-d7bafa0acc99",
+                  "id": "e75a9dd9-bd41-40a8-a4bd-b660016d52e9",
                   "startMs": 12780,
                   "endMs": 13240,
                   "kind": "drill",
@@ -883,7 +883,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "59385d9e-a6b5-439e-bb4e-63254576a815",
+                  "id": "2ee499cb-1158-48d7-9b96-0770df5f0ba3",
                   "startMs": 14080,
                   "endMs": 16340,
                   "kind": "drill",
@@ -894,7 +894,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "8072b8b8-3712-452b-a23a-17e8afb70249",
+                  "id": "7f76efc8-1072-4d03-b098-b1da82632fc7",
                   "startMs": 16900,
                   "endMs": 19340,
                   "kind": "drill",
@@ -905,7 +905,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "1391dd3a-2215-458b-909c-a2a61a66dd87",
+                  "id": "00e91c22-ca06-41e5-921a-ef08dfe8ce31",
                   "startMs": 20200,
                   "endMs": 22180,
                   "kind": "drill",
@@ -916,7 +916,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "fd279182-3eae-4b0c-9c7b-1ccbe9efc308",
+                  "id": "eb2c3f14-b3a3-4337-b53a-70f8ef313f1f",
                   "startMs": 22880,
                   "endMs": 24320,
                   "kind": "drill",
@@ -927,7 +927,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "b18836cd-a123-4199-901a-13fd732d85f0",
+                  "id": "8e66e954-ab63-4e4b-979a-448316c776c2",
                   "startMs": 24840,
                   "endMs": 28040,
                   "kind": "drill",
@@ -938,7 +938,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "f48ee14e-1836-429b-8bee-fd7a28dec3a3",
+                  "id": "3e78c44a-cda3-4770-9a93-131672afba58",
                   "startMs": 29040,
                   "endMs": 29840,
                   "kind": "drill",
@@ -949,7 +949,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "b5dece27-a04c-4350-921c-f7ccf2d64029",
+                  "id": "d4e7449c-950a-4ad2-b23c-b1ac0f78d3c0",
                   "startMs": 30480,
                   "endMs": 32180,
                   "kind": "drill",
@@ -960,22 +960,22 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "c5e228a7-c7e6-4510-b3c3-7b7a624f6295",
+                  "id": "e78c2393-b069-4ca1-8e42-aba4cce86001",
                   "startMs": 0,
-                  "endMs": 0,
+                  "endMs": 400,
                   "kind": "skip",
-                  "title": "Intro music",
+                  "title": "Intro silence",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
                   "languageCode": null
                 },
                 {
-                  "id": "532ab1ae-c8f5-4be9-be7c-a54956044926",
+                  "id": "6b41ae88-b64d-4cee-8109-6bf7894d3fb3",
                   "startMs": 37120,
                   "endMs": 37120,
-                  "kind": "skip",
-                  "title": "Outro music",
+                  "kind": "noise",
+                  "title": "End silence",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
@@ -1082,19 +1082,19 @@
         {
           "id": "Travel-week2-story-A_Place_Ive_Visited_Three_Times_Because_of_K-Dramas.mp3",
           "title": "Travel Week2 Story A Place Ive Visited Three Times Because Of K Dramas",
-          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week2-story-A_Place_Ive_Visited_Three_Times_Because_of_K-Dramas.mp3",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01-v2/Travel-week2-story-A_Place_Ive_Visited_Three_Times_Because_of_K-Dramas.mp3",
           "filename": "Travel-week2-story-A_Place_Ive_Visited_Three_Times_Because_of_K-Dramas.mp3",
           "durationMs": 134818,
           "languageCode": "ko-KR",
           "practiceSets": [
             {
-              "id": "a3984569-b22a-4744-99ca-758127ee3972",
-              "trackId": "5f7a3f27-20c6-4043-83df-5995b8e00a7a",
+              "id": "941045d1-50c5-48ef-ba9c-5ce7d7265675",
+              "trackId": "4f3b6d11-3f0f-48f9-be2d-2d0a1cfe4fe7",
               "displayOrder": 0,
               "title": "Full Track",
               "clips": [
                 {
-                  "id": "a7232fd9-b44f-452f-9fc5-ef7b03f04cbe",
+                  "id": "d8af9308-e476-4cac-bd05-a6efb702983a",
                   "startMs": 0,
                   "endMs": 134818,
                   "kind": "drill",
@@ -1108,13 +1108,13 @@
               "isFavorite": false
             },
             {
-              "id": "b4823c40-7246-43b3-a038-a715f0000eec",
-              "trackId": "b06defb4-ee88-4ba6-93ba-32318ea13163",
+              "id": "75814294-1a54-4e14-8dba-2efb2e8834c5",
+              "trackId": "63e734ff-96f3-4289-a6f4-069ef83719a8",
               "displayOrder": 1,
               "title": "Practice Set",
               "clips": [
                 {
-                  "id": "6b178206-160f-466b-a8de-b14af7660615",
+                  "id": "a72397a3-2f4d-49ae-a1f0-6293ff969f7d",
                   "startMs": 0,
                   "endMs": 5120,
                   "kind": "drill",
@@ -1125,7 +1125,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "4998ed8e-c789-4fcc-80ee-9c87da5766ac",
+                  "id": "3c57c07c-6ac7-4159-b44a-86388ccf25e7",
                   "startMs": 5460,
                   "endMs": 9880,
                   "kind": "drill",
@@ -1136,7 +1136,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "af4b5c52-6fd1-489c-8d48-d70302bf1a38",
+                  "id": "29b60cec-d2c4-4d9d-8f33-9da0b1cef21e",
                   "startMs": 10640,
                   "endMs": 14480,
                   "kind": "drill",
@@ -1147,7 +1147,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "07a8d67e-2dba-46c5-ba3e-9732b1662741",
+                  "id": "e9557124-80ce-46d7-b519-5088fb3813b8",
                   "startMs": 15140,
                   "endMs": 17560,
                   "kind": "drill",
@@ -1158,7 +1158,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "5ea162ba-25cd-4799-ba4e-22fa4201479f",
+                  "id": "aa7af274-5e95-44a7-9400-dc1d98ff1bf1",
                   "startMs": 18320,
                   "endMs": 24340,
                   "kind": "drill",
@@ -1169,7 +1169,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "df11ab29-b618-44f3-adac-bd993578dbcf",
+                  "id": "b24b6cb5-2439-4e6a-be7a-904d4f73a426",
                   "startMs": 25340,
                   "endMs": 29700,
                   "kind": "drill",
@@ -1180,7 +1180,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "498ea42f-707d-4e64-bb9e-ec139b742728",
+                  "id": "c8110ece-04fb-4f9c-a77b-128bd0fa2210",
                   "startMs": 30360,
                   "endMs": 34600,
                   "kind": "drill",
@@ -1191,7 +1191,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "3cdce588-af79-49ee-bbd9-e349839cb76f",
+                  "id": "5976f811-b6f7-42a4-b7f4-a202f2c9240c",
                   "startMs": 35300,
                   "endMs": 38020,
                   "kind": "drill",
@@ -1202,7 +1202,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "00f232e2-7bd7-4318-92a3-5328c3bdb1c6",
+                  "id": "089df1fe-f1b0-47c7-a33c-d8f10ab5fc77",
                   "startMs": 38960,
                   "endMs": 42400,
                   "kind": "drill",
@@ -1213,7 +1213,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "3f6db10d-ca8f-4166-87ed-90e38f254cbc",
+                  "id": "a018a552-9a35-4a2c-99de-4ca7c63fa0b2",
                   "startMs": 43480,
                   "endMs": 49040,
                   "kind": "drill",
@@ -1224,7 +1224,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "1aed6aba-36e2-4792-a28b-5f82da362e29",
+                  "id": "4633efeb-8831-4884-b517-46e5aa473de3",
                   "startMs": 50040,
                   "endMs": 54320,
                   "kind": "drill",
@@ -1235,7 +1235,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "452eb478-6b60-4b35-80de-33ed52a9f25f",
+                  "id": "28de735d-6c51-48fd-8ab8-0a81e4051072",
                   "startMs": 54520,
                   "endMs": 60780,
                   "kind": "drill",
@@ -1246,7 +1246,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "526ea70b-2fee-4b09-81cc-65288bed772b",
+                  "id": "4ed2091b-32c7-41dd-965d-432e04a399a5",
                   "startMs": 61400,
                   "endMs": 63760,
                   "kind": "drill",
@@ -1257,7 +1257,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "5c5f29c9-1ea6-4917-8e37-52fbe6b0acf9",
+                  "id": "94a113f6-9aba-43f5-96b8-68243aa8a08d",
                   "startMs": 64720,
                   "endMs": 68960,
                   "kind": "drill",
@@ -1268,7 +1268,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "3b861471-d78d-4671-8451-4c96a81d63e7",
+                  "id": "7e37d230-b07c-4c0c-b28c-86bca2fed9d6",
                   "startMs": 69740,
                   "endMs": 73860,
                   "kind": "drill",
@@ -1279,7 +1279,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "e0772220-aa4a-4125-8bee-c12aca16439d",
+                  "id": "9e283d1c-6a2e-4f63-9f2d-ede17e44e8cc",
                   "startMs": 74860,
                   "endMs": 81220,
                   "kind": "drill",
@@ -1290,7 +1290,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "bc3b21f5-0b5e-41f6-ab49-d65245279e0b",
+                  "id": "aeb537f0-e344-4b75-825c-3a1d7e0bc409",
                   "startMs": 81800,
                   "endMs": 84500,
                   "kind": "drill",
@@ -1301,7 +1301,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "95030c9a-93dc-44b4-9634-ba038a8f0360",
+                  "id": "20a717ca-3f4b-4fbc-b90a-7f7bcc6c8860",
                   "startMs": 85100,
                   "endMs": 90540,
                   "kind": "drill",
@@ -1312,7 +1312,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "78aba982-3694-41d4-b12c-b0a08effd18b",
+                  "id": "e257fea7-90bf-4822-8711-b31560cf8d9c",
                   "startMs": 91480,
                   "endMs": 96720,
                   "kind": "drill",
@@ -1323,7 +1323,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "6e1a2fb5-0a5a-4d7f-8a03-ecc95719618a",
+                  "id": "04cc5320-a22f-4b08-86c3-c76756c8d698",
                   "startMs": 97380,
                   "endMs": 99940,
                   "kind": "drill",
@@ -1334,7 +1334,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "1cb65686-352d-4797-a7ca-b992e2d7fc0c",
+                  "id": "15dc6409-6729-4321-8a0b-58801a9ade47",
                   "startMs": 99940,
                   "endMs": 103480,
                   "kind": "drill",
@@ -1345,7 +1345,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "db381e95-7fc6-44a9-a95b-99f3939563cd",
+                  "id": "863acdd9-1105-4636-9fe9-f2029ea0ece7",
                   "startMs": 103480,
                   "endMs": 107700,
                   "kind": "drill",
@@ -1356,7 +1356,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "9ba0d587-2c9f-4492-ba35-578a0c08df35",
+                  "id": "67a18540-406d-4b9b-9b0c-c8f619357092",
                   "startMs": 107940,
                   "endMs": 110200,
                   "kind": "drill",
@@ -1367,7 +1367,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "401bca0d-d24b-4f76-898c-a550f9789bd5",
+                  "id": "49c9daf3-6c1d-4a50-9050-c6473be56241",
                   "startMs": 110940,
                   "endMs": 114960,
                   "kind": "drill",
@@ -1378,7 +1378,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "76f89009-5680-43d4-be75-2e0190afa200",
+                  "id": "b8151a6a-99d3-4654-819b-5b6552ef5ea8",
                   "startMs": 115940,
                   "endMs": 119800,
                   "kind": "drill",
@@ -1389,7 +1389,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "d6fdb216-5782-43dc-90b8-a10643b7c909",
+                  "id": "bc908f89-6bb6-49bd-a963-93cb9c43418c",
                   "startMs": 120140,
                   "endMs": 123500,
                   "kind": "drill",
@@ -1400,7 +1400,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "ce488fa0-a6d5-4b2a-9d1f-263de37677bc",
+                  "id": "8060396f-b02b-4e88-9e69-5648a0b98453",
                   "startMs": 124080,
                   "endMs": 127640,
                   "kind": "drill",
@@ -1411,7 +1411,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "7ce269ed-c8ae-40b5-84ad-bf9bd2d7432f",
+                  "id": "cfdefb63-c72f-4b92-a01a-9cb1eb565c36",
                   "startMs": 127640,
                   "endMs": 129760,
                   "kind": "drill",
@@ -1422,22 +1422,22 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "32de8553-a739-42d6-8ec8-e9d12ffb0ac2",
+                  "id": "6a1c04fb-004e-4035-a2d5-03aaf8e5b153",
                   "startMs": 0,
-                  "endMs": 500,
+                  "endMs": 5460,
                   "kind": "skip",
-                  "title": "Intro noise",
+                  "title": "Intro silence",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
                   "languageCode": null
                 },
                 {
-                  "id": "5f8645f3-160d-4dfa-8294-827d4214fb63",
-                  "startMs": 134000,
+                  "id": "a6fdec0e-84f1-436d-84a9-f9537438bdb9",
+                  "startMs": 130140,
                   "endMs": 134818,
                   "kind": "skip",
-                  "title": "Outro noise",
+                  "title": "Outro silence",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
@@ -1656,19 +1656,19 @@
         {
           "id": "Travel-week3-conversation-A_place_I_want_to_visit_for_food.mp3",
           "title": "Travel Week3 Conversation A Place I Want To Visit For Food",
-          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week3-conversation-A_place_I_want_to_visit_for_food.mp3",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01-v2/Travel-week3-conversation-A_place_I_want_to_visit_for_food.mp3",
           "filename": "Travel-week3-conversation-A_place_I_want_to_visit_for_food.mp3",
           "durationMs": 34007,
           "languageCode": "ko-KR",
           "practiceSets": [
             {
-              "id": "657fcdd2-26e6-4dea-849d-e279b906f882",
-              "trackId": "9fccbb16-31f0-4cce-8f82-b0c88a47859e",
+              "id": "f72baba0-6da8-4675-b659-9cfc015536e4",
+              "trackId": "f1970cfa-b6af-4c73-b45a-571b99ea6ae6",
               "displayOrder": 0,
               "title": "Full Track",
               "clips": [
                 {
-                  "id": "8d168e06-9b22-46bc-a197-3d6b442d11bc",
+                  "id": "6372917e-65bc-44bc-949b-656f3c763b98",
                   "startMs": 0,
                   "endMs": 34007,
                   "kind": "drill",
@@ -1682,13 +1682,13 @@
               "isFavorite": false
             },
             {
-              "id": "9d8ce030-81cb-43a7-a16f-32516ae3da18",
-              "trackId": "87f0c857-e73e-4491-bf2e-3dc42c7f91fb",
+              "id": "f0925565-77ae-4675-b740-78b138092193",
+              "trackId": "ce935b12-2824-4a20-b892-2a90e48ffd77",
               "displayOrder": 1,
               "title": "Practice Set",
               "clips": [
                 {
-                  "id": "a20a5581-1814-40d5-971e-c06bef50ed31",
+                  "id": "94b167ab-9db0-4658-b7e9-b57e48a224ee",
                   "startMs": 0,
                   "endMs": 3440,
                   "kind": "drill",
@@ -1699,7 +1699,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "063beb05-3d63-455a-866c-d28ae42bb478",
+                  "id": "2cd0c07f-b2d3-4f7c-bc09-16b232075fb6",
                   "startMs": 4360,
                   "endMs": 7840,
                   "kind": "drill",
@@ -1710,7 +1710,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "248071fa-760e-43b0-9780-d0991b6e3220",
+                  "id": "fcceefac-548a-4ec0-8e1e-6916851059b2",
                   "startMs": 8580,
                   "endMs": 11280,
                   "kind": "drill",
@@ -1721,7 +1721,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "8699d47a-e8f2-4c6c-94bf-aeeee22efb07",
+                  "id": "ddb154dc-dc83-43c9-8e54-272cd66c1743",
                   "startMs": 12160,
                   "endMs": 13480,
                   "kind": "drill",
@@ -1732,7 +1732,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "0a48034c-9afb-48b6-ba92-a48fc74ce6e1",
+                  "id": "6c2d7202-dd2c-4ac8-8921-d7e7d23f1be9",
                   "startMs": 14260,
                   "endMs": 15700,
                   "kind": "drill",
@@ -1743,7 +1743,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "7a952764-e7ee-4409-9f8c-6913e8877210",
+                  "id": "20b0a895-3bd3-42bb-b54e-866ad0b7128c",
                   "startMs": 16900,
                   "endMs": 19640,
                   "kind": "drill",
@@ -1754,7 +1754,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "1e486598-f39b-4415-ac46-346a8f125de2",
+                  "id": "d6a1d8e0-5af4-4f99-8951-5cd27c49860f",
                   "startMs": 20780,
                   "endMs": 22280,
                   "kind": "drill",
@@ -1765,7 +1765,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "7508d0f7-70be-4965-b71b-fa68d11badf7",
+                  "id": "7054dc82-b0b0-402c-8104-386bd3b6ad85",
                   "startMs": 23080,
                   "endMs": 24680,
                   "kind": "drill",
@@ -1776,7 +1776,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "187e55fe-c766-4f81-b790-50f22bc99881",
+                  "id": "2d006139-8070-41ba-b0cf-8febb5a8793a",
                   "startMs": 25300,
                   "endMs": 27620,
                   "kind": "drill",
@@ -1787,7 +1787,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "c42d87d0-1fca-4c52-908b-79f2c0acb69c",
+                  "id": "faf5a391-f473-4f8c-a76f-13f00b8d33dc",
                   "startMs": 28620,
                   "endMs": 30660,
                   "kind": "drill",
@@ -1798,22 +1798,22 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "77d863f7-ab9c-4ee0-8268-13c970c12243",
+                  "id": "3c325c6e-1171-4fc6-b480-ffad15e61b88",
                   "startMs": 0,
-                  "endMs": 4360,
+                  "endMs": 0,
                   "kind": "skip",
-                  "title": "Intro music",
+                  "title": "Intro noise",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
                   "languageCode": null
                 },
                 {
-                  "id": "6b9b36b6-fb60-407b-b3ca-fc2ed6b7ad96",
-                  "startMs": 32720,
+                  "id": "4ca2f859-9f8d-4102-aaa5-4f7493e35843",
+                  "startMs": 34000,
                   "endMs": 34007,
                   "kind": "skip",
-                  "title": "Outro music",
+                  "title": "Outro noise",
                   "repeats": null,
                   "startSpeed": null,
                   "endSpeed": null,
@@ -1906,19 +1906,19 @@
         {
           "id": "Travel-week3-story-The_Place_I_Still_Crave_After_Two_Years.mp3",
           "title": "Travel Week3 Story The Place I Still Crave After Two Years",
-          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01/Travel-week3-story-The_Place_I_Still_Crave_After_Two_Years.mp3",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/akc-travel-korean-01-v2/Travel-week3-story-The_Place_I_Still_Crave_After_Two_Years.mp3",
           "filename": "Travel-week3-story-The_Place_I_Still_Crave_After_Two_Years.mp3",
           "durationMs": 171773,
           "languageCode": "ko-KR",
           "practiceSets": [
             {
-              "id": "967eb9c3-5c61-4c45-b61d-b7ebaee73bd7",
-              "trackId": "bad88991-e1a1-4564-94e7-115b69ddbed0",
+              "id": "fa7e323d-e7b3-4e48-88a8-66f493c8e065",
+              "trackId": "f88e6199-504e-4074-af86-dd565c56466a",
               "displayOrder": 0,
               "title": "Full Track",
               "clips": [
                 {
-                  "id": "eaf23804-4510-414d-8f00-a1778313869b",
+                  "id": "59c207a0-8b6b-4133-a71c-6100862fe5c8",
                   "startMs": 0,
                   "endMs": 171773,
                   "kind": "drill",
@@ -1932,13 +1932,13 @@
               "isFavorite": false
             },
             {
-              "id": "fd16c4ce-a484-4a01-85cd-6323f824bf98",
-              "trackId": "db511f64-857e-46ce-8b06-577df177871e",
+              "id": "5184a4ac-35f3-42d2-b4a8-d04bceca40e0",
+              "trackId": "ba9f3e70-41fc-4808-a981-ad742b588a18",
               "displayOrder": 1,
               "title": "Practice Set",
               "clips": [
                 {
-                  "id": "4d988db4-205b-4912-b2b6-a3cb70345387",
+                  "id": "4fc9c11e-8950-4f0d-ad5a-996eab1e4289",
                   "startMs": 0,
                   "endMs": 4400,
                   "kind": "drill",
@@ -1949,7 +1949,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "ffd301f0-4f3e-4d90-bb83-74da8698d143",
+                  "id": "bacc0366-f21d-4858-a110-fe26f486b62c",
                   "startMs": 4960,
                   "endMs": 12560,
                   "kind": "drill",
@@ -1960,7 +1960,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "c24bd50f-33b7-4ddf-9f25-b22ec8144c0c",
+                  "id": "bb78941b-1ba3-47a5-811a-1e0def50a9ee",
                   "startMs": 13380,
                   "endMs": 16320,
                   "kind": "drill",
@@ -1971,7 +1971,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "915ce0cf-b05e-4593-8ff2-36ec77b2f5a5",
+                  "id": "67dd5174-7e74-49ab-9fbe-08678bbf97cb",
                   "startMs": 16940,
                   "endMs": 22380,
                   "kind": "drill",
@@ -1982,7 +1982,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "5c993f09-abf0-443f-bce7-09cc471830e0",
+                  "id": "9a488d5e-d343-4903-934b-158820e60143",
                   "startMs": 23000,
                   "endMs": 27220,
                   "kind": "drill",
@@ -1993,7 +1993,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "a5240ce3-cd1a-4e13-9808-b30acc999aae",
+                  "id": "e975b7e4-3659-4076-b12f-d5736faa6c59",
                   "startMs": 27940,
                   "endMs": 34040,
                   "kind": "drill",
@@ -2004,7 +2004,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "2fb6772c-00c9-4e19-8cee-6faea591a5e0",
+                  "id": "df0e176c-62c6-4852-97f3-6839898612a6",
                   "startMs": 34480,
                   "endMs": 40940,
                   "kind": "drill",
@@ -2015,7 +2015,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "a5aaebc8-290f-4a5e-af56-93eaad0d27b1",
+                  "id": "f0666323-cfb6-42c6-b66c-7812d98a9d37",
                   "startMs": 41420,
                   "endMs": 44320,
                   "kind": "drill",
@@ -2026,7 +2026,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "bd9ce783-50ee-48eb-9141-13cc26c6a524",
+                  "id": "b58c319c-26b3-4e85-83e9-9cc4162e5f92",
                   "startMs": 45100,
                   "endMs": 49080,
                   "kind": "drill",
@@ -2037,7 +2037,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "cac2deaa-ef96-4174-87c0-8843922faf62",
+                  "id": "3836e2b3-5229-4cad-a003-cda48cd0cd4c",
                   "startMs": 49560,
                   "endMs": 52940,
                   "kind": "drill",
@@ -2048,7 +2048,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "d76dd544-99ad-4d66-beaf-251428b98419",
+                  "id": "2f33f891-8a21-4652-9c2d-ce11ad0a13be",
                   "startMs": 53660,
                   "endMs": 58500,
                   "kind": "drill",
@@ -2059,7 +2059,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "178694cf-f876-4b14-a5f9-681c056d731d",
+                  "id": "749d16c2-30fe-4d88-8e54-fe1c15cc1710",
                   "startMs": 59020,
                   "endMs": 64700,
                   "kind": "drill",
@@ -2070,7 +2070,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "62be5e01-d487-4f7b-bc04-1dd854e05592",
+                  "id": "e376a3fc-9c56-453c-9fc9-5816e611a79f",
                   "startMs": 65320,
                   "endMs": 70460,
                   "kind": "drill",
@@ -2081,7 +2081,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "28626889-b1dc-445c-b939-346d7dc94f0b",
+                  "id": "d17cdedd-0e88-4f37-928c-aef4a91592be",
                   "startMs": 70980,
                   "endMs": 76300,
                   "kind": "drill",
@@ -2092,7 +2092,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "3c0d9f71-f6ae-48a3-82d4-9a82171c2219",
+                  "id": "c7f28da6-eeda-4b41-92b8-6e242dd4c204",
                   "startMs": 76760,
                   "endMs": 80960,
                   "kind": "drill",
@@ -2103,7 +2103,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "d1ba0b25-4369-4ab7-a550-ba035844574a",
+                  "id": "5c1c45fb-484c-43ca-ae56-55e8b6c527e0",
                   "startMs": 81600,
                   "endMs": 84960,
                   "kind": "drill",
@@ -2114,7 +2114,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "fa27367c-fb98-42d7-8ff5-cc38d417dbcb",
+                  "id": "653cc3d6-aa16-4012-8c22-f34feed07980",
                   "startMs": 84960,
                   "endMs": 88980,
                   "kind": "drill",
@@ -2125,7 +2125,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "2686ed73-7273-4227-b458-b5b71d3cfee9",
+                  "id": "0f6ff592-a9b0-4790-91e3-53306fcc0105",
                   "startMs": 89740,
                   "endMs": 94880,
                   "kind": "drill",
@@ -2136,7 +2136,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "a8077d5a-24cb-4ace-8db6-b23799cfe7e5",
+                  "id": "63b8c1e4-c9b8-4014-9255-9d5e869ea8d0",
                   "startMs": 95580,
                   "endMs": 100900,
                   "kind": "drill",
@@ -2147,7 +2147,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "43547026-0d05-4dba-bdb6-6c35de1b8989",
+                  "id": "75386b37-5eeb-4aca-a5f8-cb226b661f11",
                   "startMs": 101740,
                   "endMs": 108220,
                   "kind": "drill",
@@ -2158,7 +2158,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "64b56074-818c-4e4c-b2e1-1358e11ed809",
+                  "id": "000b1792-8502-4b2b-85a8-58fd73d18fb5",
                   "startMs": 108940,
                   "endMs": 114320,
                   "kind": "drill",
@@ -2169,7 +2169,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "8533715a-923d-4a3c-a7c4-6e40fdcce9e4",
+                  "id": "7a965bd1-c6a0-4737-998a-18b4c357e026",
                   "startMs": 114680,
                   "endMs": 119100,
                   "kind": "drill",
@@ -2180,7 +2180,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "25ffbb49-47aa-4f41-84c4-83f532ed3520",
+                  "id": "e224568d-ca85-414b-8ae2-aefaa5583f9f",
                   "startMs": 119680,
                   "endMs": 124000,
                   "kind": "drill",
@@ -2191,7 +2191,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "fd2ec97e-3200-4322-accd-a08fbe6e98b4",
+                  "id": "69fd9945-c8dd-4d5e-a455-d9e6a0ae3433",
                   "startMs": 124640,
                   "endMs": 130460,
                   "kind": "drill",
@@ -2202,7 +2202,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "ccb717fd-9724-4241-bdce-197efa70b5a9",
+                  "id": "2f0c7879-d854-4290-bba8-4d351957fa97",
                   "startMs": 130980,
                   "endMs": 134500,
                   "kind": "drill",
@@ -2213,7 +2213,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "914d795d-549e-4964-b4ae-faa534a1a420",
+                  "id": "09e44758-dd71-48c5-8675-77251753c3f4",
                   "startMs": 135460,
                   "endMs": 141320,
                   "kind": "drill",
@@ -2224,7 +2224,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "9abd27db-4b8e-416b-8631-358f8fbfe145",
+                  "id": "887a4b8a-1454-4736-a7c1-00b37b1ec86c",
                   "startMs": 141880,
                   "endMs": 148300,
                   "kind": "drill",
@@ -2235,7 +2235,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "e59b9f0f-9a5d-4d11-8085-df25f071969d",
+                  "id": "2afcabb5-8d88-4325-b47c-9bf04debaec8",
                   "startMs": 148880,
                   "endMs": 154040,
                   "kind": "drill",
@@ -2246,7 +2246,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "487328d3-98d0-419b-9e22-ab16ab0251fb",
+                  "id": "2ad4f28c-28b5-4c36-8d37-83c92fcacac4",
                   "startMs": 154720,
                   "endMs": 161060,
                   "kind": "drill",
@@ -2257,7 +2257,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "7c494b3d-ccda-4065-a8c1-568223ea50b0",
+                  "id": "d85021b4-a232-4396-8bf8-ce39a19695eb",
                   "startMs": 162020,
                   "endMs": 163160,
                   "kind": "drill",
@@ -2268,7 +2268,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "d27184a5-161a-401a-b933-fd6b3e541dee",
+                  "id": "3897892c-908b-45c8-b1a1-5932578818be",
                   "startMs": 163700,
                   "endMs": 166220,
                   "kind": "drill",
@@ -2279,7 +2279,7 @@
                   "languageCode": "ko-KR"
                 },
                 {
-                  "id": "15acb0d0-94e1-450d-a89b-07dcad446d05",
+                  "id": "272f45bb-eb0a-45b4-b5d4-8568b488aed7",
                   "startMs": 166540,
                   "endMs": 169900,
                   "kind": "drill",
