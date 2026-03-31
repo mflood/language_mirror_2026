@@ -320,26 +320,32 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
         // Re-record button
         reRecordButton.translatesAutoresizingMaskIntoConstraints = false
-        reRecordButton.setTitle("Re-record", for: .normal)
+        reRecordButton.setTitle("Redo", for: .normal)
+        reRecordButton.setImage(UIImage(systemName: "arrow.counterclockwise"), for: .normal)
         reRecordButton.titleLabel?.font = .preferredFont(forTextStyle: .body)
         reRecordButton.setTitleColor(AppColors.primaryText, for: .normal)
+        reRecordButton.tintColor = AppColors.primaryText
         reRecordButton.backgroundColor = AppColors.tertiaryBackground
         reRecordButton.layer.cornerRadius = 14
         reRecordButton.layer.cornerCurve = .continuous
         reRecordButton.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
+        reRecordButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -8)
         reRecordButton.addTarget(self, action: #selector(reRecordTapped), for: .touchUpInside)
         reRecordButton.accessibilityHint = "Discard this recording and start over"
         view.addSubview(reRecordButton)
 
-        // Use recording button
+        // Save recording button
         useRecordingButton.translatesAutoresizingMaskIntoConstraints = false
-        useRecordingButton.setTitle("Use Recording", for: .normal)
+        useRecordingButton.setTitle("Save", for: .normal)
+        useRecordingButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         useRecordingButton.titleLabel?.font = .preferredFont(forTextStyle: .body, compatibleWith: UITraitCollection(legibilityWeight: .bold))
         useRecordingButton.setTitleColor(.white, for: .normal)
+        useRecordingButton.tintColor = .white
         useRecordingButton.backgroundColor = AppColors.primaryAccent
         useRecordingButton.layer.cornerRadius = 14
         useRecordingButton.layer.cornerCurve = .continuous
         useRecordingButton.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
+        useRecordingButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -8)
         useRecordingButton.addTarget(self, action: #selector(useRecordingTapped), for: .touchUpInside)
         view.addSubview(useRecordingButton)
     }
