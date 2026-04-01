@@ -315,6 +315,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 6FAB0EA22E1067B100D3B9C4;
 			minimizedProjectReferenceProxies = 1;
@@ -419,7 +420,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
@@ -472,7 +473,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
