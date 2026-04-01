@@ -103,7 +103,7 @@
 
 /* ── Practice ── */
 "practice.ready" = "Ready to practice";
-"practice.progress" = "Clip %d/%d";
+"practice.progress" = "Clip %d/%d · Loop %d/%d · %@";
 "practice.title_with_loop" = "Loop %d/%d";
 "practice.mode.simple" = "Simple";
 "practice.mode.prog" = "Progression";

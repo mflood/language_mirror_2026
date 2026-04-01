@@ -933,7 +933,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         // Artist line: loop and clip progress
         var artistParts: [String] = []
         if let loop = currentLoop, let total = totalLoops {
-            artistParts.append(L10nf("now_playing.loop", loop, total))
+            artistParts.append(L10nf("now_playing.loop", loop + 1, total))
         }
         if let idx = clipIndex, let count = clipCount {
             artistParts.append(L10nf("now_playing.clip", idx + 1, count))

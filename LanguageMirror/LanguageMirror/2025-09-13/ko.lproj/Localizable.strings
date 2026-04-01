@@ -103,7 +103,7 @@
 
 /* ── Practice ── */
 "practice.ready" = "연습 준비 완료";
-"practice.progress" = "클립 %d/%d";
+"practice.progress" = "클립 %d/%d · 반복 %d/%d · %@";
 "practice.title_with_loop" = "반복 %d/%d";
 "practice.mode.simple" = "기본";
 "practice.mode.prog" = "점진";
