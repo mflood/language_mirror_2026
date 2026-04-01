@@ -28,21 +28,21 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
         var title: String {
             switch self {
-            case .fromVideo: return "Import from Video"
-            case .fromFiles: return "Import from Files"
-            case .record: return "Record Audio"
-            case .fromURL: return "Download from URL"
-            case .fromS3Bundle: return "Install Bundle"
+            case .fromVideo: return L10n("import.option.video")
+            case .fromFiles: return L10n("import.option.files")
+            case .record: return L10n("import.option.record")
+            case .fromURL: return L10n("import.option.url")
+            case .fromS3Bundle: return L10n("import.option.bundle")
             }
         }
 
         var description: String {
             switch self {
-            case .fromVideo: return "Extract audio from video files"
-            case .fromFiles: return "Browse Files app or use Share button"
-            case .record: return "Record new audio with your mic"
-            case .fromURL: return "Download mp3, m4a, or wav files"
-            case .fromS3Bundle: return "Download bundle from remote manifest"
+            case .fromVideo: return L10n("import.option.video.desc")
+            case .fromFiles: return L10n("import.option.files.desc")
+            case .record: return L10n("import.option.record.desc")
+            case .fromURL: return L10n("import.option.url.desc")
+            case .fromS3Bundle: return L10n("import.option.bundle.desc")
             }
         }
 
@@ -94,11 +94,11 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { 
-        "Choose an Import Method"
+        L10n("import.header")
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        "Select how you'd like to add audio to your library. All imports are saved locally on your device."
+        L10n("import.footer")
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -184,32 +184,32 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
     private func promptForURL() {
         let a = UIAlertController(
-            title: "Download from URL",
-            message: "Enter a direct link to an audio file.",
+            title: L10n("import.url.title"),
+            message: L10n("import.url.message"),
             preferredStyle: .alert
         )
         a.addTextField { tf in
-            tf.placeholder = "https://…/file.mp3"
+            tf.placeholder = L10n("import.url.placeholder")
             tf.keyboardType = .URL
             tf.autocapitalizationType = .none
         }
-        a.addTextField { tf in tf.placeholder = "Optional title" }
+        a.addTextField { tf in tf.placeholder = L10n("import.url.title_placeholder") }
 
-        a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        a.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
 
-        a.addAction(UIAlertAction(title: "Download", style: .default, handler: { [weak self] _ in
+        a.addAction(UIAlertAction(title: L10n("import.url.download"), style: .default, handler: { [weak self] _ in
             guard let self,
                   let text = a.textFields?.first?.text else { return }
             
             let sanitized = self.sanitizeURLString(text)
             guard !sanitized.isEmpty,
                   let u = URL(string: sanitized) else {
-                self.alert("Invalid URL", "Please enter a valid URL starting with http:// or https://")
+                self.alert(L10n("import.error.invalid_url"), L10n("import.error.invalid_url_message"))
                 return
             }
-            
+
             guard self.validateURL(u) else {
-                self.alert("Invalid URL", "URL must start with http:// or https://")
+                self.alert(L10n("import.error.invalid_url"), L10n("import.error.invalid_url_scheme"))
                 return
             }
 
@@ -228,14 +228,14 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
 
     private func promptForS3Manifest() {
-        let a = UIAlertController(title: "Install Bundle", message: "Enter the URL of a JSON manifest.", preferredStyle: .alert)
+        let a = UIAlertController(title: L10n("import.bundle.title"), message: L10n("import.bundle.message"), preferredStyle: .alert)
         a.addTextField { tf in
-            tf.placeholder = "https://…/bundle.json"
+            tf.placeholder = L10n("import.bundle.placeholder")
             tf.keyboardType = .URL
             tf.autocapitalizationType = .none
         }
-        a.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        a.addAction(UIAlertAction(title: "Install", style: .default, handler: { [weak self] _ in
+        a.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
+        a.addAction(UIAlertAction(title: L10n("import.bundle.install"), style: .default, handler: { [weak self] _ in
             guard let self,
                   let text = a.textFields?.first?.text else { return }
             
@@ -246,17 +246,17 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             guard !sanitized.isEmpty,
                   let u = URL(string: sanitized) else {
                 print("❌ [BundleImport] Failed to parse URL from string: '\(sanitized)'")
-                self.alert("Invalid URL", "Please enter a valid URL starting with http:// or https://")
+                self.alert(L10n("import.error.invalid_url"), L10n("import.error.invalid_url_message"))
                 return
             }
-            
+
             print("📦 [BundleImport] Parsed URL: \(u.absoluteString)")
             print("📦 [BundleImport] URL scheme: \(u.scheme ?? "nil")")
             print("📦 [BundleImport] URL host: \(u.host ?? "nil")")
-            
+
             guard self.validateURL(u) else {
                 print("❌ [BundleImport] Invalid URL scheme: \(u.scheme ?? "nil")")
-                self.alert("Invalid URL", "URL must start with http:// or https://")
+                self.alert(L10n("import.error.invalid_url"), L10n("import.error.invalid_url_scheme"))
                 return
             }
             
@@ -310,7 +310,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
                 let urlDownloader = UrlDownloaderFactory.make(useMock: false)
                 let bundleDriver = ImportBundleManifestDriver(urlDownloader: urlDownloader, library: libraryService)
                 
-                var currentMessage = "Downloading manifest..."
+                var currentMessage = L10n("import.progress.downloading_manifest")
                 var lastProgress: Float = 0.1
                 
                 // Run the import off the main actor to avoid blocking UI
@@ -337,7 +337,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
                 // Standard import flow for other sources
                 tracks = try await importer.performImport(source: src) { progress in
                     DispatchQueue.main.async {
-                        let defaultMessage = "Getting your audio file..."
+                        let defaultMessage = L10n("import.progress.getting_audio")
                         progressView.updateState(.downloading(progress: progress, message: defaultMessage))
                     }
                 }
@@ -345,9 +345,9 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             
             // Show success state
             let count = tracks.count
-            let message = count == 1 
-                ? "Added 1 track to your library" 
-                : "Added \(count) tracks to your library"
+            let message = count == 1
+                ? L10n("import.success.one_track")
+                : L10nf("import.success.n_tracks", count)
             
             progressView.updateState(.success(message: message))
             
@@ -514,30 +514,12 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     }
 
     @objc private func helpTapped() {
-        let message = """
-        📹 Import from Video
-        Extract audio from any video file
-
-        📁 Import from Files
-        • Tap Share button in Voice Memos → LanguageMirror
-        • Or browse: Files → On My iPhone → Voice Memos
-
-        🎤 Record Audio
-        Create new tracks with your microphone
-
-        🔗 Download from URL
-        Direct links to audio files (mp3, m4a, wav)
-
-        ☁️ Install Bundle
-        Download bundles from remote JSON manifests
-        """
-        
-        alert("Import Help", message)
+        alert(L10n("import.help.title"), L10n("import.help.message"))
     }
 
     private func alert(_ title: String, _ msg: String) {
         let a = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        a.addAction(UIAlertAction(title: "Got It", style: .default))
+        a.addAction(UIAlertAction(title: L10n("common.got_it"), style: .default))
         present(a, animated: true)
     }
     
@@ -610,7 +592,7 @@ extension ImportViewController: PHPickerViewControllerDelegate {
 
                 await self.runImport(.videoFile(url: safeURL))
             } catch {
-                self.alert("Pick Failed", error.localizedDescription)
+                self.alert(L10n("import.error.pick_failed"), error.localizedDescription)
             }
         }
     }

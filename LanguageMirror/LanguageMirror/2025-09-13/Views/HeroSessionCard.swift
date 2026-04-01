@@ -136,7 +136,7 @@ final class HeroSessionCard: UIView {
         totalClips: Int
     ) {
         titleLabel.text = trackTitle
-        subtitleLabel.text = practiceSetTitle ?? "Practice Set"
+        subtitleLabel.text = practiceSetTitle ?? L10n("practice_home.practice_set")
         timeLabel.text = Self.relativeFormatter.localizedString(for: lastUpdatedAt, relativeTo: Date())
 
         let progress: Float = totalClips > 0 ? Float(currentClipIndex) / Float(totalClips) : 0

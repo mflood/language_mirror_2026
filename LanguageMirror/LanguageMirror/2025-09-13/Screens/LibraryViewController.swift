@@ -44,12 +44,18 @@ final class LibraryViewController: UIViewController {
     weak var delegate: LibraryViewControllerDelegate?
 
     enum SortOrder: String, CaseIterable {
-        case titleAZ = "Title A-Z"
-        case titleZA = "Title Z-A"
-        case dateNewest = "Date Added (Newest)"
-        case dateOldest = "Date Added (Oldest)"
-        case durationLongest = "Duration (Longest)"
-        case durationShortest = "Duration (Shortest)"
+        case titleAZ, titleZA, dateNewest, dateOldest, durationLongest, durationShortest
+
+        var displayName: String {
+            switch self {
+            case .titleAZ: return L10n("sort.title_az")
+            case .titleZA: return L10n("sort.title_za")
+            case .dateNewest: return L10n("sort.date_newest")
+            case .dateOldest: return L10n("sort.date_oldest")
+            case .durationLongest: return L10n("sort.duration_longest")
+            case .durationShortest: return L10n("sort.duration_shortest")
+            }
+        }
     }
 
     // MARK: - Init
@@ -71,7 +77,7 @@ final class LibraryViewController: UIViewController {
         let sc = UISearchController(searchResultsController: nil)
         sc.searchResultsUpdater = self
         sc.obscuresBackgroundDuringPresentation = false
-        sc.searchBar.placeholder = "Search tracks"
+        sc.searchBar.placeholder = L10n("library.search_placeholder")
         return sc
     }()
 
@@ -211,7 +217,7 @@ final class LibraryViewController: UIViewController {
                   case .packTrack(_, let trackId) = item,
                   let track = try? self.libraryService.loadTrack(id: trackId) else { return nil }
 
-            let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
+            let deleteAction = UIContextualAction(style: .destructive, title: L10n("common.delete")) { _, _, completion in
                 self.confirmDeleteTrack(track)
                 completion(true)
             }
@@ -287,20 +293,20 @@ final class LibraryViewController: UIViewController {
 
             switch section {
             case .continuePracticing:
-                header.configure(mode: .sectionTitle("CONTINUE PRACTICING"))
+                header.configure(mode: .sectionTitle(L10n("library.section.continue_practicing")))
                 header.onPackTap = nil
             case .recentlyAdded:
-                header.configure(mode: .sectionTitle("RECENTLY ADDED"))
+                header.configure(mode: .sectionTitle(L10n("library.section.recently_added")))
                 header.onPackTap = nil
             case .favorites:
-                header.configure(mode: .sectionTitle("FAVORITES"))
+                header.configure(mode: .sectionTitle(L10n("library.section.favorites")))
                 header.onPackTap = nil
             case .allContent(let packId):
                 let packIndex = self.packs.firstIndex(where: { $0.id == packId }) ?? 0
                 let pack = self.packs.first(where: { $0.id == packId })
                 let isExpanded = self.expandedPackIds.contains(packId)
                 header.configure(mode: .packHeader(
-                    title: pack?.title ?? "Pack",
+                    title: pack?.title ?? L10n("library.pack"),
                     count: pack?.tracks.count ?? 0,
                     expanded: isExpanded,
                     colorIndex: packIndex
@@ -447,11 +453,11 @@ final class LibraryViewController: UIViewController {
     }
 
     @objc private func sortTapped() {
-        let alert = UIAlertController(title: "Sort Tracks", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: L10n("library.sort.title"), message: nil, preferredStyle: .actionSheet)
 
         for order in SortOrder.allCases {
             let isSelected = order == sortOrder
-            let title = isSelected ? "\u{2713} \(order.rawValue)" : order.rawValue
+            let title = isSelected ? "\u{2713} \(order.displayName)" : order.displayName
             alert.addAction(UIAlertAction(title: title, style: .default) { [weak self] _ in
                 self?.sortOrder = order
                 self?.saveSortOrder()
@@ -461,7 +467,7 @@ final class LibraryViewController: UIViewController {
             })
         }
 
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
 
         if let popover = alert.popoverPresentationController {
             popover.barButtonItem = navigationItem.rightBarButtonItem
@@ -536,14 +542,14 @@ final class LibraryViewController: UIViewController {
 
     private func confirmDeleteTrack(_ track: Track) {
         let alert = UIAlertController(
-            title: "Delete Track",
-            message: "Are you sure you want to delete \"\(track.title)\"? This action cannot be undone.",
+            title: L10n("library.delete.title"),
+            message: L10nf("library.delete.message", track.title),
             preferredStyle: .alert
         )
 
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
 
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n("common.delete"), style: .destructive) { [weak self] _ in
             self?.performTrackDeletion(track)
         })
 
@@ -558,11 +564,11 @@ final class LibraryViewController: UIViewController {
         } catch {
             print("Failed to delete track: \(error)")
             let errorAlert = UIAlertController(
-                title: "Delete Failed",
-                message: "Could not delete the track. Please try again.",
+                title: L10n("library.delete.failed"),
+                message: L10n("library.delete.failed_message"),
                 preferredStyle: .alert
             )
-            errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+            errorAlert.addAction(UIAlertAction(title: L10n("common.ok"), style: .default))
             present(errorAlert, animated: true)
             UINotificationFeedbackGenerator().notificationOccurred(.error)
         }
@@ -657,7 +663,7 @@ extension LibraryViewController: UICollectionViewDelegate {
               let track = try? libraryService.loadTrack(id: trackId) else { return nil }
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
-            let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            let delete = UIAction(title: L10n("common.delete"), image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 self?.confirmDeleteTrack(track)
             }
             return UIMenu(children: [delete])

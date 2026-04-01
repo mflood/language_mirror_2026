@@ -87,7 +87,7 @@ final class ScrollingWaveformView: UIView {
         addGestureRecognizer(panRecognizer)
 
         isAccessibilityElement = true
-        accessibilityLabel = "Audio waveform"
+        accessibilityLabel = L10n("a11y.audio_waveform")
         accessibilityTraits = .updatesFrequently
     }
 
@@ -148,7 +148,7 @@ final class ScrollingWaveformView: UIView {
         activeBarsLayer.mask = activeMaskLayer
 
         accessibilityTraits = [.adjustable, .allowsDirectInteraction]
-        accessibilityHint = "Tap or drag to seek"
+        accessibilityHint = L10n("a11y.seek_hint")
     }
 
     private func resampleForReview() {

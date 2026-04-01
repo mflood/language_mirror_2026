@@ -136,7 +136,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
     private func setupUI() {
         view.backgroundColor = AppColors.calmBackground
-        title = "Record"
+        title = L10n("recorder.title")
 
         setupReadyComponents()
         setupRecordingComponents()
@@ -163,9 +163,9 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         recordButton.layer.cornerCurve = .continuous
         recordButton.applyAdaptiveShadow(radius: 12, opacity: 0.2)
         recordButton.isAccessibilityElement = true
-        recordButton.accessibilityLabel = "Start recording"
+        recordButton.accessibilityLabel = L10n("recorder.a11y.start")
         recordButton.accessibilityTraits = .button
-        recordButton.accessibilityHint = "Double tap to start recording"
+        recordButton.accessibilityHint = L10n("recorder.a11y.start_hint")
         recordButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(recordButtonTapped)))
         view.addSubview(recordButton)
 
@@ -179,7 +179,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
         // Hint label
         hintLabel.translatesAutoresizingMaskIntoConstraints = false
-        hintLabel.text = "Tap to start recording"
+        hintLabel.text = L10n("recorder.hint")
         hintLabel.font = .preferredFont(forTextStyle: .callout)
         hintLabel.textColor = AppColors.secondaryText
         hintLabel.textAlignment = .center
@@ -188,7 +188,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
         // Secondary hint (delayed)
         secondaryHintLabel.translatesAutoresizingMaskIntoConstraints = false
-        secondaryHintLabel.text = "Record yourself speaking or reading aloud"
+        secondaryHintLabel.text = L10n("recorder.hint_secondary")
         secondaryHintLabel.font = .preferredFont(forTextStyle: .footnote)
         secondaryHintLabel.textColor = AppColors.tertiaryText
         secondaryHintLabel.textAlignment = .center
@@ -208,7 +208,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
         // REC label
         recLabel.translatesAutoresizingMaskIntoConstraints = false
-        recLabel.text = "REC"
+        recLabel.text = L10n("recorder.rec")
         recLabel.font = .systemFont(ofSize: 13, weight: .bold)
         recLabel.textColor = .systemRed
         view.addSubview(recLabel)
@@ -220,7 +220,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         timerLabel.textAlignment = .center
         timerLabel.text = "0:00"
         timerLabel.adjustsFontForContentSizeCategory = true
-        timerLabel.accessibilityLabel = "Recording duration"
+        timerLabel.accessibilityLabel = L10n("recorder.a11y.duration")
         timerLabel.accessibilityTraits = .updatesFrequently
         view.addSubview(timerLabel)
 
@@ -247,7 +247,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         stopButton.layer.cornerCurve = .continuous
         stopButton.applyAdaptiveShadow(radius: 10, opacity: 0.2)
         stopButton.isAccessibilityElement = true
-        stopButton.accessibilityLabel = "Stop recording"
+        stopButton.accessibilityLabel = L10n("recorder.a11y.stop")
         stopButton.accessibilityTraits = .button
         stopButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stopButtonTapped)))
         view.addSubview(stopButton)
@@ -266,7 +266,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
     private func setupReviewComponents() {
         // Complete title
         completeTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        completeTitleLabel.text = "Recording Complete"
+        completeTitleLabel.text = L10n("recorder.complete")
         completeTitleLabel.font = .preferredFont(forTextStyle: .title2)
         completeTitleLabel.textColor = AppColors.primaryText
         completeTitleLabel.textAlignment = .center
@@ -306,7 +306,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         playPauseButton.layer.cornerCurve = .continuous
         playPauseButton.applyAdaptiveShadow(radius: 8, opacity: 0.15)
         playPauseButton.isAccessibilityElement = true
-        playPauseButton.accessibilityLabel = "Play"
+        playPauseButton.accessibilityLabel = L10n("recorder.a11y.play")
         playPauseButton.accessibilityTraits = .button
         playPauseButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(playPauseTapped)))
         view.addSubview(playPauseButton)
@@ -320,7 +320,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
         // Re-record button
         reRecordButton.translatesAutoresizingMaskIntoConstraints = false
-        reRecordButton.setTitle("Redo", for: .normal)
+        reRecordButton.setTitle(L10n("recorder.redo"), for: .normal)
         reRecordButton.setImage(UIImage(systemName: "arrow.counterclockwise"), for: .normal)
         reRecordButton.titleLabel?.font = .preferredFont(forTextStyle: .body)
         reRecordButton.setTitleColor(AppColors.primaryText, for: .normal)
@@ -331,12 +331,12 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         reRecordButton.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
         reRecordButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -8)
         reRecordButton.addTarget(self, action: #selector(reRecordTapped), for: .touchUpInside)
-        reRecordButton.accessibilityHint = "Discard this recording and start over"
+        reRecordButton.accessibilityHint = L10n("recorder.a11y.redo_hint")
         view.addSubview(reRecordButton)
 
         // Save recording button
         useRecordingButton.translatesAutoresizingMaskIntoConstraints = false
-        useRecordingButton.setTitle("Save", for: .normal)
+        useRecordingButton.setTitle(L10n("recorder.save"), for: .normal)
         useRecordingButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         useRecordingButton.titleLabel?.font = .preferredFont(forTextStyle: .body, compatibleWith: UITraitCollection(legibilityWeight: .bold))
         useRecordingButton.setTitleColor(.white, for: .normal)
@@ -552,12 +552,12 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
     @objc private func reRecordTapped() {
         let alert = UIAlertController(
-            title: "Re-record?",
-            message: "This will discard the current recording.",
+            title: L10n("recorder.re_record") + "?",
+            message: L10n("recorder.discard_message"),
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Re-record", style: .destructive) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n("recorder.re_record"), style: .destructive) { [weak self] _ in
             self?.lightImpact.impactOccurred()
             self?.discardAndRestart()
         })
@@ -745,7 +745,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         player.play()
         isPlaying = true
         playPauseIcon.image = UIImage(systemName: "pause.fill")
-        playPauseButton.accessibilityLabel = "Pause"
+        playPauseButton.accessibilityLabel = L10n("recorder.a11y.pause")
 
         playbackTimer = Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { [weak self] _ in
             self?.updatePlaybackProgress()
@@ -756,7 +756,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         player?.pause()
         isPlaying = false
         playPauseIcon.image = UIImage(systemName: "play.fill")
-        playPauseButton.accessibilityLabel = "Play"
+        playPauseButton.accessibilityLabel = L10n("recorder.a11y.play")
         playbackTimer?.invalidate()
         playbackTimer = nil
     }
@@ -766,7 +766,7 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
         player?.currentTime = 0
         isPlaying = false
         playPauseIcon.image = UIImage(systemName: "play.fill")
-        playPauseButton.accessibilityLabel = "Play"
+        playPauseButton.accessibilityLabel = L10n("recorder.a11y.play")
         playbackTimer?.invalidate()
         playbackTimer = nil
     }
@@ -851,12 +851,12 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
 
     private func showMicDeniedAlert() {
         let alert = UIAlertController(
-            title: "Microphone Access Required",
-            message: "Please enable microphone access in Settings to record audio.",
+            title: L10n("recorder.error.mic_access_title"),
+            message: L10n("recorder.error.mic_access"),
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n("recorder.error.open_settings"), style: .default) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(settingsURL)
             }
@@ -865,8 +865,8 @@ final class AudioRecorderViewController: UIViewController, AVAudioRecorderDelega
     }
 
     private func showError(_ message: String) {
-        let alert = UIAlertController(title: "Recording Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: L10n("recorder.error.title"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n("common.ok"), style: .default))
         present(alert, animated: true)
     }
 

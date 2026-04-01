@@ -18,7 +18,7 @@ final class SettingsCoordinator: Coordinator {
 
     func start() -> UINavigationController {
         let vc = SettingsViewController(settings: container.settings)
-        vc.title = "Settings"
+        vc.title = L10n("tab.settings")
         navigationController.viewControllers = [vc]
         navigationController.navigationBar.prefersLargeTitles = true
         return navigationController

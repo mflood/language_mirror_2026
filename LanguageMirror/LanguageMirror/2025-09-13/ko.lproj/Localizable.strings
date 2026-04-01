@@ -1,0 +1,251 @@
+/* Language Mirror - Korean (한국어) */
+
+/* ── Tabs ── */
+"tab.library" = "라이브러리";
+"tab.import" = "가져오기";
+"tab.practice" = "연습";
+"tab.settings" = "설정";
+
+/* ── Common ── */
+"common.cancel" = "취소";
+"common.ok" = "확인";
+"common.save" = "저장";
+"common.delete" = "삭제";
+"common.edit" = "편집";
+"common.done" = "완료";
+"common.discard" = "삭제";
+"common.dismiss" = "닫기";
+"common.create" = "생성";
+"common.got_it" = "확인";
+"common.error" = "오류";
+"common.reset" = "초기화";
+
+/* ── Library ── */
+"library.search_placeholder" = "트랙 검색";
+"library.pack" = "팩";
+"library.section.continue_practicing" = "계속 연습하기";
+"library.section.recently_added" = "최근 추가";
+"library.section.favorites" = "즐겨찾기";
+"library.sort.title" = "트랙 정렬";
+"library.delete.title" = "트랙 삭제";
+"library.delete.message" = "\"%@\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.";
+"library.delete.failed" = "삭제 실패";
+"library.delete.failed_message" = "트랙을 삭제할 수 없습니다. 다시 시도해 주세요.";
+
+/* ── Sort Orders ── */
+"sort.title_az" = "제목 가-하";
+"sort.title_za" = "제목 하-가";
+"sort.date_newest" = "추가 날짜 (최신)";
+"sort.date_oldest" = "추가 날짜 (오래된)";
+"sort.duration_longest" = "길이 (긴 순)";
+"sort.duration_shortest" = "길이 (짧은 순)";
+
+/* ── Import ── */
+"import.header" = "가져오기 방법 선택";
+"import.footer" = "오디오를 라이브러리에 추가할 방법을 선택하세요. 모든 파일은 기기에 로컬로 저장됩니다.";
+"import.option.video" = "동영상에서 가져오기";
+"import.option.video.desc" = "동영상 파일에서 오디오 추출";
+"import.option.files" = "파일에서 가져오기";
+"import.option.files.desc" = "파일 앱에서 찾아보거나 공유 버튼 사용";
+"import.option.record" = "오디오 녹음";
+"import.option.record.desc" = "마이크로 새 오디오 녹음";
+"import.option.url" = "URL에서 다운로드";
+"import.option.url.desc" = "mp3, m4a, wav 파일 다운로드";
+"import.option.bundle" = "번들 설치";
+"import.option.bundle.desc" = "원격 매니페스트에서 번들 다운로드";
+
+"import.url.title" = "URL에서 다운로드";
+"import.url.message" = "오디오 파일의 직접 링크를 입력하세요.";
+"import.url.placeholder" = "https://…/file.mp3";
+"import.url.title_placeholder" = "제목 (선택)";
+"import.url.download" = "다운로드";
+
+"import.bundle.title" = "번들 설치";
+"import.bundle.message" = "JSON 매니페스트의 URL을 입력하세요.";
+"import.bundle.placeholder" = "https://…/bundle.json";
+"import.bundle.install" = "설치";
+
+"import.error.invalid_url" = "잘못된 URL";
+"import.error.invalid_url_message" = "http:// 또는 https://로 시작하는 유효한 URL을 입력해 주세요";
+"import.error.invalid_url_scheme" = "URL은 http:// 또는 https://로 시작해야 합니다";
+"import.error.pick_failed" = "선택 실패";
+
+"import.progress.downloading" = "다운로드 중";
+"import.progress.downloading_manifest" = "매니페스트 다운로드 중...";
+"import.progress.getting_audio" = "오디오 파일을 가져오는 중...";
+"import.progress.processing" = "처리 중";
+"import.progress.preparing" = "트랙을 준비하는 중...";
+"import.progress.success" = "성공!";
+"import.progress.error" = "가져오기 실패";
+"import.success.one_track" = "라이브러리에 트랙 1개가 추가되었습니다";
+"import.success.n_tracks" = "라이브러리에 트랙 %d개가 추가되었습니다";
+
+"import.help.title" = "가져오기 도움말";
+"import.help.message" = "📹 동영상에서 가져오기\n동영상 파일에서 오디오를 추출합니다\n\n📁 파일에서 가져오기\n• 음성 메모에서 공유 버튼 → LanguageMirror\n• 또는 파일 → 나의 iPhone → 음성 메모에서 찾기\n\n🎤 오디오 녹음\n마이크로 새 트랙을 녹음합니다\n\n🔗 URL에서 다운로드\n오디오 파일 직접 링크 (mp3, m4a, wav)\n\n☁️ 번들 설치\n원격 JSON 매니페스트에서 번들을 다운로드합니다";
+
+/* ── Settings ── */
+"settings.mode.simple" = "기본";
+"settings.mode.progression" = "점진";
+"settings.section.practice_mode" = "연습 모드";
+"settings.section.simple_mode" = "기본 모드";
+"settings.section.progression_mode" = "점진 모드";
+"settings.section.playback" = "재생";
+"settings.speed" = "속도";
+"settings.repeat_count" = "반복 횟수";
+"settings.repeats" = "반복";
+"settings.ramp_steps" = "증가 단계";
+"settings.gap_between_repeats" = "반복 간 간격";
+"settings.gap_between_clips" = "클립 간 간격";
+"settings.preroll" = "프리롤";
+"settings.duck_other_audio" = "다른 오디오 줄이기";
+"settings.enabled" = "켜짐";
+"settings.disabled" = "꺼짐";
+
+/* ── Practice ── */
+"practice.ready" = "연습 준비 완료";
+"practice.progress" = "클립 %d/%d";
+"practice.title_with_loop" = "반복 %d/%d";
+"practice.mode.simple" = "기본";
+"practice.mode.prog" = "점진";
+
+"practice.unsaved.title" = "저장되지 않은 변경사항";
+"practice.unsaved.message" = "저장되지 않은 클립 편집이 있습니다.";
+"practice.unsaved.keep_editing" = "편집 계속";
+
+"practice.save.title" = "연습 세트 저장";
+"practice.save.message" = "변경사항 저장 방법 선택";
+"practice.save.placeholder" = "연습 세트 이름";
+"practice.save.as_new" = "새로 저장";
+"practice.save.update_current" = "현재 항목 업데이트";
+"practice.save_failed" = "저장 실패";
+"practice.saved.title" = "저장됨";
+"practice.saved.message" = "연습 세트 '%@'이(가) 생성되었습니다";
+"practice.updated.title" = "업데이트됨";
+"practice.updated.message" = "연습 세트가 업데이트되었습니다";
+"practice.update_failed" = "업데이트 실패";
+"practice.set_default_name" = "분할된 트랙";
+
+"practice.discard.title" = "변경사항을 삭제하시겠습니까?";
+"practice.discard.message" = "저장되지 않은 모든 변경사항이 사라집니다.";
+
+"practice.no_drills.title" = "드릴 없음";
+"practice.no_drills.message" = "이 트랙에는 연습할 드릴 클립이 없습니다";
+"practice.skipping.title" = "드릴로 이동";
+"practice.skipping.message" = "선택한 클립은 %@(으)로 표시되어 있습니다. 다음 드릴 클립으로 이동합니다.";
+"practice.skipping.first_message" = "선택한 클립은 %@(으)로 표시되어 있습니다. 첫 번째 드릴 클립으로 이동합니다.";
+"practice.invalid_clips.title" = "잘못된 클립";
+"practice.invalid_clips.message" = "일부 드릴 클립의 시간 범위가 잘못되었습니다. 구간을 편집해 주세요.";
+"practice.invalid_split.title" = "잘못된 분할";
+"practice.invalid_split.message" = "분할 지점은 클립 경계에서 최소 0.5초 떨어져야 합니다";
+"practice.playback_error" = "재생 오류";
+"practice.favorite_failed" = "즐겨찾기 업데이트 실패";
+
+"practice.empty.title" = "연습할 클립 없음";
+"practice.empty.message" = "이 연습 세트에 아직 클립이 없습니다.";
+
+"practice.clip_kind.drill" = "드릴";
+"practice.clip_kind.skip" = "건너뛰기";
+"practice.clip_kind.noise" = "소음";
+
+/* ── Practice Home ── */
+"practice_home.recent" = "최근";
+"practice_home.practice_set" = "연습 세트";
+
+/* ── Practice Set Cell ── */
+"practice_set.detail" = "클립 %d개 • 드릴 %d개";
+"practice_set.clips" = "클립 %d개";
+"practice_set.drills" = "드릴 %d개";
+
+/* ── Track Detail ── */
+"track_detail.subtitle" = "아래 연습 세트를 탭하여 연습을 시작하세요.";
+"track_detail.section.practice_sets" = "연습 세트";
+"track_detail.section.transcripts" = "대본";
+"track_detail.empty.title" = "아직 연습 세트가 없습니다";
+"track_detail.empty.message" = "연습 세트를 사용하면 이 트랙의 가장 유용한 부분에 집중할 수 있습니다.";
+"track_detail.view_transcripts" = "대본 보기";
+"track_detail.transcripts_none" = "없음";
+"track_detail.transcripts_count" = "%d개 구간";
+"track_detail.practice_set_default" = "연습 세트";
+
+"track_detail.a11y.add_set" = "연습 세트 추가";
+"track_detail.a11y.options" = "트랙 옵션";
+
+"track_detail.new_set.title" = "새 연습 세트";
+"track_detail.new_set.message" = "연습 세트 이름을 입력하세요 (선택사항).";
+"track_detail.new_set.placeholder" = "예: 빠른 복습, 문장 드릴";
+
+"track_detail.options.title" = "트랙 옵션";
+"track_detail.options.rename" = "트랙 이름 변경";
+
+"track_detail.rename.title" = "트랙 이름 변경";
+"track_detail.rename.message" = "라이브러리에 표시되는 트랙 이름을 변경합니다.";
+
+"track_detail.delete_set.title" = "연습 세트를 삭제하시겠습니까?";
+"track_detail.delete_set.message" = "이 세트의 모든 클립이 삭제됩니다. 되돌릴 수 없습니다.";
+
+"track_detail.error.create_set" = "연습 세트 생성 실패";
+"track_detail.error.delete_set" = "연습 세트 삭제 실패";
+"track_detail.error.rename" = "트랙 이름 변경 실패";
+"track_detail.error.toggle_favorite" = "즐겨찾기 업데이트 실패";
+
+/* ── Audio Recorder ── */
+"recorder.title" = "녹음";
+"recorder.hint" = "탭하여 녹음 시작";
+"recorder.hint_secondary" = "말하거나 읽으면서 녹음하세요";
+"recorder.rec" = "녹음";
+"recorder.complete" = "녹음 완료";
+"recorder.redo" = "다시";
+"recorder.save" = "저장";
+"recorder.re_record" = "다시 녹음";
+"recorder.discard_message" = "현재 녹음이 삭제됩니다.";
+"recorder.error.title" = "녹음 오류";
+"recorder.error.mic_access" = "오디오를 녹음하려면 설정에서 마이크 접근을 허용해 주세요.";
+"recorder.error.mic_access_title" = "마이크 접근 필요";
+"recorder.error.open_settings" = "설정 열기";
+
+"recorder.a11y.start" = "녹음 시작";
+"recorder.a11y.start_hint" = "두 번 탭하여 녹음 시작";
+"recorder.a11y.duration" = "녹음 시간";
+"recorder.a11y.stop" = "녹음 중지";
+"recorder.a11y.play" = "재생";
+"recorder.a11y.pause" = "일시정지";
+"recorder.a11y.redo_hint" = "이 녹음을 삭제하고 처음부터 다시 시작";
+
+/* ── Empty States ── */
+"empty.library.title" = "라이브러리가 비어 있습니다";
+"empty.library.message" = "첫 번째 오디오 트랙을 가져와서 언어 학습을 시작하세요.";
+"empty.library.action" = "시작하기";
+"empty.search.title" = "트랙을 찾을 수 없음";
+"empty.search.message" = "검색어를 조정하거나 검색을 지워서 모든 트랙을 찾아보세요.";
+"empty.loading.title" = "로딩 중...";
+"empty.loading.message" = "라이브러리를 준비하는 중";
+"empty.practice.title" = "아직 연습 세션이 없습니다";
+"empty.practice.message" = "라이브러리에서 연습을 시작하세요.";
+"empty.practice.action" = "라이브러리 보기";
+
+/* ── Now Playing (Lock Screen) ── */
+"now_playing.loop" = "반복 %d/%d";
+"now_playing.clip" = "클립 %d/%d";
+"now_playing.practice_session" = "연습 세션";
+
+/* ── Pack Selection ── */
+"pack_selection.title" = "가져올 팩 선택";
+"pack_selection.available" = "사용 가능한 팩";
+"pack_selection.loading" = "팩을 불러오는 중...";
+"pack_selection.footer" = "라이브러리에 가져올 팩을 선택하세요.";
+"pack_selection.confirm.title" = "%@을(를) 가져오시겠습니까?";
+"pack_selection.confirm.message" = "라이브러리에 트랙 %d개를 가져옵니다.";
+"pack_selection.import" = "가져오기";
+
+/* ── Transcripts ── */
+"transcripts.empty.title" = "대본 없음";
+"transcripts.empty.message" = "이 트랙에는 대본 구간이 없습니다.";
+
+/* ── Accessibility ── */
+"a11y.audio_waveform" = "오디오 파형";
+"a11y.seek_hint" = "탭하거나 드래그하여 탐색";
+"a11y.segment_start" = "구간 시작";
+"a11y.segment_end" = "구간 끝";
+
+/* ── Level Meter ── */
+"level_meter.title" = "선택 레벨";

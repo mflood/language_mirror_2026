@@ -1,0 +1,251 @@
+/* Language Mirror - English (Base) */
+
+/* ── Tabs ── */
+"tab.library" = "Library";
+"tab.import" = "Import";
+"tab.practice" = "Practice";
+"tab.settings" = "Settings";
+
+/* ── Common ── */
+"common.cancel" = "Cancel";
+"common.ok" = "OK";
+"common.save" = "Save";
+"common.delete" = "Delete";
+"common.edit" = "Edit";
+"common.done" = "Done";
+"common.discard" = "Discard";
+"common.dismiss" = "Dismiss";
+"common.create" = "Create";
+"common.got_it" = "Got It";
+"common.error" = "Error";
+"common.reset" = "Reset";
+
+/* ── Library ── */
+"library.search_placeholder" = "Search tracks";
+"library.pack" = "Pack";
+"library.section.continue_practicing" = "CONTINUE PRACTICING";
+"library.section.recently_added" = "RECENTLY ADDED";
+"library.section.favorites" = "FAVORITES";
+"library.sort.title" = "Sort Tracks";
+"library.delete.title" = "Delete Track";
+"library.delete.message" = "Are you sure you want to delete \"%@\"? This action cannot be undone.";
+"library.delete.failed" = "Delete Failed";
+"library.delete.failed_message" = "Could not delete the track. Please try again.";
+
+/* ── Sort Orders ── */
+"sort.title_az" = "Title A-Z";
+"sort.title_za" = "Title Z-A";
+"sort.date_newest" = "Date Added (Newest)";
+"sort.date_oldest" = "Date Added (Oldest)";
+"sort.duration_longest" = "Duration (Longest)";
+"sort.duration_shortest" = "Duration (Shortest)";
+
+/* ── Import ── */
+"import.header" = "Choose an Import Method";
+"import.footer" = "Select how you'd like to add audio to your library. All imports are saved locally on your device.";
+"import.option.video" = "Import from Video";
+"import.option.video.desc" = "Extract audio from video files";
+"import.option.files" = "Import from Files";
+"import.option.files.desc" = "Browse Files app or use Share button";
+"import.option.record" = "Record Audio";
+"import.option.record.desc" = "Record new audio with your mic";
+"import.option.url" = "Download from URL";
+"import.option.url.desc" = "Download mp3, m4a, or wav files";
+"import.option.bundle" = "Install Bundle";
+"import.option.bundle.desc" = "Download bundle from remote manifest";
+
+"import.url.title" = "Download from URL";
+"import.url.message" = "Enter a direct link to an audio file.";
+"import.url.placeholder" = "https://…/file.mp3";
+"import.url.title_placeholder" = "Optional title";
+"import.url.download" = "Download";
+
+"import.bundle.title" = "Install Bundle";
+"import.bundle.message" = "Enter the URL of a JSON manifest.";
+"import.bundle.placeholder" = "https://…/bundle.json";
+"import.bundle.install" = "Install";
+
+"import.error.invalid_url" = "Invalid URL";
+"import.error.invalid_url_message" = "Please enter a valid URL starting with http:// or https://";
+"import.error.invalid_url_scheme" = "URL must start with http:// or https://";
+"import.error.pick_failed" = "Pick Failed";
+
+"import.progress.downloading" = "Downloading";
+"import.progress.downloading_manifest" = "Downloading manifest...";
+"import.progress.getting_audio" = "Getting your audio file...";
+"import.progress.processing" = "Processing";
+"import.progress.preparing" = "Preparing your track...";
+"import.progress.success" = "Success!";
+"import.progress.error" = "Unable to Import";
+"import.success.one_track" = "Added 1 track to your library";
+"import.success.n_tracks" = "Added %d tracks to your library";
+
+"import.help.title" = "Import Help";
+"import.help.message" = "📹 Import from Video\nExtract audio from any video file\n\n📁 Import from Files\n• Tap Share button in Voice Memos → LanguageMirror\n• Or browse: Files → On My iPhone → Voice Memos\n\n🎤 Record Audio\nCreate new tracks with your microphone\n\n🔗 Download from URL\nDirect links to audio files (mp3, m4a, wav)\n\n☁️ Install Bundle\nDownload bundles from remote JSON manifests";
+
+/* ── Settings ── */
+"settings.mode.simple" = "Simple";
+"settings.mode.progression" = "Progression";
+"settings.section.practice_mode" = "Practice Mode";
+"settings.section.simple_mode" = "Simple Mode";
+"settings.section.progression_mode" = "Progression Mode";
+"settings.section.playback" = "Playback";
+"settings.speed" = "Speed";
+"settings.repeat_count" = "Repeat Count";
+"settings.repeats" = "Repeats";
+"settings.ramp_steps" = "Ramp Steps";
+"settings.gap_between_repeats" = "Gap Between Repeats";
+"settings.gap_between_clips" = "Gap Between Clips";
+"settings.preroll" = "Preroll";
+"settings.duck_other_audio" = "Duck Other Audio";
+"settings.enabled" = "Enabled";
+"settings.disabled" = "Disabled";
+
+/* ── Practice ── */
+"practice.ready" = "Ready to practice";
+"practice.progress" = "Clip %d/%d";
+"practice.title_with_loop" = "Loop %d/%d";
+"practice.mode.simple" = "Simple";
+"practice.mode.prog" = "Progression";
+
+"practice.unsaved.title" = "Unsaved Changes";
+"practice.unsaved.message" = "You have unsaved clip edits.";
+"practice.unsaved.keep_editing" = "Keep Editing";
+
+"practice.save.title" = "Save Practice Set";
+"practice.save.message" = "Choose how to save your changes";
+"practice.save.placeholder" = "Practice set name";
+"practice.save.as_new" = "Save as New";
+"practice.save.update_current" = "Update Current";
+"practice.save_failed" = "Save Failed";
+"practice.saved.title" = "Saved";
+"practice.saved.message" = "Practice set '%@' created successfully";
+"practice.updated.title" = "Updated";
+"practice.updated.message" = "Practice set updated successfully";
+"practice.update_failed" = "Update Failed";
+"practice.set_default_name" = "Sliced Track";
+
+"practice.discard.title" = "Discard Changes?";
+"practice.discard.message" = "All unsaved changes will be lost.";
+
+"practice.no_drills.title" = "No Drills";
+"practice.no_drills.message" = "This track has no drill clips to practice";
+"practice.skipping.title" = "Skipping to Drill";
+"practice.skipping.message" = "Selected clip is marked as %@. Jumping to next drill clip.";
+"practice.skipping.first_message" = "Selected clip is marked as %@. Jumping to first drill clip.";
+"practice.invalid_clips.title" = "Invalid Clips";
+"practice.invalid_clips.message" = "Some drill clips have invalid time ranges. Please edit segments.";
+"practice.invalid_split.title" = "Invalid Split";
+"practice.invalid_split.message" = "Split point must be at least 0.5 seconds from clip boundaries";
+"practice.playback_error" = "Playback Error";
+"practice.favorite_failed" = "Failed to update favorite";
+
+"practice.empty.title" = "No clips to practice";
+"practice.empty.message" = "This practice set doesn't have any clips yet.";
+
+"practice.clip_kind.drill" = "Drill";
+"practice.clip_kind.skip" = "Skip";
+"practice.clip_kind.noise" = "Noise";
+
+/* ── Practice Home ── */
+"practice_home.recent" = "Recent";
+"practice_home.practice_set" = "Practice Set";
+
+/* ── Practice Set Cell ── */
+"practice_set.detail" = "%d clips • %d drills";
+"practice_set.clips" = "%d clips";
+"practice_set.drills" = "%d drills";
+
+/* ── Track Detail ── */
+"track_detail.subtitle" = "Tap a practice set below to start practicing.";
+"track_detail.section.practice_sets" = "Practice sets";
+"track_detail.section.transcripts" = "Transcripts";
+"track_detail.empty.title" = "No practice sets yet";
+"track_detail.empty.message" = "Practice sets help you focus on the most useful parts of this track.";
+"track_detail.view_transcripts" = "View transcripts";
+"track_detail.transcripts_none" = "None";
+"track_detail.transcripts_count" = "%d span(s)";
+"track_detail.practice_set_default" = "Practice Set";
+
+"track_detail.a11y.add_set" = "Add practice set";
+"track_detail.a11y.options" = "Track options";
+
+"track_detail.new_set.title" = "New Practice Set";
+"track_detail.new_set.message" = "Give this practice set a name (optional).";
+"track_detail.new_set.placeholder" = "e.g. Fast review, Sentence drills";
+
+"track_detail.options.title" = "Track options";
+"track_detail.options.rename" = "Rename track";
+
+"track_detail.rename.title" = "Rename Track";
+"track_detail.rename.message" = "Update how this track appears in your library.";
+
+"track_detail.delete_set.title" = "Delete practice set?";
+"track_detail.delete_set.message" = "This will remove all clips in this set. This can't be undone.";
+
+"track_detail.error.create_set" = "Failed to create practice set";
+"track_detail.error.delete_set" = "Failed to delete practice set";
+"track_detail.error.rename" = "Failed to rename track";
+"track_detail.error.toggle_favorite" = "Failed to update favorite";
+
+/* ── Audio Recorder ── */
+"recorder.title" = "Record";
+"recorder.hint" = "Tap to start recording";
+"recorder.hint_secondary" = "Record yourself speaking or reading aloud";
+"recorder.rec" = "REC";
+"recorder.complete" = "Recording Complete";
+"recorder.redo" = "Redo";
+"recorder.save" = "Save";
+"recorder.re_record" = "Re-record";
+"recorder.discard_message" = "This will discard the current recording.";
+"recorder.error.title" = "Recording Error";
+"recorder.error.mic_access" = "Please enable microphone access in Settings to record audio.";
+"recorder.error.mic_access_title" = "Microphone Access Required";
+"recorder.error.open_settings" = "Open Settings";
+
+"recorder.a11y.start" = "Start recording";
+"recorder.a11y.start_hint" = "Double tap to start recording";
+"recorder.a11y.duration" = "Recording duration";
+"recorder.a11y.stop" = "Stop recording";
+"recorder.a11y.play" = "Play";
+"recorder.a11y.pause" = "Pause";
+"recorder.a11y.redo_hint" = "Discard this recording and start over";
+
+/* ── Empty States ── */
+"empty.library.title" = "Your Library Awaits";
+"empty.library.message" = "Start your language learning journey by importing your first audio track or exploring pre-made packs.";
+"empty.library.action" = "Get Started";
+"empty.search.title" = "No Tracks Found";
+"empty.search.message" = "Try adjusting your search or browse all tracks by clearing the search.";
+"empty.loading.title" = "Loading...";
+"empty.loading.message" = "Preparing your library";
+"empty.practice.title" = "No Practice Sessions Yet";
+"empty.practice.message" = "Start practicing from the Library.";
+"empty.practice.action" = "Browse Library";
+
+/* ── Now Playing (Lock Screen) ── */
+"now_playing.loop" = "Loop %d/%d";
+"now_playing.clip" = "Clip %d/%d";
+"now_playing.practice_session" = "Practice Session";
+
+/* ── Pack Selection ── */
+"pack_selection.title" = "Select Pack to Import";
+"pack_selection.available" = "Available Packs";
+"pack_selection.loading" = "Loading available packs...";
+"pack_selection.footer" = "Select a pack to import into your library.";
+"pack_selection.confirm.title" = "Import %@?";
+"pack_selection.confirm.message" = "This will import %d tracks into your library.";
+"pack_selection.import" = "Import";
+
+/* ── Transcripts ── */
+"transcripts.empty.title" = "No transcripts";
+"transcripts.empty.message" = "This track does not contain transcript spans.";
+
+/* ── Accessibility ── */
+"a11y.audio_waveform" = "Audio waveform";
+"a11y.seek_hint" = "Tap or drag to seek";
+"a11y.segment_start" = "Segment start";
+"a11y.segment_end" = "Segment end";
+
+/* ── Level Meter ── */
+"level_meter.title" = "Selection level";

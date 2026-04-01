@@ -55,8 +55,8 @@ final class WaveformPlaceholderView: UIView {
         rightHandle.addGestureRecognizer(rightPan)
         leftHandle.isUserInteractionEnabled = true
         rightHandle.isUserInteractionEnabled = true
-        leftHandle.accessibilityLabel = "Segment start"
-        rightHandle.accessibilityLabel = "Segment end"
+        leftHandle.accessibilityLabel = L10n("a11y.segment_start")
+        rightHandle.accessibilityLabel = L10n("a11y.segment_end")
 
         // default zero-crossing source matches our synthetic draw function
         zeroCrossingSource = SyntheticZeroCrossingSource(cycles: 6, jitter: 0.15)

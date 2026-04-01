@@ -20,7 +20,7 @@ final class ImportCoordinator: Coordinator {
 
     func start() -> UINavigationController {
         let vc = ImportViewController(importService: container.importService)
-        vc.title = "Import"
+        vc.title = L10n("tab.import")
         self.importViewController = vc
         navigationController.viewControllers = [vc]
         navigationController.navigationBar.prefersLargeTitles = true

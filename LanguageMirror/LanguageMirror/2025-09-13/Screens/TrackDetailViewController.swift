@@ -157,7 +157,7 @@ final class TrackDetailViewController: UITableViewController {
         
         let subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.text = "Tap a practice set below to start practicing."
+        subtitleLabel.text = L10n("track_detail.subtitle")
         subtitleLabel.font = .systemFont(ofSize: 13, weight: .regular)
         subtitleLabel.textColor = AppColors.secondaryText
         subtitleLabel.numberOfLines = 2
@@ -201,13 +201,13 @@ final class TrackDetailViewController: UITableViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add,
                                         target: self,
                                         action: #selector(didTapAddPracticeSet))
-        addButton.accessibilityLabel = "Add practice set"
+        addButton.accessibilityLabel = L10n("track_detail.a11y.add_set")
         
         let moreButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"),
                                          style: .plain,
                                          target: self,
                                          action: #selector(didTapMoreOptions))
-        moreButton.accessibilityLabel = "Track options"
+        moreButton.accessibilityLabel = L10n("track_detail.a11y.options")
         
         navigationItem.rightBarButtonItems = [moreButton, addButton]
     }
@@ -232,9 +232,9 @@ final class TrackDetailViewController: UITableViewController {
         label.textColor = AppColors.secondaryText
         switch Section(rawValue: section)! {
         case .practiceSets:
-            label.text = "Practice sets"
+            label.text = L10n("track_detail.section.practice_sets")
         case .transcripts:
-            label.text = "Transcripts"
+            label.text = L10n("track_detail.section.transcripts")
         }
         
         container.addSubview(label)
@@ -278,8 +278,8 @@ final class TrackDetailViewController: UITableViewController {
                 cell.backgroundView = bgView
                 config.textProperties.color = AppColors.primaryText
                 config.secondaryTextProperties.color = AppColors.secondaryText
-                config.text = "No practice sets yet"
-                config.secondaryText = "Practice sets help you focus on the most useful parts of this track."
+                config.text = L10n("track_detail.empty.title")
+                config.secondaryText = L10n("track_detail.empty.message")
                 cell.selectionStyle = .none
                 cell.accessoryType = .none
                 
@@ -291,7 +291,8 @@ final class TrackDetailViewController: UITableViewController {
                 }
                 
                 let practiceSet = track.practiceSets[indexPath.row]
-                let title = practiceSet.title?.isEmpty == false ? practiceSet.title ?? "Practice Set \(indexPath.row + 1)" : "Practice Set \(indexPath.row + 1)"
+                let fallback = L10nf("track_detail.practice_set_default", indexPath.row + 1)
+                let title = practiceSet.title?.isEmpty == false ? practiceSet.title ?? fallback : fallback
                 let drillCount = practiceSet.clips.filter { $0.kind == .drill }.count
                 let clipCount = practiceSet.clips.count
                 
@@ -319,8 +320,8 @@ final class TrackDetailViewController: UITableViewController {
             config.secondaryTextProperties.color = AppColors.secondaryText
             
             let count = track.transcripts.count
-            config.text = "View transcripts"
-            config.secondaryText = count == 0 ? "None" : "\(count) span(s)"
+            config.text = L10n("track_detail.view_transcripts")
+            config.secondaryText = count == 0 ? L10n("track_detail.transcripts_none") : L10nf("track_detail.transcripts_count", count)
             
             cell.accessoryType = .disclosureIndicator
             cell.selectionStyle = .default
@@ -355,7 +356,7 @@ final class TrackDetailViewController: UITableViewController {
         
         let practiceSet = track.practiceSets[indexPath.row]
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: L10n("common.delete")) { [weak self] _, _, completion in
             self?.confirmDeletePracticeSet(practiceSet, at: indexPath, completion: completion)
         }
         deleteAction.image = UIImage(systemName: "trash")
@@ -379,21 +380,21 @@ final class TrackDetailViewController: UITableViewController {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
         } catch {
-            presentMessage("Error", "Failed to toggle favorite: \(error.localizedDescription)")
+            presentMessage(L10n("common.error"), L10nf("track_detail.error.toggle_favorite", error.localizedDescription))
         }
     }
     
     // MARK: - Helpers
     
     @objc private func didTapAddPracticeSet() {
-        let alert = UIAlertController(title: "New Practice Set",
-                                      message: "Give this practice set a name (optional).",
+        let alert = UIAlertController(title: L10n("track_detail.new_set.title"),
+                                      message: L10n("track_detail.new_set.message"),
                                       preferredStyle: .alert)
         alert.addTextField { textField in
-            textField.placeholder = "e.g. Fast review, Sentence drills"
+            textField.placeholder = L10n("track_detail.new_set.placeholder")
         }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n("common.create"), style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
             let rawTitle = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             self.createPracticeSet(withTitle: rawTitle.isEmpty ? nil : rawTitle)
@@ -403,15 +404,15 @@ final class TrackDetailViewController: UITableViewController {
     }
     
     @objc private func didTapMoreOptions() {
-        let sheet = UIAlertController(title: "Track options",
+        let sheet = UIAlertController(title: L10n("track_detail.options.title"),
                                       message: nil,
                                       preferredStyle: .actionSheet)
-        
-        sheet.addAction(UIAlertAction(title: "Rename track", style: .default, handler: { [weak self] _ in
+
+        sheet.addAction(UIAlertAction(title: L10n("track_detail.options.rename"), style: .default, handler: { [weak self] _ in
             self?.presentRenameTrackAlert()
         }))
-        
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        sheet.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
         
         // iPad popover configuration
         if let popover = sheet.popoverPresentationController,
@@ -423,16 +424,16 @@ final class TrackDetailViewController: UITableViewController {
     }
     
     private func presentRenameTrackAlert() {
-        let alert = UIAlertController(title: "Rename Track",
-                                      message: "Update how this track appears in your library.",
+        let alert = UIAlertController(title: L10n("track_detail.rename.title"),
+                                      message: L10n("track_detail.rename.message"),
                                       preferredStyle: .alert)
         alert.addTextField { [weak self] textField in
             textField.text = self?.track.title
             textField.clearButtonMode = .whileEditing
         }
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n("common.save"), style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
             let newTitle = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             guard !newTitle.isEmpty, newTitle != self.track.title else { return }
@@ -455,7 +456,7 @@ final class TrackDetailViewController: UITableViewController {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
         } catch {
-            presentMessage("Error", "Failed to rename track: \(error.localizedDescription)")
+            presentMessage(L10n("common.error"), L10nf("track_detail.error.rename", error.localizedDescription))
         }
     }
     
@@ -476,20 +477,20 @@ final class TrackDetailViewController: UITableViewController {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
         } catch {
-            presentMessage("Error", "Failed to create practice set: \(error.localizedDescription)")
+            presentMessage(L10n("common.error"), L10nf("track_detail.error.create_set", error.localizedDescription))
         }
     }
     
     private func confirmDeletePracticeSet(_ practiceSet: PracticeSet,
                                           at indexPath: IndexPath,
                                           completion: @escaping (Bool) -> Void) {
-        let alert = UIAlertController(title: "Delete practice set?",
-                                      message: "This will remove all clips in this set. This can't be undone.",
+        let alert = UIAlertController(title: L10n("track_detail.delete_set.title"),
+                                      message: L10n("track_detail.delete_set.message"),
                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel, handler: { _ in
             completion(false)
         }))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n("common.delete"), style: .destructive, handler: { [weak self] _ in
             self?.deletePracticeSet(practiceSet, at: indexPath, completion: completion)
         }))
         
@@ -507,7 +508,7 @@ final class TrackDetailViewController: UITableViewController {
             generator.notificationOccurred(.success)
             completion(true)
         } catch {
-            presentMessage("Error", "Failed to delete practice set: \(error.localizedDescription)")
+            presentMessage(L10n("common.error"), L10nf("track_detail.error.delete_set", error.localizedDescription))
             completion(false)
         }
     }
@@ -543,7 +544,7 @@ final class TrackDetailViewController: UITableViewController {
     
     private func presentMessage(_ title: String, _ message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: L10n("common.ok"), style: .default))
         present(alert, animated: true)
     }
 }

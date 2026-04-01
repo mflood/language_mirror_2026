@@ -98,7 +98,7 @@ final class PhaseCard: UIView {
 
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Speed"
+        label.text = L10n("settings.speed")
         label.font = .systemFont(ofSize: 13, weight: .medium)
         label.textColor = AppColors.secondaryText
         row.addSubview(label)
@@ -143,7 +143,7 @@ final class PhaseCard: UIView {
 
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = phase == .ramp ? "Ramp Steps" : "Repeats"
+        label.text = phase == .ramp ? L10n("settings.ramp_steps") : L10n("settings.repeats")
         label.font = .systemFont(ofSize: 13, weight: .medium)
         label.textColor = AppColors.secondaryText
         row.addSubview(label)

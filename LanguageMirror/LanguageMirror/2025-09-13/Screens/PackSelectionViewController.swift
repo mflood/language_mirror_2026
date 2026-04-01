@@ -28,7 +28,7 @@ final class PackSelectionViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Select Pack to Import"
+        title = L10n("pack_selection.title")
         view.backgroundColor = .systemBackground
         
         tableView.register(PackCell.self, forCellReuseIdentifier: "PackCell")
@@ -73,11 +73,11 @@ final class PackSelectionViewController: UITableViewController {
     
     private func showError(_ message: String) {
         let alert = UIAlertController(
-            title: "Error",
+            title: L10n("common.error"),
             message: message,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: L10n("common.ok"), style: .default))
         present(alert, animated: true)
     }
     
@@ -92,11 +92,11 @@ final class PackSelectionViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return packs.isEmpty ? nil : "Available Packs"
+        return packs.isEmpty ? nil : L10n("pack_selection.available")
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return packs.isEmpty ? "Loading available packs..." : "Select a pack to import into your library."
+        return packs.isEmpty ? L10n("pack_selection.loading") : L10n("pack_selection.footer")
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,13 +113,13 @@ final class PackSelectionViewController: UITableViewController {
         
         // Show confirmation alert
         let alert = UIAlertController(
-            title: "Import \(pack.title)?",
-            message: "This will import \(pack.trackCount) track\(pack.trackCount == 1 ? "" : "s") into your library.",
+            title: L10nf("pack_selection.confirm.title", pack.title),
+            message: L10nf("pack_selection.confirm.message", pack.trackCount),
             preferredStyle: .alert
         )
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Import", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n("pack_selection.import"), style: .default) { [weak self] _ in
             self?.dismiss(animated: true) {
                 self?.onPackSelected?(pack.id)
             }

@@ -57,22 +57,22 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         self.coordinators = [libraryCoordinator, importCoordinator, practiceCoordinator, settingsCoordinator]
         
         let libraryNav  = libraryCoordinator.start()
-        libraryNav.tabBarItem  = UITabBarItem(title: "Library",
+        libraryNav.tabBarItem  = UITabBarItem(title: L10n("tab.library"),
                                               image: UIImage(systemName: "books.vertical"),
                                               tag: 0)
 
         let importNav   = importCoordinator.start()
-        importNav.tabBarItem   = UITabBarItem(title: "Import",
+        importNav.tabBarItem   = UITabBarItem(title: L10n("tab.import"),
                                               image: UIImage(systemName: "square.and.arrow.down"),
                                               tag: 1)
 
         let practiceNav = practiceCoordinator.start()
-        practiceNav.tabBarItem = UITabBarItem(title: "Practice",
+        practiceNav.tabBarItem = UITabBarItem(title: L10n("tab.practice"),
                                               image: UIImage(systemName: "repeat"),
                                               tag: 2)
 
         let settingsNav = settingsCoordinator.start()
-        settingsNav.tabBarItem = UITabBarItem(title: "Settings",
+        settingsNav.tabBarItem = UITabBarItem(title: L10n("tab.settings"),
                                               image: UIImage(systemName: "gearshape"),
                                               tag: 3)
 

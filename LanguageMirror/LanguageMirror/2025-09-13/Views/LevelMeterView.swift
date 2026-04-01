@@ -17,7 +17,7 @@ final class LevelMeterView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        title.text = "Selection level"
+        title.text = L10n("level_meter.title")
         title.font = .systemFont(ofSize: 13, weight: .semibold)
 
         [rmsLabel, peakLabel].forEach {

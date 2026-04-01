@@ -48,7 +48,7 @@ final class PracticeHomeViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = AppColors.primaryBackground
-        title = "Practice"
+        title = L10n("tab.practice")
         navigationItem.largeTitleDisplayMode = .always
 
         setupTableView()
@@ -100,9 +100,9 @@ final class PracticeHomeViewController: UIViewController {
         emptyStateView.isHidden = true
         emptyStateView.configure(
             icon: "waveform.path.ecg",
-            title: "No Practice Sessions Yet",
-            message: "Start practicing from the Library.",
-            actionTitle: "Browse Library"
+            title: L10n("empty.practice.title"),
+            message: L10n("empty.practice.message"),
+            actionTitle: L10n("empty.practice.action")
         )
         emptyStateView.onActionTapped = { [weak self] in
             guard let self else { return }
@@ -239,7 +239,7 @@ extension PracticeHomeViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return recentSessions.isEmpty ? nil : "Recent"
+        return recentSessions.isEmpty ? nil : L10n("practice_home.recent")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -353,7 +353,7 @@ final class PracticeHomeCell: UITableViewCell {
 
     func configure(track: Track, practiceSet: PracticeSet, lastUpdated: Date?) {
         titleLabel.text = track.title
-        subtitleLabel.text = practiceSet.title?.isEmpty == false ? practiceSet.title : "Practice Set"
+        subtitleLabel.text = practiceSet.title?.isEmpty == false ? practiceSet.title : L10n("practice_home.practice_set")
 
         if let lastUpdated = lastUpdated {
             let formatter = RelativeDateTimeFormatter()

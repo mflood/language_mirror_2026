@@ -20,7 +20,7 @@ final class LibraryCoordinator: Coordinator {
 
     func start() -> UINavigationController {
         let vc = LibraryViewController(libraryService: container.libraryService, practiceService: container.practiceService)
-        vc.title = "Library"
+        vc.title = L10n("tab.library")
         vc.delegate = self
         navigationController.viewControllers = [vc]
         navigationController.navigationBar.prefersLargeTitles = true

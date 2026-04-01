@@ -118,7 +118,7 @@ final class PracticeSetCell: UITableViewCell {
     
     func configure(title: String, clipCount: Int, drillCount: Int, isFavorite: Bool) {
         titleLabel.text = title
-        detailLabel.text = "\(clipCount) clips • \(drillCount) drills"
+        detailLabel.text = L10nf("practice_set.detail", clipCount, drillCount)
         self.isFavorite = isFavorite
         configureBadges(clipCount: clipCount, drillCount: drillCount)
         updateFavoriteAppearance(animated: false)
@@ -131,14 +131,14 @@ final class PracticeSetCell: UITableViewCell {
         // Clip count badge
         if clipCount > 0 {
             let clipsTag = TagView()
-            clipsTag.configure(text: "\(clipCount) clips")
+            clipsTag.configure(text: L10nf("practice_set.clips", clipCount))
             badgeStackView.addArrangedSubview(clipsTag)
         }
         
         // Drill count badge
         if drillCount > 0 {
             let drillsTag = TagView()
-            drillsTag.configure(text: "\(drillCount) drills")
+            drillsTag.configure(text: L10nf("practice_set.drills", drillCount))
             badgeStackView.addArrangedSubview(drillsTag)
         }
         

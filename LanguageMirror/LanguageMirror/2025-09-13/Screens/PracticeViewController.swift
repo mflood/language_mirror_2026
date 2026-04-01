@@ -191,7 +191,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
         // Edit button (trailing edge of header)
         editButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.setTitle("Edit", for: .normal)
+        editButton.setTitle(L10n("common.edit"), for: .normal)
         editButton.setTitleColor(AppColors.primaryAccent, for: .normal)
         editButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
@@ -199,7 +199,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
         // Save button
         saveButton.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitle(L10n("common.save"), for: .normal)
         saveButton.setTitleColor(AppColors.primaryAccent, for: .normal)
         saveButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
@@ -209,7 +209,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         
         // Discard button
         discardButton.translatesAutoresizingMaskIntoConstraints = false
-        discardButton.setTitle("Discard", for: .normal)
+        discardButton.setTitle(L10n("common.discard"), for: .normal)
         discardButton.setTitleColor(.systemRed, for: .normal)
         discardButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .medium)
         discardButton.addTarget(self, action: #selector(discardButtonTapped), for: .touchUpInside)
@@ -289,7 +289,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         progressLabel.translatesAutoresizingMaskIntoConstraints = false
         progressLabel.font = .monospacedSystemFont(ofSize: 12, weight: .medium)
         progressLabel.textColor = AppColors.secondaryText
-        progressLabel.text = "Ready to practice"
+        progressLabel.text = L10n("practice.ready")
         progressLabel.textAlignment = .left
         progressLabel.numberOfLines = 1
         bottomBar.addSubview(progressLabel)
@@ -396,7 +396,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             practiceSet = nil
             currentSession = nil
             hasUnsavedChanges = false
-            title = "Practice"
+            title = L10n("tab.practice")
             updateUI()
             return
         }
@@ -452,8 +452,8 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         } else {
             emptyStateView.configure(
                 icon: "waveform.slash",
-                title: "No Practice Clips",
-                message: "This track doesn't have any clips yet",
+                title: L10n("practice.empty.title"),
+                message: L10n("practice.empty.message"),
                 actionTitle: nil
             )
         }
@@ -472,7 +472,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
     private func updateModeToggleButton() {
         let isProgression = settings.useProgressionMode
-        let title = isProgression ? "Prog" : "Simple"
+        let title = isProgression ? L10n("practice.mode.prog") : L10n("practice.mode.simple")
         modeToggleButton.setTitle(title, for: .normal)
         modeToggleButton.setTitleColor(
             isProgression ? .white : AppColors.primaryAccent,
@@ -500,7 +500,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     
     private func updateProgressLabel() {
         guard let session = currentSession, !workingClips.isEmpty else {
-            progressLabel.text = "Ready to practice"
+            progressLabel.text = L10n("practice.ready")
             return
         }
         let clipIndex = min(session.currentClipIndex, workingClips.count - 1)
@@ -525,7 +525,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         }
 
         // Single-line format: "Clip 3/10 · Loop 5/8 · 1.25x"
-        let text = "Clip \(clipIndex + 1)/\(workingClips.count) · Loop \(min(session.currentLoopCount + 1, totalLoops))/\(totalLoops) · \(String(format: "%.2fx", displaySpeed))"
+        let text = L10nf("practice.progress", clipIndex + 1, workingClips.count, min(session.currentLoopCount + 1, totalLoops), totalLoops, String(format: "%.2fx", displaySpeed))
         progressLabel.text = text
     }
 
@@ -538,7 +538,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     
     private func updateTitle() {
         guard let track = selectedTrack else {
-            title = "Practice"
+            title = L10n("tab.practice")
             return
         }
         
@@ -550,7 +550,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             let clip = workingClips[session.currentClipIndex]
             let totalLoops = effectiveLoopTarget(for: clip)
             let currentLoop = min(session.currentLoopCount + 1, totalLoops)  // +1 for display (1-indexed)
-            title = "\(track.title) (Loop \(currentLoop)/\(totalLoops))"
+            title = L10nf("practice.title_with_loop", track.title, currentLoop, totalLoops)
         } else {
             title = track.title
         }
@@ -657,16 +657,16 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
         if isEditMode && hasUnsavedChanges {
             // Prompt before leaving edit mode with unsaved changes
-            let alert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved clip edits.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+            let alert = UIAlertController(title: L10n("practice.unsaved.title"), message: L10n("practice.unsaved.message"), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: L10n("common.save"), style: .default) { [weak self] _ in
                 self?.saveButtonTapped()
                 self?.isEditMode = false
             })
-            alert.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+            alert.addAction(UIAlertAction(title: L10n("common.discard"), style: .destructive) { [weak self] _ in
                 self?.discardChanges()
                 self?.isEditMode = false
             })
-            alert.addAction(UIAlertAction(title: "Keep Editing", style: .cancel))
+            alert.addAction(UIAlertAction(title: L10n("practice.unsaved.keep_editing"), style: .cancel))
             present(alert, animated: true)
         } else {
             isEditMode.toggle()
@@ -675,7 +675,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
     private func applyEditModeTransition() {
         // Update edit button title
-        editButton.setTitle(isEditMode ? "Done" : "Edit", for: .normal)
+        editButton.setTitle(isEditMode ? L10n("common.done") : L10n("common.edit"), for: .normal)
 
         // Animate split/merge visibility
         if isEditMode {
@@ -734,7 +734,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             let successGenerator = UINotificationFeedbackGenerator()
             successGenerator.notificationOccurred(.success)
         } catch {
-            presentAlert("Error", "Failed to toggle favorite: \(error.localizedDescription)")
+            presentAlert(L10n("common.error"), L10nf("practice.favorite_failed", error.localizedDescription))
         }
     }
     
@@ -745,58 +745,58 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         guard let track = selectedTrack, let practiceSet = practiceSet else { return }
         
         // Create alert for save options
-        let alert = UIAlertController(title: "Save Practice Set", message: "Choose how to save your changes", preferredStyle: .alert)
+        let alert = UIAlertController(title: L10n("practice.save.title"), message: L10n("practice.save.message"), preferredStyle: .alert)
         
         // Add text field for name
         alert.addTextField { textField in
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd HH:mm"
-            textField.placeholder = "Sliced Track \(formatter.string(from: Date()))"
+            textField.placeholder = L10nf("practice.save.placeholder", formatter.string(from: Date()))
             textField.autocapitalizationType = .words
         }
         
         // Save as New action
-        alert.addAction(UIAlertAction(title: "Save as New", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n("practice.save.as_new"), style: .default) { [weak self] _ in
             guard let self = self else { return }
             
             let textField = alert.textFields?.first
             let name = textField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            let finalName = name.isEmpty ? textField?.placeholder ?? "Practice Set" : name
+            let finalName = name.isEmpty ? textField?.placeholder ?? L10n("practice.set_default_name") : name
             
             self.saveAsNewPracticeSet(name: finalName, for: track)
         })
         
         // Update Current action (only if not the default practice set)
         if !practiceSet.clips.isEmpty && practiceSet.title != nil {
-            alert.addAction(UIAlertAction(title: "Update Current", style: .default) { [weak self] _ in
+            alert.addAction(UIAlertAction(title: L10n("practice.save.update_current"), style: .default) { [weak self] _ in
                 guard let self = self else { return }
                 self.updateCurrentPracticeSet(for: track)
             })
         }
         
         // Cancel action
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
+
         present(alert, animated: true)
     }
-    
+
     @objc private func discardButtonTapped() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         
         // Show confirmation alert
         let alert = UIAlertController(
-            title: "Discard Changes?",
-            message: "All unsaved changes will be lost.",
+            title: L10n("practice.discard.title"),
+            message: L10n("practice.discard.message"),
             preferredStyle: .alert
         )
-        
-        alert.addAction(UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+
+        alert.addAction(UIAlertAction(title: L10n("common.discard"), style: .destructive) { [weak self] _ in
             guard let self = self else { return }
             self.discardChanges()
         })
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        alert.addAction(UIAlertAction(title: L10n("common.cancel"), style: .cancel))
         
         present(alert, animated: true)
     }
@@ -861,9 +861,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             let successGenerator = UINotificationFeedbackGenerator()
             successGenerator.notificationOccurred(.success)
             
-            presentAlert("Saved", "Practice set '\(name)' created successfully")
+            presentAlert(L10n("practice.saved.title"), L10nf("practice.saved.message", name))
         } catch {
-            presentAlert("Save Failed", error.localizedDescription)
+            presentAlert(L10n("practice.save_failed"), error.localizedDescription)
         }
     }
     
@@ -888,9 +888,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             let successGenerator = UINotificationFeedbackGenerator()
             successGenerator.notificationOccurred(.success)
             
-            presentAlert("Updated", "Practice set updated successfully")
+            presentAlert(L10n("practice.updated.title"), L10n("practice.updated.message"))
         } catch {
-            presentAlert("Update Failed", error.localizedDescription)
+            presentAlert(L10n("practice.update_failed"), error.localizedDescription)
         }
     }
     
@@ -944,10 +944,10 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         
         guard !drillClips.isEmpty else {
             print("⚠️ [PracticeViewController] No drill clips found")
-            presentAlert("No Drills", "This track has no drill clips to practice")
+            presentAlert(L10n("practice.no_drills.title"), L10n("practice.no_drills.message"))
             return
         }
-        
+
         // Validate clip times
         let invalidClips = drillClips.filter { $0.startMs < 0 || $0.endMs <= $0.startMs }
         guard invalidClips.isEmpty else {
@@ -955,7 +955,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             for clip in invalidClips {
                 print("  Invalid clip: startMs=\(clip.startMs), endMs=\(clip.endMs)")
             }
-            presentAlert("Invalid Clips", "Some drill clips have invalid time ranges. Please edit segments.")
+            presentAlert(L10n("practice.invalid_clips.title"), L10n("practice.invalid_clips.message"))
             return
         }
         
@@ -1038,7 +1038,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             updateTitle()
         } catch {
             print("❌ [PracticeViewController] Playback error: \(error.localizedDescription)")
-            presentAlert("Playback Error", error.localizedDescription)
+            presentAlert(L10n("practice.playback_error"), error.localizedDescription)
         }
     }
     
@@ -1214,7 +1214,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         // Validate split point
         guard trackMs > clip.startMs + 500,
               trackMs < clip.endMs - 500 else {
-            presentAlert("Invalid Split", "Split point must be at least 0.5 seconds from clip boundaries")
+            presentAlert(L10n("practice.invalid_split.title"), L10n("practice.invalid_split.message"))
             return
         }
         
@@ -1311,7 +1311,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
 
     private func presentAlert(_ title: String, _ message: String) {
         let a = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        a.addAction(UIAlertAction(title: "OK", style: .default))
+        a.addAction(UIAlertAction(title: L10n("common.ok"), style: .default))
         present(a, animated: true)
     }
     
@@ -1434,14 +1434,14 @@ extension PracticeViewController: UITableViewDelegate {
             // Find next drill clip after the selected index
             if let nextDrillIndex = workingClips[indexPath.row...].firstIndex(where: { $0.kind == .drill }) {
                 session.currentClipIndex = nextDrillIndex
-                presentAlert("Skipping to Drill", "Selected clip is marked as \(selectedClip.kind.label). Jumping to next drill clip.")
+                presentAlert(L10n("practice.skipping.title"), L10nf("practice.skipping.message", selectedClip.kind.label))
             } else if let firstDrillIndex = workingClips.firstIndex(where: { $0.kind == .drill }) {
                 // No drill after this point, wrap to first drill
                 session.currentClipIndex = firstDrillIndex
-                presentAlert("Skipping to Drill", "Selected clip is marked as \(selectedClip.kind.label). Jumping to first drill clip.")
+                presentAlert(L10n("practice.skipping.title"), L10nf("practice.skipping.first_message", selectedClip.kind.label))
             } else {
                 // No drills at all
-                presentAlert("No Drills", "This track has no drill clips to practice")
+                presentAlert(L10n("practice.no_drills.title"), L10n("practice.no_drills.message"))
                 return
             }
         } else {
@@ -1473,7 +1473,7 @@ extension PracticeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard isEditMode else { return nil }
-        let resetAction = UIContextualAction(style: .destructive, title: "Reset") { [weak self] _, _, completion in
+        let resetAction = UIContextualAction(style: .destructive, title: L10n("common.reset")) { [weak self] _, _, completion in
             self?.resetClipToZero(at: indexPath.row)
             completion(true)
         }
@@ -1493,7 +1493,7 @@ extension PracticeViewController: UITableViewDelegate {
         // Order from right to left as they appear when swiping: Noise, Skip, Drill
         
         // Noise (rightmost when swiping)
-        let noiseAction = UIContextualAction(style: .normal, title: "Noise") { [weak self] _, _, completion in
+        let noiseAction = UIContextualAction(style: .normal, title: L10n("practice.clip_kind.noise")) { [weak self] _, _, completion in
             self?.setClipKind(at: indexPath.row, to: .noise)
             completion(true)
         }
@@ -1502,7 +1502,7 @@ extension PracticeViewController: UITableViewDelegate {
         actions.append(noiseAction)
         
         // Skip (middle)
-        let skipAction = UIContextualAction(style: .normal, title: "Skip") { [weak self] _, _, completion in
+        let skipAction = UIContextualAction(style: .normal, title: L10n("practice.clip_kind.skip")) { [weak self] _, _, completion in
             self?.setClipKind(at: indexPath.row, to: .skip)
             completion(true)
         }
@@ -1511,7 +1511,7 @@ extension PracticeViewController: UITableViewDelegate {
         actions.append(skipAction)
         
         // Drill (leftmost when swiping)
-        let drillAction = UIContextualAction(style: .normal, title: "Drill") { [weak self] _, _, completion in
+        let drillAction = UIContextualAction(style: .normal, title: L10n("practice.clip_kind.drill")) { [weak self] _, _, completion in
             self?.setClipKind(at: indexPath.row, to: .drill)
             completion(true)
         }

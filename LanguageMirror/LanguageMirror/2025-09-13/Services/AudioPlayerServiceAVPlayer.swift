@@ -933,12 +933,12 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         // Artist line: loop and clip progress
         var artistParts: [String] = []
         if let loop = currentLoop, let total = totalLoops {
-            artistParts.append("Loop \(loop)/\(total)")
+            artistParts.append(L10nf("now_playing.loop", loop, total))
         }
         if let idx = clipIndex, let count = clipCount {
-            artistParts.append("Clip \(idx + 1)/\(count)")
+            artistParts.append(L10nf("now_playing.clip", idx + 1, count))
         }
-        let artistText = artistParts.isEmpty ? "Practice Session" : artistParts.joined(separator: " · ")
+        let artistText = artistParts.isEmpty ? L10n("now_playing.practice_session") : artistParts.joined(separator: " · ")
 
         info[MPMediaItemPropertyTitle] = displayTitle
         info[MPMediaItemPropertyAlbumTitle] = track.title

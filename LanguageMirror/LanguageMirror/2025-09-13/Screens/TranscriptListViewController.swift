@@ -15,7 +15,7 @@ final class TranscriptListViewController: UITableViewController {
         self.trackTitle = trackTitle
         self.transcripts = transcripts
         super.init(style: .insetGrouped)
-        self.title = "Transcripts"
+        self.title = L10n("track_detail.section.transcripts")
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -41,8 +41,8 @@ final class TranscriptListViewController: UITableViewController {
         cell.selectionStyle = .none
         
         if transcripts.isEmpty {
-            config.text = "No transcripts"
-            config.secondaryText = "This track does not contain transcript spans."
+            config.text = L10n("transcripts.empty.title")
+            config.secondaryText = L10n("transcripts.empty.message")
             config.textProperties.color = AppColors.primaryText
             config.secondaryTextProperties.color = AppColors.secondaryText
             cell.contentConfiguration = config

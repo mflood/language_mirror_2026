@@ -17,7 +17,7 @@ final class SettingsViewController: UIViewController {
     private let contentStack = UIStackView()
 
     // Mode toggle
-    private let practiceModeSeg = UISegmentedControl(items: ["Simple", "Progression"])
+    private let practiceModeSeg = UISegmentedControl(items: [L10n("settings.mode.simple"), L10n("settings.mode.progression")])
 
     // Simple mode section
     private let simpleSection = UIStackView()
@@ -51,7 +51,7 @@ final class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Settings"
+        title = L10n("tab.settings")
         view.backgroundColor = AppColors.calmBackground
         buildLayout()
         configureControls()
@@ -87,7 +87,7 @@ final class SettingsViewController: UIViewController {
         ])
 
         // --- Practice Mode Section ---
-        let modeSection = makeSectionStack(header: "Practice Mode")
+        let modeSection = makeSectionStack(header: L10n("settings.section.practice_mode"))
         practiceModeSeg.translatesAutoresizingMaskIntoConstraints = false
         modeSection.addArrangedSubview(practiceModeSeg)
         contentStack.addArrangedSubview(modeSection)
@@ -97,17 +97,17 @@ final class SettingsViewController: UIViewController {
         simpleSection.spacing = 16
         simpleSection.translatesAutoresizingMaskIntoConstraints = false
 
-        let simpleHeader = makeSectionHeaderLabel("Simple Mode")
+        let simpleHeader = makeSectionHeaderLabel(L10n("settings.section.simple_mode"))
         simpleSection.addArrangedSubview(simpleHeader)
 
-        let speedLabel = makeFieldLabel("Speed")
+        let speedLabel = makeFieldLabel(L10n("settings.speed"))
         simpleSection.addArrangedSubview(speedLabel)
 
         speedStrip.translatesAutoresizingMaskIntoConstraints = false
         speedStrip.heightAnchor.constraint(equalToConstant: 44).isActive = true
         simpleSection.addArrangedSubview(speedStrip)
 
-        let repeatsRow = makeSliderRow(title: "Repeat Count", valueLabel: repeatsValueLabel, slider: repeatsSlider)
+        let repeatsRow = makeSliderRow(title: L10n("settings.repeat_count"), valueLabel: repeatsValueLabel, slider: repeatsSlider)
         simpleSection.addArrangedSubview(repeatsRow)
 
         contentStack.addArrangedSubview(simpleSection)
@@ -117,7 +117,7 @@ final class SettingsViewController: UIViewController {
         progressionSection.spacing = 16
         progressionSection.translatesAutoresizingMaskIntoConstraints = false
 
-        let progressionHeader = makeSectionHeaderLabel("Progression Mode")
+        let progressionHeader = makeSectionHeaderLabel(L10n("settings.section.progression_mode"))
         progressionSection.addArrangedSubview(progressionHeader)
 
         curveView.translatesAutoresizingMaskIntoConstraints = false
@@ -134,18 +134,18 @@ final class SettingsViewController: UIViewController {
         contentStack.addArrangedSubview(progressionSection)
 
         // --- Basic Section ---
-        let basicSection = makeSectionStack(header: "Playback")
+        let basicSection = makeSectionStack(header: L10n("settings.section.playback"))
 
-        let gapRow = makeSliderRow(title: "Gap Between Repeats", valueLabel: gapValueLabel, slider: gapSlider)
+        let gapRow = makeSliderRow(title: L10n("settings.gap_between_repeats"), valueLabel: gapValueLabel, slider: gapSlider)
         basicSection.addArrangedSubview(gapRow)
 
-        let interGapRow = makeSliderRow(title: "Gap Between Clips", valueLabel: interGapValueLabel, slider: interGapSlider)
+        let interGapRow = makeSliderRow(title: L10n("settings.gap_between_clips"), valueLabel: interGapValueLabel, slider: interGapSlider)
         basicSection.addArrangedSubview(interGapRow)
 
-        let prerollRow = makeControlRow(title: "Preroll", control: prerollSeg)
+        let prerollRow = makeControlRow(title: L10n("settings.preroll"), control: prerollSeg)
         basicSection.addArrangedSubview(prerollRow)
 
-        let duckRow = makeSwitchRow(title: "Duck Other Audio", valueLabel: duckValueLabel, toggle: duckSwitch)
+        let duckRow = makeSwitchRow(title: L10n("settings.duck_other_audio"), valueLabel: duckValueLabel, toggle: duckSwitch)
         basicSection.addArrangedSubview(duckRow)
 
         contentStack.addArrangedSubview(basicSection)
@@ -236,7 +236,7 @@ final class SettingsViewController: UIViewController {
         duckSwitch.isOn = settings.duckOthers
         duckSwitch.onTintColor = .systemTeal
         duckSwitch.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
-        duckValueLabel.text = settings.duckOthers ? "Enabled" : "Disabled"
+        duckValueLabel.text = settings.duckOthers ? L10n("settings.enabled") : L10n("settings.disabled")
     }
 
     // MARK: - Mode Toggle
@@ -429,7 +429,7 @@ final class SettingsViewController: UIViewController {
 
     @objc private func duckToggled(_ sw: UISwitch) {
         settings.duckOthers = sw.isOn
-        duckValueLabel.text = sw.isOn ? "Enabled" : "Disabled"
+        duckValueLabel.text = sw.isOn ? L10n("settings.enabled") : L10n("settings.disabled")
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
 

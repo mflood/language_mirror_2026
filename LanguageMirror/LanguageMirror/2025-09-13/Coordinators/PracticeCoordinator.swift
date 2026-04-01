@@ -23,7 +23,7 @@ final class PracticeCoordinator: Coordinator {
             libraryService: container.libraryService,
             practiceService: container.practiceService
         )
-        vc.title = "Practice"
+        vc.title = L10n("tab.practice")
         vc.delegate = self
         navigationController.viewControllers = [vc]
         navigationController.navigationBar.prefersLargeTitles = true

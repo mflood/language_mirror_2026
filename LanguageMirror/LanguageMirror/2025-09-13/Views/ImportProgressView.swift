@@ -101,7 +101,7 @@ final class ImportProgressView: UIView {
         
         // Cancel button
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.setTitle("Cancel", for: .normal)
+        cancelButton.setTitle(L10n("common.cancel"), for: .normal)
         cancelButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         cancelButton.setTitleColor(AppColors.secondaryText, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
@@ -187,7 +187,7 @@ final class ImportProgressView: UIView {
     private func applyStateUI() {
         switch currentState {
         case .downloading(let progress, let message):
-            titleLabel.text = "Downloading"
+            titleLabel.text = L10n("import.progress.downloading")
             messageLabel.text = message
             iconImageView.image = UIImage(systemName: "arrow.down.circle.fill")
             iconContainerView.backgroundColor = AppColors.primaryAccent.withAlphaComponent(0.2)
@@ -200,8 +200,8 @@ final class ImportProgressView: UIView {
             cancelButton.isHidden = false
             
         case .processing:
-            titleLabel.text = "Processing"
-            messageLabel.text = "Preparing your track..."
+            titleLabel.text = L10n("import.progress.processing")
+            messageLabel.text = L10n("import.progress.preparing")
             iconImageView.image = UIImage(systemName: "waveform")
             iconContainerView.backgroundColor = AppColors.primaryAccent.withAlphaComponent(0.2)
             iconImageView.tintColor = AppColors.primaryAccent
@@ -213,7 +213,7 @@ final class ImportProgressView: UIView {
             startPulseAnimation()
             
         case .success(let message):
-            titleLabel.text = "Success!"
+            titleLabel.text = L10n("import.progress.success")
             messageLabel.text = message
             iconImageView.image = UIImage(systemName: "checkmark.circle.fill")
             iconContainerView.backgroundColor = AppColors.successColor.withAlphaComponent(0.2)
@@ -225,7 +225,7 @@ final class ImportProgressView: UIView {
             cancelButton.isHidden = true
             
         case .error(let message):
-            titleLabel.text = "Unable to Import"
+            titleLabel.text = L10n("import.progress.error")
             messageLabel.text = message
             iconImageView.image = UIImage(systemName: "exclamationmark.circle.fill")
             iconContainerView.backgroundColor = AppColors.errorColor.withAlphaComponent(0.15)
@@ -234,7 +234,7 @@ final class ImportProgressView: UIView {
             progressView.isHidden = true
             spinner.isHidden = true
             spinner.stopAnimating()
-            cancelButton.setTitle("Dismiss", for: .normal)
+            cancelButton.setTitle(L10n("common.dismiss"), for: .normal)
             cancelButton.isHidden = false
         }
     }

@@ -195,9 +195,9 @@ extension EmptyStateView {
         let view = EmptyStateView()
         view.configure(
             icon: "books.vertical",
-            title: "Your Library Awaits",
-            message: "Start your language learning journey by importing your first audio track or exploring pre-made packs.",
-            actionTitle: "Get Started"
+            title: L10n("empty.library.title"),
+            message: L10n("empty.library.message"),
+            actionTitle: L10n("empty.library.action")
         )
         view.onActionTapped = onAction
         return view
@@ -208,8 +208,8 @@ extension EmptyStateView {
         let view = EmptyStateView()
         view.configure(
             icon: "magnifyingglass",
-            title: "No Tracks Found",
-            message: "Try adjusting your search or browse all tracks by clearing the search.",
+            title: L10n("empty.search.title"),
+            message: L10n("empty.search.message"),
             actionTitle: nil
         )
         return view
@@ -220,8 +220,8 @@ extension EmptyStateView {
         let view = EmptyStateView()
         view.configure(
             icon: "hourglass",
-            title: "Loading...",
-            message: "Preparing your library",
+            title: L10n("empty.loading.title"),
+            message: L10n("empty.loading.message"),
             actionTitle: nil
         )
         return view
