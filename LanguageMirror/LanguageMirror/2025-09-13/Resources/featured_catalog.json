@@ -17,22 +17,6 @@
         "kind": "embedded",
         "bundleId": "starter_seoul_lunch"
       }
-    },
-    {
-      "id": "akc-travel-korean-pack-4",
-      "title": "AKC Travel Korean — Week 4",
-      "subtitle": "Conversation about local restaurants in Gangneung + a story about food memories",
-      "languageCode": "ko-KR",
-      "level": "intermediate",
-      "trackCount": 2,
-      "durationSeconds": 280,
-      "author": "AKC",
-      "iconSymbol": "airplane.departure",
-      "accentColor": "#5C8FE6",
-      "source": {
-        "kind": "embedded",
-        "bundleId": "akc-travel-korean-pack-4"
-      }
     }
   ]
 }

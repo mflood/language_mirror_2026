@@ -217,6 +217,15 @@ def main() -> int:
     print("The iOS resolver will look up the manifest as:")
     print(f'    Bundle.main.url(forResource: "{sid}.bundle", withExtension: "json")')
     print()
+    print("⚠ IMPORTANT — IP review:")
+    print("   This embeds the audio inside the app .ipa. Only do this for content")
+    print("   you have rights to ship (your own recordings, Polly-generated audio,")
+    print("   licensed material, etc.). Do NOT embed scraped or third-party audio.")
+    print()
+    print("To make this pack visible to users, add it to the Featured Packs catalog:")
+    print(f"   LanguageMirror/.../Resources/featured_catalog.json")
+    print("This is a deliberate second step — embedding alone does not surface it.")
+    print()
     print("Re-archive the iOS app to ship the embedded bundle.")
     return 0
 
