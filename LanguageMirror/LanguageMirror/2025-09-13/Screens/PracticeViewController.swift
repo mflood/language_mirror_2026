@@ -1173,7 +1173,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     }
 
     /// Update the transcript banner with text for the clip at the given index.
-    /// Finds transcript spans that overlap the clip's time range and joins them.
+    /// Finds transcript spans that overlap the clip's time range and joins them,
+    /// prefixing each with a short speaker label ("A: " / "B: ") when there are
+    /// multiple speakers in this clip.
     private func updateTranscriptBanner(forClipAt index: Int) {
         guard let track = selectedTrack,
               !track.transcripts.isEmpty,
@@ -1186,11 +1188,41 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             // Any time overlap between clip and transcript span
             span.endMs > clip.startMs && span.startMs < clip.endMs
         }
-        let combined = overlapping
-            .map { $0.text.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-            .joined(separator: " ")
+
+        // Decide whether to prefix with speaker labels: only when this clip
+        // contains more than one speaker. Single-speaker clips would just look
+        // noisy with a redundant "A: " on every line.
+        let distinctSpeakers = Set(overlapping.compactMap { $0.speaker })
+        let useLabels = distinctSpeakers.count > 1
+
+        let parts: [String] = overlapping.compactMap { span in
+            let text = span.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !text.isEmpty else { return nil }
+            if useLabels, let speaker = span.speaker {
+                return "\(Self.compactSpeakerLabel(speaker)): \(text)"
+            }
+            return text
+        }
+        let combined = parts.joined(separator: " ")
         transcriptBanner.update(text: combined.isEmpty ? nil : combined)
+    }
+
+    /// Map a speaker string like "Speaker 1" to a short label "A" / "B" / "C".
+    /// Falls through to the original string for non-numeric speaker names.
+    private static func compactSpeakerLabel(_ speaker: String) -> String {
+        let trimmed = speaker.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Match "Speaker N" or just "N"
+        let scanner = Scanner(string: trimmed)
+        scanner.charactersToBeSkipped = .whitespaces
+        _ = scanner.scanString("Speaker")
+        if let n = scanner.scanInt(), n >= 1, n <= 26 {
+            let scalar = UnicodeScalar(64 + n)! // 1 → A
+            return String(scalar)
+        }
+        // Already a single letter? Pass through.
+        if trimmed.count == 1 { return trimmed.uppercased() }
+        // Fallback: first character uppercased
+        return String(trimmed.prefix(1)).uppercased()
     }
 
     /// Show a sheet with the full transcript text for the current clip.
@@ -1203,8 +1235,17 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         let overlapping = track.transcripts.filter { span in
             span.endMs > clip.startMs && span.startMs < clip.endMs
         }
+        let distinctSpeakers = Set(overlapping.compactMap { $0.speaker })
+        let useLabels = distinctSpeakers.count > 1
         let fullText = overlapping
-            .map { $0.text }
+            .map { span -> String in
+                let text = span.text
+                if useLabels, let speaker = span.speaker {
+                    let label = Self.compactSpeakerLabel(speaker)
+                    return L10nf("transcripts.speaker_prefix", label) + "\n" + text
+                }
+                return text
+            }
             .joined(separator: "\n\n")
 
         let detailVC = TranscriptDetailViewController(text: fullText, clipTitle: clip.title)

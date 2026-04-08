@@ -1,6 +1,6 @@
 # Language Mirror — Product Ideas Backlog
 
-Last updated: 2026-04-06
+Last updated: 2026-04-08
 
 Target audience:
 - Korean speakers learning English
@@ -16,15 +16,15 @@ Target audience:
 Show source language by default; tap to flip to translation. Requires adding a translation pass to the bundle pipeline (one extra GPT prompt).
 Effort: a few hours.
 
-### 2. Loop-just-this-clip button ✅ (in progress)
+### 2. Loop-just-this-clip button ✅ shipped
 Forever button currently loops the whole set. Add a button to loop only the current clip indefinitely — shadowers want to drill one sentence until it clicks.
 Effort: <1 hour.
 
-### 3. Adjustable transcript banner font size ✅ (in progress)
+### 3. Adjustable transcript banner font size ✅ shipped
 Simple A−/A+ toggle, persisted to UserDefaults. Helps users practicing without glasses or wanting to read along easily.
 Effort: tiny.
 
-### 4. Copy / share transcript text ✅ (in progress)
+### 4. Copy / share transcript text ✅ shipped
 Add a copy/share button to the transcript detail sheet. Learners constantly copy sentences into Anki, Notes, or translation apps.
 Effort: trivial.
 
@@ -40,9 +40,12 @@ Effort: half a day. Long Korean sentences need wrapping logic.
 "Import audio → Slice into clips → Practice with loops". Reduces drop-off for new users who land on a blank library.
 Effort: 1–2 days.
 
-### 7. "Try a sample" empty state
-Bundle one royalty-free sample track (must be your own — no IP). Auto-import on first launch if library is empty so users can experience the practice loop immediately.
-Effort: a few hours plus recording.
+### 7. "Try a sample" empty state ✅ shipped (auto-import + Featured Packs)
+The starter Polly bundle (`starter_seoul_lunch`) is now embedded in the .ipa
+and auto-installs on first launch when the library is empty. The Featured
+Packs UI on the Import tab gives users a way to re-install or browse more.
+Could still be improved with a deliberate first-launch welcome moment instead
+of a silent background install.
 
 ### 8. Practice streak / daily goal
 Track consecutive days with practice sessions. Display badge on Practice Home. Habit-driver, especially good for ADHD users.
@@ -79,3 +82,31 @@ Effort: half a day.
 ### 15. Speed shortcut on lock screen / Control Center
 Custom MPRemoteCommand to change playback speed without unlocking.
 Effort: half a day.
+
+---
+
+## Infrastructure / pipeline
+
+### 16. Featured Packs catalog ✅ shipped
+In-app `featured_catalog.json` lists both embedded and remote packs as a
+single cohesive set. New `FeaturedPacksViewController` accessible from the
+Import tab. Embedded vs remote install path is hidden from the user.
+
+### 17. Sample bundle pipeline ✅ shipped
+Four-step `sample_bundle_pipeline/` flow: LLM script → Polly TTS →
+bundle_pipeline (transcribe / curate / S3 / QR) → embed in app. Dry-run
+defaults on all paid steps. Proven end-to-end with `starter_seoul_lunch`.
+
+### 18. Remote catalog override
+Fetch `featured_catalog.json` from CDN and prefer the fresher copy if
+available, falling back to the embedded one. Once this exists, new packs
+can be published without an App Review cycle.
+Effort: ~1 hour.
+
+### 19. Pipeline → catalog auto-registration
+Step 4 of `sample_bundle_pipeline/4_embed_in_app.py` could optionally
+append/update an entry in `featured_catalog.json` (with `--register-in-catalog`).
+This was deliberately NOT made automatic so IP-protected content can be
+embedded for testing without auto-publishing it. Still worth offering as
+an explicit opt-in for the Polly-generated packs.
+Effort: ~1 hour.

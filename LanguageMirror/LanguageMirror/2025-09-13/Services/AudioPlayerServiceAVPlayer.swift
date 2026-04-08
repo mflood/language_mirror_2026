@@ -410,8 +410,10 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                   clipIndex: self.currentSegmentIndex,
                                   clipCount: self.clipsQueue.count,
                                   currentLoop: currentLoop,
-                                  totalLoops: self.totalLoopsForCurrentClip) // Media Player
-            
+                                  totalLoops: self.totalLoopsForCurrentClip,
+                                  clipStartMs: seg.startMs,
+                                  clipEndMs: seg.endMs) // Media Player
+
             // Post clip change notification
             print("📢 [AudioPlayerServiceAVPlayer] Calling delegate clipDidChange")
             delegate?.audioPlayerClipDidChange(clipIndex: self.currentSegmentIndex, clipId: seg.id)
@@ -523,7 +525,9 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                                   clipIndex: self.currentSegmentIndex,
                                                   clipCount: self.clipsQueue.count,
                                                   currentLoop: currentLoop,
-                                                  totalLoops: self.totalLoopsForCurrentClip)
+                                                  totalLoops: self.totalLoopsForCurrentClip,
+                                                  clipStartMs: seg.startMs,
+                                                  clipEndMs: seg.endMs)
                             self.delegate?.audioPlayerDidStart()
                         }
                     }
@@ -587,7 +591,9 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                                   clipIndex: self.currentSegmentIndex,
                                                   clipCount: self.clipsQueue.count,
                                                   currentLoop: currentLoop,
-                                                  totalLoops: self.totalLoopsForCurrentClip)
+                                                  totalLoops: self.totalLoopsForCurrentClip,
+                                                  clipStartMs: seg.startMs,
+                                                  clipEndMs: seg.endMs)
                             self.delegate?.audioPlayerDidStart()
                         }
                     }
@@ -931,7 +937,9 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                                   clipIndex: Int? = nil,
                                   clipCount: Int? = nil,
                                   currentLoop: Int? = nil,
-                                  totalLoops: Int? = nil) {
+                                  totalLoops: Int? = nil,
+                                  clipStartMs: Int? = nil,
+                                  clipEndMs: Int? = nil) {
         var info: [String: Any] = [:]
 
         // Track/clip title - unwrap segmentTitle properly
@@ -955,54 +963,144 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         info[MPMediaItemPropertyTitle] = displayTitle
         info[MPMediaItemPropertyAlbumTitle] = track.title
         info[MPMediaItemPropertyArtist] = artistText
-        
+
         // Playback info
         info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsed
         info[MPMediaItemPropertyPlaybackDuration] = duration
         info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
         info[MPNowPlayingInfoPropertyPlaybackRate] = rate
         info[MPNowPlayingInfoPropertyDefaultPlaybackRate] = 1.0
-        
-        // Add artwork for better lock screen presence
-        // Create a simple placeholder image with app icon or text
-        if let artwork = createPlaceholderArtwork(title: displayTitle) {
+
+        // Render the current clip's transcript text into the lock screen
+        // artwork so users can read along eyes-up. Falls back to a clean
+        // title placeholder when transcripts aren't available.
+        let artworkText: String
+        if let startMs = clipStartMs, let endMs = clipEndMs {
+            artworkText = composeTranscriptText(track: track, clipStartMs: startMs, clipEndMs: endMs)
+        } else {
+            artworkText = ""
+        }
+        let artworkPayload = artworkText.isEmpty ? displayTitle : artworkText
+        let isFallback = artworkText.isEmpty
+        if let artwork = createTranscriptArtwork(text: artworkPayload, isFallback: isFallback) {
             info[MPMediaItemPropertyArtwork] = artwork
         }
 
         nowPlayingInfo = info
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
     }
-    
-    private func createPlaceholderArtwork(title: String) -> MPMediaItemArtwork? {
-        // Create a simple colored square with text
-        let size = CGSize(width: 300, height: 300)
-        
-        return MPMediaItemArtwork(boundsSize: size) { size in
-            let renderer = UIGraphicsImageRenderer(size: size)
-            return renderer.image { context in
-                // Background gradient
-                let colors = [UIColor.systemBlue.cgColor, UIColor.systemPurple.cgColor]
-                if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
-                                            colors: colors as CFArray,
-                                            locations: [0.0, 1.0]) {
-                    context.cgContext.drawLinearGradient(gradient,
-                                                        start: CGPoint(x: 0, y: 0),
-                                                        end: CGPoint(x: size.width, y: size.height),
-                                                        options: [])
+
+    /// Compose the transcript text for the time range of the current clip,
+    /// inserting short speaker labels ("A: " / "B: ") when the clip contains
+    /// more than one distinct speaker. Mirrors the in-app transcript banner.
+    private func composeTranscriptText(track: Track, clipStartMs: Int, clipEndMs: Int) -> String {
+        let overlapping = track.transcripts.filter { span in
+            span.endMs > clipStartMs && span.startMs < clipEndMs
+        }
+        guard !overlapping.isEmpty else { return "" }
+        let distinct = Set(overlapping.compactMap { $0.speaker })
+        let useLabels = distinct.count > 1
+
+        let parts: [String] = overlapping.compactMap { span in
+            let trimmed = span.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmed.isEmpty else { return nil }
+            if useLabels, let speaker = span.speaker {
+                return "\(Self.compactSpeakerLabel(speaker)): \(trimmed)"
+            }
+            return trimmed
+        }
+        return parts.joined(separator: "\n")
+    }
+
+    /// Map "Speaker N" → "A" / "B" / etc. (player-side mirror of the
+    /// helper in PracticeViewController so we don't have a cross-target
+    /// dependency between Service and Screens).
+    private static func compactSpeakerLabel(_ speaker: String) -> String {
+        let trimmed = speaker.trimmingCharacters(in: .whitespacesAndNewlines)
+        let scanner = Scanner(string: trimmed)
+        scanner.charactersToBeSkipped = .whitespaces
+        _ = scanner.scanString("Speaker")
+        if let n = scanner.scanInt(), n >= 1, n <= 26 {
+            let scalar = UnicodeScalar(64 + n)!
+            return String(scalar)
+        }
+        if trimmed.count == 1 { return trimmed.uppercased() }
+        return String(trimmed.prefix(1)).uppercased()
+    }
+
+    /// Render the given text into a 600x600 image suitable for
+    /// `MPMediaItemPropertyArtwork`. Auto-sizes the font based on character
+    /// count so long Korean sentences still wrap legibly.
+    ///
+    /// Color scheme is intentionally fixed (warm cream on warm brown) so it
+    /// looks consistent on the lock screen regardless of app appearance.
+    private func createTranscriptArtwork(text: String, isFallback: Bool) -> MPMediaItemArtwork? {
+        let size = CGSize(width: 600, height: 600)
+        // Capture by value so the renderer block is Sendable
+        let renderText = text
+        let renderIsFallback = isFallback
+        return MPMediaItemArtwork(boundsSize: size) { renderSize in
+            let renderer = UIGraphicsImageRenderer(size: renderSize)
+            return renderer.image { ctx in
+                // Background — warm brown
+                let bg = UIColor(red: 0.18, green: 0.10, blue: 0.10, alpha: 1.0)
+                bg.setFill()
+                ctx.cgContext.fill(CGRect(origin: .zero, size: renderSize))
+
+                // Subtle inner border
+                let borderRect = CGRect(origin: .zero, size: renderSize).insetBy(dx: 24, dy: 24)
+                let borderPath = UIBezierPath(roundedRect: borderRect, cornerRadius: 28)
+                UIColor(red: 0.55, green: 0.30, blue: 0.30, alpha: 0.55).setStroke()
+                borderPath.lineWidth = 2
+                borderPath.stroke()
+
+                // Pick a font size that scales down with text length so long
+                // sentences still fit without iterative measurement.
+                let charCount = renderText.count
+                let fontSize: CGFloat
+                let weight: UIFont.Weight
+                switch charCount {
+                case ..<40: fontSize = 60; weight = .semibold
+                case ..<90: fontSize = 46; weight = .semibold
+                case ..<160: fontSize = 36; weight = .medium
+                case ..<260: fontSize = 28; weight = .medium
+                default: fontSize = 22; weight = .regular
                 }
-                
-                // Add app icon or text
-                let text = "🎧"
+
+                let textColor = UIColor(red: 0.96, green: 0.92, blue: 0.85, alpha: 1.0)
+                let paragraph = NSMutableParagraphStyle()
+                paragraph.alignment = .center
+                paragraph.lineBreakMode = .byWordWrapping
+                paragraph.lineSpacing = 4
+
+                // Fallback (no transcript) renders the track / clip title in a
+                // smaller, lighter style — clearly distinct from real captions.
                 let attributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 120, weight: .bold),
-                    .foregroundColor: UIColor.white
+                    .font: UIFont.systemFont(ofSize: renderIsFallback ? 36 : fontSize, weight: weight),
+                    .foregroundColor: renderIsFallback
+                        ? textColor.withAlphaComponent(0.55)
+                        : textColor,
+                    .paragraphStyle: paragraph,
                 ]
-                let textSize = text.size(withAttributes: attributes)
-                let textRect = CGRect(x: (size.width - textSize.width) / 2,
-                                     y: (size.height - textSize.height) / 2,
-                                     width: textSize.width,
-                                     height: textSize.height)
-                text.draw(in: textRect, withAttributes: attributes)
+
+                let inset: CGFloat = 56
+                let drawRect = CGRect(origin: .zero, size: renderSize).insetBy(dx: inset, dy: inset)
+
+                let attributed = NSAttributedString(string: renderText, attributes: attributes)
+                let bounds = attributed.boundingRect(
+                    with: CGSize(width: drawRect.width, height: .greatestFiniteMagnitude),
+                    options: [.usesLineFragmentOrigin, .usesFontLeading],
+                    context: nil
+                )
+                let renderRect = CGRect(
+                    x: drawRect.minX,
+                    y: drawRect.minY + max(0, (drawRect.height - bounds.height) / 2),
+                    width: drawRect.width,
+                    height: min(drawRect.height, bounds.height + 4)
+                )
+                attributed.draw(with: renderRect,
+                                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                context: nil)
             }
         }
     }

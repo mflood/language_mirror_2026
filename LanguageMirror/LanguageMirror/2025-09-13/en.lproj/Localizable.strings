@@ -253,6 +253,7 @@
 /* ── Transcripts ── */
 "transcripts.empty.title" = "No transcripts";
 "transcripts.empty.message" = "This track does not contain transcript spans.";
+"transcripts.speaker_prefix" = "Speaker %@";
 
 /* ── Accessibility ── */
 "a11y.audio_waveform" = "Audio waveform";

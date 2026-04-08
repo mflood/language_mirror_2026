@@ -253,6 +253,7 @@
 /* ── Transcripts ── */
 "transcripts.empty.title" = "대본 없음";
 "transcripts.empty.message" = "이 트랙에는 대본 구간이 없습니다.";
+"transcripts.speaker_prefix" = "화자 %@";
 
 /* ── Accessibility ── */
 "a11y.audio_waveform" = "오디오 파형";
