@@ -50,6 +50,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     // UI Components
     private let headerView = UIView()
     private let foreverButton = UIButton(type: .system)
+    private let loopClipButton = UIButton(type: .system)
     private let modeToggleButton = UIButton(type: .system)
     private let editButton = UIButton(type: .system)
     private let saveButton = UIButton(type: .system)
@@ -63,6 +64,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     private let emptyStateView = EmptyStateView()
     private let speedStripContainer = UIView()
     private let practiceSpeedStrip = SpeedPresetStrip()
+    private let transcriptBanner = TranscriptBannerView()
 
     // Navigation bar buttons
     private var favoriteButton: UIBarButtonItem?
@@ -179,6 +181,14 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         foreverButton.addTarget(self, action: #selector(foreverButtonTapped), for: .touchUpInside)
         headerView.addSubview(foreverButton)
 
+        // Loop-current-clip button
+        loopClipButton.translatesAutoresizingMaskIntoConstraints = false
+        let loopConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
+        loopClipButton.setImage(UIImage(systemName: "repeat.1", withConfiguration: loopConfig), for: .normal)
+        loopClipButton.tintColor = AppColors.secondaryText
+        loopClipButton.addTarget(self, action: #selector(loopClipButtonTapped), for: .touchUpInside)
+        headerView.addSubview(loopClipButton)
+
         // Mode toggle button (Simple / Progression)
         modeToggleButton.translatesAutoresizingMaskIntoConstraints = false
         modeToggleButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
@@ -240,6 +250,13 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         practiceSpeedStrip.configure(speeds: type(of: settings).speedPresets, selected: settings.simpleSpeed)
         practiceSpeedStrip.delegate = self
         speedStripContainer.addSubview(practiceSpeedStrip)
+
+        // Transcript banner (between table view and speed strip)
+        transcriptBanner.isHidden = true
+        transcriptBanner.onTap = { [weak self] in
+            self?.showTranscriptDetail()
+        }
+        view.addSubview(transcriptBanner)
 
         NSLayoutConstraint.activate([
             practiceSpeedStrip.topAnchor.constraint(equalTo: speedStripContainer.topAnchor, constant: 4),
@@ -307,7 +324,12 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             foreverButton.widthAnchor.constraint(equalToConstant: 44),
             foreverButton.heightAnchor.constraint(equalToConstant: 44),
 
-            modeToggleButton.leadingAnchor.constraint(equalTo: foreverButton.trailingAnchor, constant: 4),
+            loopClipButton.leadingAnchor.constraint(equalTo: foreverButton.trailingAnchor),
+            loopClipButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            loopClipButton.widthAnchor.constraint(equalToConstant: 44),
+            loopClipButton.heightAnchor.constraint(equalToConstant: 44),
+
+            modeToggleButton.leadingAnchor.constraint(equalTo: loopClipButton.trailingAnchor, constant: 4),
             modeToggleButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
 
             // Edit button (trailing edge)
@@ -321,6 +343,11 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             discardButton.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -8),
             discardButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             
+            // Transcript banner (above speed strip)
+            transcriptBanner.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            transcriptBanner.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            transcriptBanner.bottomAnchor.constraint(equalTo: speedStripContainer.topAnchor, constant: -8),
+
             // Speed strip container
             speedStripContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             speedStripContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -353,11 +380,11 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             progressLabel.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor, constant: -16),
             progressLabel.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
             
-            // Table view
+            // Table view (bottom anchored to banner top so the banner never overlaps cells)
             tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: speedStripContainer.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: transcriptBanner.topAnchor, constant: -8),
             
             // Empty state
             emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -550,7 +577,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             let clip = workingClips[session.currentClipIndex]
             let totalLoops = effectiveLoopTarget(for: clip)
             let currentLoop = min(session.currentLoopCount + 1, totalLoops)  // +1 for display (1-indexed)
-            title = L10nf("practice.title_with_loop", track.title, currentLoop, totalLoops)
+            title = L10nf("practice.title_with_loop", currentLoop, totalLoops)
         } else {
             title = track.title
         }
@@ -637,6 +664,14 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         } catch {
             print("Failed to save session: \(error)")
         }
+    }
+
+    @objc private func loopClipButtonTapped() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        guard let avPlayer = player as? AudioPlayerServiceAVPlayer else { return }
+        avPlayer.loopCurrentClipOnly.toggle()
+        let isOn = avPlayer.loopCurrentClipOnly
+        loopClipButton.tintColor = isOn ? AppColors.primaryAccent : AppColors.secondaryText
     }
 
     @objc private func modeToggleButtonTapped() {
@@ -1058,6 +1093,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         validateSplitButton()
         validateMergeButton()
         tableView.reloadData()
+        if let session = currentSession {
+            updateTranscriptBanner(forClipAt: session.currentClipIndex)
+        }
     }
 
     func audioPlayerSessionDidReset(_ session: PracticeSession) {
@@ -1131,8 +1169,52 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         updateProgressLabel()
         updateTitle()
         validateMergeButton()
+        updateTranscriptBanner(forClipAt: actualIndex)
     }
-    
+
+    /// Update the transcript banner with text for the clip at the given index.
+    /// Finds transcript spans that overlap the clip's time range and joins them.
+    private func updateTranscriptBanner(forClipAt index: Int) {
+        guard let track = selectedTrack,
+              !track.transcripts.isEmpty,
+              index >= 0, index < workingClips.count else {
+            transcriptBanner.update(text: nil)
+            return
+        }
+        let clip = workingClips[index]
+        let overlapping = track.transcripts.filter { span in
+            // Any time overlap between clip and transcript span
+            span.endMs > clip.startMs && span.startMs < clip.endMs
+        }
+        let combined = overlapping
+            .map { $0.text.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        transcriptBanner.update(text: combined.isEmpty ? nil : combined)
+    }
+
+    /// Show a sheet with the full transcript text for the current clip.
+    private func showTranscriptDetail() {
+        guard let session = currentSession,
+              session.currentClipIndex < workingClips.count,
+              let track = selectedTrack,
+              !track.transcripts.isEmpty else { return }
+        let clip = workingClips[session.currentClipIndex]
+        let overlapping = track.transcripts.filter { span in
+            span.endMs > clip.startMs && span.startMs < clip.endMs
+        }
+        let fullText = overlapping
+            .map { $0.text }
+            .joined(separator: "\n\n")
+
+        let detailVC = TranscriptDetailViewController(text: fullText, clipTitle: clip.title)
+        if let sheet = detailVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.prefersGrabberVisible = true
+        }
+        present(detailVC, animated: true)
+    }
+
     func audioPlayerLoopDidComplete(clipIndex: Int, loopCount: Int) {
         print("🔄 [PracticeViewController] audioPlayerLoopDidComplete called")
         print("  ClipIndex: \(clipIndex), LoopCount: \(loopCount)")
@@ -1421,10 +1503,22 @@ extension PracticeViewController: UITableViewDataSource {
 extension PracticeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
-        
+
+        // Create a session on first tap if one doesn't exist yet, so the user
+        // can start playback by tapping a clip without first hitting play.
+        if currentSession == nil,
+           let track = selectedTrack,
+           let set = practiceSet {
+            do {
+                currentSession = try practiceService.createSession(practiceSet: set, packId: track.packId, trackId: track.id)
+            } catch {
+                print("Failed to create session: \(error)")
+                return
+            }
+        }
         guard var session = currentSession else { return }
         
         let selectedClip = workingClips[indexPath.row]

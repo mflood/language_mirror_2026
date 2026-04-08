@@ -49,6 +49,11 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     /// played once even if its historical play count already meets the
     /// effective loop target.
     private var forcePlayFirstClipOnce: Bool = false
+
+    /// When true, the player will keep looping the current clip indefinitely
+    /// instead of advancing to the next clip after the loop target is reached.
+    /// Toggle this on the AVPlayer instance directly from the UI.
+    var loopCurrentClipOnly: Bool = false
     
     // MARK: - Media Player
     
@@ -456,6 +461,10 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                 let played = max(0, session.clipPlayCounts[seg.id] ?? 0)
                 totalLoopsForCurrentClip = target
                 currentSegmentRepeatsRemaining = max(target - played, 0)
+                // Loop-current-clip override: never let the player advance.
+                if loopCurrentClipOnly && currentSegmentRepeatsRemaining == 0 {
+                    currentSegmentRepeatsRemaining = 1
+                }
                 
                 // Post loop complete notification with the true play count
                 print("📢 [AudioPlayerServiceAVPlayer] Calling delegate loopDidComplete")
@@ -541,6 +550,9 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                 delegate?.audioPlayerLoopDidComplete(clipIndex: currentSegmentIndex, loopCount: loopCount)
 
                 currentSegmentRepeatsRemaining -= 1
+                if loopCurrentClipOnly && currentSegmentRepeatsRemaining <= 0 {
+                    currentSegmentRepeatsRemaining = 1
+                }
                 if currentSegmentRepeatsRemaining > 0 {
                     let work = DispatchWorkItem { [weak self] in
                         guard let self else { return }
