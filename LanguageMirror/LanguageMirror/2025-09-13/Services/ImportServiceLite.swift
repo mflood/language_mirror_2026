@@ -29,7 +29,6 @@ final class ImportServiceLite: ImportService {
     private let videoUseCase: ImportVideoDriver
     private let importAudioUrlDriver: ImportAudioUrlDriver
     private let audioUseCase: ImportAudioUseCase
-    private let importEmbeddedSampleDriver: ImportEmbeddedSampleDriver
     private let recordingUseCase: ImportRecordingUseCase
     private let importBundleManifestDriver: ImportBundleManifestDriver
     
@@ -53,12 +52,7 @@ final class ImportServiceLite: ImportService {
         self.audioUseCase  = ImportAudioUseCase(engine: AudioImporterFactory.make(
             useMock: useMock),
                                                 library: library)
-        
-        self.importEmbeddedSampleDriver  = ImportEmbeddedSampleDriver(
-                                                  engine: SampleImporterFactory.make(),
-                                                  library: library,
-                                                  clips: clipService)
-        
+
         self.recordingUseCase = ImportRecordingUseCase(engine: RecordingImporterFactory.make(),
                                                        library: library)
         
@@ -82,14 +76,6 @@ final class ImportServiceLite: ImportService {
         case .audioFile(let url):
             return try await audioUseCase.run(sourceURL: url, suggestedTitle: nil)
 
-        case .embeddedSample:
-            let newTracks = try await importEmbeddedSampleDriver.run()
-            return newTracks
-        
-        case .embeddedPack(let packId):
-            let newTracks = try await importEmbeddedSampleDriver.runSinglePack(packId: packId)
-            return newTracks
-            
         case .recordedFile(let url):
             let title = "Recording \(Date().formatted())"
             return try await recordingUseCase.run(sourceURL: url, title: title)

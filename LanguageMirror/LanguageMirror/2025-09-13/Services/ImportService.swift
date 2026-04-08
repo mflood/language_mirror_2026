@@ -10,14 +10,12 @@ import AVFoundation
 import UniformTypeIdentifiers
 
 enum ImportSource {
-    case audioFile(url: URL)                          // from Files / Voice Memos
-    case videoFile(url: URL)                          // from Photos picker export or Files
-    case recordedFile(url: URL)                       // local recorder tmp
-    case remoteURL(url: URL, suggestedTitle: String?) // direct URL download
-    case bundleManifest(url: URL)                     // S3 manifest
-    case appBundleManifest(bundleId: String)            // bundle.json shipped inside the app's Resources (looked up by bundle id)
-    case embeddedSample                                // legacy free sample (kept for back-compat)
-    case embeddedPack(packId: String)                  // legacy single embedded pack (kept for back-compat)
+    case audioFile(url: URL)                            // from Files / Voice Memos
+    case videoFile(url: URL)                            // from Photos picker export or Files
+    case recordedFile(url: URL)                         // local recorder tmp
+    case remoteURL(url: URL, suggestedTitle: String?)   // direct URL download
+    case bundleManifest(url: URL)                       // S3 manifest
+    case appBundleManifest(bundleId: String)            // bundle.json shipped inside the app's Resources
 }
 
 struct BundleManifest: Codable {
@@ -48,55 +46,6 @@ struct BundleTrack: Codable {
     let transcripts: [TranscriptSpan]?  // optional transcriptions
 }
 
-
-public struct EmbeddedBundleManifest: Codable {
-    let title: String
-    let packs: [EmbeddedBundlePack]
-}
-
-// Pack metadata for listing available packs
-struct EmbeddedPacksManifest: Codable {
-    let version: String
-    let packs: [EmbeddedPackMetadata]
-}
-
-struct EmbeddedPackMetadata: Codable, Identifiable {
-    let id: String
-    let title: String
-    let description: String
-    let filename: String
-    let trackCount: Int
-    let languageCode: String?
-}
-
-struct EmbeddedBundlePack: Codable {
-    let id: String
-    let title: String
-    let author: String?
-    let filename: String?    // name of cover image in bundle
-    let audioSubdirectory: String? // subdirectory where audio files are located
-    let tracks: [EmbeddedBundleTrack]
-}
-
-struct EmbeddedBundleTrack: Codable {
-    let title: String
-    let filename: String          // name of audio file in bundle
-    let durationMs: Int?
-    let segment_maps: [EmbeddedClipMap]      // built-in clips
-    let languageCode: String?
-    
-    func splitFilename() -> (name: String, ext: String) {
-        let name = (filename as NSString).deletingPathExtension
-        var ext = (filename as NSString).pathExtension
-        if ext.isEmpty { ext = "m4a" }
-        return (name, ext)
-    }
-}
-
-struct EmbeddedClipMap: Codable, Equatable {
-    var title: String
-    var segments: [Clip]
-}
 
 protocol OldImportService: AnyObject {
     /// Import a source. Returns created/updated Track ids.
