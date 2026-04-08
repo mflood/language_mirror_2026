@@ -32,12 +32,49 @@ final class ImportBundleManifestDriver {
     private let urlDownloader: UrlDownloaderProtocol
     private let library: LibraryService
     private let fm = FileManager.default
-    
+
     init(urlDownloader: UrlDownloaderProtocol, library: LibraryService) {
         self.urlDownloader = urlDownloader
         self.library = library
     }
-    
+
+    /// Import a bundle that lives inside the app's main bundle Resources folder.
+    /// The bundle is described by a `<sanitizedId>.bundle.json` manifest using
+    /// the same schema as a remote (QR / URL) bundle, but audio files are
+    /// looked up by filename in the (flat) main bundle resources.
+    ///
+    /// The Python helper `sample_bundle_pipeline/4_embed_in_app.py` produces
+    /// the prefixed manifest + audio files this method expects.
+    func runFromAppBundle(bundleId: String) async throws -> [Track] {
+        let sanitized = sanitizeForFilename(bundleId)
+        let manifestResource = "\(sanitized).bundle"
+        guard let manifestURL = Bundle.main.url(forResource: manifestResource, withExtension: "json") else {
+            throw BundleManifestError.invalidManifestURL(
+                "Missing embedded manifest '\(manifestResource).json' in app bundle. " +
+                "Did you run sample_bundle_pipeline/4_embed_in_app.py?"
+            )
+        }
+        let data = try Data(contentsOf: manifestURL)
+        let manifest = try parseManifest(data: data)
+        let resolver = AppBundleAudioSourceResolver()
+        return try await processBundleManifest(manifest, audioResolver: resolver, progress: nil, progressMessage: nil)
+    }
+
+    /// Match the sanitization done by sample_bundle_pipeline/4_embed_in_app.py:
+    /// keep alphanumerics, dash and underscore; replace everything else with `_`.
+    private func sanitizeForFilename(_ s: String) -> String {
+        var out = ""
+        out.reserveCapacity(s.count)
+        for ch in s {
+            if ch.isLetter || ch.isNumber || ch == "-" || ch == "_" {
+                out.append(ch)
+            } else {
+                out.append("_")
+            }
+        }
+        return out
+    }
+
     func run(manifestURL: URL, progress: (@Sendable (Float) -> Void)? = nil, progressMessage: ((@Sendable (String) -> Void)? )) async throws -> [Track] {
         print("🚀 [BundleManifestDriver] Starting import for URL: \(manifestURL.absoluteString)")
         print("🚀 [BundleManifestDriver] URL scheme: \(manifestURL.scheme ?? "nil")")
@@ -45,11 +82,6 @@ final class ImportBundleManifestDriver {
         print("🚀 [BundleManifestDriver] Current thread: \(Thread.isMainThread ? "main" : "background")")
         
         try Task.checkCancellation()
-        
-        guard let lib = library as? LibraryServiceJSON else {
-            print("❌ [BundleManifestDriver] LibraryService is not LibraryServiceJSON")
-            throw LibraryError.writeFailed
-        }
         
         // 1) Download and parse JSON manifest
         // Dispatch progress updates asynchronously to avoid blocking
@@ -165,20 +197,33 @@ final class ImportBundleManifestDriver {
             throw BundleManifestError.manifestNotJSON
         }
         
-        // Decode JSON (lightweight operation)
+        let bundleManifest = try parseManifest(data: manifestData)
+
+        try Task.checkCancellation()
+        progress?(0.3)
+
+        let resolver = RemoteAudioSourceResolver(urlDownloader: urlDownloader)
+        return try await processBundleManifest(bundleManifest, audioResolver: resolver, progress: progress, progressMessage: progressMessage)
+    }
+
+    // MARK: - Shared parsing & processing
+
+    /// Parse a bundle manifest from raw JSON bytes. Used by both remote and
+    /// app-bundle import paths.
+    private func parseManifest(data manifestData: Data) throws -> BundleManifest {
         print("🔍 [BundleManifestDriver] Parsing JSON manifest...")
         let decodeStartTime = Date()
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        let bundleManifest: BundleManifest
         do {
-            bundleManifest = try decoder.decode(BundleManifest.self, from: manifestData)
+            let bundleManifest = try decoder.decode(BundleManifest.self, from: manifestData)
             let decodeDuration = Date().timeIntervalSince(decodeStartTime)
             print("✅ [BundleManifestDriver] JSON parsing completed in \(String(format: "%.3f", decodeDuration))s")
             print("📦 [BundleManifestDriver] Bundle title: \(bundleManifest.title)")
             print("📦 [BundleManifestDriver] Number of packs: \(bundleManifest.packs.count)")
             let totalTracks = bundleManifest.packs.reduce(0) { $0 + $1.tracks.count }
             print("📦 [BundleManifestDriver] Total tracks: \(totalTracks)")
+            return bundleManifest
         } catch {
             print("❌ [BundleManifestDriver] JSON parsing failed: \(error)")
             if let decodingError = error as? DecodingError {
@@ -188,24 +233,6 @@ final class ImportBundleManifestDriver {
                 case .typeMismatch(let type, let context):
                     let path = context.codingPath.map { $0.stringValue }.joined(separator: ".")
                     print("❌ [BundleManifestDriver] Type mismatch for '\(type)' at path: \(path)")
-                    
-                    // Provide specific guidance for common errors
-                    let typeDescription = String(describing: type)
-                    if path.contains("clips") && typeDescription.contains("Dictionary") {
-                        print("❌ [BundleManifestDriver] ERROR: The 'clips' field must be either:")
-                        print("   - null (if no practice clips)")
-                        print("   - A PracticeSet object with: { id, trackId, displayOrder, title, clips: [Clip], isFavorite }")
-                        print("   - Found array instead. If you have an array of clips, wrap it in a PracticeSet object.")
-                        print("   - Example correct format:")
-                        print("     \"clips\": {")
-                        print("       \"id\": \"uuid-string\",")
-                        print("       \"trackId\": \"uuid-string\",")
-                        print("       \"displayOrder\": 0,")
-                        print("       \"title\": \"Practice Set\",")
-                        print("       \"clips\": [ ... array of Clip objects ... ],")
-                        print("       \"isFavorite\": false")
-                        print("     }")
-                    }
                 case .valueNotFound(let type, let context):
                     print("❌ [BundleManifestDriver] Missing value for '\(type)' at path: \(context.codingPath)")
                 case .dataCorrupted(let context):
@@ -219,9 +246,20 @@ final class ImportBundleManifestDriver {
             }
             throw BundleManifestError.manifestParseFailed(underlying: error)
         }
-        
-        try Task.checkCancellation()
-        progress?(0.3)
+    }
+
+    /// Per-track import loop, source-agnostic. Audio bytes are obtained via the
+    /// supplied `audioResolver`, which knows whether to download or to read
+    /// from app resources.
+    private func processBundleManifest(
+        _ bundleManifest: BundleManifest,
+        audioResolver: AudioSourceResolver,
+        progress: (@Sendable (Float) -> Void)?,
+        progressMessage: (@Sendable (String) -> Void)?
+    ) async throws -> [Track] {
+        guard let lib = library as? LibraryServiceJSON else {
+            throw LibraryError.writeFailed
+        }
         
         // Use DNS namespace for deterministic UUID generation
         let bundleNamespace = UUID(uuidString: "6ba7b810-9dad-11d1-80b4-00c04fd430c8")! // DNS namespace
@@ -262,68 +300,54 @@ final class ImportBundleManifestDriver {
                 let overallProgress = 0.3 + 0.7 * (packProgress + trackProgress / Float(totalPacks))
                 progress?(overallProgress)
                 
-                // Ensure we have an audio URL
-                guard let audioURLString = bundleTrack.url,
-                      let audioURL = URL(string: audioURLString) else {
-                    print("Skipping track '\(bundleTrack.title)' - missing audio URL")
-                    continue
-                }
-                
-                // Validate audio URL scheme
-                guard let audioScheme = audioURL.scheme?.lowercased(),
-                      audioScheme == "http" || audioScheme == "https" else {
-                    print("Skipping track '\(bundleTrack.title)' - invalid URL scheme: \(audioURL.scheme ?? "none")")
-                    continue
-                }
-                
-                // Update progress message with file count (only for files we're actually downloading)
+                // Update progress message with file count
                 let currentFileNumber = processedTracks + 1
-                progressMessage?("Downloading file \(currentFileNumber)/\(totalTracks)...")
-                
-                // Generate deterministic track UUID
-                let trackIdOrTitle = bundleTrack.id ?? bundleTrack.title
-                let trackUUID = uuid5(namespace: packUUID, name: norm(trackIdOrTitle + bundleTrack.url!))
-                let trackId = trackUUID.uuidString
-                
-                // Download audio file
-                print("🎵 [BundleManifestDriver] Downloading audio file: \(audioURL.absoluteString)")
-                let (tempAudio, suggestedFilename): (URL, String)
+                progressMessage?("Loading file \(currentFileNumber)/\(totalTracks)...")
+
+                // Resolve the audio source (download from URL or read from app bundle)
+                let resolved: ResolvedAudio
                 do {
-                    (tempAudio, suggestedFilename) = try await urlDownloader.downloadAudio(from: audioURL)
-                    print("✅ [BundleManifestDriver] Audio file downloaded successfully")
+                    resolved = try await audioResolver.resolve(track: bundleTrack)
                 } catch {
-                    print("❌ [BundleManifestDriver] Failed to download audio file: \(error)")
-                    print("❌ [BundleManifestDriver] Audio URL was: \(audioURL.absoluteString)")
-                    throw error
+                    print("Skipping track '\(bundleTrack.title)' - resolve failed: \(error)")
+                    continue
                 }
+                let cleanupSourceURL = resolved.url
+                let isTemporary = resolved.isTemporary
                 defer {
-                    try? FileManager.default.removeItem(at: tempAudio)
+                    if isTemporary { try? FileManager.default.removeItem(at: cleanupSourceURL) }
                 }
-                
+
                 try Task.checkCancellation()
-                
-                // Determine final filename
+
+                // Generate deterministic track UUID using whatever stable identity we have
+                let trackIdOrTitle = bundleTrack.id ?? bundleTrack.title
+                let trackIdentity = bundleTrack.url ?? bundleTrack.filename ?? resolved.suggestedFilename
+                let trackUUID = uuid5(namespace: packUUID, name: norm(trackIdOrTitle + trackIdentity))
+                let trackId = trackUUID.uuidString
+
+                // Determine final filename + extension
                 let finalFilename: String
                 if let specifiedFilename = bundleTrack.filename, !specifiedFilename.isEmpty {
                     finalFilename = specifiedFilename
                 } else {
-                    finalFilename = suggestedFilename
+                    finalFilename = resolved.suggestedFilename
                 }
-                
-                let fileExtension = (finalFilename as NSString).pathExtension.isEmpty 
-                    ? (audioURL.pathExtension.isEmpty ? "mp3" : audioURL.pathExtension)
+
+                let fileExtension = (finalFilename as NSString).pathExtension.isEmpty
+                    ? (resolved.url.pathExtension.isEmpty ? "mp3" : resolved.url.pathExtension)
                     : (finalFilename as NSString).pathExtension
-                
+
                 let filename = "audio.\(fileExtension)"
-                
+
                 // Create track folder and save audio
                 let folder = lib.trackFolder(forPackId: packId, forTrackId: trackId)
                 try fm.createDirectory(at: folder, withIntermediateDirectories: true)
                 let dest = folder.appendingPathComponent(filename)
-                if fm.fileExists(atPath: dest.path) { 
-                    try fm.removeItem(at: dest) 
+                if fm.fileExists(atPath: dest.path) {
+                    try fm.removeItem(at: dest)
                 }
-                try fm.copyItem(at: tempAudio, to: dest)
+                try fm.copyItem(at: resolved.url, to: dest)
                 
                 try Task.checkCancellation()
                 

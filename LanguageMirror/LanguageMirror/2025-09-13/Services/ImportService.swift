@@ -15,8 +15,9 @@ enum ImportSource {
     case recordedFile(url: URL)                       // local recorder tmp
     case remoteURL(url: URL, suggestedTitle: String?) // direct URL download
     case bundleManifest(url: URL)                     // S3 manifest
-    case embeddedSample                                // free sample in app (deprecated - imports all packs)
-    case embeddedPack(packId: String)                  // import a single embedded pack
+    case appBundleManifest(bundleId: String)            // bundle.json shipped inside the app's Resources (looked up by bundle id)
+    case embeddedSample                                // legacy free sample (kept for back-compat)
+    case embeddedPack(packId: String)                  // legacy single embedded pack (kept for back-compat)
 }
 
 struct BundleManifest: Codable {

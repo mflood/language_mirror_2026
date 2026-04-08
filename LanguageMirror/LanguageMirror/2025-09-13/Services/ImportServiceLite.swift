@@ -99,6 +99,9 @@ final class ImportServiceLite: ImportService {
             // We'll pass nil for progressMessage here since the protocol doesn't support it
             // ImportViewController will handle message updates directly
             return try await importBundleManifestDriver.run(manifestURL: url, progress: progress, progressMessage: nil)
+
+        case .appBundleManifest(let bundleId):
+            return try await importBundleManifestDriver.runFromAppBundle(bundleId: bundleId)
         }
     }
 }
