@@ -37,7 +37,7 @@ SAMPLES_DIR = REPO_ROOT / "sample_bundle_pipeline" / "samples"
 # Default voice maps per language. Step 2 uses these if a turn doesn't specify
 # a voice explicitly. Voice ids are AWS Polly neural voice ids.
 DEFAULT_VOICE_MAPS: dict[str, list[str]] = {
-    "ko-KR": ["Seoyeon"],  # Korean only has one neural voice on Polly today
+    "ko-KR": ["Seoyeon", "Jihye"],  # both are female; only differentiation available on Polly today
     "en-US": ["Joanna", "Matthew"],
     "en-GB": ["Amy", "Brian"],
     "ja-JP": ["Takumi", "Kazuha"],

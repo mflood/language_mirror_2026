@@ -1,0 +1,272 @@
+{
+  "id": "starter_seoul_lunch",
+  "title": "Seoul Lunch Recommendations",
+  "packs": [
+    {
+      "id": "starter_seoul_lunch",
+      "title": "Seoul Lunch Recommendations",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_seoul_lunch__track_001.mp3",
+          "durationMs": 48079,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "dfabed33-ab7e-41db-8ffa-7662a59efe22",
+              "trackId": "03f97df7-0a6e-4182-af7e-cfc5001659a3",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "038e88f8-bc5b-442c-a7d7-d37cb082f989",
+                  "startMs": 0,
+                  "endMs": 48079,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "04a67eab-ad91-4209-a342-30d61658b4b9",
+              "trackId": "3e9363eb-cc23-4130-96ab-8fee9f711987",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "b0ffa674-04bf-4b74-bfec-252d4c5d2118",
+                  "startMs": 0,
+                  "endMs": 3920,
+                  "kind": "drill",
+                  "title": "1. 실례합니다. 이 근처에 점심 먹을만한 좋은 식…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "7bc565be-75cf-46ae-b2d0-ea13d5a71e75",
+                  "startMs": 4720,
+                  "endMs": 7280,
+                  "kind": "drill",
+                  "title": "2. 네, 있어요. 어떤 음식을 좋아하세요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "fa8bf823-2965-45d5-a065-65bead00cd62",
+                  "startMs": 8180,
+                  "endMs": 12000,
+                  "kind": "drill",
+                  "title": "3. 한국 음식이면 다 좋아하는데 매운 음식은 조금…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0328b963-0bf9-40e0-b81b-37d5a61ce23b",
+                  "startMs": 12700,
+                  "endMs": 16680,
+                  "kind": "drill",
+                  "title": "4. 그러면 여기 이번 출구 근처에 상계탕집이 정말…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "4809c6b7-79b8-4de3-8fef-f84b52bfe63c",
+                  "startMs": 17560,
+                  "endMs": 20900,
+                  "kind": "drill",
+                  "title": "5. 오, 좋네요. 거기 사람이 많이 붕빛나요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "315190f1-001c-4039-a788-ad394aa5cbb0",
+                  "startMs": 21580,
+                  "endMs": 25740,
+                  "kind": "drill",
+                  "title": "6. 점심 시간에는 좋은 붕비지만 회전이 빨라서 금…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "ba7fe1c5-53d3-4714-9482-69fc1d07ea41",
+                  "startMs": 25740,
+                  "endMs": 29840,
+                  "kind": "drill",
+                  "title": "7. 조용한 곳을 더 선호하는데 다른 곳도 있을까요…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "0e9407ad-0aa7-441e-b6b6-c61b3651b6d6",
+                  "startMs": 30600,
+                  "endMs": 33560,
+                  "kind": "drill",
+                  "title": "8. 그럼 사건 출구 쪽에 작은 비빔밥 식당이 있어…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "890a9bf4-3e18-4735-bce9-605c34dbb55b",
+                  "startMs": 34440,
+                  "endMs": 36020,
+                  "kind": "drill",
+                  "title": "9. 거기는 분위기가 어때요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "6178ab9d-0535-432d-804f-a8b26ac2f57e",
+                  "startMs": 36680,
+                  "endMs": 39460,
+                  "kind": "drill",
+                  "title": "10. 만흑하고 조용해서 천천히 식사하기 좋아요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "9c453f6d-66e7-4b05-bbe2-e1f523f11e45",
+                  "startMs": 40100,
+                  "endMs": 44700,
+                  "kind": "drill",
+                  "title": "11. 완벽하네요. 거기로 가볼게요. 정말 감사합니다…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "bfa01bec-b495-4ff4-8f41-ab153991e03c",
+                  "startMs": 45640,
+                  "endMs": 47740,
+                  "kind": "drill",
+                  "title": "12. 천만해요. 맛있게 드세요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 3920,
+              "text": "실례합니다. 이 근처에 점심 먹을만한 좋은 식당 있을까요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 4720,
+              "endMs": 7280,
+              "text": "네, 있어요. 어떤 음식을 좋아하세요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 8180,
+              "endMs": 12000,
+              "text": "한국 음식이면 다 좋아하는데 매운 음식은 조금 어려워요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 12700,
+              "endMs": 16680,
+              "text": "그러면 여기 이번 출구 근처에 상계탕집이 정말 맛있어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 17560,
+              "endMs": 20900,
+              "text": "오, 좋네요. 거기 사람이 많이 붕빛나요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 21580,
+              "endMs": 25740,
+              "text": "점심 시간에는 좋은 붕비지만 회전이 빨라서 금방 안 줄 수 있어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 25740,
+              "endMs": 29840,
+              "text": "조용한 곳을 더 선호하는데 다른 곳도 있을까요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 30600,
+              "endMs": 33560,
+              "text": "그럼 사건 출구 쪽에 작은 비빔밥 식당이 있어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 34440,
+              "endMs": 36020,
+              "text": "거기는 분위기가 어때요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 36680,
+              "endMs": 39460,
+              "text": "만흑하고 조용해서 천천히 식사하기 좋아요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 40100,
+              "endMs": 44700,
+              "text": "완벽하네요. 거기로 가볼게요. 정말 감사합니다.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 45640,
+              "endMs": 47740,
+              "text": "천만해요. 맛있게 드세요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

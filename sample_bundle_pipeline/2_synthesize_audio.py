@@ -101,6 +101,10 @@ def synth_with_polly(script: dict[str, Any], out_dir: Path, args: argparse.Names
     out_dir.mkdir(parents=True, exist_ok=True)
     audio_dir = out_dir
     audio_dir.mkdir(parents=True, exist_ok=True)
+    # Per-turn scratch files live in a subdirectory so step 3's audio scan
+    # only picks up the final concatenated track at the top level.
+    turns_dir = audio_dir / "turns"
+    turns_dir.mkdir(parents=True, exist_ok=True)
 
     # Synthesize each turn into its own mp3 first
     per_turn_files: list[Path] = []
@@ -110,7 +114,7 @@ def synth_with_polly(script: dict[str, Any], out_dir: Path, args: argparse.Names
     for i, turn in enumerate(script.get("turns", [])):
         voice = turn["voice"]
         text = turn["text"]
-        out_file = audio_dir / f"turn_{i:03d}.mp3"
+        out_file = turns_dir / f"turn_{i:03d}.mp3"
         print(f"▶ Synthesizing turn {i + 1}/{len(script['turns'])}: voice={voice}, chars={len(text)}")
         resp = polly.synthesize_speech(
             Text=text,

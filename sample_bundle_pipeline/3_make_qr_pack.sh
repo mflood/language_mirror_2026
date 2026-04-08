@@ -90,6 +90,7 @@ fi
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
+export PYTHONPATH="$REPO_ROOT"
 
 # Sanity checks
 if [ ! -d "$SOURCE_AUDIO_DIR" ]; then
@@ -97,7 +98,7 @@ if [ ! -d "$SOURCE_AUDIO_DIR" ]; then
     exit 1
 fi
 
-AUDIO_COUNT=$(find "$SOURCE_AUDIO_DIR" -type f \( -name "*.mp3" -o -name "*.m4a" -o -name "*.wav" \) | wc -l | tr -d ' ')
+AUDIO_COUNT=$(find "$SOURCE_AUDIO_DIR" -maxdepth 1 -type f \( -name "*.mp3" -o -name "*.m4a" -o -name "*.wav" \) | wc -l | tr -d ' ')
 if [ "$AUDIO_COUNT" = "0" ]; then
     echo "❌ No audio files found in: $SOURCE_AUDIO_DIR" >&2
     exit 1
