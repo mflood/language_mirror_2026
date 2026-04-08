@@ -14,20 +14,23 @@ import AVFoundation
 final class ImportViewController: UITableViewController, UIDocumentPickerDelegate {
 
     private let importer: ImportService
+    private let featuredCatalog: FeaturedCatalogService
     private var currentImportTask: Task<Void, Never>?
     private var progressViewController: UIViewController?
-    
-    init(importService: ImportService) {
+
+    init(importService: ImportService, featuredCatalog: FeaturedCatalogService) {
         self.importer = importService
+        self.featuredCatalog = featuredCatalog
         super.init(style: .insetGrouped)
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     private enum Row: Int, CaseIterable {
-        case fromVideo, fromFiles, record, fromURL, fromS3Bundle
+        case featured, fromVideo, fromFiles, record, fromURL, fromS3Bundle
 
         var title: String {
             switch self {
+            case .featured: return L10n("import.option.featured")
             case .fromVideo: return L10n("import.option.video")
             case .fromFiles: return L10n("import.option.files")
             case .record: return L10n("import.option.record")
@@ -38,6 +41,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
         var description: String {
             switch self {
+            case .featured: return L10n("import.option.featured.desc")
             case .fromVideo: return L10n("import.option.video.desc")
             case .fromFiles: return L10n("import.option.files.desc")
             case .record: return L10n("import.option.record.desc")
@@ -48,6 +52,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
         var iconName: String {
             switch self {
+            case .featured: return "sparkles"
             case .fromVideo: return "video.fill"
             case .fromFiles: return "folder.fill"
             case .record: return "mic.fill"
@@ -58,6 +63,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
 
         var iconColor: UIColor {
             switch self {
+            case .featured: return .systemOrange
             case .fromVideo: return .systemPurple
             case .fromFiles: return .systemBlue
             case .record: return .systemRed
@@ -131,12 +137,18 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         generator.impactOccurred()
         
         switch Row(rawValue: indexPath.row)! {
+        case .featured: presentFeaturedPacks()
         case .fromVideo: presentVideoPicker()
         case .fromFiles: presentFilePicker()
         case .record: presentRecorder()
         case .fromURL: promptForURL()
         case .fromS3Bundle: promptForS3Manifest()
         }
+    }
+
+    private func presentFeaturedPacks() {
+        let vc = FeaturedPacksViewController(catalog: featuredCatalog, importService: importer)
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     // MARK: - Programmatic Import (URL scheme)

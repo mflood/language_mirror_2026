@@ -19,7 +19,10 @@ final class ImportCoordinator: Coordinator {
     private var importViewController: ImportViewController?
 
     func start() -> UINavigationController {
-        let vc = ImportViewController(importService: container.importService)
+        let vc = ImportViewController(
+            importService: container.importService,
+            featuredCatalog: container.featuredCatalog
+        )
         vc.title = L10n("tab.import")
         self.importViewController = vc
         navigationController.viewControllers = [vc]

@@ -43,6 +43,8 @@
 /* ── Import ── */
 "import.header" = "Choose an Import Method";
 "import.footer" = "Select how you'd like to add audio to your library. All imports are saved locally on your device.";
+"import.option.featured" = "Featured Packs";
+"import.option.featured.desc" = "Browse and install ready-made practice packs";
 "import.option.video" = "Import from Video";
 "import.option.video.desc" = "Extract audio from video files";
 "import.option.files" = "Import from Files";
@@ -82,6 +84,17 @@
 
 "import.help.title" = "Import Help";
 "import.help.message" = "📹 Import from Video\nExtract audio from any video file\n\n📁 Import from Files\n• Tap Share button in Voice Memos → LanguageMirror\n• Or browse: Files → On My iPhone → Voice Memos\n\n🎤 Record Audio\nCreate new tracks with your microphone\n\n🔗 Download from URL\nDirect links to audio files (mp3, m4a, wav)\n\n☁️ Install Bundle\nDownload bundles from remote JSON manifests";
+
+/* ── Featured Packs ── */
+"featured.title" = "Featured Packs";
+"featured.empty" = "No featured packs available right now.";
+"featured.error" = "Couldn't load the featured packs catalog.";
+"featured.install_title" = "Install %@?";
+"featured.install_action" = "Install";
+"featured.installing" = "Installing pack…";
+"featured.track_one" = "1 track";
+"featured.track_n" = "%d tracks";
+"featured.minutes" = "%d min";
 
 /* ── Settings ── */
 "settings.mode.simple" = "Simple";

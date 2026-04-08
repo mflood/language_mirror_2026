@@ -13,7 +13,8 @@ struct AppContainer {
     let audioPlayer: AudioPlayerService
     let clipService: ClipService
     let settings: SettingsService
-    let importService: ImportService 
+    let importService: ImportService
+    let featuredCatalog: FeaturedCatalogService
 
     init() {
         self.settings = SettingsServiceUserDefaults()
@@ -24,5 +25,6 @@ struct AppContainer {
         self.importService = ImportServiceLite(library: libraryService,
                                                clips: clipService,
                                                useMock: false)
+        self.featuredCatalog = FeaturedCatalogServiceLocal()
     }
 }

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-08T00:00:00Z",
+  "packs": [
+    {
+      "id": "starter_seoul_lunch",
+      "title": "Seoul Lunch Recommendations",
+      "subtitle": "A short Korean dialogue between a visitor and a local",
+      "languageCode": "ko-KR",
+      "level": "beginner",
+      "trackCount": 1,
+      "durationSeconds": 48,
+      "author": "Six Wands Studios",
+      "iconSymbol": "fork.knife",
+      "accentColor": "#E67E5C",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_seoul_lunch"
+      }
+    },
+    {
+      "id": "akc-travel-korean-pack-4",
+      "title": "AKC Travel Korean — Week 4",
+      "subtitle": "Conversation about local restaurants in Gangneung + a story about food memories",
+      "languageCode": "ko-KR",
+      "level": "intermediate",
+      "trackCount": 2,
+      "durationSeconds": 280,
+      "author": "AKC",
+      "iconSymbol": "airplane.departure",
+      "accentColor": "#5C8FE6",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "akc-travel-korean-pack-4"
+      }
+    }
+  ]
+}

@@ -43,6 +43,8 @@
 /* ── Import ── */
 "import.header" = "가져오기 방법 선택";
 "import.footer" = "오디오를 라이브러리에 추가할 방법을 선택하세요. 모든 파일은 기기에 로컬로 저장됩니다.";
+"import.option.featured" = "추천 팩";
+"import.option.featured.desc" = "준비된 연습 팩을 둘러보고 설치하세요";
 "import.option.video" = "동영상에서 가져오기";
 "import.option.video.desc" = "동영상 파일에서 오디오 추출";
 "import.option.files" = "파일에서 가져오기";
@@ -82,6 +84,17 @@
 
 "import.help.title" = "가져오기 도움말";
 "import.help.message" = "📹 동영상에서 가져오기\n동영상 파일에서 오디오를 추출합니다\n\n📁 파일에서 가져오기\n• 음성 메모에서 공유 버튼 → LanguageMirror\n• 또는 파일 → 나의 iPhone → 음성 메모에서 찾기\n\n🎤 오디오 녹음\n마이크로 새 트랙을 녹음합니다\n\n🔗 URL에서 다운로드\n오디오 파일 직접 링크 (mp3, m4a, wav)\n\n☁️ 번들 설치\n원격 JSON 매니페스트에서 번들을 다운로드합니다";
+
+/* ── Featured Packs ── */
+"featured.title" = "추천 팩";
+"featured.empty" = "현재 사용 가능한 추천 팩이 없습니다.";
+"featured.error" = "추천 팩 카탈로그를 불러올 수 없습니다.";
+"featured.install_title" = "%@을(를) 설치하시겠습니까?";
+"featured.install_action" = "설치";
+"featured.installing" = "팩 설치 중…";
+"featured.track_one" = "트랙 1개";
+"featured.track_n" = "트랙 %d개";
+"featured.minutes" = "%d분";
 
 /* ── Settings ── */
 "settings.mode.simple" = "기본";

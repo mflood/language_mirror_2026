@@ -81,10 +81,67 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
-        
+
         // Check for pending imports from Share Extension
         Task {
             await checkForPendingImports()
+        }
+
+        // Install the embedded starter sample on first launch (or whenever
+        // the library is empty and we haven't already tried).
+        Task {
+            await installStarterSampleIfNeeded()
+        }
+    }
+
+    // MARK: - First-launch starter sample
+
+    /// The bundle id of the embedded sample shipped under
+    /// Resources/embedded_bundles/. Must match the iOS embed produced by
+    /// sample_bundle_pipeline/4_embed_in_app.py.
+    private static let starterBundleId = "starter_seoul_lunch"
+
+    /// UserDefaults key remembering that we already attempted the auto-install.
+    /// We never retry on this device once set, even if the user deletes the
+    /// imported pack — we don't want surprise re-imports.
+    private static let didInstallStarterKey = "appCoordinator.didInstallStarterSample"
+
+    private func installStarterSampleIfNeeded() async {
+        let defaults = UserDefaults.standard
+        if defaults.bool(forKey: Self.didInstallStarterKey) {
+            return
+        }
+        // Only install if the library is currently empty.
+        let packs = container.libraryService.listPacks()
+        let hasAnyTracks = packs.contains { !$0.tracks.isEmpty }
+        guard !hasAnyTracks else {
+            // Library has content already (TestFlight tester returning, share
+            // extension import, etc.) — mark as done so we never run.
+            defaults.set(true, forKey: Self.didInstallStarterKey)
+            return
+        }
+
+        do {
+            print("🌱 [AppCoordinator] First launch: importing embedded starter sample '\(Self.starterBundleId)'...")
+            let tracks = try await container.importService.performImport(
+                source: .appBundleManifest(bundleId: Self.starterBundleId),
+                progress: nil
+            )
+            print("✅ [AppCoordinator] Starter sample installed (\(tracks.count) tracks)")
+            defaults.set(true, forKey: Self.didInstallStarterKey)
+            // Notify the library so it refreshes; existing observer will handle the rest.
+            if let firstId = tracks.first?.id {
+                NotificationCenter.default.post(
+                    name: .libraryDidAddTrack,
+                    object: nil,
+                    userInfo: ["trackID": firstId]
+                )
+            } else {
+                NotificationCenter.default.post(name: .LibraryDidChange, object: nil)
+            }
+        } catch {
+            // Don't set the flag on failure — let it retry next launch.
+            print("⚠️ [AppCoordinator] Failed to install starter sample: \(error)")
         }
     }
     
