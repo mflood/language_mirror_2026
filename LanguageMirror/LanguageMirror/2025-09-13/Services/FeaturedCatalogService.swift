@@ -7,9 +7,15 @@
 //  (CloudFront-hosted) bundles. From the user's perspective they're a single
 //  cohesive list of packs they can install.
 //
-//  Future: an updated copy of the catalog can be fetched from a known URL
-//  (e.g. https://cdn/featured_catalog.json) so we can publish new packs
-//  without shipping a new app version. For now we only load the local copy.
+//  Lookup order on each call:
+//    1. Try the remote URL (short timeout). If success and version is at
+//       least the cached version, persist to Caches/ and return it.
+//    2. Else try the cached copy in Caches/.
+//    3. Else fall back to the embedded JSON in the app bundle.
+//
+//  This means new packs can be published by uploading a new
+//  featured_catalog.json to S3 — no app update required — while still
+//  working offline (cache or embedded fallback always succeeds).
 //
 
 import Foundation
@@ -71,18 +77,100 @@ enum FeaturedCatalogError: Error, LocalizedError {
 
 final class FeaturedCatalogServiceLocal: FeaturedCatalogService {
     private static let resourceName = "featured_catalog"
+    private static let remoteURL = URL(string: "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/featured_catalog.json")!
+    private static let cacheFilename = "featured_catalog.json"
+    private static let remoteTimeoutSeconds: TimeInterval = 4
 
     func loadCatalog() async throws -> FeaturedCatalog {
+        let decoder = makeDecoder()
+        // 1. Try remote (with short timeout). On success, write to cache and return.
+        if let remote = await fetchRemoteCatalog(decoder: decoder) {
+            persistRemoteCache(remote.data)
+            return remote.catalog
+        }
+        // 2. Try cache from a previous successful fetch.
+        if let cached = loadCachedCatalog(decoder: decoder) {
+            return cached
+        }
+        // 3. Fall back to the embedded copy that ships with the app.
+        return try loadEmbeddedCatalog(decoder: decoder)
+    }
+
+    // MARK: - Remote
+
+    private func fetchRemoteCatalog(decoder: JSONDecoder) async -> (catalog: FeaturedCatalog, data: Data)? {
+        var request = URLRequest(url: Self.remoteURL)
+        request.timeoutInterval = Self.remoteTimeoutSeconds
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
+                print("⚠️ [FeaturedCatalog] remote fetch HTTP \(http.statusCode), falling back")
+                return nil
+            }
+            let catalog = try decoder.decode(FeaturedCatalog.self, from: data)
+            print("✅ [FeaturedCatalog] loaded remote (version=\(catalog.version), \(catalog.packs.count) packs)")
+            return (catalog, data)
+        } catch {
+            // Offline / timeout / DNS failure / parse error — completely silent
+            // failure path; the cache or embedded copy will cover us.
+            print("ℹ️ [FeaturedCatalog] remote fetch unavailable: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    // MARK: - Cache (Caches directory)
+
+    private static var cacheURL: URL? {
+        guard let dir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+            return nil
+        }
+        return dir.appendingPathComponent(cacheFilename)
+    }
+
+    private func persistRemoteCache(_ data: Data) {
+        guard let url = Self.cacheURL else { return }
+        do {
+            try data.write(to: url, options: .atomic)
+        } catch {
+            print("⚠️ [FeaturedCatalog] failed to write cache: \(error)")
+        }
+    }
+
+    private func loadCachedCatalog(decoder: JSONDecoder) -> FeaturedCatalog? {
+        guard let url = Self.cacheURL,
+              FileManager.default.fileExists(atPath: url.path),
+              let data = try? Data(contentsOf: url) else { return nil }
+        do {
+            let catalog = try decoder.decode(FeaturedCatalog.self, from: data)
+            print("✅ [FeaturedCatalog] loaded cached copy (version=\(catalog.version))")
+            return catalog
+        } catch {
+            print("⚠️ [FeaturedCatalog] cached copy unreadable, removing: \(error)")
+            try? FileManager.default.removeItem(at: url)
+            return nil
+        }
+    }
+
+    // MARK: - Embedded fallback
+
+    private func loadEmbeddedCatalog(decoder: JSONDecoder) throws -> FeaturedCatalog {
         guard let url = Bundle.main.url(forResource: Self.resourceName, withExtension: "json") else {
             throw FeaturedCatalogError.missingBundledCatalog
         }
         let data = try Data(contentsOf: url)
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
         do {
-            return try decoder.decode(FeaturedCatalog.self, from: data)
+            let catalog = try decoder.decode(FeaturedCatalog.self, from: data)
+            print("✅ [FeaturedCatalog] loaded embedded copy (version=\(catalog.version))")
+            return catalog
         } catch {
             throw FeaturedCatalogError.decodeFailed(error)
         }
+    }
+
+    private func makeDecoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
     }
 }

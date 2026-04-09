@@ -1448,7 +1448,20 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     }
     
     func resetClipToZero(at index: Int) {
-        guard var session = currentSession, index < workingClips.count else { return }
+        guard index < workingClips.count else { return }
+        // Lazy-create a session if the user has never played any clip yet,
+        // so swipe-to-reset is responsive even on a fresh practice screen.
+        if currentSession == nil,
+           let track = selectedTrack,
+           let set = practiceSet {
+            do {
+                currentSession = try practiceService.createSession(practiceSet: set, packId: track.packId, trackId: track.id)
+            } catch {
+                print("Failed to create session for reset: \(error)")
+                return
+            }
+        }
+        guard var session = currentSession else { return }
         
         let clipId = workingClips[index].id
         session.clipPlayCounts[clipId] = 0
@@ -1607,16 +1620,22 @@ extension PracticeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard isEditMode else { return nil }
+        // Available in both edit and non-edit modes — resetting a clip's
+        // play count is a routine practice action, not structural editing.
+        // We do require a working session and a valid clip index.
+        guard indexPath.row >= 0, indexPath.row < workingClips.count else { return nil }
         let resetAction = UIContextualAction(style: .destructive, title: L10n("common.reset")) { [weak self] _, _, completion in
             self?.resetClipToZero(at: indexPath.row)
             completion(true)
         }
-        
         resetAction.backgroundColor = .systemRed
         resetAction.image = UIImage(systemName: "arrow.counterclockwise")
-        
-        return UISwipeActionsConfiguration(actions: [resetAction])
+
+        let config = UISwipeActionsConfiguration(actions: [resetAction])
+        // Require a deliberate full swipe so users don't accidentally reset
+        // by brushing a cell while scrolling.
+        config.performsFirstActionWithFullSwipe = false
+        return config
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

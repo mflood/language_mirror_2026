@@ -26,6 +26,16 @@ final class ClipCell: UITableViewCell {
     
     private var pulseAnimation: CABasicAnimation?
     private var isCurrentClip = false
+
+    /// Subtle green tint applied to the card when the clip has been
+    /// fully practiced (its play count meets/exceeds the loop target).
+    /// Slightly different shades for light/dark so it reads in both modes
+    /// without fighting the warm transcript banner.
+    private static let completedCardBackground: UIColor = UIColor { trait in
+        trait.userInterfaceStyle == .dark
+            ? UIColor(red: 0.13, green: 0.24, blue: 0.16, alpha: 1.0)
+            : UIColor(red: 0.88, green: 0.96, blue: 0.88, alpha: 1.0)
+    }
     
     // MARK: - Init
     
@@ -290,8 +300,13 @@ final class ClipCell: UITableViewCell {
             stopPulseAnimation()
         }
         
-        // Completed state
+        // Completed state — tint the card background a subtle green and show
+        // the checkmark. Reset to neutral when not complete so resets clear
+        // the visual immediately.
         checkmarkImageView.alpha = isCompleted ? 1.0 : 0
+        cardView.backgroundColor = isCompleted
+            ? Self.completedCardBackground
+            : AppColors.cardBackground
         
         // Forever badge
         infinityBadge.alpha = showForeverBadge ? 1.0 : 0
@@ -375,6 +390,7 @@ final class ClipCell: UITableViewCell {
         indexCircle.alpha = 1.0
         checkmarkImageView.alpha = 0
         infinityBadge.alpha = 0
+        cardView.backgroundColor = AppColors.cardBackground
         indexLabel.alpha = 1.0
         indexIconView.alpha = 0
         isCurrentClip = false
