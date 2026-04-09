@@ -1,0 +1,326 @@
+{
+  "id": "starter_seoul_subway",
+  "title": "Seoul Subway Directions",
+  "packs": [
+    {
+      "id": "starter_seoul_subway",
+      "title": "Seoul Subway Directions",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_seoul_subway__track_001.mp3",
+          "durationMs": 51350,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "b9cac5c0-6d45-4715-807b-7a5d506de7d2",
+              "trackId": "07274a16-d210-48b6-b026-384eb01860d3",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "cf11612b-24ca-4b8f-a436-ae981822c68c",
+                  "startMs": 0,
+                  "endMs": 51350,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "85f103b9-f33d-4824-af7f-c548c6efc3c6",
+              "trackId": "50710eb4-2523-4a93-b66a-2146c3cccf5e",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "8c15ab2f-d846-4dd4-9afb-6630a6e21904",
+                  "startMs": 0,
+                  "endMs": 5580,
+                  "kind": "drill",
+                  "title": "1. 실내입니다. 여기 강남역에서 남산타워에 가려면…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "99e86d85-7934-41ff-b88b-209c1ca0f984",
+                  "startMs": 6140,
+                  "endMs": 9360,
+                  "kind": "drill",
+                  "title": "2. 아, 남산타워요. 지하철로 가시면 됩니다.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "29704077-e860-4d0c-b7ae-fc5f39886e2f",
+                  "startMs": 10300,
+                  "endMs": 11760,
+                  "kind": "drill",
+                  "title": "3. 어느 호선을 타야 하나요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "da048bd9-2ba2-4244-82be-b31682b4b528",
+                  "startMs": 12400,
+                  "endMs": 15800,
+                  "kind": "drill",
+                  "title": "4. 먼저 여기서 이호선을 타고 위주로 있구역까지 …",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d4812476-302d-40b8-bd66-14e81bf30612",
+                  "startMs": 16620,
+                  "endMs": 18880,
+                  "kind": "drill",
+                  "title": "5. 위주로 있구역에서 환승해야 하나요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "9601e67e-5142-4ecc-adfc-9aff577693b3",
+                  "startMs": 19560,
+                  "endMs": 23080,
+                  "kind": "drill",
+                  "title": "6. 네, 맞아요. 거기서 사무선으로 가라타시면 돼…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f9358436-db72-4604-9d99-4c9d64d20263",
+                  "startMs": 24000,
+                  "endMs": 26260,
+                  "kind": "drill",
+                  "title": "7. 사무선을 타고 어느 여기서 내려야 하죠.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "9cc452a8-37e2-465b-bce1-8f35d774f6c9",
+                  "startMs": 26880,
+                  "endMs": 28460,
+                  "kind": "drill",
+                  "title": "8. 동대 있구역에서 내리세요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a5a4e886-c73d-46f5-a261-5b208b2fd39f",
+                  "startMs": 28460,
+                  "endMs": 32120,
+                  "kind": "drill",
+                  "title": "9. 거기다 남산타워 가장 가까운 여기예요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "54e2ec26-0056-4e0b-a120-1f6a15addda5",
+                  "startMs": 32640,
+                  "endMs": 35100,
+                  "kind": "drill",
+                  "title": "10. 동대 있구역 몇 번 출구로 나가면 되나요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "cb2aca7c-31fb-42f9-87fa-14772be3e676",
+                  "startMs": 35780,
+                  "endMs": 39420,
+                  "kind": "drill",
+                  "title": "11. 6번 출구로 나가시면 케이블 카타는 곳이 바로…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "62b54eac-1764-4827-931f-c1e9a65c623b",
+                  "startMs": 39980,
+                  "endMs": 41520,
+                  "kind": "drill",
+                  "title": "12. 시간은 얼마나 걸리나요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "1ae78d85-c8f5-42f3-a37b-5a9c91a893c6",
+                  "startMs": 42300,
+                  "endMs": 44800,
+                  "kind": "drill",
+                  "title": "13. 지하철로는 약 30분 정도 걸릴 거예요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "6dc2f586-ce20-483d-ad10-9aa590502792",
+                  "startMs": 45600,
+                  "endMs": 47920,
+                  "kind": "drill",
+                  "title": "14. 정말 친절하게 알려주셔서 감사합니다.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "56860319-a673-45e6-8433-c3a7c0566603",
+                  "startMs": 48680,
+                  "endMs": 51040,
+                  "kind": "drill",
+                  "title": "15. 천만해요. 좋은 여행 되세요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 5580,
+              "text": "실내입니다. 여기 강남역에서 남산타워에 가려면 어떻게 가야 하나요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 6140,
+              "endMs": 9360,
+              "text": "아, 남산타워요. 지하철로 가시면 됩니다.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 10300,
+              "endMs": 11760,
+              "text": "어느 호선을 타야 하나요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 12400,
+              "endMs": 15800,
+              "text": "먼저 여기서 이호선을 타고 위주로 있구역까지 가세요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 16620,
+              "endMs": 18880,
+              "text": "위주로 있구역에서 환승해야 하나요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 19560,
+              "endMs": 23080,
+              "text": "네, 맞아요. 거기서 사무선으로 가라타시면 돼요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 24000,
+              "endMs": 26260,
+              "text": "사무선을 타고 어느 여기서 내려야 하죠.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 26880,
+              "endMs": 28460,
+              "text": "동대 있구역에서 내리세요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 28460,
+              "endMs": 32120,
+              "text": "거기다 남산타워 가장 가까운 여기예요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 32640,
+              "endMs": 35100,
+              "text": "동대 있구역 몇 번 출구로 나가면 되나요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 35780,
+              "endMs": 39420,
+              "text": "6번 출구로 나가시면 케이블 카타는 곳이 바로 나와요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 39980,
+              "endMs": 41520,
+              "text": "시간은 얼마나 걸리나요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 42300,
+              "endMs": 44800,
+              "text": "지하철로는 약 30분 정도 걸릴 거예요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 45600,
+              "endMs": 47920,
+              "text": "정말 친절하게 알려주셔서 감사합니다.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 48680,
+              "endMs": 51040,
+              "text": "천만해요. 좋은 여행 되세요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

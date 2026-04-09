@@ -1,0 +1,308 @@
+{
+  "id": "starter_korean_story",
+  "title": "A Quiet Seoul Cafe",
+  "packs": [
+    {
+      "id": "starter_korean_story",
+      "title": "A Quiet Seoul Cafe",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_korean_story__track_001.mp3",
+          "durationMs": 54470,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "42bb07de-640b-44e8-a1b5-0a96d6c9335f",
+              "trackId": "2a11e40f-b73c-4a7a-b5d7-d3d31073bcdf",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "df284803-5560-4cec-a0ba-cb7485769815",
+                  "startMs": 0,
+                  "endMs": 54470,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "4490581c-f2ea-432f-b475-ef1b10f6fc35",
+              "trackId": "7ff328be-998d-41ba-9c59-c8ed95e59285",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "84ae0fe6-b06d-4d80-9af8-8112baedef9b",
+                  "startMs": 0,
+                  "endMs": 2800,
+                  "kind": "drill",
+                  "title": "1. 작년 봄 비가 많이 오던 날이었어요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "71d5f27a-c9ef-4393-a3e6-5d4974586718",
+                  "startMs": 3220,
+                  "endMs": 6880,
+                  "kind": "drill",
+                  "title": "2. 서촌을 걷다가 비를 피하려고 좁은 골목으로 들…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "a0163741-42b5-449c-8941-7e6a5e729983",
+                  "startMs": 7600,
+                  "endMs": 10500,
+                  "kind": "drill",
+                  "title": "3. 그때 우연히 잡고 조용한 카페를 발견했죠.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "7002b2ec-6ece-433c-b577-debf4ce962b9",
+                  "startMs": 11300,
+                  "endMs": 15260,
+                  "kind": "drill",
+                  "title": "4. 문을 열고 들어간히 따뜻한 공기와 커피 향이 …",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "6fd15a9b-f456-4c84-ae71-fb4cf350cc21",
+                  "startMs": 16320,
+                  "endMs": 19360,
+                  "kind": "drill",
+                  "title": "5. 안에는 나무 테이블 내 계와 책장이 하나 있었…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dd88f8df-7375-4b16-90c9-1e8031f245a7",
+                  "startMs": 20260,
+                  "endMs": 22900,
+                  "kind": "drill",
+                  "title": "6. 창문 밖으로는 비오는 한옥 지분이 보였고요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "b3f1d30e-3a01-4c0c-86ba-dfe407375657",
+                  "startMs": 23940,
+                  "endMs": 25640,
+                  "kind": "drill",
+                  "title": "7. 손님은 저 혼자 분이었어요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e7c3fafd-3158-419f-baf2-913ee02cce68",
+                  "startMs": 26440,
+                  "endMs": 31160,
+                  "kind": "drill",
+                  "title": "8. 주인 할머니께서 직접 내려주신 아메리카노를 마…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "cd2a2d18-52dc-4e76-9a52-bf288ad9d709",
+                  "startMs": 31940,
+                  "endMs": 35740,
+                  "kind": "drill",
+                  "title": "9. 그날 이후로 이 카페는 제가 가장 좋아하는 장…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "1e914341-b7fb-4ec1-b590-7ed1065530c9",
+                  "startMs": 36360,
+                  "endMs": 38620,
+                  "kind": "drill",
+                  "title": "10. 지금도 일주일에 두세 번은 꽃까요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dbd64168-1678-4e4b-b048-0ff1d9ae3ac1",
+                  "startMs": 39620,
+                  "endMs": 43120,
+                  "kind": "drill",
+                  "title": "11. 항상 같은 자리에 앉아서 아메리카노와 애플파일…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "1f0d4825-33b8-4f3c-97d8-36a3dd0caaf1",
+                  "startMs": 43920,
+                  "endMs": 47120,
+                  "kind": "drill",
+                  "title": "12. 이곳에 오면 마음이 편안해지고 생각도 정리가 …",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "b2b742aa-3877-4ff5-b737-ff2a0c9f4bf9",
+                  "startMs": 48240,
+                  "endMs": 50220,
+                  "kind": "drill",
+                  "title": "13. 도시속작은 쉼터 같은 곳이에요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "2abd0d52-3690-4231-b632-9f8d0f45a21e",
+                  "startMs": 50220,
+                  "endMs": 54120,
+                  "kind": "drill",
+                  "title": "14. 저만 아는 비밀 장소처럼 느껴져서 더 특별해요…",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 2800,
+              "text": "작년 봄 비가 많이 오던 날이었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 3220,
+              "endMs": 6880,
+              "text": "서촌을 걷다가 비를 피하려고 좁은 골목으로 들어갔어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 7600,
+              "endMs": 10500,
+              "text": "그때 우연히 잡고 조용한 카페를 발견했죠.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 11300,
+              "endMs": 15260,
+              "text": "문을 열고 들어간히 따뜻한 공기와 커피 향이 저를 감사더라고요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 16320,
+              "endMs": 19360,
+              "text": "안에는 나무 테이블 내 계와 책장이 하나 있었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 20260,
+              "endMs": 22900,
+              "text": "창문 밖으로는 비오는 한옥 지분이 보였고요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 23940,
+              "endMs": 25640,
+              "text": "손님은 저 혼자 분이었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 26440,
+              "endMs": 31160,
+              "text": "주인 할머니께서 직접 내려주신 아메리카노를 마셨는데 정말 맛있었어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 31940,
+              "endMs": 35740,
+              "text": "그날 이후로 이 카페는 제가 가장 좋아하는 장소가 됐어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 36360,
+              "endMs": 38620,
+              "text": "지금도 일주일에 두세 번은 꽃까요?",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 39620,
+              "endMs": 43120,
+              "text": "항상 같은 자리에 앉아서 아메리카노와 애플파일을 주문해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 43920,
+              "endMs": 47120,
+              "text": "이곳에 오면 마음이 편안해지고 생각도 정리가 잘 돼요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 48240,
+              "endMs": 50220,
+              "text": "도시속작은 쉼터 같은 곳이에요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 50220,
+              "endMs": 54120,
+              "text": "저만 아는 비밀 장소처럼 느껴져서 더 특별해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

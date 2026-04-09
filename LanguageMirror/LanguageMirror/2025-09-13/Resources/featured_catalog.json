@@ -1,11 +1,27 @@
 {
-  "version": 1,
-  "updatedAt": "2026-04-08T00:00:00Z",
+  "version": 2,
+  "updatedAt": "2026-04-09T00:00:00Z",
   "packs": [
+    {
+      "id": "starter_korean_greetings",
+      "title": "Korean Greetings",
+      "subtitle": "Two strangers introduce themselves on a Seoul subway",
+      "languageCode": "ko-KR",
+      "level": "beginner",
+      "trackCount": 1,
+      "durationSeconds": 41,
+      "author": "Six Wands Studios",
+      "iconSymbol": "hand.wave.fill",
+      "accentColor": "#7CB87C",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_korean_greetings"
+      }
+    },
     {
       "id": "starter_seoul_lunch",
       "title": "Seoul Lunch Recommendations",
-      "subtitle": "A short Korean dialogue between a visitor and a local",
+      "subtitle": "A visitor asks a local for restaurant tips near a subway station",
       "languageCode": "ko-KR",
       "level": "beginner",
       "trackCount": 1,
@@ -16,6 +32,38 @@
       "source": {
         "kind": "embedded",
         "bundleId": "starter_seoul_lunch"
+      }
+    },
+    {
+      "id": "starter_seoul_subway",
+      "title": "Seoul Subway Directions",
+      "subtitle": "Asking how to get from Gangnam Station to Namsan Tower",
+      "languageCode": "ko-KR",
+      "level": "intermediate",
+      "trackCount": 1,
+      "durationSeconds": 51,
+      "author": "Six Wands Studios",
+      "iconSymbol": "tram.fill",
+      "accentColor": "#5C8FE6",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_seoul_subway"
+      }
+    },
+    {
+      "id": "starter_korean_story",
+      "title": "A Quiet Seoul Cafe",
+      "subtitle": "A short personal monologue about a favorite hideaway in Seochon",
+      "languageCode": "ko-KR",
+      "level": "intermediate",
+      "trackCount": 1,
+      "durationSeconds": 54,
+      "author": "Six Wands Studios",
+      "iconSymbol": "cup.and.saucer.fill",
+      "accentColor": "#A87CC8",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_korean_story"
       }
     }
   ]
