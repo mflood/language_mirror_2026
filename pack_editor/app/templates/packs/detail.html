@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}{{ pack.title }}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/">Projects</a> &rsaquo;
+    <a href="/projects/{{ project.id }}">{{ project.name }}</a> &rsaquo;
+    <span>{{ pack.title }}</span>
+</nav>
+
+<div class="page-header">
+    <h1>{{ pack.title }}</h1>
+    <span class="badge badge-{{ pack.status }}">{{ pack.status }}</span>
+    {% if tracks %}
+    <a href="/packs/{{ pack.id }}/publish" class="btn btn-primary btn-sm" style="margin-left: auto;">Publish</a>
+    {% endif %}
+</div>
+
+{% if pack.author %}
+<p class="subtitle">by {{ pack.author }}</p>
+{% endif %}
+
+<section>
+    <div class="section-header">
+        <h2>Tracks</h2>
+        <span class="text-muted">{{ tracks|length }} track{{ 's' if tracks|length != 1 else '' }}</span>
+    </div>
+
+    {% if tracks %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Filename</th>
+                <th>Duration</th>
+                <th>Language</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for track in tracks %}
+            <tr>
+                <td>{{ track.display_order + 1 }}</td>
+                <td><a href="/tracks/{{ track.id }}">{{ track.title }}</a></td>
+                <td><code>{{ track.filename }}</code></td>
+                <td>{% if track.duration_ms %}{{ "%.1f"|format(track.duration_ms / 1000) }}s{% else %}-{% endif %}</td>
+                <td>{{ track.language_code or '-' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <p>No tracks yet. Upload audio files below to get started.</p>
+    </div>
+    {% endif %}
+</section>
+
+<section>
+    <div class="section-header">
+        <h2>Upload Audio</h2>
+    </div>
+    <form method="post" action="/packs/{{ pack.id }}/tracks/upload" enctype="multipart/form-data" class="upload-form">
+        <div class="form-group">
+            <label for="file">Audio File</label>
+            <input type="file" id="file" name="file" accept=".mp3,.m4a,.wav,.aac,.flac,.ogg,.opus" required>
+            <span class="text-muted">Supported: MP3, M4A, WAV, AAC, FLAC, OGG, Opus</span>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload Track</button>
+    </form>
+</section>
+
+<section>
+    <details class="settings-panel">
+        <summary>Pack Settings</summary>
+        <form method="post" action="/packs/{{ pack.id }}/edit" class="form-inline" style="margin-top: 0.75rem;">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="{{ pack.title }}" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" value="{{ pack.author or '' }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <form method="post" action="/packs/{{ pack.id }}/delete" style="margin-top: 0.75rem;"
+              onsubmit="return confirm('Delete this pack and all its tracks?')">
+            <button type="submit" class="btn btn-danger btn-sm">Delete Pack</button>
+        </form>
+    </details>
+</section>
+{% endblock %}

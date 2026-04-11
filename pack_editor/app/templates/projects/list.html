@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Projects</h1>
+</div>
+
+{% if projects %}
+<div class="card-grid">
+    {% for project in projects %}
+    <a href="/projects/{{ project.id }}" class="card">
+        <div class="card-body">
+            <h3>{{ project.name }}</h3>
+            <span class="badge">{{ project.language_code }}</span>
+            {% if project.description %}
+            <p>{{ project.description }}</p>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No projects yet.</p>
+    {% if current_user.is_admin %}
+    <p><a href="/admin/projects">Create a project</a> to get started.</p>
+    {% else %}
+    <p>Ask an admin to assign you to a project.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

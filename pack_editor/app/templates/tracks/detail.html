@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block title %}{{ track.title }}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/">Projects</a> &rsaquo;
+    <a href="/projects/{{ project.id }}">{{ project.name }}</a> &rsaquo;
+    <a href="/packs/{{ pack.id }}">{{ pack.title }}</a> &rsaquo;
+    <span>{{ track.title }}</span>
+</nav>
+
+<div class="page-header">
+    <h1>{{ track.title }}</h1>
+    <span class="badge">{{ track.language_code or 'unknown' }}</span>
+</div>
+
+<div class="track-meta">
+    <span class="text-muted">{{ track.filename }}</span>
+    {% if track.duration_ms %}
+    <span class="text-muted"> &middot; {{ "%.1f"|format(track.duration_ms / 1000) }}s</span>
+    {% endif %}
+</div>
+
+<!-- Audio Player -->
+<section class="audio-section">
+    <div class="audio-player-wrap">
+        <audio id="audio-player" controls preload="none"></audio>
+        <div class="audio-controls">
+            <button class="btn btn-sm" onclick="audioPreview.loadAudio()">Load Audio</button>
+            <span id="audio-status" class="text-muted">Click "Load Audio" to fetch from S3</span>
+        </div>
+    </div>
+</section>
+
+<!-- Transcription -->
+<section>
+    <div class="section-header">
+        <h2>Transcription</h2>
+        <div class="section-actions">
+            {% if latest_job and latest_job.status in ('pending', 'running') %}
+            <span class="badge badge-running" id="job-badge">{{ latest_job.status }}...</span>
+            {% else %}
+            <form method="post" action="/tracks/{{ track.id }}/transcribe" style="display:inline;">
+                <button type="submit" class="btn btn-primary btn-sm"
+                        onclick="this.disabled=true; this.textContent='Queuing...'; this.form.submit();">
+                    {% if clips %}Re-transcribe{% else %}Transcribe{% endif %}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% if latest_job and latest_job.status == 'failed' %}
+    <div class="alert alert-error">Transcription failed: {{ latest_job.error_message or 'Unknown error' }}</div>
+    {% endif %}
+</section>
+
+<!-- Practice Clips -->
+<section>
+    <div class="section-header">
+        <h2>Practice Clips</h2>
+        <div class="section-actions">
+            <span class="text-muted">{{ clips|length }} clip{{ 's' if clips|length != 1 else '' }}</span>
+            <button class="btn btn-sm btn-primary" onclick="clipEditor.addClip()">+ Add Clip</button>
+        </div>
+    </div>
+    {% if clips %}
+    <table class="data-table clip-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Start (s)</th>
+                <th>End (s)</th>
+                <th>Kind</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for clip in clips %}
+            <tr id="clip-{{ clip.id }}" class="clip-row">
+                <td>{{ loop.index }}</td>
+                <td>
+                    <input type="text" class="inline-edit" data-field="title"
+                           value="{{ clip.title or '' }}" placeholder="Clip title">
+                </td>
+                <td>
+                    <input type="text" class="inline-edit inline-edit-narrow" data-field="start_ms"
+                           value="{{ "%.3f"|format(clip.start_ms / 1000) }}">
+                </td>
+                <td>
+                    <input type="text" class="inline-edit inline-edit-narrow" data-field="end_ms"
+                           value="{{ "%.3f"|format(clip.end_ms / 1000) }}">
+                </td>
+                <td>
+                    <select class="inline-edit" data-field="kind">
+                        <option value="drill" {% if clip.kind == 'drill' %}selected{% endif %}>drill</option>
+                        <option value="skip" {% if clip.kind == 'skip' %}selected{% endif %}>skip</option>
+                        <option value="noise" {% if clip.kind == 'noise' %}selected{% endif %}>noise</option>
+                    </select>
+                </td>
+                <td class="cell-actions">
+                    <button class="btn-play" title="Preview"
+                            onclick="playClip({{ clip.start_ms }}, {{ clip.end_ms }}, '{{ clip.id }}')">&#9654;</button>
+                    <button class="btn-delete" title="Delete"
+                            onclick="clipEditor.deleteClip('{{ clip.id }}')">&times;</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <p>No clips yet. Click "Transcribe" or "+ Add Clip" to get started.</p>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Transcript Spans -->
+<section>
+    <div class="section-header">
+        <h2>Transcript</h2>
+        <div class="section-actions">
+            <span class="text-muted">{{ spans|length }} span{{ 's' if spans|length != 1 else '' }}</span>
+            <button class="btn btn-sm btn-primary" onclick="transcriptEditor.addSpan()">+ Add Span</button>
+        </div>
+    </div>
+    {% if spans %}
+    <div class="transcript-list">
+        {% for span in spans %}
+        <div class="transcript-row" id="span-{{ span.id }}">
+            <div class="transcript-timing">
+                <input type="text" class="inline-edit inline-edit-narrow" data-field="start_ms"
+                       value="{{ "%.3f"|format(span.start_ms / 1000) }}" title="Start (seconds)">
+                <input type="text" class="inline-edit inline-edit-narrow" data-field="end_ms"
+                       value="{{ "%.3f"|format(span.end_ms / 1000) }}" title="End (seconds)">
+                <input type="text" class="inline-edit inline-edit-speaker" data-field="speaker"
+                       value="{{ span.speaker or '' }}" placeholder="Speaker">
+            </div>
+            <div class="transcript-text-edit">
+                <input type="text" class="inline-edit inline-edit-wide" data-field="text"
+                       value="{{ span.text }}" placeholder="Transcript text">
+            </div>
+            <div class="transcript-actions">
+                <button class="btn-play" title="Preview"
+                        onclick="playClip({{ span.start_ms }}, {{ span.end_ms }}, null); event.stopPropagation();">&#9654;</button>
+                <button class="btn-delete" title="Delete"
+                        onclick="transcriptEditor.deleteSpan('{{ span.id }}'); event.stopPropagation();">&times;</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No transcript yet. Click "Transcribe" or "+ Add Span" to get started.</p>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Track Actions -->
+<section>
+    <details class="settings-panel">
+        <summary>Track Actions</summary>
+        <div style="margin-top: 0.75rem;">
+            <form method="post" action="/tracks/{{ track.id }}/delete"
+                  onsubmit="return confirm('Delete this track and its audio from S3?')">
+                <button type="submit" class="btn btn-danger btn-sm">Delete Track</button>
+            </form>
+        </div>
+    </details>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/audio-preview.js"></script>
+<script src="/static/js/clip-editor.js"></script>
+<script src="/static/js/transcript-editor.js"></script>
+<script>
+    const audioPreview = new AudioPreview("{{ track.id }}");
+    const clipEditor = new ClipEditor("{{ track.id }}");
+    const transcriptEditor = new TranscriptEditor("{{ track.id }}");
+
+    clipEditor.bindAll();
+    transcriptEditor.bindAll();
+
+    function playClip(startMs, endMs, clipId) {
+        document.querySelectorAll('.clip-row.active, .transcript-row.active').forEach(
+            el => el.classList.remove('active')
+        );
+        if (clipId) {
+            const el = document.getElementById('clip-' + clipId);
+            if (el) el.classList.add('active');
+        }
+        audioPreview.playRange(startMs, endMs);
+    }
+
+    document.addEventListener('clipPlaybackEnded', () => {
+        document.querySelectorAll('.clip-row.active, .transcript-row.active').forEach(
+            el => el.classList.remove('active')
+        );
+    });
+
+    {% if latest_job and latest_job.status in ('pending', 'running') %}
+    (function pollJobStatus() {
+        const badge = document.getElementById('job-badge');
+        const interval = setInterval(async () => {
+            try {
+                const resp = await fetch('/api/tracks/{{ track.id }}/job-status');
+                const data = await resp.json();
+                if (data.status === 'done' || data.status === 'failed') {
+                    clearInterval(interval);
+                    window.location.reload();
+                } else if (badge) {
+                    badge.textContent = data.status + '...';
+                }
+            } catch (e) {}
+        }, 3000);
+    })();
+    {% endif %}
+</script>
+{% endblock %}

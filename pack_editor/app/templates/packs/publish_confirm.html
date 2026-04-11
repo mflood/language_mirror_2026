@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Publish {{ pack.title }}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/">Projects</a> &rsaquo;
+    <a href="/projects/{{ project.id }}">{{ project.name }}</a> &rsaquo;
+    <a href="/packs/{{ pack.id }}">{{ pack.title }}</a> &rsaquo;
+    <span>Publish</span>
+</nav>
+
+<div class="page-header">
+    <h1>Publish: {{ pack.title }}</h1>
+</div>
+
+<section>
+    <div class="publish-summary">
+        <h2>Pre-flight Check</h2>
+        <table class="data-table">
+            <tbody>
+                <tr><td><strong>Pack</strong></td><td>{{ pack.title }}</td></tr>
+                <tr><td><strong>Author</strong></td><td>{{ pack.author or '-' }}</td></tr>
+                <tr><td><strong>Tracks</strong></td><td>{{ tracks|length }}</td></tr>
+                <tr>
+                    <td><strong>Status</strong></td>
+                    <td><span class="badge badge-{{ pack.status }}">{{ pack.status }}</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% if tracks|length == 0 %}
+<div class="alert alert-error">
+    Cannot publish: this pack has no tracks. Upload audio first.
+</div>
+{% else %}
+<section>
+    <h2>Manifest Preview</h2>
+    <div class="manifest-preview">
+        <pre><code>{{ manifest_preview }}</code></pre>
+    </div>
+</section>
+
+<section>
+    <form method="post" action="/packs/{{ pack.id }}/publish">
+        <p>This will upload <strong>bundle.json</strong> and <strong>{{ tracks|length }} audio file{{ 's' if tracks|length != 1 else '' }}</strong> to the CDN.</p>
+        {% if pack.status == 'published' %}
+        <p class="text-muted">This pack was previously published. Publishing again will overwrite the existing bundle.</p>
+        {% endif %}
+        <button type="submit" class="btn btn-primary"
+                onclick="this.disabled=true; this.textContent='Publishing...'; this.form.submit();">
+            Publish to CDN
+        </button>
+        <a href="/packs/{{ pack.id }}" class="btn" style="margin-left: 0.5rem;">Cancel</a>
+    </form>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block head %}
+<style>
+    .manifest-preview {
+        background: #1a1a2e; color: #e0e0e0; border-radius: 8px;
+        padding: 1rem; max-height: 400px; overflow: auto; font-size: 0.8rem;
+    }
+    .manifest-preview code { white-space: pre; }
+    .publish-summary { margin-bottom: 1.5rem; }
+</style>
+{% endblock %}

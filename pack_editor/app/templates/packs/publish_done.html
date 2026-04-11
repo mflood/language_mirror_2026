@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Published: {{ pack.title }}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/">Projects</a> &rsaquo;
+    <a href="/projects/{{ project.id }}">{{ project.name }}</a> &rsaquo;
+    <a href="/packs/{{ pack.id }}">{{ pack.title }}</a> &rsaquo;
+    <span>Published</span>
+</nav>
+
+<div class="page-header">
+    <h1>Published!</h1>
+    <span class="badge badge-published">published</span>
+</div>
+
+<section>
+    <div class="publish-result">
+        <table class="data-table">
+            <tbody>
+                <tr>
+                    <td><strong>Pack</strong></td>
+                    <td>{{ pack.title }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Tracks Published</strong></td>
+                    <td>{{ result.tracks_published }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Manifest URL</strong></td>
+                    <td><a href="{{ result.manifest_url }}" target="_blank">{{ result.manifest_url }}</a></td>
+                </tr>
+                <tr>
+                    <td><strong>Deep Link</strong></td>
+                    <td><code class="deeplink-code">{{ result.deeplink_url }}</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h2>Import into Language Mirror</h2>
+    <p>Open this link on your iOS device to import the pack:</p>
+    <div class="deeplink-box">
+        <a href="{{ result.deeplink_url }}" class="btn btn-primary">Open in Language Mirror</a>
+    </div>
+    <p class="text-muted" style="margin-top: 0.75rem;">
+        Or copy the manifest URL and paste it into Language Mirror's import screen.
+    </p>
+</section>
+
+<section>
+    <a href="/packs/{{ pack.id }}" class="btn">Back to Pack</a>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+    .publish-result { margin-bottom: 1.5rem; }
+    .deeplink-code {
+        background: #f1f3f5; padding: 0.4rem 0.75rem; border-radius: 6px;
+        font-size: 0.8rem; word-break: break-all; display: inline-block; max-width: 500px;
+    }
+    .deeplink-box { margin-top: 0.75rem; }
+</style>
+{% endblock %}

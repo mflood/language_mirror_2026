@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/">Projects</a> &rsaquo;
+    <span>{{ project.name }}</span>
+</nav>
+
+<div class="page-header">
+    <h1>{{ project.name }}</h1>
+    <span class="badge">{{ project.language_code }}</span>
+</div>
+
+{% if project.description %}
+<p class="subtitle">{{ project.description }}</p>
+{% endif %}
+
+<section>
+    <div class="section-header">
+        <h2>Packs</h2>
+    </div>
+    {% if packs %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pack in packs %}
+            <tr>
+                <td><a href="/packs/{{ pack.id }}">{{ pack.title }}</a></td>
+                <td>{{ pack.author or '-' }}</td>
+                <td><span class="badge badge-{{ pack.status }}">{{ pack.status }}</span></td>
+                <td>{{ pack.updated_at.strftime('%Y-%m-%d') if pack.updated_at else '-' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">No packs yet. Create one below.</p>
+    {% endif %}
+
+    <details class="settings-panel" style="margin-top: 1rem;">
+        <summary>Create New Pack</summary>
+        <form method="post" action="/projects/{{ project.id }}/packs" class="form-inline" style="margin-top: 0.75rem;">
+            <div class="form-group">
+                <label for="title">Pack Title</label>
+                <input type="text" id="title" name="title" required placeholder="Korean Travel Basics">
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" placeholder="Six Wands Studios">
+            </div>
+            <button type="submit" class="btn btn-primary">Create Pack</button>
+        </form>
+    </details>
+</section>
+
+<section>
+    <div class="section-header">
+        <h2>Members</h2>
+    </div>
+    {% if members %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                {% if current_user.is_admin %}
+                <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.full_name or '-' }}</td>
+                <td>{{ member.email }}</td>
+                {% if current_user.is_admin %}
+                <td>
+                    <form method="post" action="/admin/projects/{{ project.id }}/unassign" class="form-inline-compact">
+                        <input type="hidden" name="user_id" value="{{ member.id }}">
+                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">No members assigned.</p>
+    {% endif %}
+
+    {% if current_user.is_admin and all_users %}
+    <details class="settings-panel" style="margin-top: 1rem;">
+        <summary>Add Member</summary>
+        <form method="post" action="/admin/projects/{{ project.id }}/assign" class="form-inline" style="margin-top: 0.75rem;">
+            <div class="form-group">
+                <label for="user_id">User</label>
+                <select id="user_id" name="user_id">
+                    {% for u in all_users %}
+                    <option value="{{ u.id }}">{{ u.full_name or u.email }} ({{ u.email }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Assign</button>
+        </form>
+    </details>
+    {% endif %}
+</section>
+{% endblock %}

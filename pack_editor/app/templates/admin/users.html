@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Admin - Users{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Manage Users</h1>
+</div>
+
+<section>
+    <h2>Invite User</h2>
+    <form method="post" action="/admin/users/invite" class="form-inline">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="user@example.com">
+        </div>
+        <div class="form-group">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" placeholder="Optional">
+        </div>
+        <button type="submit" class="btn btn-primary">Invite</button>
+    </form>
+</section>
+
+<section>
+    <h2>Users</h2>
+    {% if users %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Access Code</th>
+                <th>Admin</th>
+                <th>Joined</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.full_name or '-' }}</td>
+                <td><code>{{ user.access_code }}</code></td>
+                <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+                <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else '-' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">No users yet. Invite someone above.</p>
+    {% endif %}
+</section>
+{% endblock %}

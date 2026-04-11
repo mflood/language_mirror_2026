@@ -1,0 +1,18 @@
+<nav class="navbar">
+    <div class="nav-brand">
+        <a href="/">Language Mirror Pack Editor</a>
+    </div>
+    <div class="nav-links">
+        {% if current_user %}
+            <a href="/">Projects</a>
+            {% if current_user.is_admin %}
+                <a href="/admin/projects">Admin</a>
+                <a href="/admin/users">Users</a>
+            {% endif %}
+            <span class="nav-user">{{ current_user.email }}</span>
+            <form method="post" action="/logout" class="nav-logout">
+                <button type="submit">Logout</button>
+            </form>
+        {% endif %}
+    </div>
+</nav>

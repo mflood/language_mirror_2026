@@ -12,3 +12,7 @@ culture_korean_3
 
 *.pyc
 myworkroot
+
+# Pack editor
+pack_editor/.env
+__pycache__/
