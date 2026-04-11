@@ -8,6 +8,7 @@
             {% if current_user.is_admin %}
                 <a href="/admin/projects">Admin</a>
                 <a href="/admin/users">Users</a>
+                <a href="/admin/import">Import</a>
             {% endif %}
             <span class="nav-user">{{ current_user.email }}</span>
             <form method="post" action="/logout" class="nav-logout">

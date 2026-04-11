@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Import Bundle{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Import Existing Bundle</h1>
+</div>
+
+<p class="subtitle">Import a published bundle.json into the editor. Audio files stay at their existing CDN location.</p>
+
+<section>
+    <form method="post" action="/admin/import" class="import-form">
+        <div class="form-group">
+            <label for="manifest_url">Bundle JSON URL</label>
+            <input type="url" id="manifest_url" name="manifest_url" required
+                   placeholder="https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/my-bundle/bundle.json"
+                   style="width: 100%;">
+            <span class="text-muted">The full URL to the bundle.json file on CloudFront or S3.</span>
+        </div>
+        <div class="form-group">
+            <label for="project_id">Import into Project</label>
+            <select id="project_id" name="project_id" required>
+                {% for project in projects %}
+                <option value="{{ project.id }}">{{ project.name }} ({{ project.language_code }})</option>
+                {% endfor %}
+            </select>
+            {% if not projects %}
+            <span class="text-muted">No projects yet — <a href="/admin/projects">create one first</a>.</span>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary"
+                onclick="this.disabled=true; this.textContent='Importing...'; this.form.submit();">
+            Import Bundle
+        </button>
+    </form>
+</section>
+
+<section>
+    <h2>Available Bundles</h2>
+    <p class="text-muted">Known bundles on the CDN that can be imported:</p>
+    <table class="data-table">
+        <thead>
+            <tr><th>Bundle</th><th>URL</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% set bundles = [
+                ("Korean Greetings", "starter_korean_greetings"),
+                ("Seoul Lunch", "starter_seoul_lunch"),
+                ("Seoul Subway", "starter_seoul_subway"),
+                ("Korean Story", "starter_korean_story"),
+                ("Culture Korean 2", "culture_korean_2"),
+                ("Culture Korean 3", "culture_korean_3"),
+                ("AKC Travel Korean 01", "akc-travel-korean-01-v2"),
+                ("Intermediate Korean Beginner 01", "int-kor-beg-01-r1"),
+            ] %}
+            {% for name, slug in bundles %}
+            <tr>
+                <td>{{ name }}</td>
+                <td><code class="text-muted" style="font-size: 0.75rem;">lmaudio/{{ slug }}/bundle.json</code></td>
+                <td>
+                    <button class="btn btn-sm" onclick="document.getElementById('manifest_url').value='https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/{{ slug }}/bundle.json'">
+                        Use
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

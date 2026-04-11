@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Import Complete{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Import Complete</h1>
+</div>
+
+<section>
+    <div class="alert alert-success">
+        Successfully imported bundle into <strong>{{ project.name }}</strong>.
+    </div>
+
+    <table class="data-table">
+        <tbody>
+            <tr><td><strong>Source</strong></td><td><code style="font-size: 0.8rem;">{{ manifest_url }}</code></td></tr>
+            <tr><td><strong>Project</strong></td><td><a href="/projects/{{ project.id }}">{{ project.name }}</a></td></tr>
+            <tr><td><strong>Packs imported</strong></td><td>{{ stats.packs }}</td></tr>
+            <tr><td><strong>Tracks imported</strong></td><td>{{ stats.tracks }}</td></tr>
+            <tr><td><strong>Clips imported</strong></td><td>{{ stats.clips }}</td></tr>
+            <tr><td><strong>Transcript spans imported</strong></td><td>{{ stats.spans }}</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <a href="/projects/{{ project.id }}" class="btn btn-primary">View Project</a>
+    <a href="/admin/import" class="btn" style="margin-left: 0.5rem;">Import Another</a>
+</section>
+{% endblock %}

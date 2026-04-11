@@ -10,6 +10,7 @@ from app.auth import (
     require_admin,
     verify_admin_password,
 )
+from app.bundle_import import import_bundle
 from app.dao import get_dao
 from app.templating import templates
 
@@ -118,3 +119,38 @@ def admin_unassign_user(
     dao = get_dao()
     dao.unassign_user_from_project(project_id=project_id, user_id=user_id)
     return RedirectResponse(url="/admin/projects", status_code=302)
+
+
+@router.get("/admin/import", response_class=HTMLResponse)
+def admin_import_page(request: Request, admin: CurrentUser = Depends(require_admin)):
+    dao = get_dao()
+    projects = dao.list_projects()
+    return templates.TemplateResponse(
+        request, "admin/import.html",
+        {"projects": projects, "current_user": admin},
+    )
+
+
+@router.post("/admin/import")
+def admin_import_bundle(
+    request: Request,
+    manifest_url: str = Form(...),
+    project_id: str = Form(...),
+    admin: CurrentUser = Depends(require_admin),
+):
+    dao = get_dao()
+    project = dao.get_project(project_id)
+    if not project:
+        return HTMLResponse("Project not found", status_code=404)
+    try:
+        stats = import_bundle(dao, manifest_url, project_id)
+    except Exception as e:
+        projects = dao.list_projects()
+        return templates.TemplateResponse(
+            request, "admin/import.html",
+            {"projects": projects, "current_user": admin, "error": f"Import failed: {e}"},
+        )
+    return templates.TemplateResponse(
+        request, "admin/import_done.html",
+        {"project": project, "stats": stats, "manifest_url": manifest_url, "current_user": admin},
+    )
