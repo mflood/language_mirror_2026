@@ -5,9 +5,16 @@ from fastapi.responses import JSONResponse
 
 from app.auth import CurrentUser, require_auth
 from app.dao import get_dao
-from app.s3 import generate_presigned_url
+from app.settings import settings
 
 router = APIRouter(prefix="/api")
+
+
+def _audio_url_for_track(track: dict) -> str:
+    """Build a direct CloudFront/S3 URL for the track's audio file."""
+    base = settings.cloudfront_base_url.rstrip("/")
+    s3_key = track["s3_key"]
+    return f"{base}/{s3_key}"
 
 
 # ── Audio ──────────────────────────────────────────────────────────────
@@ -21,7 +28,7 @@ def track_audio_url(track_id: str, user: CurrentUser = Depends(require_auth)):
     pack = dao.get_pack(track["pack_id"])
     if not user.is_admin and pack and not dao.is_user_in_project(pack["project_id"], user.user_id):
         return JSONResponse({"error": "Access denied"}, status_code=403)
-    url = generate_presigned_url(track["s3_key"])
+    url = _audio_url_for_track(track)
     return {"url": url, "filename": track["filename"], "duration_ms": track["duration_ms"]}
 
 
