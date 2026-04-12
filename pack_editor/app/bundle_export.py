@@ -13,8 +13,15 @@ from app.settings import settings
 
 logger = logging.getLogger(__name__)
 
-# Publish prefix: lmaudio/{pack_id}  (matches existing pipeline convention)
-PUBLISH_PREFIX_TEMPLATE = "lmaudio/{pack_id}"
+DEFAULT_PREFIX_TEMPLATE = "lmaudio/{pack_id}"
+
+
+def _resolve_publish_prefix(pack: dict) -> str:
+    """Use stored publish_prefix if set, otherwise generate from pack ID."""
+    prefix = pack.get("publish_prefix")
+    if prefix:
+        return prefix.strip("/")
+    return DEFAULT_PREFIX_TEMPLATE.format(pack_id=pack["id"])
 
 
 def build_manifest(dao: DAO, pack_id: str) -> dict:
@@ -23,6 +30,7 @@ def build_manifest(dao: DAO, pack_id: str) -> dict:
     if not pack:
         raise ValueError(f"Pack {pack_id} not found")
 
+    publish_prefix = _resolve_publish_prefix(pack)
     project = dao.get_project(pack["project_id"])
     tracks_rows = dao.list_tracks_for_pack(pack_id)
 
@@ -32,7 +40,6 @@ def build_manifest(dao: DAO, pack_id: str) -> dict:
         spans_rows = dao.list_spans_for_track(t["id"])
 
         # Build CloudFront URL for the audio file
-        publish_prefix = PUBLISH_PREFIX_TEMPLATE.format(pack_id=pack_id)
         audio_url = f"{settings.cloudfront_base_url}/{publish_prefix}/{t['filename']}"
 
         # Group clips into a practice set
@@ -107,10 +114,14 @@ def publish_pack(dao: DAO, pack_id: str) -> dict:
     """
     import boto3
 
+    pack = dao.get_pack(pack_id)
+    if not pack:
+        raise ValueError(f"Pack {pack_id} not found")
+
     manifest = build_manifest(dao, pack_id)
     manifest_json = json.dumps(manifest, ensure_ascii=False, indent=2)
 
-    publish_prefix = PUBLISH_PREFIX_TEMPLATE.format(pack_id=pack_id)
+    publish_prefix = _resolve_publish_prefix(pack)
     bucket = settings.s3_bucket_name
 
     s3 = boto3.client("s3",
@@ -130,7 +141,6 @@ def publish_pack(dao: DAO, pack_id: str) -> dict:
     )
 
     # Copy audio files from editor prefix to publish prefix
-    pack = dao.get_pack(pack_id)
     tracks = dao.list_tracks_for_pack(pack_id)
     for t in tracks:
         source_key = t["s3_key"]
@@ -155,4 +165,108 @@ def publish_pack(dao: DAO, pack_id: str) -> dict:
         "deeplink_url": deeplink_url,
         "manifest_key": manifest_key,
         "tracks_published": len(tracks),
+        "publish_prefix": publish_prefix,
+    }
+
+
+def build_embedded_manifest(dao: DAO, pack_id: str, bundle_id: str) -> dict:
+    """
+    Build a manifest formatted for iOS app embedding.
+    Differences from CDN manifest:
+    - track url is null (audio is bundled in the app)
+    - track filename is prefixed with {bundle_id}__
+    - Includes a "Full Track" practice set as the first set
+    """
+    pack = dao.get_pack(pack_id)
+    if not pack:
+        raise ValueError(f"Pack {pack_id} not found")
+
+    tracks_rows = dao.list_tracks_for_pack(pack_id)
+    tracks = []
+    for t in tracks_rows:
+        clips_rows = dao.list_clips_for_track(t["id"])
+        spans_rows = dao.list_spans_for_track(t["id"])
+
+        embedded_filename = f"{bundle_id}__{t['filename']}"
+
+        practice_sets = []
+        # Full Track practice set (single clip covering entire duration)
+        full_track_clip = {
+            "id": str(uuid.uuid4()),
+            "startMs": 0,
+            "endMs": t["duration_ms"] or 0,
+            "kind": "drill",
+            "title": "Full Track",
+            "repeats": None,
+            "startSpeed": None,
+            "endSpeed": None,
+            "languageCode": t.get("language_code"),
+        }
+        practice_sets.append({
+            "id": str(uuid.uuid4()),
+            "trackId": t["id"],
+            "displayOrder": 0,
+            "title": "Full Track",
+            "clips": [full_track_clip],
+            "isFavorite": False,
+        })
+
+        # Practice Set from edited clips
+        if clips_rows:
+            ps_clips = [
+                {
+                    "id": str(uuid.uuid4()),
+                    "startMs": c["start_ms"],
+                    "endMs": c["end_ms"],
+                    "kind": c["kind"],
+                    "title": c.get("title"),
+                    "repeats": None,
+                    "startSpeed": None,
+                    "endSpeed": None,
+                    "languageCode": t.get("language_code"),
+                }
+                for c in clips_rows
+            ]
+            practice_sets.append({
+                "id": str(uuid.uuid4()),
+                "trackId": t["id"],
+                "displayOrder": 1,
+                "title": "Practice Set",
+                "clips": ps_clips,
+                "isFavorite": False,
+            })
+
+        transcripts = [
+            {
+                "startMs": s["start_ms"],
+                "endMs": s["end_ms"],
+                "text": s["text"],
+                "speaker": s.get("speaker"),
+                "languageCode": s.get("language_code") or t.get("language_code"),
+            }
+            for s in spans_rows
+        ]
+
+        tracks.append({
+            "id": t["id"],
+            "title": t["title"],
+            "url": None,
+            "filename": embedded_filename,
+            "durationMs": t["duration_ms"],
+            "languageCode": t.get("language_code"),
+            "practiceSets": practice_sets,
+            "transcripts": transcripts if transcripts else None,
+        })
+
+    return {
+        "id": bundle_id,
+        "title": pack["title"],
+        "packs": [{
+            "id": bundle_id,
+            "title": pack["title"],
+            "author": pack.get("author"),
+            "coverUrl": None,
+            "coverFilename": None,
+            "tracks": tracks,
+        }],
     }

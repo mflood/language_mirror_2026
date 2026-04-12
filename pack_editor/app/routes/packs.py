@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import json
+
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
 from app.auth import CurrentUser, require_auth
-from app.bundle_export import build_manifest, publish_pack
+from app.bundle_export import build_embedded_manifest, build_manifest, publish_pack
 from app.dao import get_dao
 from app.templating import templates
 
@@ -123,4 +125,40 @@ def publish_execute(pack_id: str, request: Request, user: CurrentUser = Depends(
             "result": result,
             "current_user": user,
         },
+    )
+
+
+@router.get("/packs/{pack_id}/download/bundle.json")
+def download_bundle_json(pack_id: str, user: CurrentUser = Depends(require_auth)):
+    """Download the CDN-format bundle.json for this pack."""
+    dao = get_dao()
+    pack = dao.get_pack(pack_id)
+    if not pack:
+        return HTMLResponse("Pack not found", status_code=404)
+    if not user.is_admin and not dao.is_user_in_project(pack["project_id"], user.user_id):
+        return HTMLResponse("Access denied", status_code=403)
+    manifest = build_manifest(dao, pack_id)
+    return JSONResponse(
+        content=manifest,
+        headers={"Content-Disposition": f'attachment; filename="bundle.json"'},
+    )
+
+
+@router.get("/packs/{pack_id}/download/embedded")
+def download_embedded_bundle(pack_id: str, request: Request, user: CurrentUser = Depends(require_auth)):
+    """Download the iOS-embedded-format bundle.json with a bundle_id."""
+    dao = get_dao()
+    pack = dao.get_pack(pack_id)
+    if not pack:
+        return HTMLResponse("Pack not found", status_code=404)
+    if not user.is_admin and not dao.is_user_in_project(pack["project_id"], user.user_id):
+        return HTMLResponse("Access denied", status_code=403)
+    # Derive bundle_id from publish_prefix (e.g. "lmaudio/starter_korean_greetings" -> "starter_korean_greetings")
+    prefix = pack.get("publish_prefix") or ""
+    bundle_id = prefix.split("/")[-1] if "/" in prefix else pack["title"].lower().replace(" ", "_")
+    manifest = build_embedded_manifest(dao, pack_id, bundle_id)
+    filename = f"{bundle_id}.bundle.json"
+    return JSONResponse(
+        content=manifest,
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )

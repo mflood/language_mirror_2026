@@ -207,7 +207,7 @@ class DAO:
                     """
                     INSERT INTO pack (project_id, title, author)
                     VALUES (%s, %s, %s)
-                    RETURNING id, project_id, title, author, cover_url, status, created_at, updated_at;
+                    RETURNING id, project_id, title, author, cover_url, status, created_at, updated_at, publish_prefix;
                     """,
                     (project_id, title, author),
                 )
@@ -220,7 +220,7 @@ class DAO:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT id, project_id, title, author, cover_url, status, created_at, updated_at
+                    SELECT id, project_id, title, author, cover_url, status, created_at, updated_at, publish_prefix
                     FROM pack
                     WHERE id = %s;
                     """,
@@ -229,7 +229,7 @@ class DAO:
                 row = cur.fetchone()
                 return _pack_row_to_dict(row) if row else None
 
-    def update_pack(self, pack_id: str, title: Optional[str] = None, author: Optional[str] = None, status: Optional[str] = None) -> Optional[dict]:
+    def update_pack(self, pack_id: str, title: Optional[str] = None, author: Optional[str] = None, status: Optional[str] = None, publish_prefix: Optional[str] = None) -> Optional[dict]:
         sets = []
         params = []
         if title is not None:
@@ -241,6 +241,9 @@ class DAO:
         if status is not None:
             sets.append("status = %s")
             params.append(status)
+        if publish_prefix is not None:
+            sets.append("publish_prefix = %s")
+            params.append(publish_prefix)
         if not sets:
             return self.get_pack(pack_id)
         sets.append("updated_at = now()")
@@ -251,7 +254,7 @@ class DAO:
                     f"""
                     UPDATE pack SET {', '.join(sets)}
                     WHERE id = %s
-                    RETURNING id, project_id, title, author, cover_url, status, created_at, updated_at;
+                    RETURNING id, project_id, title, author, cover_url, status, created_at, updated_at, publish_prefix;
                     """,
                     params,
                 )
@@ -270,7 +273,7 @@ class DAO:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT id, project_id, title, author, cover_url, status, created_at, updated_at
+                    SELECT id, project_id, title, author, cover_url, status, created_at, updated_at, publish_prefix
                     FROM pack
                     WHERE project_id = %s
                     ORDER BY created_at DESC;
@@ -678,7 +681,7 @@ def _project_row_to_dict(row) -> dict:
 
 
 def _pack_row_to_dict(row) -> dict:
-    return {
+    d = {
         "id": str(row[0]),
         "project_id": str(row[1]),
         "title": row[2],
@@ -688,6 +691,9 @@ def _pack_row_to_dict(row) -> dict:
         "created_at": row[6],
         "updated_at": row[7],
     }
+    if len(row) > 8:
+        d["publish_prefix"] = row[8]
+    return d
 
 
 def _track_row_to_dict(row) -> dict:

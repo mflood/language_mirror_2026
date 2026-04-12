@@ -70,6 +70,21 @@
     </form>
 </section>
 
+{% if tracks %}
+<section>
+    <details class="settings-panel">
+        <summary>Download / Export</summary>
+        <div style="margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="/packs/{{ pack.id }}/download/bundle.json" class="btn btn-sm">Download bundle.json (CDN)</a>
+            <a href="/packs/{{ pack.id }}/download/embedded" class="btn btn-sm">Download bundle.json (iOS embed)</a>
+        </div>
+        {% if pack.publish_prefix %}
+        <p class="text-muted" style="margin-top: 0.5rem;">Publishes to: <code>{{ pack.publish_prefix }}/</code></p>
+        {% endif %}
+    </details>
+</section>
+{% endif %}
+
 <section>
     <details class="settings-panel">
         <summary>Pack Settings</summary>

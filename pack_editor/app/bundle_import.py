@@ -41,6 +41,15 @@ def import_bundle(dao: DAO, manifest_url: str, project_id: str) -> dict:
     manifest = fetch_manifest(manifest_url)
     logger.info("Importing bundle '%s' (%d packs)", manifest.get("title"), len(manifest.get("packs", [])))
 
+    # Derive the publish prefix from the manifest URL
+    # e.g. https://cdn.../lmaudio/starter_korean_greetings/bundle.json -> lmaudio/starter_korean_greetings
+    parsed_url = urlparse(manifest_url)
+    url_path = parsed_url.path.lstrip("/")
+    if url_path.endswith("/bundle.json"):
+        publish_prefix = url_path[: -len("/bundle.json")]
+    else:
+        publish_prefix = url_path.rsplit("/", 1)[0] if "/" in url_path else ""
+
     stats = {"packs": 0, "tracks": 0, "clips": 0, "spans": 0}
 
     for bundle_pack in manifest.get("packs", []):
@@ -49,8 +58,8 @@ def import_bundle(dao: DAO, manifest_url: str, project_id: str) -> dict:
             title=bundle_pack.get("title", "Untitled"),
             author=bundle_pack.get("author"),
         )
-        # Mark as published since it already exists on CDN
-        dao.update_pack(pack["id"], status="published")
+        # Mark as published and store the original S3 prefix
+        dao.update_pack(pack["id"], status="published", publish_prefix=publish_prefix)
         stats["packs"] += 1
 
         for bundle_track in bundle_pack.get("tracks", []):
