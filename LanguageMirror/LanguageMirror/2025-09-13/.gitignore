@@ -1,0 +1,10 @@
+# Keep Python venvs out of the Xcode source tree.
+# PBXFileSystemSynchronizedRootGroup auto-discovers all files here,
+# and venv .dylib/.so files cause Xcode to add bogus LIBRARY_SEARCH_PATHS.
+# Run Python scripts from the repo root (bundle_pipeline/, python_scripts/) instead.
+venv/
+.venv/
+__pycache__/
+*.pyc
+scripts/venv/
+.scripts/venv/
