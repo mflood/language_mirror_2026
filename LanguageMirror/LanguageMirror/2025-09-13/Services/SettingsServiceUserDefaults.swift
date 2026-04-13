@@ -25,15 +25,15 @@ final class SettingsServiceUserDefaults: SettingsService {
     }
 
     // Defaults
-    private let defaultRepeats = 3
+    private let defaultRepeats = 10
     private let defaultGap: TimeInterval = 0.5
     private let defaultInterGap: TimeInterval = 0.5
     private let defaultPrerollMs = 0
     private let defaultDuck = false
     private let defaultUseProgressionMode = false
     private let defaultProgressionMinRepeats = 5
-    private let defaultProgressionLinearRepeats = 10
-    private let defaultProgressionMaxRepeats = 5
+    private let defaultProgressionLinearRepeats = 15
+    private let defaultProgressionMaxRepeats = 10
     private let defaultSimpleSpeed: Float = 1.0
     private let defaultMinSpeed: Float = 0.6
     private let defaultMaxSpeed: Float = 1.0

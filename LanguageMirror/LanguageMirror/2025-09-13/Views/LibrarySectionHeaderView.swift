@@ -118,7 +118,7 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
 
     // MARK: - Configuration
 
-    func configure(mode: Mode) {
+    func configure(mode: Mode, animated: Bool = true) {
         switch mode {
         case .sectionTitle(let title):
             sectionTitleLabel.text = title
@@ -135,14 +135,18 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
             containerView.backgroundColor = AppColors.packBackground(index: colorIndex)
 
             let targetRotation: CGFloat = expanded ? .pi / 2 : 0
-            UIView.animate(
-                withDuration: 0.3,
-                delay: 0,
-                usingSpringWithDamping: 0.7,
-                initialSpringVelocity: 0.5,
-                options: [.beginFromCurrentState]
-            ) {
-                self.chevronImageView.transform = CGAffineTransform(rotationAngle: targetRotation)
+            if animated {
+                UIView.animate(
+                    withDuration: 0.3,
+                    delay: 0,
+                    usingSpringWithDamping: 0.7,
+                    initialSpringVelocity: 0.5,
+                    options: [.beginFromCurrentState]
+                ) {
+                    self.chevronImageView.transform = CGAffineTransform(rotationAngle: targetRotation)
+                }
+            } else {
+                chevronImageView.transform = CGAffineTransform(rotationAngle: targetRotation)
             }
         }
     }

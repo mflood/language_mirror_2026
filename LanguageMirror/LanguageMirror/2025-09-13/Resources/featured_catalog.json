@@ -1,7 +1,23 @@
 {
   "version": 2,
-  "updatedAt": "2026-04-09T00:00:00Z",
+  "updatedAt": "2026-04-12T00:00:00Z",
   "packs": [
+    {
+      "id": "starter_korean_poem",
+      "title": "서시 — Prologue",
+      "subtitle": "Yun Dong-ju's beloved poem about living with integrity under the stars",
+      "languageCode": "ko-KR",
+      "level": "intermediate",
+      "trackCount": 1,
+      "durationSeconds": 21,
+      "author": "윤동주 (Yun Dong-ju)",
+      "iconSymbol": "sparkles",
+      "accentColor": "#4A6FA5",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_korean_poem"
+      }
+    },
     {
       "id": "starter_korean_greetings",
       "title": "Korean Greetings",

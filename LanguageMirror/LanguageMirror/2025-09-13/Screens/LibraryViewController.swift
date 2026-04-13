@@ -255,7 +255,8 @@ final class LibraryViewController: UIViewController {
 
         let recentTrackRegistration = UICollectionView.CellRegistration<TrackCollectionCell, String> { [weak self] cell, indexPath, trackId in
             guard let self = self, let track = try? self.libraryService.loadTrack(id: trackId) else { return }
-            cell.configure(with: track, progress: 0.0)
+            let packTitle = self.packs.first(where: { $0.id == track.packId })?.title
+            cell.configure(with: track, progress: 0.0, subtitle: packTitle)
         }
 
         let favoriteRegistration = UICollectionView.CellRegistration<FavoriteCompactCell, (String, String)> { [weak self] cell, indexPath, pair in
@@ -310,7 +311,7 @@ final class LibraryViewController: UIViewController {
                     count: pack?.tracks.count ?? 0,
                     expanded: isExpanded,
                     colorIndex: packIndex
-                ))
+                ), animated: false)
                 header.onPackTap = { [weak self] in
                     self?.togglePackExpansion(packId: packId)
                 }
@@ -381,6 +382,29 @@ final class LibraryViewController: UIViewController {
         }
 
         dataSource.apply(snapshot, animatingDifferences: animating)
+
+        // Force supplementary headers to reconfigure so chevron arrows
+        // reflect the current expanded/collapsed state. The diffable data
+        // source doesn't reconfigure headers when only section items change.
+        let sections = snapshot.sectionIdentifiers
+        for (idx, section) in sections.enumerated() {
+            let indexPath = IndexPath(item: 0, section: idx)
+            guard let header = collectionView.supplementaryView(
+                forElementKind: LibrarySectionHeaderView.elementKind,
+                at: indexPath
+            ) as? LibrarySectionHeaderView else { continue }
+
+            if case .allContent(let packId) = section {
+                let packIndex = packs.firstIndex(where: { $0.id == packId }) ?? 0
+                let pack = packs.first(where: { $0.id == packId })
+                header.configure(mode: .packHeader(
+                    title: pack?.title ?? L10n("library.pack"),
+                    count: pack?.tracks.count ?? 0,
+                    expanded: expandedPackIds.contains(packId),
+                    colorIndex: packIndex
+                ))
+            }
+        }
     }
 
     private func buildContinuePracticingItems() -> [PracticeSessionSummary] {

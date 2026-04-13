@@ -12,6 +12,7 @@ final class TrackCollectionCell: UICollectionViewCell {
     private let cardView = UIView()
     private let iconImageView = UIImageView()
     private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     private let durationBadge = DurationBadge()
     private let tagStackView = UIStackView()
     private let progressBar = UIProgressView()
@@ -49,6 +50,12 @@ final class TrackCollectionCell: UICollectionViewCell {
         titleLabel.textColor = AppColors.primaryText
         titleLabel.numberOfLines = 2
         cardView.addSubview(titleLabel)
+
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        subtitleLabel.textColor = AppColors.secondaryText
+        subtitleLabel.isHidden = true
+        cardView.addSubview(subtitleLabel)
 
         durationBadge.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(durationBadge)
@@ -96,8 +103,12 @@ final class TrackCollectionCell: UICollectionViewCell {
             disclosureImageView.widthAnchor.constraint(equalToConstant: 12),
             disclosureImageView.heightAnchor.constraint(equalToConstant: 12),
 
+            subtitleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+            subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: disclosureImageView.leadingAnchor, constant: -8),
+
             tagStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
-            tagStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            tagStackView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 6),
             tagStackView.trailingAnchor.constraint(lessThanOrEqualTo: disclosureImageView.leadingAnchor, constant: -8),
 
             progressBar.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
@@ -112,8 +123,15 @@ final class TrackCollectionCell: UICollectionViewCell {
 
     // MARK: - Configuration
 
-    func configure(with track: Track, progress: Float = 0.0) {
+    func configure(with track: Track, progress: Float = 0.0, subtitle: String? = nil) {
         titleLabel.text = track.title
+
+        if let subtitle = subtitle, !subtitle.isEmpty {
+            subtitleLabel.text = subtitle
+            subtitleLabel.isHidden = false
+        } else {
+            subtitleLabel.isHidden = true
+        }
 
         if let durationMs = track.durationMs {
             durationBadge.configure(durationMs: durationMs)

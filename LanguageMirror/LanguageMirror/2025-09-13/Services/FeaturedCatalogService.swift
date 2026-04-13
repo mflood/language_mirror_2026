@@ -80,6 +80,10 @@ final class FeaturedCatalogServiceLocal: FeaturedCatalogService {
     private static let remoteURL = URL(string: "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/featured_catalog.json")!
     private static let cacheFilename = "featured_catalog.json"
     private static let remoteTimeoutSeconds: TimeInterval = 4
+    /// Cache is only a short-lived offline bridge — not a permanent store.
+    /// Without a TTL the cache would make the remote catalog effectively
+    /// single-use, since any later offline launch would serve stale data forever.
+    private static let cacheTTL: TimeInterval = 3600 // 1 hour
 
     func loadCatalog() async throws -> FeaturedCatalog {
         let decoder = makeDecoder()
@@ -88,7 +92,7 @@ final class FeaturedCatalogServiceLocal: FeaturedCatalogService {
             persistRemoteCache(remote.data)
             return remote.catalog
         }
-        // 2. Try cache from a previous successful fetch.
+        // 2. Try cache only if it's fresh (within TTL).
         if let cached = loadCachedCatalog(decoder: decoder) {
             return cached
         }
@@ -139,8 +143,18 @@ final class FeaturedCatalogServiceLocal: FeaturedCatalogService {
 
     private func loadCachedCatalog(decoder: JSONDecoder) -> FeaturedCatalog? {
         guard let url = Self.cacheURL,
-              FileManager.default.fileExists(atPath: url.path),
-              let data = try? Data(contentsOf: url) else { return nil }
+              FileManager.default.fileExists(atPath: url.path) else { return nil }
+
+        // Expire stale cache so the next launch retries remote
+        if let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
+           let modified = attrs[.modificationDate] as? Date,
+           Date().timeIntervalSince(modified) > Self.cacheTTL {
+            print("ℹ️ [FeaturedCatalog] cache expired, skipping")
+            try? FileManager.default.removeItem(at: url)
+            return nil
+        }
+
+        guard let data = try? Data(contentsOf: url) else { return nil }
         do {
             let catalog = try decoder.decode(FeaturedCatalog.self, from: data)
             print("✅ [FeaturedCatalog] loaded cached copy (version=\(catalog.version))")

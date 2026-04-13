@@ -1,0 +1,146 @@
+{
+  "id": "starter_korean_poem",
+  "title": "서시 - 윤동주",
+  "packs": [
+    {
+      "id": "starter_korean_poem",
+      "title": "서시 (Prologue)",
+      "author": "윤동주 (Yun Dong-ju)",
+      "coverUrl": null,
+      "coverFilename": null,
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_korean_poem__track_001.mp3",
+          "durationMs": 21504,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "309a352d-c6b7-49bc-88ea-6d9c0f884ca7",
+              "trackId": "eb7d522e-47ab-49b7-8275-8d94c5604242",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "3edae90e-7453-4152-8e74-624a7fac94f5",
+                  "startMs": 0,
+                  "endMs": 21504,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "984af087-1abd-4f11-9778-f0c8227562b1",
+              "trackId": "6660c4ce-48ac-48b5-95bd-6d48bc6394f3",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "df927def-4af5-4f91-bf29-9ce11c1d1fbc",
+                  "startMs": 0,
+                  "endMs": 6200,
+                  "kind": "drill",
+                  "title": "1. 죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "fc516cf2-3eb4-4032-80e8-4efd3c3510f6",
+                  "startMs": 6200,
+                  "endMs": 9360,
+                  "kind": "drill",
+                  "title": "2. 잎새에 이는 바람에도 나는 괴로워했다",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "62a575da-26ef-463e-9356-684519705a4d",
+                  "startMs": 10000,
+                  "endMs": 14300,
+                  "kind": "drill",
+                  "title": "3. 별을 노래하는 마음으로 모든 죽어 가는 것을 사랑해야지",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "adc5561a-e1a6-44ed-b747-6ff544025a69",
+                  "startMs": 14860,
+                  "endMs": 17640,
+                  "kind": "drill",
+                  "title": "4. 그리고 나한테 주어진 길을 걸어가야겠다",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f03e0e62-c5a5-43a4-9028-db8f125f2858",
+                  "startMs": 18120,
+                  "endMs": 21160,
+                  "kind": "drill",
+                  "title": "5. 오늘 밤에도 별이 바람에 스치운다",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 6200,
+              "text": "서시. 윤동주. 죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를,",
+              "speaker": "윤동주",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 6200,
+              "endMs": 9360,
+              "text": "잎새에 이는 바람에도 나는 괴로워했다.",
+              "speaker": "윤동주",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 10000,
+              "endMs": 14300,
+              "text": "별을 노래하는 마음으로 모든 죽어 가는 것을 사랑해야지.",
+              "speaker": "윤동주",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 14860,
+              "endMs": 17640,
+              "text": "그리고 나한테 주어진 길을 걸어가야겠다.",
+              "speaker": "윤동주",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 18120,
+              "endMs": 21160,
+              "text": "오늘 밤에도 별이 바람에 스치운다.",
+              "speaker": "윤동주",
+              "languageCode": "ko-KR"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
