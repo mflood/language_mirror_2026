@@ -1,0 +1,11 @@
+bundle_id: starter_korean_story
+source_s3: s3://placeholder
+language_code: ko-KR
+bundle_title: A Quiet Seoul Cafe
+pack_title: A Quiet Seoul Cafe
+author: Six Wands Studios
+cover_url: null
+cover_filename: null
+whisper_model: base
+gpt_model: gpt-4o-mini
+publish_config_path: bundle_publish_config.yaml

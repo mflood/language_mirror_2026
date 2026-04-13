@@ -1,0 +1,63 @@
+{
+  "topic": "Two strangers strike up a friendly conversation on a Seoul subway. They greet each other politely, introduce themselves by name, mention where they are from, and briefly ask about each other's work",
+  "language": "ko-KR",
+  "title": "지하철에서 만난 사람들",
+  "english_title": "People Meeting on the Subway",
+  "turns": [
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "안녕하세요, 날씨가 참 좋네요."
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "네, 안녕하세요. 정말 화창한 날이에요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "저는 김민지라고 해요. 부산에서 올라왔어요."
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "반갑습니다. 저는 이지훈이고 서울 사람이에요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "서울에서 일하세요?"
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "네, 강남에서 회사원으로 일해요. 민지 씨는요?"
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "저는 디자이너예요. 홍대에 있는 회사에 다녀요."
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "와, 멋지네요. 디자인 일은 재미있겠어요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "네, 바쁘지만 즐겁게 하고 있어요."
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "다음 역이 제 목적지예요. 만나서 반가웠어요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "저도 반가웠어요. 좋은 하루 보내세요!"
+    }
+  ]
+}

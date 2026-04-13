@@ -1,0 +1,186 @@
+{
+  "transcripts": [
+    {
+      "startMs": 0,
+      "endMs": 5580,
+      "text": "실내입니다. 여기 강남역에서 남산타워에 가려면 어떻게 가야 하나요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 6140,
+      "endMs": 9360,
+      "text": "아, 남산타워요. 지하철로 가시면 됩니다.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 10300,
+      "endMs": 11760,
+      "text": "어느 호선을 타야 하나요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 12400,
+      "endMs": 15800,
+      "text": "먼저 여기서 이호선을 타고 위주로 있구역까지 가세요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 16620,
+      "endMs": 18880,
+      "text": "위주로 있구역에서 환승해야 하나요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 19560,
+      "endMs": 23080,
+      "text": "네, 맞아요. 거기서 사무선으로 가라타시면 돼요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 24000,
+      "endMs": 26260,
+      "text": "사무선을 타고 어느 여기서 내려야 하죠.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 26880,
+      "endMs": 28460,
+      "text": "동대 있구역에서 내리세요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 28460,
+      "endMs": 32120,
+      "text": "거기다 남산타워 가장 가까운 여기예요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 32640,
+      "endMs": 35100,
+      "text": "동대 있구역 몇 번 출구로 나가면 되나요?",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 35780,
+      "endMs": 39420,
+      "text": "6번 출구로 나가시면 케이블 카타는 곳이 바로 나와요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 39980,
+      "endMs": 41520,
+      "text": "시간은 얼마나 걸리나요?",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 42300,
+      "endMs": 44800,
+      "text": "지하철로는 약 30분 정도 걸릴 거예요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 45600,
+      "endMs": 47920,
+      "text": "정말 친절하게 알려주셔서 감사합니다.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 48680,
+      "endMs": 51040,
+      "text": "천만해요. 좋은 여행 되세요.",
+      "speaker": "Speaker 1"
+    }
+  ],
+  "clips": [
+    {
+      "startMs": 0,
+      "endMs": 5580,
+      "kind": "drill",
+      "title": "1. 실내입니다. 여기 강남역에서 남산타워에 가려면…"
+    },
+    {
+      "startMs": 6140,
+      "endMs": 9360,
+      "kind": "drill",
+      "title": "2. 아, 남산타워요. 지하철로 가시면 됩니다."
+    },
+    {
+      "startMs": 10300,
+      "endMs": 11760,
+      "kind": "drill",
+      "title": "3. 어느 호선을 타야 하나요."
+    },
+    {
+      "startMs": 12400,
+      "endMs": 15800,
+      "kind": "drill",
+      "title": "4. 먼저 여기서 이호선을 타고 위주로 있구역까지 …"
+    },
+    {
+      "startMs": 16620,
+      "endMs": 18880,
+      "kind": "drill",
+      "title": "5. 위주로 있구역에서 환승해야 하나요?"
+    },
+    {
+      "startMs": 19560,
+      "endMs": 23080,
+      "kind": "drill",
+      "title": "6. 네, 맞아요. 거기서 사무선으로 가라타시면 돼…"
+    },
+    {
+      "startMs": 24000,
+      "endMs": 26260,
+      "kind": "drill",
+      "title": "7. 사무선을 타고 어느 여기서 내려야 하죠."
+    },
+    {
+      "startMs": 26880,
+      "endMs": 28460,
+      "kind": "drill",
+      "title": "8. 동대 있구역에서 내리세요."
+    },
+    {
+      "startMs": 28460,
+      "endMs": 32120,
+      "kind": "drill",
+      "title": "9. 거기다 남산타워 가장 가까운 여기예요."
+    },
+    {
+      "startMs": 32640,
+      "endMs": 35100,
+      "kind": "drill",
+      "title": "10. 동대 있구역 몇 번 출구로 나가면 되나요?"
+    },
+    {
+      "startMs": 35780,
+      "endMs": 39420,
+      "kind": "drill",
+      "title": "11. 6번 출구로 나가시면 케이블 카타는 곳이 바로…"
+    },
+    {
+      "startMs": 39980,
+      "endMs": 41520,
+      "kind": "drill",
+      "title": "12. 시간은 얼마나 걸리나요?"
+    },
+    {
+      "startMs": 42300,
+      "endMs": 44800,
+      "kind": "drill",
+      "title": "13. 지하철로는 약 30분 정도 걸릴 거예요."
+    },
+    {
+      "startMs": 45600,
+      "endMs": 47920,
+      "kind": "drill",
+      "title": "14. 정말 친절하게 알려주셔서 감사합니다."
+    },
+    {
+      "startMs": 48680,
+      "endMs": 51040,
+      "kind": "drill",
+      "title": "15. 천만해요. 좋은 여행 되세요."
+    }
+  ]
+}

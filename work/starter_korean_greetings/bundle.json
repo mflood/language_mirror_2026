@@ -1,0 +1,344 @@
+{
+  "id": "starter_korean_greetings",
+  "title": "Korean Greetings",
+  "packs": [
+    {
+      "id": "starter_korean_greetings",
+      "title": "Korean Greetings",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/starter_korean_greetings/track_001.mp3",
+          "filename": "track_001.mp3",
+          "durationMs": 41295,
+          "languageCode": "ko-KR",
+          "practiceSets": [
+            {
+              "id": "94fa8bcd-452a-45e2-b2b7-184640a5e4a8",
+              "trackId": "67df93cf-a48a-4252-97f8-335040c54ca1",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "clips": [
+                {
+                  "id": "961b926f-4ae9-4d11-b9ed-89c23602bc30",
+                  "startMs": 0,
+                  "endMs": 41295,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ],
+              "isFavorite": false
+            },
+            {
+              "id": "86264d23-77cc-44db-9aec-968a6a8710a9",
+              "trackId": "1fde745c-4c98-40f2-b0fe-72d81a6e5bd9",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "clips": [
+                {
+                  "id": "b4521a32-11d2-4ddc-87a8-d18c9bb1503a",
+                  "startMs": 0,
+                  "endMs": 2200,
+                  "kind": "drill",
+                  "title": "1. 안녕하세요 날씨가 참 좋네요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "57972e8d-cb92-4a60-b702-42fd5210a197",
+                  "startMs": 2740,
+                  "endMs": 6040,
+                  "kind": "drill",
+                  "title": "2. 네 안녕하세요. 정말 화창한 날이에요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "fdf6b1ca-32b0-4f7e-a421-9db70d110984",
+                  "startMs": 6760,
+                  "endMs": 10340,
+                  "kind": "drill",
+                  "title": "3. 저는 김민지 라고 해요. 부산에서 올라왔어요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f697b716-036f-41a5-a7f8-86e48b4c4fa7",
+                  "startMs": 11140,
+                  "endMs": 14660,
+                  "kind": "drill",
+                  "title": "4. 반갑습니다. 저는 이지훈이고 서울 사람이에요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f55381e0-2a76-46f4-8645-01920cd078a7",
+                  "startMs": 15400,
+                  "endMs": 16500,
+                  "kind": "drill",
+                  "title": "5. 서울에서 일하세요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "64bde664-26f8-4d8e-926b-d35534938475",
+                  "startMs": 17320,
+                  "endMs": 19720,
+                  "kind": "drill",
+                  "title": "6. 네 강남에서 회사원으로 일해요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f88aa3c7-d67c-482e-8bb4-86937aab237c",
+                  "startMs": 20360,
+                  "endMs": 21140,
+                  "kind": "drill",
+                  "title": "7. 민지 씨는요?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "3e1a9280-93b4-4b59-8982-93241a5a6934",
+                  "startMs": 21860,
+                  "endMs": 23040,
+                  "kind": "drill",
+                  "title": "8. 저는 디자이너예요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "013a5ac0-0679-4731-b5cb-5865dbb505d8",
+                  "startMs": 23880,
+                  "endMs": 25660,
+                  "kind": "drill",
+                  "title": "9. 홍대에 있는 회사에 다녀요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "d37765d1-4bf9-4b76-8e0e-20b79b03b435",
+                  "startMs": 26360,
+                  "endMs": 27660,
+                  "kind": "drill",
+                  "title": "10. 와 멋지네요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "f7547eee-2730-47da-806b-34ad9254c780",
+                  "startMs": 27440,
+                  "endMs": 29620,
+                  "kind": "drill",
+                  "title": "11. 디자인 일은 재미있겠어요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "2cfb7ad6-d957-4236-94d4-fbc8db0cc801",
+                  "startMs": 30180,
+                  "endMs": 32540,
+                  "kind": "drill",
+                  "title": "12. 네 바쁘지만 즐겁게 하고 있어요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "eccd8c14-314b-4b53-a577-8634a181bea3",
+                  "startMs": 33260,
+                  "endMs": 35120,
+                  "kind": "drill",
+                  "title": "13. 다음 여기 제 목적지예요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "e1151203-d9f8-4a9f-bfd7-9120ecf69785",
+                  "startMs": 35660,
+                  "endMs": 37040,
+                  "kind": "drill",
+                  "title": "14. 만나서 반가웠어요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "aefdf277-76c4-4cf5-b7ab-2c64df46fd4f",
+                  "startMs": 37680,
+                  "endMs": 38840,
+                  "kind": "drill",
+                  "title": "15. 저도 반가웠어요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                },
+                {
+                  "id": "dfedf4fc-ace9-47e4-94a0-60225eac3873",
+                  "startMs": 39560,
+                  "endMs": 40860,
+                  "kind": "drill",
+                  "title": "16. 좋은 하루 보내세요.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "ko-KR"
+                }
+              ],
+              "isFavorite": false
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 2200,
+              "text": "안녕하세요 날씨가 참 좋네요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 2740,
+              "endMs": 6040,
+              "text": "네 안녕하세요. 정말 화창한 날이에요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 6760,
+              "endMs": 10340,
+              "text": "저는 김민지 라고 해요. 부산에서 올라왔어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 11140,
+              "endMs": 14660,
+              "text": "반갑습니다. 저는 이지훈이고 서울 사람이에요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 15400,
+              "endMs": 16500,
+              "text": "서울에서 일하세요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 17320,
+              "endMs": 19720,
+              "text": "네 강남에서 회사원으로 일해요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 20360,
+              "endMs": 21140,
+              "text": "민지 씨는요?",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 21860,
+              "endMs": 23040,
+              "text": "저는 디자이너예요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 23880,
+              "endMs": 25660,
+              "text": "홍대에 있는 회사에 다녀요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 26360,
+              "endMs": 27660,
+              "text": "와 멋지네요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 27440,
+              "endMs": 29620,
+              "text": "디자인 일은 재미있겠어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 30180,
+              "endMs": 32540,
+              "text": "네 바쁘지만 즐겁게 하고 있어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 33260,
+              "endMs": 35120,
+              "text": "다음 여기 제 목적지예요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 35660,
+              "endMs": 37040,
+              "text": "만나서 반가웠어요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 37680,
+              "endMs": 38840,
+              "text": "저도 반가웠어요.",
+              "speaker": "Speaker 1",
+              "languageCode": "ko-KR"
+            },
+            {
+              "startMs": 39560,
+              "endMs": 40860,
+              "text": "좋은 하루 보내세요.",
+              "speaker": "Speaker 2",
+              "languageCode": "ko-KR"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

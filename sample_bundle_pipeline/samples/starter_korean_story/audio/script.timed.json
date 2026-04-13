@@ -1,0 +1,131 @@
+{
+  "language": "ko-KR",
+  "turns": [
+    {
+      "turn": 0,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "작년 봄, 비가 많이 오던 날이었어요.",
+      "startMs": 0,
+      "endMs": 2856,
+      "approx": false
+    },
+    {
+      "turn": 1,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "서촌을 걷다가 비를 피하려고 좁은 골목으로 들어갔어요.",
+      "startMs": 3256,
+      "endMs": 7240,
+      "approx": false
+    },
+    {
+      "turn": 2,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "그때 우연히 작고 조용한 카페를 발견했죠.",
+      "startMs": 7640,
+      "endMs": 10856,
+      "approx": false
+    },
+    {
+      "turn": 3,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "문을 열고 들어가니 따뜻한 공기와 커피 향이 저를 감싸더라고요.",
+      "startMs": 11256,
+      "endMs": 15864,
+      "approx": false
+    },
+    {
+      "turn": 4,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "안에는 나무 테이블 네 개와 책장이 하나 있었어요.",
+      "startMs": 16264,
+      "endMs": 19744,
+      "approx": false
+    },
+    {
+      "turn": 5,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "창문 밖으로는 비 오는 한옥 지붕이 보였고요.",
+      "startMs": 20144,
+      "endMs": 23360,
+      "approx": false
+    },
+    {
+      "turn": 6,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "손님은 저 혼자뿐이었어요.",
+      "startMs": 23760,
+      "endMs": 26016,
+      "approx": false
+    },
+    {
+      "turn": 7,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "주인 할머니께서 직접 내려주신 아메리카노를 마셨는데 정말 맛있었어요.",
+      "startMs": 26416,
+      "endMs": 31648,
+      "approx": false
+    },
+    {
+      "turn": 8,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "그날 이후로 이 카페는 제가 가장 좋아하는 장소가 됐어요.",
+      "startMs": 32048,
+      "endMs": 36104,
+      "approx": false
+    },
+    {
+      "turn": 9,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "지금도 일주일에 두세 번은 꼭 가요.",
+      "startMs": 36504,
+      "endMs": 39072,
+      "approx": false
+    },
+    {
+      "turn": 10,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "항상 같은 자리에 앉아서 아메리카노와 애플파이를 주문해요.",
+      "startMs": 39472,
+      "endMs": 43504,
+      "approx": false
+    },
+    {
+      "turn": 11,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "이곳에 오면 마음이 편안해지고 생각도 정리가 잘 돼요.",
+      "startMs": 43904,
+      "endMs": 47720,
+      "approx": false
+    },
+    {
+      "turn": 12,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "도시 속 작은 쉼터 같은 곳이에요.",
+      "startMs": 48120,
+      "endMs": 50640,
+      "approx": false
+    },
+    {
+      "turn": 13,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "저만 아는 비밀 장소처럼 느껴져서 더 특별해요.",
+      "startMs": 51040,
+      "endMs": 54472,
+      "approx": false
+    }
+  ]
+}

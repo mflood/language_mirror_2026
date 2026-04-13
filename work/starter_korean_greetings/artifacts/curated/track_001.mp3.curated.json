@@ -1,0 +1,198 @@
+{
+  "transcripts": [
+    {
+      "startMs": 0,
+      "endMs": 2200,
+      "text": "안녕하세요 날씨가 참 좋네요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 2740,
+      "endMs": 6040,
+      "text": "네 안녕하세요. 정말 화창한 날이에요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 6760,
+      "endMs": 10340,
+      "text": "저는 김민지 라고 해요. 부산에서 올라왔어요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 11140,
+      "endMs": 14660,
+      "text": "반갑습니다. 저는 이지훈이고 서울 사람이에요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 15400,
+      "endMs": 16500,
+      "text": "서울에서 일하세요?",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 17320,
+      "endMs": 19720,
+      "text": "네 강남에서 회사원으로 일해요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 20360,
+      "endMs": 21140,
+      "text": "민지 씨는요?",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 21860,
+      "endMs": 23040,
+      "text": "저는 디자이너예요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 23880,
+      "endMs": 25660,
+      "text": "홍대에 있는 회사에 다녀요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 26360,
+      "endMs": 27660,
+      "text": "와 멋지네요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 27440,
+      "endMs": 29620,
+      "text": "디자인 일은 재미있겠어요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 30180,
+      "endMs": 32540,
+      "text": "네 바쁘지만 즐겁게 하고 있어요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 33260,
+      "endMs": 35120,
+      "text": "다음 여기 제 목적지예요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 35660,
+      "endMs": 37040,
+      "text": "만나서 반가웠어요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 37680,
+      "endMs": 38840,
+      "text": "저도 반가웠어요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 39560,
+      "endMs": 40860,
+      "text": "좋은 하루 보내세요.",
+      "speaker": "Speaker 2"
+    }
+  ],
+  "clips": [
+    {
+      "startMs": 0,
+      "endMs": 2200,
+      "kind": "drill",
+      "title": "1. 안녕하세요 날씨가 참 좋네요."
+    },
+    {
+      "startMs": 2740,
+      "endMs": 6040,
+      "kind": "drill",
+      "title": "2. 네 안녕하세요. 정말 화창한 날이에요."
+    },
+    {
+      "startMs": 6760,
+      "endMs": 10340,
+      "kind": "drill",
+      "title": "3. 저는 김민지 라고 해요. 부산에서 올라왔어요."
+    },
+    {
+      "startMs": 11140,
+      "endMs": 14660,
+      "kind": "drill",
+      "title": "4. 반갑습니다. 저는 이지훈이고 서울 사람이에요."
+    },
+    {
+      "startMs": 15400,
+      "endMs": 16500,
+      "kind": "drill",
+      "title": "5. 서울에서 일하세요?"
+    },
+    {
+      "startMs": 17320,
+      "endMs": 19720,
+      "kind": "drill",
+      "title": "6. 네 강남에서 회사원으로 일해요."
+    },
+    {
+      "startMs": 20360,
+      "endMs": 21140,
+      "kind": "drill",
+      "title": "7. 민지 씨는요?"
+    },
+    {
+      "startMs": 21860,
+      "endMs": 23040,
+      "kind": "drill",
+      "title": "8. 저는 디자이너예요."
+    },
+    {
+      "startMs": 23880,
+      "endMs": 25660,
+      "kind": "drill",
+      "title": "9. 홍대에 있는 회사에 다녀요."
+    },
+    {
+      "startMs": 26360,
+      "endMs": 27660,
+      "kind": "drill",
+      "title": "10. 와 멋지네요."
+    },
+    {
+      "startMs": 27440,
+      "endMs": 29620,
+      "kind": "drill",
+      "title": "11. 디자인 일은 재미있겠어요."
+    },
+    {
+      "startMs": 30180,
+      "endMs": 32540,
+      "kind": "drill",
+      "title": "12. 네 바쁘지만 즐겁게 하고 있어요."
+    },
+    {
+      "startMs": 33260,
+      "endMs": 35120,
+      "kind": "drill",
+      "title": "13. 다음 여기 제 목적지예요."
+    },
+    {
+      "startMs": 35660,
+      "endMs": 37040,
+      "kind": "drill",
+      "title": "14. 만나서 반가웠어요."
+    },
+    {
+      "startMs": 37680,
+      "endMs": 38840,
+      "kind": "drill",
+      "title": "15. 저도 반가웠어요."
+    },
+    {
+      "startMs": 39560,
+      "endMs": 40860,
+      "kind": "drill",
+      "title": "16. 좋은 하루 보내세요."
+    }
+  ]
+}

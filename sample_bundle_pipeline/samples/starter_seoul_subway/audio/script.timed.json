@@ -1,0 +1,131 @@
+{
+  "language": "ko-KR",
+  "turns": [
+    {
+      "turn": 0,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "실례합니다. 여기 강남역에서 남산타워에 가려면 어떻게 가야 하나요?",
+      "startMs": 0,
+      "endMs": 5664,
+      "approx": false
+    },
+    {
+      "turn": 1,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "아, 남산타워요? 지하철로 가시면 됩니다.",
+      "startMs": 6064,
+      "endMs": 9736,
+      "approx": false
+    },
+    {
+      "turn": 2,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "어느 호선을 타야 하나요?",
+      "startMs": 10136,
+      "endMs": 11936,
+      "approx": false
+    },
+    {
+      "turn": 3,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "먼저 여기서 이호선을 타고 을지로입구역까지 가세요.",
+      "startMs": 12336,
+      "endMs": 16104,
+      "approx": false
+    },
+    {
+      "turn": 4,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "을지로입구역에서 환승해야 하나요?",
+      "startMs": 16504,
+      "endMs": 19096,
+      "approx": false
+    },
+    {
+      "turn": 5,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "네, 맞아요. 거기서 삼호선으로 갈아타시면 돼요.",
+      "startMs": 19496,
+      "endMs": 23408,
+      "approx": false
+    },
+    {
+      "turn": 6,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "삼호선을 타고 어느 역에서 내려야 하죠?",
+      "startMs": 23808,
+      "endMs": 26568,
+      "approx": false
+    },
+    {
+      "turn": 7,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "동대입구역에서 내리세요. 거기가 남산타워 가장 가까운 역이에요.",
+      "startMs": 26968,
+      "endMs": 32080,
+      "approx": false
+    },
+    {
+      "turn": 8,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "동대입구역 몇 번 출구로 나가면 되나요?",
+      "startMs": 32480,
+      "endMs": 35384,
+      "approx": false
+    },
+    {
+      "turn": 9,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "육번 출구로 나가시면 케이블카 타는 곳이 바로 나와요.",
+      "startMs": 35784,
+      "endMs": 39480,
+      "approx": false
+    },
+    {
+      "turn": 10,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "시간은 얼마나 걸리나요?",
+      "startMs": 39880,
+      "endMs": 41824,
+      "approx": false
+    },
+    {
+      "turn": 11,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "지하철로는 약 삼십 분 정도 걸릴 거예요.",
+      "startMs": 42224,
+      "endMs": 45200,
+      "approx": false
+    },
+    {
+      "turn": 12,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "정말 친절하게 알려주셔서 감사합니다!",
+      "startMs": 45600,
+      "endMs": 48408,
+      "approx": false
+    },
+    {
+      "turn": 13,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "천만에요. 좋은 여행 되세요!",
+      "startMs": 48808,
+      "endMs": 51352,
+      "approx": false
+    }
+  ]
+}

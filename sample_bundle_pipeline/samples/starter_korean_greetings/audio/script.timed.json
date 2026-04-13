@@ -1,0 +1,104 @@
+{
+  "language": "ko-KR",
+  "turns": [
+    {
+      "turn": 0,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "안녕하세요, 날씨가 참 좋네요.",
+      "startMs": 0,
+      "endMs": 2544,
+      "approx": false
+    },
+    {
+      "turn": 1,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "네, 안녕하세요. 정말 화창한 날이에요.",
+      "startMs": 2944,
+      "endMs": 6328,
+      "approx": false
+    },
+    {
+      "turn": 2,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "저는 김민지라고 해요. 부산에서 올라왔어요.",
+      "startMs": 6728,
+      "endMs": 10664,
+      "approx": false
+    },
+    {
+      "turn": 3,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "반갑습니다. 저는 이지훈이고 서울 사람이에요.",
+      "startMs": 11064,
+      "endMs": 15000,
+      "approx": false
+    },
+    {
+      "turn": 4,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "서울에서 일하세요?",
+      "startMs": 15400,
+      "endMs": 16864,
+      "approx": false
+    },
+    {
+      "turn": 5,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "네, 강남에서 회사원으로 일해요. 민지 씨는요?",
+      "startMs": 17264,
+      "endMs": 21344,
+      "approx": false
+    },
+    {
+      "turn": 6,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "저는 디자이너예요. 홍대에 있는 회사에 다녀요.",
+      "startMs": 21744,
+      "endMs": 25944,
+      "approx": false
+    },
+    {
+      "turn": 7,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "와, 멋지네요. 디자인 일은 재미있겠어요.",
+      "startMs": 26344,
+      "endMs": 29920,
+      "approx": false
+    },
+    {
+      "turn": 8,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "네, 바쁘지만 즐겁게 하고 있어요.",
+      "startMs": 30320,
+      "endMs": 32984,
+      "approx": false
+    },
+    {
+      "turn": 9,
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "다음 역이 제 목적지예요. 만나서 반가웠어요.",
+      "startMs": 33384,
+      "endMs": 37320,
+      "approx": false
+    },
+    {
+      "turn": 10,
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "저도 반가웠어요. 좋은 하루 보내세요!",
+      "startMs": 37720,
+      "endMs": 41296,
+      "approx": false
+    }
+  ]
+}

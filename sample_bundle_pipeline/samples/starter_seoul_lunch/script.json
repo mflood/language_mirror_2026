@@ -1,0 +1,68 @@
+{
+  "topic": "A visitor in Seoul asks a friendly local for lunch recommendations near a subway station, and they have a short back-and-forth about food preferences and atmosphere",
+  "language": "ko-KR",
+  "title": "지하철역 근처 맛집 추천",
+  "english_title": "Restaurant Recommendations Near the Subway Station",
+  "turns": [
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "실례합니다, 이 근처에 점심 먹을 만한 좋은 식당 있을까요?"
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "네, 있어요! 어떤 음식을 좋아하세요?"
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "한국 음식이면 다 좋아하는데, 매운 음식은 조금 어려워요."
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "그러면 역 2번 출구 근처에 삼계탕 집이 정말 맛있어요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "오, 좋네요! 거기 사람이 많이 붐비나요?"
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "점심시간에는 좀 붐비지만 회전이 빨라서 금방 앉을 수 있어요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "조용한 곳을 더 선호하는데, 다른 곳도 있을까요?"
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "그럼 4번 출구 쪽에 작은 비빔밥 식당이 있어요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "거기는 분위기가 어때요?"
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "아늑하고 조용해서 천천히 식사하기 좋아요."
+    },
+    {
+      "speaker": "A",
+      "voice": "Seoyeon",
+      "text": "완벽하네요! 거기로 가볼게요. 정말 감사합니다!"
+    },
+    {
+      "speaker": "B",
+      "voice": "Jihye",
+      "text": "천만에요. 맛있게 드세요!"
+    }
+  ]
+}

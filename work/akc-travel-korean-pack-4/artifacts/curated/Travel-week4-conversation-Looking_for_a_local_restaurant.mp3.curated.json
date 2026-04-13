@@ -1,0 +1,126 @@
+{
+  "transcripts": [
+    {
+      "startMs": 0,
+      "endMs": 7560,
+      "text": "강릉에서 관광객이 많이 가는 식당 말고 로컬 식당에 가보고 싶어요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 7600,
+      "endMs": 10340,
+      "text": "그럼 시장 안쪽을 한번 찾아보세요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 11760,
+      "endMs": 13820,
+      "text": "시장 안에도 맛집이 많아요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 14660,
+      "endMs": 17940,
+      "text": "네. 현재인들이 가는 맛집이 꽤 많아요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 18500,
+      "endMs": 20300,
+      "text": "거기는 어떻게 갈 수 있어요?",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 21160,
+      "endMs": 24600,
+      "text": "리뷰를 보거나 사람들이 많은 집에 들어가면 돼요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 25340,
+      "endMs": 27000,
+      "text": "아, 좋은 방법이네요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 27000,
+      "endMs": 31520,
+      "text": "네, 그런 곳에서 더 특별한 음식을 먹을 수도 있잖아요.",
+      "speaker": "Speaker 2"
+    },
+    {
+      "startMs": 32200,
+      "endMs": 36480,
+      "text": "그럼 저도 이번에 진짜 로컬 맛집에 갈 수 있겠네요.",
+      "speaker": "Speaker 1"
+    },
+    {
+      "startMs": 37040,
+      "endMs": 39500,
+      "text": "그럼요. 여행이 더 재밌어질걸요?",
+      "speaker": "Speaker 2"
+    }
+  ],
+  "clips": [
+    {
+      "startMs": 0,
+      "endMs": 7560,
+      "kind": "drill",
+      "title": "1. 강릉에서 관광객이 많이 가는 식당 말고 로컬 …"
+    },
+    {
+      "startMs": 7600,
+      "endMs": 10340,
+      "kind": "drill",
+      "title": "2. 그럼 시장 안쪽을 한번 찾아보세요."
+    },
+    {
+      "startMs": 11760,
+      "endMs": 13820,
+      "kind": "drill",
+      "title": "3. 시장 안에도 맛집이 많아요?"
+    },
+    {
+      "startMs": 14660,
+      "endMs": 17940,
+      "kind": "drill",
+      "title": "4. 네. 현재인들이 가는 맛집이 꽤 많아요."
+    },
+    {
+      "startMs": 18500,
+      "endMs": 20300,
+      "kind": "drill",
+      "title": "5. 거기는 어떻게 갈 수 있어요?"
+    },
+    {
+      "startMs": 21160,
+      "endMs": 24600,
+      "kind": "drill",
+      "title": "6. 리뷰를 보거나 사람들이 많은 집에 들어가면 돼…"
+    },
+    {
+      "startMs": 25340,
+      "endMs": 27000,
+      "kind": "drill",
+      "title": "7. 아, 좋은 방법이네요."
+    },
+    {
+      "startMs": 27000,
+      "endMs": 31520,
+      "kind": "drill",
+      "title": "8. 네, 그런 곳에서 더 특별한 음식을 먹을 수도…"
+    },
+    {
+      "startMs": 32200,
+      "endMs": 36480,
+      "kind": "drill",
+      "title": "9. 그럼 저도 이번에 진짜 로컬 맛집에 갈 수 있…"
+    },
+    {
+      "startMs": 37040,
+      "endMs": 39500,
+      "kind": "drill",
+      "title": "10. 그럼요. 여행이 더 재밌어질걸요?"
+    }
+  ]
+}
