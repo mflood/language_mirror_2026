@@ -7,6 +7,7 @@
 
 // path: Screens/PracticeViewController.swift
 import UIKit
+import TelemetryDeck
 
 protocol PracticeViewControllerDelegate: AnyObject {
     func practiceViewController(_ vc: PracticeViewController, didTapTrackTitle track: Track)
@@ -1066,7 +1067,12 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             }
             
             print("✅ [PracticeViewController] Playback started successfully")
-            
+            TelemetryDeck.signal("Practice.sessionStarted", parameters: [
+                "packId": selectedTrack?.packId ?? "",
+                "clipCount": "\(workingClips.count)",
+                "mode": settings.useProgressionMode ? "progression" : "simple",
+            ])
+
             isPlaying = true
             isPaused = false
             updatePlayPauseButton()

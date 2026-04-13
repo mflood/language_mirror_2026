@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import TelemetryDeck
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let config = TelemetryDeck.Config(appID: "465CBE0F-A4B8-4F59-BEAC-8FF8D777FC0D")
+        TelemetryDeck.initialize(config: config)
+
         UIApplication.shared.beginReceivingRemoteControlEvents()
         return true
     }

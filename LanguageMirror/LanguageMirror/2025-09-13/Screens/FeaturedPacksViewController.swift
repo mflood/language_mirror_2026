@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import TelemetryDeck
 
 @MainActor
 final class FeaturedPacksViewController: UIViewController {
@@ -170,6 +171,12 @@ final class FeaturedPacksViewController: UIViewController {
                     ? L10n("import.success.one_track")
                     : L10nf("import.success.n_tracks", count)
                 progressView.updateState(.success(message: message))
+                TelemetryDeck.signal("FeaturedPacks.installed", parameters: [
+                    "packId": pack.id,
+                    "packTitle": pack.title,
+                    "trackCount": "\(count)",
+                    "source": pack.source.kind,
+                ])
 
                 if let firstId = tracks.first?.id {
                     NotificationCenter.default.post(

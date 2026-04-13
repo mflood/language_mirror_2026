@@ -8,6 +8,7 @@
 import UIKit
 import PhotosUI
 import UniformTypeIdentifiers
+import TelemetryDeck
 import AVFoundation
 
 @MainActor
@@ -362,7 +363,21 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
                 : L10nf("import.success.n_tracks", count)
             
             progressView.updateState(.success(message: message))
-            
+
+            let sourceType: String
+            switch src {
+            case .audioFile: sourceType = "audioFile"
+            case .videoFile: sourceType = "videoFile"
+            case .recordedFile: sourceType = "recordedFile"
+            case .remoteURL: sourceType = "remoteURL"
+            case .bundleManifest: sourceType = "bundleManifest"
+            case .appBundleManifest: sourceType = "appBundleManifest"
+            }
+            TelemetryDeck.signal("Import.completed", parameters: [
+                "sourceType": sourceType,
+                "trackCount": "\(count)",
+            ])
+
             // Notify about new tracks
             if !tracks.isEmpty {
                 let trackId = tracks[0].id

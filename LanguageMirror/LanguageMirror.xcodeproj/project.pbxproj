@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F8F1D742F8C836500358275 /* TelemetryClient in Frameworks */ = {isa = PBXBuildFile; productRef = 6F8F1D732F8C836500358275 /* TelemetryClient */; };
+		6F8F1D762F8C836500358275 /* TelemetryDeck in Frameworks */ = {isa = PBXBuildFile; productRef = 6F8F1D752F8C836500358275 /* TelemetryDeck */; };
 		6FF6299C2EA5A995006404A7 /* LanguageMirrorShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6FF629912EA5A995006404A7 /* LanguageMirrorShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -56,17 +58,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6F137C932E7C4D67007D0F0E /* Exceptions for "LanguageMirror" folder in "LanguageMirrorTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"2025-09-13/Resources/library_seed.json",
-			);
-			target = 6FAB0EC32E1067B300D3B9C4 /* LanguageMirrorTests */;
-		};
 		6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"2025-09-13/Resources/library_seed.json",
 				"2025-09-13/ShareExtension/Info.plist",
 				"2025-09-13/ShareExtension/ShareViewController.swift",
 				Info.plist,
@@ -86,19 +80,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		6F137C982E7C4D8D007D0F0E /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirrorTests" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 6FAB0EC02E1067B300D3B9C4 /* Sources */;
-			membershipExceptions = (
-				"2025-09-13/Resources/sample_bundle.json",
-			);
-		};
 		6FAB0FFE2E10E06E00D3B9C4 /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirror" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 6FAB0EA72E1067B100D3B9C4 /* Sources */;
 			membershipExceptions = (
-				"2025-09-13/Resources/library_seed.json",
-				"2025-09-13/Resources/sample_bundle.json",
 				Resources/data_2.json,
 			);
 		};
@@ -110,8 +95,6 @@
 			exceptions = (
 				6FAB0F012E106B1000D3B9C4 /* Exceptions for "LanguageMirror" folder in "LanguageMirror" target */,
 				6FAB0FFE2E10E06E00D3B9C4 /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirror" target */,
-				6F137C932E7C4D67007D0F0E /* Exceptions for "LanguageMirror" folder in "LanguageMirrorTests" target */,
-				6F137C982E7C4D8D007D0F0E /* Exceptions for "LanguageMirror" folder in "Compile Sources" phase from "LanguageMirrorTests" target */,
 				6FF629A32EA5AA43006404A7 /* Exceptions for "LanguageMirror" folder in "LanguageMirrorShare" target */,
 			);
 			path = LanguageMirror;
@@ -139,6 +122,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F8F1D742F8C836500358275 /* TelemetryClient in Frameworks */,
+				6F8F1D762F8C836500358275 /* TelemetryDeck in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +195,8 @@
 			);
 			name = LanguageMirror;
 			packageProductDependencies = (
+				6F8F1D732F8C836500358275 /* TelemetryClient */,
+				6F8F1D752F8C836500358275 /* TelemetryDeck */,
 			);
 			productName = LanguageMirror;
 			productReference = 6FAB0EAB2E1067B100D3B9C4 /* LanguageMirror.app */;
@@ -291,7 +278,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					6FAB0EAA2E1067B100D3B9C4 = {
 						CreatedOnToolsVersion = 16.4;
@@ -319,6 +306,9 @@
 			);
 			mainGroup = 6FAB0EA22E1067B100D3B9C4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6F8F1D722F8C836500358275 /* XCRemoteSwiftPackageReference "SwiftSDK" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6FAB0EAC2E1067B100D3B9C4 /* Products */;
 			projectDirPath = "";
@@ -420,7 +410,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
@@ -473,7 +463,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LanguageMirror/LanguageMirror.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanguageMirror/Info.plist;
@@ -524,6 +514,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -589,6 +580,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -823,6 +815,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6F8F1D722F8C836500358275 /* XCRemoteSwiftPackageReference "SwiftSDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TelemetryDeck/SwiftSDK";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6F8F1D732F8C836500358275 /* TelemetryClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6F8F1D722F8C836500358275 /* XCRemoteSwiftPackageReference "SwiftSDK" */;
+			productName = TelemetryClient;
+		};
+		6F8F1D752F8C836500358275 /* TelemetryDeck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6F8F1D722F8C836500358275 /* XCRemoteSwiftPackageReference "SwiftSDK" */;
+			productName = TelemetryDeck;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6FAB0EA32E1067B100D3B9C4 /* Project object */;
 }
