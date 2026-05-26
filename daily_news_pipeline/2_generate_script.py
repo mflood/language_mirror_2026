@@ -112,14 +112,46 @@ Produce a JSON object with this exact shape (no markdown fences, no prose):
   ],
   "examples": [
     {{ "ko": "<Korean example sentence>", "en": "<English translation>" }},
-    ... 1 to 12 example sentences total. The KEY constraint: EVERY vocab word
-    from the list above MUST appear in at least one example sentence (no vocab
-    word left uncovered).
-    AIM TO COMBINE multiple vocab words into a single sentence when natural.
-    For example, if vocab includes 외교, 협상, 진행되다, an example like
-    "외교 협상이 활발히 진행되고 있습니다." covers all three in one go.
-    Prefer 5-8 well-crafted sentences (each covering 2-3 vocab words) over
-    12 single-word sentences. Sentences 8-18 words. Use news-register Korean.
+    ... 1 to 12 example sentences total. Every vocab word MUST appear in at
+    least one example. Combine 2-3 vocab words per sentence when natural.
+
+    SCAFFOLDING REQUIREMENT — example sentences must be STRICTLY EASIER than
+    the easy summary. The pedagogy is: vocab → easy examples (rehearsal) →
+    easy summary (real use). If the examples are as hard as the summary,
+    they fail as scaffolding.
+
+    Make examples EASIER than the easy summary by all of these means:
+      a. Everyday subjects: 저는 / 우리는 / 학생들이 / 선생님이 / 사람들이 /
+         아이들이 / 친구가 / 가족이. NOT news subjects like 대통령, 정부,
+         당국, 정상, 양측, 전문가.
+      b. Everyday contexts: school, family, neighborhood, daily life.
+         NOT diplomatic/economic/medical/political contexts.
+      c. Present tense (-아요/-어요/-해요). Past tense ONLY when the action
+         clearly happened today/yesterday in everyday life.
+      d. No embedded clauses. No subordinate clauses. No quoted speech.
+         No relative clauses. ONE subject, ONE verb per sentence.
+      e. Sentence length: 5-12 words. Shorter is better.
+      f. Use the vocab word in a context a TOPIK 1-2 learner would meet
+         in real life — not in its formal news usage.
+
+    EXAMPLES of the difficulty contrast (do this):
+      vocab: 협상 (negotiation), 진행되다 (to proceed)
+      EASY summary line: "트럼프 대통령이 협상이 진행된다고 말했어요."
+      Good example: "우리는 친구하고 약속을 협상해요."
+      Good example: "수업이 잘 진행돼요."
+
+      vocab: 봉쇄 (blockade)
+      Bad example (news-style): "양측이 봉쇄 해제를 논의했어요."
+      Good example: "사고 때문에 도로 봉쇄가 있었어요."
+
+      vocab: 비상사태 (state of emergency)
+      Bad example: "정부가 비상사태를 선포했어요."
+      Good example: "학교에서 비상사태가 발생했어요."
+
+    If a vocab word is SO specialized that no everyday example exists
+    (e.g., 양해각서 — memorandum of understanding), pick a simpler co-vocab
+    word to be the sentence's main verb and have the specialized word
+    appear in a minimal way.
   ],
   "expressions": [
     {{ "ko": "<Korean expression>", "en": "<English translation>" }},
@@ -285,9 +317,22 @@ CHECK FOR:
    b. 3 sentences total — same facts as easy version.
    c. Idiomatic news-style Korean.
 
-4. EXAMPLE QUALITY: Example sentences are SIMPLER than the easy summary
-   (simple subjects, present tense, no embedded clauses). Each example uses
-   the corresponding vocab word naturally.
+4. EXAMPLE SCAFFOLDING (each example MUST be strictly easier than the easy
+   summary — examples are the rehearsal, summary is the real use):
+   a. Subjects are everyday people/things (저, 우리, 학생, 선생님, 사람들,
+      친구, 가족, 아이들). Flag examples using news subjects like 대통령,
+      정부, 당국, 양측, 전문가.
+   b. Contexts are daily-life (school, family, neighborhood). Flag examples
+      that read like mini news headlines.
+   c. Present tense (-아요/-어요/-해요). Flag past-tense or future-tense
+      examples without clear everyday justification.
+   d. ONE subject, ONE verb per sentence. Flag embedded clauses, relative
+      clauses, quoted speech, subordinate clauses.
+   e. Length 5-12 words. Flag examples longer than 12 words.
+   f. The vocab word should appear in an everyday usage, not its news
+      meaning. Compare:
+        ✓ "사고 때문에 도로 봉쇄가 있었어요." (everyday)
+        ✗ "양측이 봉쇄 해제를 논의했어요." (newsy — flag this)
 
 5. KOREAN GRAMMAR: Particles (은/는, 이/가, 을/를, 에/에서), conjugations,
    spacing rules.
