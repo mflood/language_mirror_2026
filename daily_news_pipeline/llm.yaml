@@ -1,0 +1,28 @@
+# Per-step LLM provider + model configuration. Each step in the pipeline
+# can pick its own provider and model independently. Cost ledger attributes
+# spend to each call individually so a "claude generates / gpt reviews"
+# split shows up cleanly in the per-day cost report.
+#
+# Cross-model QA: having the QA reviewer be a DIFFERENT model than the
+# generator means hallucinations one model is prone to (e.g. inventing
+# facts) are more likely to be flagged by the other.
+
+steps:
+  # Step 1 — curate today's stories from the RSS pool
+  curate:
+    provider: anthropic
+    model: claude-sonnet-4-5
+    max_tokens: 2048
+
+  # Step 2 — generate the 4-section script per story
+  script:
+    provider: anthropic
+    model: claude-sonnet-4-5
+    max_tokens: 4096
+
+  # Step 2 QA — review the script generated above. DIFFERENT MODEL on purpose:
+  # cross-model review catches more issues than self-review.
+  qa_review:
+    provider: openai
+    model: gpt-5.5
+    max_tokens: 4096

@@ -1,0 +1,34 @@
+# TTS provider configuration. The active provider for a run is picked from
+# `provider:` below or overridden via `--tts <name>` on the command line.
+#
+# Audio cache keys include the provider in their hash, so polly + Seoyeon and
+# elevenlabs + VoiceX renderings of the same Korean word land on distinct keys
+# (no collisions, both coexist in cache/audio/).
+
+provider: elevenlabs        # polly | elevenlabs
+
+# Polly — cheap, decent quality, useful for iteration and testing
+polly:
+  voice_a:
+    id: Matthew                    # English male, US neural
+    label: English male teacher
+  voice_b:
+    id: Seoyeon                    # Only Korean voice in Polly
+    label: Korean female narrator
+  engine: neural                   # standard | neural | generative
+
+# ElevenLabs — high quality, requires Creator+ tier for library voices
+elevenlabs:
+  voice_a:
+    id: UgBBYS2sOqTuMpoF3BR0
+    label: English male teacher
+  voice_b:
+    id: NaQdbkW5gNZD8wfwXeTV
+    label: Korean female narrator
+  model_id: eleven_multilingual_v2
+  tier: creator
+  stability: 0.5
+  similarity_boost: 0.75
+  style: 0.0
+
+inter_turn_pause_ms: 400

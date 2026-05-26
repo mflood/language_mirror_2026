@@ -16,3 +16,10 @@ myworkroot
 # Pack editor
 pack_editor/.env
 __pycache__/
+
+# API keys
+.env
+
+# Daily news pipeline runtime artifacts (audio cache + per-day work dirs)
+daily_news_pipeline/cache/
+daily_news_pipeline/work/

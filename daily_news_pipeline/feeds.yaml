@@ -1,0 +1,48 @@
+# RSS feeds consulted daily. genre=hard for the top-stories curation pool,
+# genre=tech|science|sports|arts for the feature pool.
+#
+# Notes on the hard-news pool:
+#   - Reuters retired public RSS in 2023.
+#   - NYT and The Hill aggressively block trafilatura — bodies come back empty,
+#     so they don't make good sources for our LLM pipeline.
+#   - Goal here is balanced ideological coverage: 2 left-leaning (NPR, Guardian),
+#     3 right-leaning (Fox, Washington Examiner, NY Post), 3 centrist
+#     (BBC, CBS, Politico). Claude picks the broadest-covered stories from
+#     this pool, so framing diversity feeds the "common = important" signal.
+
+hard:
+  # Left-leaning
+  - source: NPR
+    url: https://feeds.npr.org/1001/rss.xml
+  - source: Guardian US
+    url: https://www.theguardian.com/us-news/rss
+
+  # Centrist / mainstream
+  - source: BBC US/Canada
+    url: http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml
+  - source: CBS News
+    url: https://www.cbsnews.com/latest/rss/main
+  - source: Politico
+    url: https://rss.politico.com/politics-news.xml
+
+  # Right-leaning
+  - source: Fox News
+    url: https://moxie.foxnews.com/google-publisher/latest.xml
+  - source: Washington Examiner
+    url: https://www.washingtonexaminer.com/feed
+  - source: NY Post
+    url: https://nypost.com/feed/
+
+features:
+  - source: Ars Technica
+    genre: tech
+    url: https://feeds.arstechnica.com/arstechnica/index
+  - source: Science News
+    genre: science
+    url: https://www.sciencenews.org/feed
+  - source: ESPN
+    genre: sports
+    url: https://www.espn.com/espn/rss/news
+  - source: NPR Arts
+    genre: arts
+    url: https://feeds.npr.org/1008/rss.xml
