@@ -78,17 +78,28 @@ def build_curation_prompt(items: list[dict]) -> str:
 The audience is English speakers learning Korean who want to stay in touch with
 U.S. news (not Korean domestic news) while practicing Korean comprehension.
 
-From the HARD NEWS pool below, pick the 3 most important stories — prioritize
-stories covered by multiple major outlets (NPR, Reuters, AP, NYT, BBC), since
-broad coverage signals importance. Avoid duplicates: if NPR and Reuters both
-cover the same Fed decision, count that as one story and pick the version with
-the best headline/summary.
+PEDAGOGICAL CONSTRAINT — this matters more than "most important news":
+Politics and diplomacy stories use vocabulary-dense Korean (외교, 협상, 봉쇄,
+해제, 비상사태, 결의안, 제재…) and abstract sentence structures that are
+genuinely hard for intermediate learners. Sports, science, and human-interest
+stories use more concrete, learnable vocabulary (선수, 결승선, 사고, 환자…)
+with simpler sentence shapes. We want the pack to teach AND inform.
 
-From the FEATURE pool, pick 1 or 2 standout stories from science, tech, sports,
-or arts/entertainment — the kind of "interesting bonus" that a thoughtful daily
-brief would close on.
+CURATION TARGET (4 stories total):
+- 2 hard-news stories — the most-covered top stories of the day
+- 2 feature stories — one from each of two different genres (science / tech /
+  sports / arts), prioritizing stories with concrete subject matter
 
-Total: 4 or 5 stories (3 hard + 1 or 2 features).
+CATEGORY MIX RULE:
+- If ALL the top hard-news stories are politics/diplomacy/conflict (vocab
+  dense), pick only 1 hard-news story and pull a 3rd feature instead.
+- Prefer breadth: 2 different feature genres > 2 features in the same genre.
+- Never include 3+ politics/diplomacy stories in one pack.
+
+DUPLICATION RULE:
+- If multiple outlets cover the same story (e.g., NPR and BBC both on the
+  Fed decision), count that as ONE story and pick the version with the best
+  headline + summary.
 
 HARD NEWS POOL ({len(hard)} items):
 {hard_block}
