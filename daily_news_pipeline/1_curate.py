@@ -87,13 +87,30 @@ with simpler sentence shapes. We want the pack to teach AND inform.
 
 CURATION TARGET (4 stories total):
 - 2 hard-news stories — the most-covered top stories of the day
-- 2 feature stories — one from each of two different genres (science / tech /
-  sports / arts), prioritizing stories with concrete subject matter
+- 2 feature stories — concrete subject matter, ideally from two different
+  genres
+
+FEATURE GENRE PREFERENCE (apply when choosing the 2 features):
+  Rank from most-preferred to least-preferred:
+    1. explainer / how-it-works / human-interest — best for learners
+       (vocab transfers to daily life: 가방, 공항, 학교, 병원, 가족 등).
+       These often appear in the HARD pool from NPR/CBS/Politico under
+       innocuous-sounding headlines like "How X works" or "Why Y matters".
+    2. science (new discoveries, health, environment)
+    3. arts / culture / books / film
+    4. tech (only if non-politics)
+    5. sports — LAST resort. Sports vocab (구단, 결승, 시즌) does not transfer
+       well to other contexts. Our audience leans general-interest, not fans.
+       Only pick a sports story if no other feature option exists.
+
+  When the FEATURE POOL is dominated by sports/tech, look in the HARD POOL
+  for explainer-style stories — those qualify as features. Reclassify them
+  by listing their category as "feature" in your output.
 
 CATEGORY MIX RULE:
 - If ALL the top hard-news stories are politics/diplomacy/conflict (vocab
   dense), pick only 1 hard-news story and pull a 3rd feature instead.
-- Prefer breadth: 2 different feature genres > 2 features in the same genre.
+- Prefer breadth: 2 different feature topics > 2 in the same topic.
 - Never include 3+ politics/diplomacy stories in one pack.
 
 DUPLICATION RULE:
