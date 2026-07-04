@@ -23,3 +23,6 @@ __pycache__/
 # Daily news pipeline runtime artifacts (audio cache + per-day work dirs)
 daily_news_pipeline/cache/
 daily_news_pipeline/work/
+
+# translate_bundle.py output (enriched bundle copies)
+bundle_pipeline/translate_work/
