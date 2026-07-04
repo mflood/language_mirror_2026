@@ -92,6 +92,42 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         Task {
             await installStarterSampleIfNeeded()
         }
+
+        // First launch: onboarding → auto-started first practice session.
+        presentOnboardingIfNeeded()
+    }
+
+    // MARK: - Onboarding
+
+    private static let onboardingCompletedKey = "onboarding.completed"
+    static let learningLanguageKey = "onboarding.learningLanguage"
+
+    private func presentOnboardingIfNeeded() {
+        guard !UserDefaults.standard.bool(forKey: Self.onboardingCompletedKey) else { return }
+        let onboarding = OnboardingViewController()
+        onboarding.delegate = self
+        onboarding.modalPresentationStyle = .fullScreen
+        tabBarController.present(onboarding, animated: false)
+    }
+
+    /// Drop the brand-new user straight into a playing practice session:
+    /// zero decisions between "I want to learn" and hearing the language.
+    /// The starter import runs concurrently with onboarding, so poll briefly
+    /// if the library hasn't been populated yet.
+    private func autoStartFirstPractice(attempt: Int = 0) {
+        let track = container.libraryService.listPacks().flatMap { $0.tracks }.first
+        if let track,
+           let set = track.practiceSets.max(by: { $0.clips.count < $1.clips.count }),
+           !set.clips.isEmpty {
+            tabBarController.selectedIndex = 0
+            libraryCoordinator?.startPractice(track: track, practiceSet: set, autoPlay: true)
+        } else if attempt < 20 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.autoStartFirstPractice(attempt: attempt + 1)
+            }
+        }
+        // After 10s with no content (starter import failed), stay on Library —
+        // never block the user on a spinner.
     }
 
     // MARK: - First-launch starter sample
@@ -312,5 +348,26 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
                 practiceVC.stopCurrentPlayback()
             }
         }
+    }
+}
+
+// MARK: - OnboardingViewControllerDelegate
+
+extension AppCoordinator: OnboardingViewControllerDelegate {
+    func onboardingDidFinish(_ vc: OnboardingViewController, learningLanguage: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: Self.onboardingCompletedKey)
+        defaults.set(learningLanguage, forKey: Self.learningLanguageKey)
+        // Gentle first-session defaults: slowed audio is the whole point of
+        // shadowing practice, and it's much less intimidating on day one.
+        container.settings.simpleSpeed = 0.8
+        vc.dismiss(animated: true) { [weak self] in
+            self?.autoStartFirstPractice()
+        }
+    }
+
+    func onboardingDidSkip(_ vc: OnboardingViewController) {
+        UserDefaults.standard.set(true, forKey: Self.onboardingCompletedKey)
+        vc.dismiss(animated: true)
     }
 }

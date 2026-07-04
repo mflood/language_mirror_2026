@@ -43,7 +43,7 @@ final class LibraryCoordinator: Coordinator {
         navigationController.pushViewController(detail, animated: true)
     }
 
-    func showTrackDetailAndPractice(for track: Track, practiceSet: PracticeSet) {
+    func showTrackDetailAndPractice(for track: Track, practiceSet: PracticeSet, autoPlay: Bool = false) {
         let detail = TrackDetailViewController(
             track: track,
             audioPlayer: container.audioPlayer,
@@ -63,7 +63,15 @@ final class LibraryCoordinator: Coordinator {
             practiceService: container.practiceService
         )
         practiceVC.loadTrackAndPracticeSet(track: track, practiceSet: practiceSet)
+        practiceVC.autoPlayOnFirstAppear = autoPlay
         navigationController.pushViewController(practiceVC, animated: true)
+    }
+
+    /// Entry point for programmatic session starts (onboarding auto-start).
+    func startPractice(track: Track, practiceSet: PracticeSet, autoPlay: Bool) {
+        navigationController.popToRootViewController(animated: false)
+        showTrackDetailAndPractice(for: track, practiceSet: practiceSet, autoPlay: autoPlay)
+        appCoordinator?.practiceSessionStartedFromLibrary(track: track, practiceSet: practiceSet)
     }
 }
 

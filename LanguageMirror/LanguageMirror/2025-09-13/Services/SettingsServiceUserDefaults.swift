@@ -25,7 +25,9 @@ final class SettingsServiceUserDefaults: SettingsService {
     }
 
     // Defaults
-    private let defaultRepeats = 10
+    // 3, not 10: ten loops of the same clip before anything changes is an
+    // attention-killer for a first-time user. Power users can raise it.
+    private let defaultRepeats = 3
     private let defaultGap: TimeInterval = 0.5
     private let defaultInterGap: TimeInterval = 0.5
     private let defaultPrerollMs = 0

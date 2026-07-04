@@ -27,6 +27,24 @@ final class EvaluationWalkTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
+        // 0. Onboarding, if present: pick Korean, view how-it-works, auto-start.
+        let koreanButton = app.buttons["onboarding.lang.ko"]
+        if koreanButton.waitForExistence(timeout: 5) {
+            shot("00a-onboarding-language")
+            koreanButton.tap()
+            Thread.sleep(forTimeInterval: 1)
+            shot("00b-onboarding-how")
+            let cta = app.buttons["onboarding.cta"]
+            if cta.waitForExistence(timeout: 5) { cta.tap() }
+            Thread.sleep(forTimeInterval: 6)   // auto-start: import + push + play
+            shot("00c-auto-started-practice")
+            // Return to Library root for the rest of the tour
+            let back = app.navigationBars.buttons.firstMatch
+            if back.exists { back.tap(); Thread.sleep(forTimeInterval: 0.5) }
+            let back2 = app.navigationBars.buttons.firstMatch
+            if back2.exists { back2.tap(); Thread.sleep(forTimeInterval: 0.5) }
+        }
+
         // 1. First launch — whatever greets a brand-new user
         Thread.sleep(forTimeInterval: 2)
         shot("01-first-launch")

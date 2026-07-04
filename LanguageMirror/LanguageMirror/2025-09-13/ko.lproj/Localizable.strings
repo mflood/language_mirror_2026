@@ -262,3 +262,19 @@
 
 /* ── Level Meter ── */
 "level_meter.title" = "선택 레벨";
+
+/* Onboarding */
+"onboarding.title" = "Language Mirror";
+"onboarding.tagline" = "원어민처럼 말해요. 실제 오디오를 한 클립씩 따라 말하기.";
+"onboarding.learning_question" = "어떤 언어를 배우고 있나요?";
+"onboarding.lang.korean" = "한국어";
+"onboarding.lang.english" = "영어";
+"onboarding.skip" = "건너뛰기";
+"onboarding.how.title" = "사용 방법";
+"onboarding.how.step1.title" = "듣기";
+"onboarding.how.step1.body" = "뉴스, 드라마, 대화 — 실제 오디오로 배워요.";
+"onboarding.how.step2.title" = "반복";
+"onboarding.how.step2.body" = "짧은 클립이 자동으로 반복되고, 익숙해질 때까지 속도를 낮춰요.";
+"onboarding.how.step3.title" = "따라 말하기";
+"onboarding.how.step3.body" = "자연스러워질 때까지 클립을 섀도잉해요.";
+"onboarding.cta" = "첫 연습 시작하기";

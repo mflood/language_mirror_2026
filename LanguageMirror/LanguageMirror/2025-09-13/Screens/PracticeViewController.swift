@@ -114,7 +114,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         // Settings may have changed while this screen was off-screen (e.g. in Settings).
         // Refresh any UI that depends on global settings such as repeat count.
         updateModeToggleButton()
@@ -122,6 +122,19 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         practiceSpeedStrip.updateSelection(settings.simpleSpeed)
         updateTitle()
         updateUI()
+    }
+
+    /// When set, playback starts as soon as the screen first appears — used by
+    /// the onboarding auto-start so a new user hears audio without hunting for
+    /// the play button.
+    var autoPlayOnFirstAppear = false
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if autoPlayOnFirstAppear {
+            autoPlayOnFirstAppear = false
+            playPauseButtonTapped()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
