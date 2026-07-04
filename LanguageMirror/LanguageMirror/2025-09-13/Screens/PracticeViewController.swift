@@ -1160,7 +1160,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
                 setTitle: setTitle,
                 clipCount: self.workingClips.count,
                 totalPlays: totalPlays,
-                streakDays: nil
+                streakDays: StreakTracker.currentStreak()
             )
             sheet.onPracticeAgain = { [weak self] in self?.restartCompletedSession() }
             if let presentation = sheet.sheetPresentationController {
@@ -1350,6 +1350,9 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     func audioPlayerLoopDidComplete(clipIndex: Int, loopCount: Int) {
         print("🔄 [PracticeViewController] audioPlayerLoopDidComplete called")
         print("  ClipIndex: \(clipIndex), LoopCount: \(loopCount)")
+
+        // Any completed loop counts as practicing today (idempotent).
+        StreakTracker.recordPracticeToday()
         
         // Sync in-memory session with loop progress from the player.
         // The AudioPlayerService updates its own PracticeSession instance via

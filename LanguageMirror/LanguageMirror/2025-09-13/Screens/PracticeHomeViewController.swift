@@ -70,6 +70,29 @@ final class PracticeHomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadData()
+        updateStreakHeader()
+    }
+
+    /// Small "🔥 N-day streak" banner above the recents list. Only shown for
+    /// an actual streak (2+ days) — a "1-day streak" reads as sad, not
+    /// motivating.
+    private func updateStreakHeader() {
+        let streak = StreakTracker.currentStreak()
+        guard streak >= 2 else {
+            tableView.tableHeaderView = nil
+            return
+        }
+        let label = UILabel()
+        label.text = L10nf("session_complete.streak", streak)
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.textColor = AppColors.primaryText
+        label.textAlignment = .left
+        let container = UIView(frame: CGRect(x: 0, y: 0,
+                                             width: tableView.bounds.width, height: 44))
+        label.frame = container.bounds.insetBy(dx: 20, dy: 8)
+        label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        container.addSubview(label)
+        tableView.tableHeaderView = container
     }
 
     // MARK: - Setup
