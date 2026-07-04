@@ -283,7 +283,9 @@
 
 /* Session complete */
 "session_complete.title" = "연습 완료!";
-"session_complete.stats" = "문장 %d개 · 재생 %d회";
+"session_complete.stats" = "%@ · 재생 %d회";
+"session_complete.sentences" = "문장 %d개";
+"session_complete.sentences.one" = "문장 1개";
 "session_complete.streak" = "🔥 %d일 연속 연습";
 "session_complete.again" = "다시 연습";
 "session_complete.done" = "완료";

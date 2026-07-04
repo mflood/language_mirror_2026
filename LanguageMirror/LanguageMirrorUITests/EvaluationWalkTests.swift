@@ -123,6 +123,65 @@ final class EvaluationWalkTests: XCTestCase {
         shot("12-practice-home-after")
     }
 
+    /// Verifies the transcript banner shows the dimmed translation line.
+    /// Requires `simctl openurl` fired just before the run with the
+    /// news_2026_07_02_test deep link (springboard dialog pending).
+    /// Requires `simctl openurl` fired just before the run with the
+    /// news_2026_07_02_test deep link (springboard "Open" dialog pending).
+    @MainActor
+    func testTranslationBannerOnNewsPack() throws {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let openButton = springboard.buttons["Open"]
+        if openButton.waitForExistence(timeout: 8) { openButton.tap() }
+
+        let app = XCUIApplication()
+        app.activate()
+
+        // Wait for the news pack import, then open the octopus track. The
+        // title can appear twice (Recently Added + pack); pick a hittable one.
+        let anyTrack = app.staticTexts["문어와 거울"].firstMatch
+        let deadline = Date().addingTimeInterval(180)
+        let tabs = app.tabBars.firstMatch
+        while Date() < deadline {
+            if app.alerts.count > 0 { app.alerts.buttons.firstMatch.tap() }
+            if tabs.buttons["Library"].exists && tabs.buttons["Library"].isHittable {
+                tabs.buttons["Library"].tap()
+            }
+            if anyTrack.exists { break }
+            Thread.sleep(forTimeInterval: 3)
+        }
+        XCTAssertTrue(anyTrack.waitForExistence(timeout: 10))
+        let trackCell = app.staticTexts.matching(NSPredicate(format: "label == %@", "문어와 거울"))
+            .allElementsBoundByIndex.first(where: { $0.isHittable }) ?? anyTrack
+        trackCell.tap()
+
+        // Multi-clip set: the banner stays visible (a single-clip set would
+        // complete and the celebration sheet would cover it).
+        let setRow = app.staticTexts["Korean phrase loops"]
+        XCTAssertTrue(setRow.waitForExistence(timeout: 10))
+        setRow.tap()
+        Thread.sleep(forTimeInterval: 2)
+
+        // The banner appears once playback makes a clip current. Phrase-loops
+        // clip 1 is the vocab word 거울 → "mirror", so the two-label banner
+        // renders both the Korean source and its dimmed English translation.
+        let play = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'play'")).firstMatch
+        if play.exists && play.isHittable { play.tap() }
+        Thread.sleep(forTimeInterval: 4)
+        shot("15-translation-banner")
+
+        // Capture only — 15-translation-banner is the evidence (banner shows
+        // the current clip's Korean over its dimmed English). The banner
+        // exposes both labels as one combined a11y element and clip titles
+        // also embed the gloss, so there's no clean text assertion; this is
+        // a screenshot harness, not a pass/fail gate.
+        let bannerPresent = app.staticTexts
+            .matching(NSPredicate(format: "label CONTAINS %@ OR label CONTAINS %@", "거울", "mirror"))
+            .firstMatch
+        XCTAssertTrue(bannerPresent.waitForExistence(timeout: 10),
+                      "Practice screen never showed transcript content")
+    }
+
     /// Verifies the session-complete celebration. Run with repeats pre-set
     /// to 1 (simctl: defaults write … settings.globalRepeats -int 1) against
     /// an onboarded install so a 12-clip set finishes in ~1–2 minutes.

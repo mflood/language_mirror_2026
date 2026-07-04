@@ -11,6 +11,8 @@ import UIKit
 final class TranscriptBannerView: UIView {
 
     private let textLabel = UILabel()
+    private let translationLabel = UILabel()
+    private let textStack = UIStackView()
     private let iconView = UIImageView()
     private let chevronView = UIImageView()
     private let stackView = UIStackView()
@@ -43,7 +45,7 @@ final class TranscriptBannerView: UIView {
     deinit { NotificationCenter.default.removeObserver(self) }
 
     @objc private func applyFontSize() {
-        textLabel.font = .systemFont(ofSize: bannerFontSize, weight: .regular)
+        renderText()
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -78,6 +80,21 @@ final class TranscriptBannerView: UIView {
         textLabel.numberOfLines = 2
         textLabel.lineBreakMode = .byTruncatingTail
 
+        // Separate label so the translation always gets its own space — a
+        // single label would let a long source sentence push it out of view.
+        translationLabel.translatesAutoresizingMaskIntoConstraints = false
+        translationLabel.font = .systemFont(ofSize: max(11, bannerFontSize - 2), weight: .regular)
+        translationLabel.textColor = AppColors.secondaryText
+        translationLabel.numberOfLines = 2
+        translationLabel.lineBreakMode = .byTruncatingTail
+
+        textStack.translatesAutoresizingMaskIntoConstraints = false
+        textStack.axis = .vertical
+        textStack.alignment = .fill
+        textStack.spacing = 3
+        textStack.addArrangedSubview(textLabel)
+        textStack.addArrangedSubview(translationLabel)
+
         chevronView.translatesAutoresizingMaskIntoConstraints = false
         chevronView.image = UIImage(systemName: "chevron.up")
         chevronView.tintColor = AppColors.tertiaryText
@@ -90,7 +107,7 @@ final class TranscriptBannerView: UIView {
         stackView.spacing = 10
         stackView.isUserInteractionEnabled = false
         stackView.addArrangedSubview(iconView)
-        stackView.addArrangedSubview(textLabel)
+        stackView.addArrangedSubview(textStack)
         stackView.addArrangedSubview(chevronView)
         addSubview(stackView)
 
@@ -117,21 +134,40 @@ final class TranscriptBannerView: UIView {
         applyAdaptiveShadow(radius: 6, opacity: 0.08)
     }
 
-    /// Set the transcript text to display. Pass nil/empty to hide and
-    /// collapse the view's height so neighboring views can take its space.
-    func update(text: String?) {
+    private var currentText: String?
+    private var currentTranslation: String?
+
+    /// Set the transcript text (and optional translation, rendered dimmed
+    /// underneath). Pass nil/empty text to hide and collapse the view's
+    /// height so neighboring views can take its space.
+    func update(text: String?, translation: String? = nil) {
         let trimmed = text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        if trimmed.isEmpty {
+        currentText = trimmed.isEmpty ? nil : trimmed
+        currentTranslation = translation?.trimmingCharacters(in: .whitespacesAndNewlines)
+        if currentTranslation?.isEmpty == true { currentTranslation = nil }
+
+        if currentText == nil {
             textLabel.text = nil
             isHidden = true
             collapsedHeightConstraint?.isActive = true
         } else {
-            textLabel.text = trimmed
+            renderText()
             isHidden = false
             collapsedHeightConstraint?.isActive = false
         }
         invalidateIntrinsicContentSize()
         superview?.setNeedsLayout()
+    }
+
+    /// Source text (up to 2 lines) with the translation in its own dimmed
+    /// label (also up to 2 lines) — each guaranteed its own space.
+    private func renderText() {
+        let size = bannerFontSize
+        textLabel.font = .systemFont(ofSize: size, weight: .regular)
+        textLabel.text = currentText
+        translationLabel.font = .systemFont(ofSize: max(11, size - 2), weight: .regular)
+        translationLabel.text = currentTranslation
+        translationLabel.isHidden = currentTranslation == nil
     }
 
     @objc private func handleTap() {

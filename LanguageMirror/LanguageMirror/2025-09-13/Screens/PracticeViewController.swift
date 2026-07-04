@@ -1281,7 +1281,22 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             return text
         }
         let combined = parts.joined(separator: " ")
-        transcriptBanner.update(text: combined.isEmpty ? nil : combined)
+
+        // Translation line: same dedup rule as the detail popup — skip
+        // translations that just repeat text already visible in the clip
+        // (bilingual clips carry the English as its own span).
+        let existingTexts = Set(overlapping.map { $0.text })
+        var seenTranslations = Set<String>()
+        let translationParts = overlapping.compactMap { span -> String? in
+            guard let t = span.preferredTranslation(),
+                  !existingTexts.contains(t),
+                  seenTranslations.insert(t).inserted else { return nil }
+            return t
+        }
+        let translation = translationParts.joined(separator: " ")
+
+        transcriptBanner.update(text: combined.isEmpty ? nil : combined,
+                                translation: translation.isEmpty ? nil : translation)
     }
 
     /// Map a speaker string like "Speaker 1" to a short label "A" / "B" / "C".

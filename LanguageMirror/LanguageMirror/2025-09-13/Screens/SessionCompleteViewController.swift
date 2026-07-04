@@ -52,7 +52,10 @@ final class SessionCompleteViewController: UIViewController {
 
         let statsLabel = UILabel()
         statsLabel.translatesAutoresizingMaskIntoConstraints = false
-        statsLabel.text = L10nf("session_complete.stats", clipCount, totalPlays)
+        let sentencesText = clipCount == 1
+            ? L10n("session_complete.sentences.one")
+            : L10nf("session_complete.sentences", clipCount)
+        statsLabel.text = L10nf("session_complete.stats", sentencesText, totalPlays)
         statsLabel.font = .systemFont(ofSize: 17, weight: .medium)
         statsLabel.textColor = AppColors.secondaryText
         statsLabel.textAlignment = .center

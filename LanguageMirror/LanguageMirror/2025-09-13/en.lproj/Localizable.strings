@@ -283,7 +283,9 @@
 
 /* Session complete */
 "session_complete.title" = "Practice complete!";
-"session_complete.stats" = "%d sentences · %d plays";
+"session_complete.stats" = "%@ · %d plays";
+"session_complete.sentences" = "%d sentences";
+"session_complete.sentences.one" = "1 sentence";
 "session_complete.streak" = "🔥 %d-day streak";
 "session_complete.again" = "Practice Again";
 "session_complete.done" = "Done";
