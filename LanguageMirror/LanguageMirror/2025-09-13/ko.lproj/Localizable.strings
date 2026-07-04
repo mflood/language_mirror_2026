@@ -165,9 +165,8 @@
 "practice_home.practice_set" = "연습 세트";
 
 /* ── Practice Set Cell ── */
-"practice_set.detail" = "클립 %d개 • 드릴 %d개";
-"practice_set.clips" = "클립 %d개";
-"practice_set.drills" = "드릴 %d개";
+"practice_set.clip_count" = "클립 %d개";
+"practice_set.clip_count.one" = "클립 1개";
 
 /* ── Track Detail ── */
 "track_detail.subtitle" = "아래 연습 세트를 탭하여 연습을 시작하세요.";
@@ -177,7 +176,7 @@
 "track_detail.empty.message" = "연습 세트를 사용하면 이 트랙의 가장 유용한 부분에 집중할 수 있습니다.";
 "track_detail.view_transcripts" = "대본 보기";
 "track_detail.transcripts_none" = "없음";
-"track_detail.transcripts_count" = "%d개 구간";
+"track_detail.transcripts_count" = "%d줄";
 "track_detail.practice_set_default" = "연습 세트";
 
 "track_detail.a11y.add_set" = "연습 세트 추가";

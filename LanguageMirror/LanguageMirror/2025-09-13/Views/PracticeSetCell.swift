@@ -118,31 +118,16 @@ final class PracticeSetCell: UITableViewCell {
     
     func configure(title: String, clipCount: Int, drillCount: Int, isFavorite: Bool) {
         titleLabel.text = title
-        detailLabel.text = L10nf("practice_set.detail", clipCount, drillCount)
+        // One pluralized count. The old "%d clips • %d drills" line plus a
+        // duplicate chips row was the same information three times, with a
+        // singular/plural bug ("1 clips") to boot.
+        detailLabel.text = clipCount == 1
+            ? L10n("practice_set.clip_count.one")
+            : L10nf("practice_set.clip_count", clipCount)
         self.isFavorite = isFavorite
-        configureBadges(clipCount: clipCount, drillCount: drillCount)
-        updateFavoriteAppearance(animated: false)
-    }
-    
-    private func configureBadges(clipCount: Int, drillCount: Int) {
-        // Clear any existing badges
         badgeStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        // Clip count badge
-        if clipCount > 0 {
-            let clipsTag = TagView()
-            clipsTag.configure(text: L10nf("practice_set.clips", clipCount))
-            badgeStackView.addArrangedSubview(clipsTag)
-        }
-        
-        // Drill count badge
-        if drillCount > 0 {
-            let drillsTag = TagView()
-            drillsTag.configure(text: L10nf("practice_set.drills", drillCount))
-            badgeStackView.addArrangedSubview(drillsTag)
-        }
-        
-        badgeStackView.isHidden = badgeStackView.arrangedSubviews.isEmpty
+        badgeStackView.isHidden = true
+        updateFavoriteAppearance(animated: false)
     }
     
     // MARK: - Actions

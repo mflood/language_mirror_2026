@@ -31,7 +31,7 @@ func autoTagsForTrack(sourceType: AudioSourceType, languageCode: String?, fileEx
     case .tts:
         tags.append("tts")
     case .textbook:
-        tags.append("imported")
+        break // curated pack content — "imported" is engineering noise to a learner
     }
     
     // Language tag
@@ -51,11 +51,10 @@ func autoTagsForTrack(sourceType: AudioSourceType, languageCode: String?, fileEx
         }
     }
     
-    // File format tag
-    if let ext = fileExtension?.lowercased() {
-        tags.append(ext)
-    }
-    
+    // Note: deliberately no file-format tag — "mp3"/"m4a" is metadata a
+    // learner never needs to see.
+    _ = fileExtension
+
     return tags.map { normalizeTag($0) }
 }
 

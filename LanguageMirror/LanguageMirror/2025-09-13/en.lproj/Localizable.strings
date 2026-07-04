@@ -165,9 +165,8 @@
 "practice_home.practice_set" = "Practice Set";
 
 /* ── Practice Set Cell ── */
-"practice_set.detail" = "%d clips • %d drills";
-"practice_set.clips" = "%d clips";
-"practice_set.drills" = "%d drills";
+"practice_set.clip_count" = "%d clips";
+"practice_set.clip_count.one" = "1 clip";
 
 /* ── Track Detail ── */
 "track_detail.subtitle" = "Tap a practice set below to start practicing.";
@@ -177,7 +176,7 @@
 "track_detail.empty.message" = "Practice sets help you focus on the most useful parts of this track.";
 "track_detail.view_transcripts" = "View transcripts";
 "track_detail.transcripts_none" = "None";
-"track_detail.transcripts_count" = "%d span(s)";
+"track_detail.transcripts_count" = "%d lines";
 "track_detail.practice_set_default" = "Practice Set";
 
 "track_detail.a11y.add_set" = "Add practice set";

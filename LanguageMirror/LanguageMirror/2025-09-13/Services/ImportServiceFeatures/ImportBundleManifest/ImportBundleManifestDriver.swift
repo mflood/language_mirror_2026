@@ -387,12 +387,24 @@ final class ImportBundleManifestDriver {
                 
                 // Generate tags
                 let tags = autoTagsForTrack(sourceType: .textbook, languageCode: bundleTrack.languageCode, fileExtension: fileExtension)
-                
+
+                // Placeholder titles like "Track 001" read as broken data to a
+                // learner — fall back to the pack's title (numbered when the
+                // pack has several tracks).
+                var trackTitle = bundleTrack.title.trimmingCharacters(in: .whitespacesAndNewlines)
+                let isPlaceholder = trackTitle.isEmpty
+                    || trackTitle.range(of: #"^[Tt]rack[ _-]?\d*$"#, options: .regularExpression) != nil
+                if isPlaceholder {
+                    trackTitle = bundlePack.tracks.count > 1
+                        ? "\(bundlePack.title) \(trackIndex + 1)"
+                        : bundlePack.title
+                }
+
                 // Create track
                 let track = Track(
                     id: trackId,
                     packId: packId,
-                    title: bundleTrack.title,
+                    title: trackTitle,
                     filename: filename,
                     localUrl: dest,
                     durationMs: durationMs,

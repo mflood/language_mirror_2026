@@ -147,14 +147,6 @@ final class TrackDetailViewController: UITableViewController {
         }
         cardView.addSubview(languageTag)
         
-        let filenameLabel = UILabel()
-        filenameLabel.translatesAutoresizingMaskIntoConstraints = false
-        filenameLabel.text = track.filename
-        filenameLabel.font = .systemFont(ofSize: 14, weight: .regular)
-        filenameLabel.textColor = AppColors.secondaryText
-        filenameLabel.numberOfLines = 1
-        cardView.addSubview(filenameLabel)
-        
         let subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = L10n("track_detail.subtitle")
@@ -179,11 +171,7 @@ final class TrackDetailViewController: UITableViewController {
             languageTag.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             languageTag.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             
-            filenameLabel.topAnchor.constraint(equalTo: languageTag.bottomAnchor, constant: 8),
-            filenameLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            filenameLabel.trailingAnchor.constraint(lessThanOrEqualTo: cardView.trailingAnchor, constant: -16),
-            
-            subtitleLabel.topAnchor.constraint(equalTo: filenameLabel.bottomAnchor, constant: 6),
+            subtitleLabel.topAnchor.constraint(equalTo: languageTag.bottomAnchor, constant: 8),
             subtitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: cardView.trailingAnchor, constant: -16),
             subtitleLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16)
@@ -537,7 +525,10 @@ final class TrackDetailViewController: UITableViewController {
     private func trackLanguageDisplay() -> String {
         if let code = track.languageCode?.trimmingCharacters(in: .whitespacesAndNewlines),
            !code.isEmpty {
-            return code
+            // Raw locale codes ("ko-KR") are engineering data — show the
+            // localized language name ("Korean" / "한국어") instead.
+            let base = String(code.prefix(while: { $0 != "-" }))
+            return Locale.current.localizedString(forLanguageCode: base)?.capitalized ?? code
         }
         return "—"
     }
