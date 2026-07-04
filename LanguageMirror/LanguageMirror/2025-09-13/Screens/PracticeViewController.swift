@@ -1254,7 +1254,21 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             }
             .joined(separator: "\n\n")
 
-        let detailVC = TranscriptDetailViewController(text: fullText, clipTitle: clip.title)
+        // Translations of the clip's spans, in span order. Skip any that
+        // duplicate text already visible in the transcript (bilingual clips
+        // include the English turn as its own span, and its reverse
+        // translation would just repeat the text above it).
+        let existingTexts = Set(overlapping.map { $0.text })
+        var seenTranslations = Set<String>()
+        let translationLines = overlapping.compactMap { span -> String? in
+            guard let t = span.preferredTranslation(),
+                  !existingTexts.contains(t),
+                  seenTranslations.insert(t).inserted else { return nil }
+            return t
+        }
+        let translationText = translationLines.isEmpty ? nil : translationLines.joined(separator: "\n\n")
+
+        let detailVC = TranscriptDetailViewController(text: fullText, translation: translationText, clipTitle: clip.title)
         if let sheet = detailVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
             sheet.prefersGrabberVisible = true

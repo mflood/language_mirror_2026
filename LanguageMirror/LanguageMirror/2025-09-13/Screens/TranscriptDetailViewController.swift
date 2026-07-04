@@ -19,6 +19,7 @@ final class TranscriptDetailViewController: UIViewController {
     private let increaseFontButton = UIButton(type: .system)
     private let actionRow = UIStackView()
     private let text: String
+    private let translation: String?
     private let clipTitle: String?
 
     private static let fontSizeKey = "transcript.fontSize"
@@ -34,13 +35,20 @@ final class TranscriptDetailViewController: UIViewController {
         set {
             let clamped = max(Self.minFontSize, min(Self.maxFontSize, newValue))
             UserDefaults.standard.set(Double(clamped), forKey: Self.fontSizeKey)
-            textView.font = .systemFont(ofSize: clamped, weight: .regular)
+            applyText()
             NotificationCenter.default.post(name: .transcriptFontSizeDidChange, object: nil)
         }
     }
 
-    init(text: String, clipTitle: String?) {
+    /// Combined text used for copy/share so the translation travels with it.
+    private var exportText: String {
+        guard let translation else { return text }
+        return text + "\n\n" + translation
+    }
+
+    init(text: String, translation: String? = nil, clipTitle: String?) {
         self.text = text
+        self.translation = translation
         self.clipTitle = clipTitle
         super.init(nibName: nil, bundle: nil)
     }
@@ -86,9 +94,7 @@ final class TranscriptDetailViewController: UIViewController {
         textView.isEditable = false
         textView.isSelectable = true
         textView.backgroundColor = .clear
-        textView.font = .systemFont(ofSize: fontSize, weight: .regular)
-        textView.textColor = AppColors.primaryText
-        textView.text = text
+        applyText()
         textView.alwaysBounceVertical = true
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
@@ -111,6 +117,31 @@ final class TranscriptDetailViewController: UIViewController {
         ])
     }
 
+    /// Renders transcript (primary) plus, when present, the translation as a
+    /// dimmed block underneath. Re-run whenever fontSize changes.
+    private func applyText() {
+        let size = fontSize
+        guard let translation else {
+            textView.font = .systemFont(ofSize: size, weight: .regular)
+            textView.textColor = AppColors.primaryText
+            textView.text = text
+            return
+        }
+        let result = NSMutableAttributedString(
+            string: text,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: size, weight: .regular),
+                .foregroundColor: AppColors.primaryText,
+            ])
+        result.append(NSAttributedString(
+            string: "\n\n" + translation,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: max(Self.minFontSize, size - 3), weight: .regular),
+                .foregroundColor: AppColors.secondaryText,
+            ]))
+        textView.attributedText = result
+    }
+
     private func configureActionButton(_ button: UIButton, systemName: String, action: Selector) {
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
@@ -122,7 +153,7 @@ final class TranscriptDetailViewController: UIViewController {
     }
 
     @objc private func copyTapped() {
-        UIPasteboard.general.string = text
+        UIPasteboard.general.string = exportText
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         // Brief visual confirmation: swap icon to checkmark for a beat
@@ -135,7 +166,7 @@ final class TranscriptDetailViewController: UIViewController {
     }
 
     @objc private func shareTapped() {
-        let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+        let activityVC = UIActivityViewController(activityItems: [exportText], applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = shareButton
         activityVC.popoverPresentationController?.sourceRect = shareButton.bounds
         present(activityVC, animated: true)

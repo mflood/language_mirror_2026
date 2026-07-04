@@ -90,6 +90,27 @@ struct TranscriptSpan: Codable, Equatable {
     var text: String
     var speaker: String?
     var languageCode: String? // Used for TTS prompts, e.g., "en-US"
+    /// Translations of `text` keyed by BCP-47 base language code
+    /// (e.g. "en", "es", "zh-Hans", "th"). Optional — older bundles and
+    /// persisted tracks omit it.
+    var translations: [String: String]?
+
+    /// Best translation for the user's preferred languages, falling back to
+    /// any available language other than the span's own.
+    func preferredTranslation() -> String? {
+        guard let translations, !translations.isEmpty else { return nil }
+        for lang in Locale.preferredLanguages {
+            let base = String(lang.prefix(while: { $0 != "-" }))
+            if let exact = translations[base] { return exact }
+            // Script-qualified keys, e.g. preferred "zh" matching "zh-Hans"
+            if let scriptMatch = translations.first(where: { $0.key.hasPrefix(base + "-") }) {
+                return scriptMatch.value
+            }
+        }
+        let ownBase = String((languageCode ?? "").prefix(while: { $0 != "-" }))
+        return translations.first(where: { $0.key != ownBase })?.value
+            ?? translations.first?.value
+    }
 }
 
 

@@ -60,15 +60,22 @@ class TranscriptSpan:
     text: str
     speaker: str | None = None
     languageCode: str | None = None
+    # Translations of `text` keyed by BCP-47 base language code
+    # (e.g. "en", "es", "zh-Hans", "th"). Optional — older bundles omit it,
+    # and the shipped iOS app ignores unknown keys, so this is non-breaking.
+    translations: dict[str, str] | None = None
 
     def to_json(self) -> dict[str, Any]:
-        return {
+        out: dict[str, Any] = {
             "startMs": self.startMs,
             "endMs": self.endMs,
             "text": self.text,
             "speaker": self.speaker,
             "languageCode": self.languageCode,
         }
+        if self.translations:
+            out["translations"] = self.translations
+        return out
 
 
 @dataclass(frozen=True)

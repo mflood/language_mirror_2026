@@ -26,3 +26,11 @@ steps:
     provider: openai
     model: gpt-5.5
     max_tokens: 4096
+
+  # Step 2b — per-sentence English for the easy Korean summary (used as
+  # span translations in the bundle). Simple, mechanical translation, so
+  # the cheap model is plenty.
+  translate_easy:
+    provider: anthropic
+    model: claude-haiku-4-5
+    max_tokens: 2048
