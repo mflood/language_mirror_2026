@@ -42,6 +42,11 @@ SITE_REPO = Path.home() / "Desktop" / "sixwandsstudiosllc"
 SITE_DIR = SITE_REPO / "sixwands.com"
 S3_BUCKET = "sixwandsstudios.com"
 
+# CloudFront distribution fronting sixwandsstudios.com — uploaded pages are
+# invalidated after each publish so edges don't serve stale copies for up to
+# the default 24h TTL.
+CLOUDFRONT_DISTRIBUTION_ID = "E3FOHY8GP6GID3"
+
 APP_STORE_URL = "https://apps.apple.com/us/app/language-mirror/id6761317026"
 
 # Known-good top-level keys that MUST exist before any deploy. If any is missing
@@ -375,6 +380,23 @@ def check_destination_for_clobber(s3_keys: list[str]) -> dict[str, bool]:
     return {k: (k in existing) for k in s3_keys}
 
 
+def invalidate_cloudfront(paths: list[str]) -> None:
+    """Fire-and-forget CloudFront invalidation for the given paths."""
+    print(f"🌀 CloudFront invalidation ({CLOUDFRONT_DISTRIBUTION_ID}): {' '.join(paths)}")
+    result = subprocess.run(
+        ["aws", "cloudfront", "create-invalidation",
+         "--distribution-id", CLOUDFRONT_DISTRIBUTION_ID,
+         "--paths", *paths,
+         "--query", "Invalidation.Id", "--output", "text"],
+        capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        # Stale cache is annoying but not worth failing the publish over.
+        print(f"   ⚠ invalidation failed (page may stay cached up to 24h): {result.stderr.strip()}")
+    else:
+        print(f"   ✓ invalidation created: {result.stdout.strip()} (completes in a few minutes)")
+
+
 def cp_to_s3(local: Path, s3_key: str, content_type: str | None = None) -> None:
     s3_dest = f"s3://{S3_BUCKET}/{s3_key}"
     args = ["aws", "s3", "cp", str(local), s3_dest]
@@ -500,6 +522,10 @@ def main() -> int:
     print(f"📤 Uploading to s3://{S3_BUCKET}/ (cp-only, no deletes)...")
     for local, key, ct in upload_plan:
         cp_to_s3(local, key, ct)
+    print()
+
+    # 5. Invalidate CloudFront so edges pick up the new pages immediately
+    invalidate_cloudfront([f"/news/{date}/*", "/news/index.html"])
     print()
     print(f"🎉 Published https://sixwandsstudios.com/news/{date}/")
     return 0
