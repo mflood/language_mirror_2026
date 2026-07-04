@@ -126,6 +126,27 @@ final class EvaluationWalkTests: XCTestCase {
     /// Verifies the transcript banner shows the dimmed translation line.
     /// Requires `simctl openurl` fired just before the run with the
     /// news_2026_07_02_test deep link (springboard dialog pending).
+    /// Settings: core controls up top, timing/preroll/duck behind Advanced.
+    @MainActor
+    func testSettingsBasicAdvancedSplit() throws {
+        let app = XCUIApplication()
+        app.launch()
+        app.tabBars.firstMatch.buttons["Settings"].tap()
+        Thread.sleep(forTimeInterval: 1)
+        shot("16-settings-collapsed")
+
+        let advanced = app.buttons["settings.advanced.toggle"]
+        XCTAssertTrue(advanced.waitForExistence(timeout: 5), "Advanced disclosure not found")
+        // Timing controls hidden until Advanced is expanded.
+        XCTAssertFalse(app.staticTexts["Gap Between Repeats"].isHittable,
+                       "Advanced controls should be hidden by default")
+        advanced.tap()
+        Thread.sleep(forTimeInterval: 0.6)
+        shot("17-settings-expanded")
+        XCTAssertTrue(app.staticTexts["Gap Between Repeats"].waitForExistence(timeout: 3),
+                      "Advanced controls should appear after expanding")
+    }
+
     /// Requires `simctl openurl` fired just before the run with the
     /// news_2026_07_02_test deep link (springboard "Open" dialog pending).
     @MainActor

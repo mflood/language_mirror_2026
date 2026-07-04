@@ -32,6 +32,9 @@ final class SettingsViewController: UIViewController {
     private let rampCard = PhaseCard(phase: .ramp)
     private let endCard = PhaseCard(phase: .end)
 
+    // Collapsible body of the Advanced section (timing/preroll/duck).
+    private weak var advancedBody: UIStackView?
+
     // Basic section
     private let gapSlider = UISlider()
     private let gapValueLabel = UILabel()
@@ -90,6 +93,7 @@ final class SettingsViewController: UIViewController {
         let modeSection = makeSectionStack(header: L10n("settings.section.practice_mode"))
         practiceModeSeg.translatesAutoresizingMaskIntoConstraints = false
         modeSection.addArrangedSubview(practiceModeSeg)
+        modeSection.addArrangedSubview(makeHelperText(L10n("settings.practice_mode.help")))
         contentStack.addArrangedSubview(modeSection)
 
         // --- Simple Mode Section ---
@@ -133,22 +137,71 @@ final class SettingsViewController: UIViewController {
 
         contentStack.addArrangedSubview(progressionSection)
 
-        // --- Basic Section ---
-        let basicSection = makeSectionStack(header: L10n("settings.section.playback"))
+        // --- Advanced Section (collapsed by default) ---
+        // Timing, preroll and audio-ducking are fine-tuning most learners
+        // never need — hide them behind a disclosure so the core screen is
+        // just mode / speed / repeats.
+        let advancedSection = UIStackView()
+        advancedSection.axis = .vertical
+        advancedSection.spacing = 12
+        advancedSection.translatesAutoresizingMaskIntoConstraints = false
+
+        advancedSection.addArrangedSubview(makeAdvancedDisclosureHeader())
+
+        let advancedBody = UIStackView()
+        advancedBody.axis = .vertical
+        advancedBody.spacing = 12
+        advancedBody.isHidden = true
+        self.advancedBody = advancedBody
 
         let gapRow = makeSliderRow(title: L10n("settings.gap_between_repeats"), valueLabel: gapValueLabel, slider: gapSlider)
-        basicSection.addArrangedSubview(gapRow)
+        advancedBody.addArrangedSubview(gapRow)
 
         let interGapRow = makeSliderRow(title: L10n("settings.gap_between_clips"), valueLabel: interGapValueLabel, slider: interGapSlider)
-        basicSection.addArrangedSubview(interGapRow)
+        advancedBody.addArrangedSubview(interGapRow)
 
         let prerollRow = makeControlRow(title: L10n("settings.preroll"), control: prerollSeg)
-        basicSection.addArrangedSubview(prerollRow)
+        advancedBody.addArrangedSubview(prerollRow)
 
         let duckRow = makeSwitchRow(title: L10n("settings.duck_other_audio"), valueLabel: duckValueLabel, toggle: duckSwitch)
-        basicSection.addArrangedSubview(duckRow)
+        advancedBody.addArrangedSubview(duckRow)
 
-        contentStack.addArrangedSubview(basicSection)
+        advancedSection.addArrangedSubview(advancedBody)
+        contentStack.addArrangedSubview(advancedSection)
+    }
+
+    private func makeAdvancedDisclosureHeader() -> UIView {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.contentHorizontalAlignment = .leading
+        button.accessibilityIdentifier = "settings.advanced.toggle"
+
+        var config = UIButton.Configuration.plain()
+        config.title = L10n("settings.section.advanced").uppercased()
+        var attrs = AttributeContainer()
+        attrs.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        attrs.foregroundColor = AppColors.secondaryText
+        config.attributedTitle = AttributedString(L10n("settings.section.advanced").uppercased(), attributes: attrs)
+        config.image = UIImage(systemName: "chevron.right")
+        config.imagePlacement = .trailing
+        config.imagePadding = 6
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)
+        config.baseForegroundColor = AppColors.secondaryText
+        config.contentInsets = .zero
+        button.configuration = config
+
+        button.addAction(UIAction { [weak self] _ in
+            guard let self, let body = self.advancedBody else { return }
+            UISelectionFeedbackGenerator().selectionChanged()
+            let willExpand = body.isHidden
+            UIView.animate(withDuration: 0.25) {
+                body.isHidden = !willExpand
+                body.alpha = willExpand ? 1 : 0
+                button.configuration?.image = UIImage(systemName: willExpand ? "chevron.down" : "chevron.right")
+            }
+        }, for: .touchUpInside)
+
+        return button
     }
 
     // MARK: - Configure Controls
@@ -286,6 +339,16 @@ final class SettingsViewController: UIViewController {
         label.text = text.uppercased()
         label.font = .systemFont(ofSize: 13, weight: .semibold)
         label.textColor = AppColors.secondaryText
+        return label
+    }
+
+    /// Small explanatory caption under a control.
+    private func makeHelperText(_ text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.textColor = AppColors.secondaryText
+        label.numberOfLines = 0
         return label
     }
 

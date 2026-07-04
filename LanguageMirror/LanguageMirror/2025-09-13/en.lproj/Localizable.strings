@@ -289,3 +289,5 @@
 "session_complete.streak" = "🔥 %d-day streak";
 "session_complete.again" = "Practice Again";
 "session_complete.done" = "Done";
+"settings.section.advanced" = "Advanced";
+"settings.practice_mode.help" = "Simple keeps one speed. Progression starts slow and speeds up as you repeat.";

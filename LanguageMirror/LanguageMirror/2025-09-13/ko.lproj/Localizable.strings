@@ -289,3 +289,5 @@
 "session_complete.streak" = "🔥 %d일 연속 연습";
 "session_complete.again" = "다시 연습";
 "session_complete.done" = "완료";
+"settings.section.advanced" = "고급";
+"settings.practice_mode.help" = "심플은 한 가지 속도로, 프로그레션은 느리게 시작해 반복할수록 빨라져요.";
