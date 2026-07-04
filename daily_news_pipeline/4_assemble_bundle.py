@@ -123,10 +123,17 @@ def build_turn_translations(story: dict) -> list[dict[str, str] | None]:
     turns = story["turns"]
     out: list[dict[str, str] | None] = [None] * len(turns)
 
-    # Occurrence-ordered turn indices per role
+    # Occurrence-ordered turn indices per role. Old script.json formats
+    # (pre role-tagging, e.g. 2026-05-24) have no roles — nothing to pair.
     by_role: dict[str, list[int]] = {}
     for i, t in enumerate(turns):
-        by_role.setdefault(t["role"], []).append(i)
+        role = t.get("role")
+        if role:
+            by_role.setdefault(role, []).append(i)
+    if not by_role:
+        print(f"⚠️  {story['story_id']}: turns carry no roles — skipping translations",
+              file=sys.stderr)
+        return out
 
     for ko_role, en_role in ROLE_TWINS:
         ko_idxs = by_role.get(ko_role, [])
@@ -203,6 +210,14 @@ def build_track(story: dict, timings: dict, pack_id: str) -> dict:
     # `translations` (optional, base-language-code keyed) carries the other
     # language's rendering of the span; the shipped app ignores the key.
     turn_translations = build_turn_translations(story)
+    script_turns = story.get("turns", [])
+    if turn_translations and len(script_turns) != len(turn_timings):
+        # Script and timings disagree (e.g. script regenerated after
+        # synthesis, 2026-05-25) — index-based attachment would misalign.
+        print(f"⚠️  {story['story_id']}: {len(script_turns)} script turns vs "
+              f"{len(turn_timings)} timed turns — skipping translations",
+              file=sys.stderr)
+        turn_translations = []
     transcripts: list[dict] = []
     for i, t in enumerate(turn_timings):
         span = {
@@ -212,7 +227,11 @@ def build_track(story: dict, timings: dict, pack_id: str) -> dict:
             "speaker": t["speaker"],
             "languageCode": "ko-KR" if t["lang"] == "ko" else "en-US",
         }
-        if i < len(turn_translations) and turn_translations[i]:
+        # Attach only when the timed turn's text matches the script turn at
+        # the same index — guarantees a translation can never sit on the
+        # wrong span.
+        if (i < len(turn_translations) and turn_translations[i]
+                and script_turns[i]["text"] == t["text"]):
             span["translations"] = turn_translations[i]
         transcripts.append(span)
 
