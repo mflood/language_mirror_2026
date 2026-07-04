@@ -22,6 +22,7 @@
 
 /* ── Library ── */
 "library.search_placeholder" = "트랙 검색";
+"library.sort" = "정렬";
 "library.pack" = "팩";
 "library.section.continue_practicing" = "계속 연습하기";
 "library.section.recently_added" = "최근 추가";

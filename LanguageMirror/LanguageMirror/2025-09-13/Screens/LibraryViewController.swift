@@ -93,12 +93,14 @@ final class LibraryViewController: UIViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+        let sortItem = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
             target: self,
             action: #selector(sortTapped)
         )
+        sortItem.accessibilityLabel = L10n("library.sort")
+        navigationItem.rightBarButtonItem = sortItem
 
         configureCollectionView()
         configureDataSource()
@@ -327,6 +329,16 @@ final class LibraryViewController: UIViewController {
 
     private func loadData() {
         packs = libraryService.listNonEmptyPacks()
+        // With only a couple of packs, collapsed headers just hide the
+        // content behind an extra tap — expand them so tracks are visible
+        // immediately. Users with bigger libraries keep their saved state.
+        if packs.count <= 2 {
+            let allIds = Set(packs.map { $0.id })
+            if expandedPackIds != allIds {
+                expandedPackIds.formUnion(allIds)
+                saveExpansionState()
+            }
+        }
         applySort()
         applySnapshot()
         updateEmptyState()
@@ -355,11 +367,17 @@ final class LibraryViewController: UIViewController {
                 snapshot.appendItems(sessionSummaries.map { .continueCard(sessionSummary: $0) }, toSection: .continuePracticing)
             }
 
-            // Recently Added
-            let recentTracks = libraryService.listRecentlyAddedTracks(limit: 5, withinDays: 14)
-            if !recentTracks.isEmpty {
-                snapshot.appendSections([.recentlyAdded])
-                snapshot.appendItems(recentTracks.map { .recentTrack(trackId: $0.id) }, toSection: .recentlyAdded)
+            // Recently Added — a shortcut into a LARGE library. In a small
+            // one (a pack or two) every track is already visible in the pack
+            // sections below, so this section is pure duplication: a new user
+            // sees the same track twice and reads it as two tracks.
+            let totalTracks = packs.reduce(0) { $0 + $1.tracks.count }
+            if packs.count > 2 || totalTracks > 8 {
+                let recentTracks = libraryService.listRecentlyAddedTracks(limit: 5, withinDays: 14)
+                if !recentTracks.isEmpty {
+                    snapshot.appendSections([.recentlyAdded])
+                    snapshot.appendItems(recentTracks.map { .recentTrack(trackId: $0.id) }, toSection: .recentlyAdded)
+                }
             }
 
             // Favorites

@@ -22,6 +22,7 @@
 
 /* ── Library ── */
 "library.search_placeholder" = "Search tracks";
+"library.sort" = "Sort";
 "library.pack" = "Pack";
 "library.section.continue_practicing" = "CONTINUE PRACTICING";
 "library.section.recently_added" = "RECENTLY ADDED";
