@@ -96,31 +96,43 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         currentImportTask = nil
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 
-        Row.allCases.count 
+    /// Grouped by intent: ready-made packs first (what most learners want),
+    /// then personal media, then power-user plumbing tucked under Advanced.
+    private let sections: [(header: String?, footer: String?, rows: [Row])] = [
+        (nil, nil, [.featured]),
+        ("import.section.own_audio", nil, [.fromVideo, .fromFiles, .record]),
+        ("import.section.advanced", "import.footer", [.fromURL, .fromS3Bundle]),
+    ]
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        sections.count
     }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { 
-        L10n("import.header")
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        sections[section].rows.count
     }
-    
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        sections[section].header.map { L10n($0) }
+    }
+
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        L10n("import.footer")
+        sections[section].footer.map { L10n($0) }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "importCell", for: indexPath) as? ImportOptionCell else {
             return UITableViewCell()
         }
-        
-        let row = Row(rawValue: indexPath.row)!
+
+        let row = sections[indexPath.section].rows[indexPath.row]
         cell.configure(
             title: row.title,
             description: row.description,
             iconName: row.iconName,
             iconColor: row.iconColor
         )
-        
+
         return cell
     }
     
@@ -137,7 +149,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
         
-        switch Row(rawValue: indexPath.row)! {
+        switch sections[indexPath.section].rows[indexPath.row] {
         case .featured: presentFeaturedPacks()
         case .fromVideo: presentVideoPicker()
         case .fromFiles: presentFilePicker()

@@ -2,7 +2,7 @@
 
 /* ── Tabs ── */
 "tab.library" = "라이브러리";
-"tab.import" = "가져오기";
+"tab.import" = "추가";
 "tab.practice" = "연습";
 "tab.settings" = "설정";
 
@@ -42,10 +42,11 @@
 "sort.duration_shortest" = "길이 (짧은 순)";
 
 /* ── Import ── */
-"import.header" = "가져오기 방법 선택";
-"import.footer" = "오디오를 라이브러리에 추가할 방법을 선택하세요. 모든 파일은 기기에 로컬로 저장됩니다.";
+"import.section.own_audio" = "내 오디오";
+"import.section.advanced" = "고급";
+"import.footer" = "추가한 콘텐츠는 모두 기기에 저장됩니다.";
 "import.option.featured" = "추천 팩";
-"import.option.featured.desc" = "준비된 연습 팩을 둘러보고 설치하세요";
+"import.option.featured.desc" = "준비된 연습 팩 — 여기서 시작하세요";
 "import.option.video" = "동영상에서 가져오기";
 "import.option.video.desc" = "동영상 파일에서 오디오 추출";
 "import.option.files" = "파일에서 가져오기";
@@ -53,9 +54,9 @@
 "import.option.record" = "오디오 녹음";
 "import.option.record.desc" = "마이크로 새 오디오 녹음";
 "import.option.url" = "URL에서 다운로드";
-"import.option.url.desc" = "mp3, m4a, wav 파일 다운로드";
-"import.option.bundle" = "번들 설치";
-"import.option.bundle.desc" = "원격 매니페스트에서 번들 다운로드";
+"import.option.url.desc" = "링크로 오디오 추가";
+"import.option.bundle" = "링크로 팩 설치";
+"import.option.bundle.desc" = "받은 팩 링크 붙여넣기 (bundle.json)";
 
 "import.url.title" = "URL에서 다운로드";
 "import.url.message" = "오디오 파일의 직접 링크를 입력하세요.";
@@ -63,8 +64,8 @@
 "import.url.title_placeholder" = "제목 (선택)";
 "import.url.download" = "다운로드";
 
-"import.bundle.title" = "번들 설치";
-"import.bundle.message" = "JSON 매니페스트의 URL을 입력하세요.";
+"import.bundle.title" = "링크로 팩 설치";
+"import.bundle.message" = "받은 팩 링크를 붙여넣으세요 (bundle.json으로 끝나요).";
 "import.bundle.placeholder" = "https://…/bundle.json";
 "import.bundle.install" = "설치";
 

@@ -53,7 +53,7 @@ final class EvaluationWalkTests: XCTestCase {
 
         // 2. The four tabs as a new user sees them
         let tabs = app.tabBars.firstMatch
-        for (name, label) in [("03-tab-import", "Import"),
+        for (name, label) in [("03-tab-import", "Add"),
                               ("04-tab-practice", "Practice"),
                               ("05-tab-settings", "Settings"),
                               ("06-tab-library", "Library")] {
@@ -64,9 +64,9 @@ final class EvaluationWalkTests: XCTestCase {
         }
 
         // 3. Obtaining content: what the Install Bundle flow looks like
-        tabs.buttons["Import"].tap()
+        tabs.buttons["Add"].tap()
         Thread.sleep(forTimeInterval: 1)
-        let bundleRow = app.staticTexts["Install Bundle"]
+        let bundleRow = app.staticTexts["Install Pack from Link"]
         if bundleRow.waitForExistence(timeout: 5) {
             bundleRow.tap()
             Thread.sleep(forTimeInterval: 1)

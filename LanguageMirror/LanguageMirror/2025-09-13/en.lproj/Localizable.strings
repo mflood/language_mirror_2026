@@ -2,7 +2,7 @@
 
 /* ── Tabs ── */
 "tab.library" = "Library";
-"tab.import" = "Import";
+"tab.import" = "Add";
 "tab.practice" = "Practice";
 "tab.settings" = "Settings";
 
@@ -42,10 +42,11 @@
 "sort.duration_shortest" = "Duration (Shortest)";
 
 /* ── Import ── */
-"import.header" = "Choose an Import Method";
-"import.footer" = "Select how you'd like to add audio to your library. All imports are saved locally on your device.";
+"import.section.own_audio" = "Your Own Audio";
+"import.section.advanced" = "Advanced";
+"import.footer" = "Everything you add is saved locally on your device.";
 "import.option.featured" = "Featured Packs";
-"import.option.featured.desc" = "Browse and install ready-made practice packs";
+"import.option.featured.desc" = "Ready-made Korean practice packs — start here";
 "import.option.video" = "Import from Video";
 "import.option.video.desc" = "Extract audio from video files";
 "import.option.files" = "Import from Files";
@@ -53,9 +54,9 @@
 "import.option.record" = "Record Audio";
 "import.option.record.desc" = "Record new audio with your mic";
 "import.option.url" = "Download from URL";
-"import.option.url.desc" = "Download mp3, m4a, or wav files";
-"import.option.bundle" = "Install Bundle";
-"import.option.bundle.desc" = "Download bundle from remote manifest";
+"import.option.url.desc" = "Add audio from a direct link";
+"import.option.bundle" = "Install Pack from Link";
+"import.option.bundle.desc" = "Paste a pack link (bundle.json)";
 
 "import.url.title" = "Download from URL";
 "import.url.message" = "Enter a direct link to an audio file.";
@@ -63,8 +64,8 @@
 "import.url.title_placeholder" = "Optional title";
 "import.url.download" = "Download";
 
-"import.bundle.title" = "Install Bundle";
-"import.bundle.message" = "Enter the URL of a JSON manifest.";
+"import.bundle.title" = "Install Pack from Link";
+"import.bundle.message" = "Paste the pack link you received (ends in bundle.json).";
 "import.bundle.placeholder" = "https://…/bundle.json";
 "import.bundle.install" = "Install";
 
