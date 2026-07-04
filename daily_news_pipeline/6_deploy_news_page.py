@@ -231,7 +231,7 @@ def render_day_page(date: str, manifest: dict, script: dict, qr_filename: str) -
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="{esc(title_en)} — a Korean listening practice pack from Language Mirror: vocabulary, example sentences, and two levels of Korean summary for each story.">
   <title>{esc(title_en)} · Six Wands Studios</title>
-  <link rel="stylesheet" href="/style.css?v=4">
+  <link rel="stylesheet" href="/style.css?v=5">
   <style>
 {NEWS_CSS}
   </style>
@@ -321,7 +321,7 @@ def render_archive_page(news_root: Path) -> str:
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Daily Korean News from Language Mirror — a fresh Korean listening practice pack every weekday: U.S. news rewritten in learner-friendly Korean with vocabulary and two levels of summary.">
   <title>Daily Korean News · Six Wands Studios</title>
-  <link rel="stylesheet" href="/style.css?v=4">
+  <link rel="stylesheet" href="/style.css?v=5">
   <style>
 {ARCHIVE_CSS}
   </style>
