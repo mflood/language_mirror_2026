@@ -280,3 +280,10 @@
 "onboarding.how.step3.title" = "따라 말하기";
 "onboarding.how.step3.body" = "자연스러워질 때까지 클립을 섀도잉해요.";
 "onboarding.cta" = "첫 연습 시작하기";
+
+/* Session complete */
+"session_complete.title" = "연습 완료!";
+"session_complete.stats" = "문장 %d개 · 재생 %d회";
+"session_complete.streak" = "🔥 %d일 연속 연습";
+"session_complete.again" = "다시 연습";
+"session_complete.done" = "완료";

@@ -280,3 +280,10 @@
 "onboarding.how.step3.title" = "Speak along";
 "onboarding.how.step3.body" = "Shadow each clip until it feels natural.";
 "onboarding.cta" = "Start your first practice";
+
+/* Session complete */
+"session_complete.title" = "Practice complete!";
+"session_complete.stats" = "%d sentences · %d plays";
+"session_complete.streak" = "🔥 %d-day streak";
+"session_complete.again" = "Practice Again";
+"session_complete.done" = "Done";

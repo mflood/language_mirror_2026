@@ -1136,7 +1136,65 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         updateTitle()
         tableView.reloadData()
     }
-    
+
+    /// The currently loaded practice set, resolved the same way refresh does.
+    private var currentPracticeSet: PracticeSet? {
+        guard let track = selectedTrack else { return nil }
+        if let setId = selectedPracticeSetId,
+           let found = track.practiceSets.first(where: { $0.id == setId }) {
+            return found
+        }
+        return track.practiceSets.first
+    }
+
+    func audioPlayerAllClipsDidComplete() {
+        // The set finished on its own — celebrate it. This is the reward
+        // moment of the whole loop: make completion feel like completion.
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.presentedViewController == nil else { return }
+            let totalPlays = self.currentSession?.clipPlayCounts.values.reduce(0, +) ?? 0
+            let setTitle = [self.selectedTrack?.title, self.currentPracticeSet?.title]
+                .compactMap { $0 }
+                .joined(separator: " · ")
+            let sheet = SessionCompleteViewController(
+                setTitle: setTitle,
+                clipCount: self.workingClips.count,
+                totalPlays: totalPlays,
+                streakDays: nil
+            )
+            sheet.onPracticeAgain = { [weak self] in self?.restartCompletedSession() }
+            if let presentation = sheet.sheetPresentationController {
+                presentation.detents = [.medium()]
+                presentation.prefersGrabberVisible = true
+            }
+            self.present(sheet, animated: true)
+        }
+    }
+
+    /// Fresh session over the same practice set, then start playing again.
+    /// Deliberately no refreshDataAsync here: it reloads the session from
+    /// disk, racing the async save of the fresh session — if the stale file
+    /// wins, playback starts on a fully-completed session and finishes
+    /// instantly. The in-memory session is the source of truth.
+    private func restartCompletedSession() {
+        guard let track = selectedTrack, let practiceSet = currentPracticeSet else { return }
+        do {
+            let newSession = try practiceService.createSession(
+                practiceSet: practiceSet,
+                packId: track.packId,
+                trackId: track.id
+            )
+            currentSession = newSession
+            tableView.reloadData()
+            updateUI()
+            if !isPlaying {
+                playPauseButtonTapped()
+            }
+        } catch {
+            presentAlert(L10n("practice.save_failed"), error.localizedDescription)
+        }
+    }
+
     func audioPlayerDidPause() {
         isPaused = true
         isPlaying = false

@@ -122,4 +122,48 @@ final class EvaluationWalkTests: XCTestCase {
         Thread.sleep(forTimeInterval: 1)
         shot("12-practice-home-after")
     }
+
+    /// Verifies the session-complete celebration. Run with repeats pre-set
+    /// to 1 (simctl: defaults write … settings.globalRepeats -int 1) against
+    /// an onboarded install so a 12-clip set finishes in ~1–2 minutes.
+    @MainActor
+    func testSessionCompletionCelebration() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        let tabs = app.tabBars.firstMatch
+        tabs.buttons["Library"].tap()
+        Thread.sleep(forTimeInterval: 1)
+
+        // Library → track → Practice Set (12 clips)
+        app.staticTexts["Seoul Lunch Recommendations"].firstMatch.tap()
+        Thread.sleep(forTimeInterval: 1)
+        let setRow = app.staticTexts["Practice Set"]
+        XCTAssertTrue(setRow.waitForExistence(timeout: 5))
+        setRow.tap()
+        Thread.sleep(forTimeInterval: 2)
+
+        // Play and wait for natural completion
+        let play = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'play'")).firstMatch
+        if play.exists && play.isHittable { play.tap() }
+
+        let completeTitle = app.staticTexts["Practice complete!"]
+        let appeared = completeTitle.waitForExistence(timeout: 240)
+        shot("13-session-complete")
+        XCTAssertTrue(appeared, "Celebration sheet did not appear after set completion")
+
+        // Practice Again restarts playback with a fresh session
+        let again = app.buttons["Practice Again"]
+        XCTAssertTrue(again.waitForExistence(timeout: 5))
+        Thread.sleep(forTimeInterval: 1.5)   // let the sheet finish presenting
+        again.tap()
+        // Sheet must dismiss and playback restart
+        let deadline = Date().addingTimeInterval(6)
+        while completeTitle.exists && Date() < deadline {
+            Thread.sleep(forTimeInterval: 0.5)
+        }
+        XCTAssertFalse(completeTitle.exists, "Celebration sheet did not dismiss after Practice Again")
+        Thread.sleep(forTimeInterval: 3)
+        shot("14-practice-again")
+    }
 }

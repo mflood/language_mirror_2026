@@ -714,6 +714,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         } else {
             print("    All clips completed; stopping playback (forever mode OFF)")
             stop()
+            delegate?.audioPlayerAllClipsDidComplete()
         }
     }
 
