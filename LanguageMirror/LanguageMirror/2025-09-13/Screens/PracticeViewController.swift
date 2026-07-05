@@ -42,6 +42,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     private var workingClips: [Clip] = []  // In-memory mutable copy for editing
     private var allClips: [Clip] = []  // All clips in practice set (deprecated, use workingClips)
     private var currentSession: PracticeSession?
+    private let hexagramMeter = HexagramMeterView()
     private var hasUnsavedChanges: Bool = false {
         didSet {
             updateSaveDiscardButtons()
@@ -437,6 +438,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             practiceSet = nil
             currentSession = nil
             hasUnsavedChanges = false
+            navigationItem.titleView = nil
             title = L10n("tab.practice")
             updateUI()
             return
@@ -579,11 +581,12 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     
     private func updateTitle() {
         guard let track = selectedTrack else {
+            navigationItem.titleView = nil
             title = L10n("tab.practice")
             return
         }
-        
-        // Show loop count if we have an active session and are playing
+
+        // Show the hexagram loop meter if we have an active session and are playing
         if let session = currentSession,
            isPlaying,
            !workingClips.isEmpty,
@@ -591,8 +594,12 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
             let clip = workingClips[session.currentClipIndex]
             let totalLoops = effectiveLoopTarget(for: clip)
             let currentLoop = min(session.currentLoopCount + 1, totalLoops)  // +1 for display (1-indexed)
-            title = L10nf("practice.title_with_loop", currentLoop, totalLoops)
+            hexagramMeter.update(currentLoop: currentLoop, totalLoops: totalLoops)
+            if navigationItem.titleView !== hexagramMeter {
+                navigationItem.titleView = hexagramMeter
+            }
         } else {
+            navigationItem.titleView = nil
             title = track.title
         }
     }
