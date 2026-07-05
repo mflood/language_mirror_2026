@@ -51,14 +51,16 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             }
         }
 
-        var glyph: UIImage {
+        /// Painted charm icons (brand/miri/ pipeline) — tiny enchanted
+        /// objects, rendered original (not template-tinted).
+        var glyph: UIImage? {
             switch self {
-            case .featured: return SixWandsGlyphs.spark
-            case .fromVideo: return SixWandsGlyphs.videoCamera
-            case .fromFiles: return SixWandsGlyphs.folder
-            case .record: return SixWandsGlyphs.microphone
-            case .fromURL: return SixWandsGlyphs.chainLink
-            case .fromS3Bundle: return SixWandsGlyphs.sealedScroll
+            case .featured: return UIImage(named: "ImportArtFeatured")
+            case .fromVideo: return UIImage(named: "ImportArtVideo")
+            case .fromFiles: return UIImage(named: "ImportArtFiles")
+            case .record: return UIImage(named: "ImportArtRecord")
+            case .fromURL: return UIImage(named: "ImportArtURL")
+            case .fromS3Bundle: return UIImage(named: "ImportArtBundle")
             }
         }
     }

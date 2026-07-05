@@ -96,11 +96,11 @@ final class ImportOptionCell: UITableViewCell {
             iconContainerView.widthAnchor.constraint(equalToConstant: 48),
             iconContainerView.heightAnchor.constraint(equalToConstant: 48),
             
-            // Icon (centered in container)
+            // Icon (centered in container — painted charms get most of the medallion)
             iconImageView.centerXAnchor.constraint(equalTo: iconContainerView.centerXAnchor),
             iconImageView.centerYAnchor.constraint(equalTo: iconContainerView.centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 28),
-            iconImageView.heightAnchor.constraint(equalToConstant: 28),
+            iconImageView.widthAnchor.constraint(equalToConstant: 38),
+            iconImageView.heightAnchor.constraint(equalToConstant: 38),
             
             // Title
             titleLabel.leadingAnchor.constraint(equalTo: iconContainerView.trailingAnchor, constant: 16),
@@ -126,7 +126,7 @@ final class ImportOptionCell: UITableViewCell {
     
     // MARK: - Configuration
     
-    func configure(title: String, description: String, glyph: UIImage, prominent: Bool = false) {
+    func configure(title: String, description: String, glyph: UIImage?, prominent: Bool = false) {
         titleLabel.text = title
         descriptionLabel.text = description
         iconImageView.image = glyph
@@ -134,12 +134,10 @@ final class ImportOptionCell: UITableViewCell {
             // Filled-gold medallion — the one "start here" row.
             iconContainerView.backgroundColor = AppColors.antiqueGold
             iconContainerView.layer.borderWidth = 0
-            iconImageView.tintColor = UIColor(red: 0.15, green: 0.11, blue: 0.14, alpha: 1)  // plum dusk
         } else {
             iconContainerView.backgroundColor = AppColors.primaryBackground
             iconContainerView.layer.borderWidth = 1.0 / UIScreen.main.scale
             iconContainerView.layer.borderColor = AppColors.goldHairline.cgColor
-            iconImageView.tintColor = AppColors.antiqueGold
         }
     }
     
