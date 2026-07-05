@@ -35,6 +35,12 @@ final class SettingsViewController: UIViewController {
     // Collapsible body of the Advanced section (timing/preroll/duck).
     private weak var advancedBody: UIStackView?
 
+    // Daily news reminder
+    private let reminderSwitch = UISwitch()
+    private let reminderValueLabel = UILabel()
+    private let reminderTimePicker = UIDatePicker()
+    private weak var reminderTimeRow: UIView?
+
     // Basic section
     private let gapSlider = UISlider()
     private let gapValueLabel = UILabel()
@@ -88,6 +94,17 @@ final class SettingsViewController: UIViewController {
             contentStack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -24),
             contentStack.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -32),
         ])
+
+        // --- Daily News Reminder Section ---
+        let reminderSection = makeSectionStack(header: L10n("settings.section.reminders"))
+        let reminderRow = makeSwitchRow(title: L10n("settings.news_reminder"),
+                                        valueLabel: reminderValueLabel, toggle: reminderSwitch)
+        reminderSection.addArrangedSubview(reminderRow)
+        let timeRow = makeControlRow(title: L10n("settings.news_reminder_time"), control: reminderTimePicker)
+        reminderTimeRow = timeRow
+        reminderSection.addArrangedSubview(timeRow)
+        reminderSection.addArrangedSubview(makeHelperText(L10n("settings.news_reminder.help")))
+        contentStack.addArrangedSubview(reminderSection)
 
         // --- Practice Mode Section ---
         let modeSection = makeSectionStack(header: L10n("settings.section.practice_mode"))
@@ -290,6 +307,27 @@ final class SettingsViewController: UIViewController {
         duckSwitch.onTintColor = .systemTeal
         duckSwitch.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
         duckValueLabel.text = settings.duckOthers ? L10n("settings.enabled") : L10n("settings.disabled")
+
+        // Daily news reminder
+        reminderSwitch.isOn = NewsNotificationService.isEnabled
+        reminderSwitch.onTintColor = AppColors.primaryAccent
+        reminderSwitch.addTarget(self, action: #selector(reminderToggled(_:)), for: .valueChanged)
+
+        reminderTimePicker.datePickerMode = .time
+        reminderTimePicker.preferredDatePickerStyle = .compact
+        var comps = DateComponents()
+        comps.hour = NewsNotificationService.reminderHour
+        comps.minute = NewsNotificationService.reminderMinute
+        reminderTimePicker.date = Calendar.current.date(from: comps) ?? Date()
+        reminderTimePicker.addTarget(self, action: #selector(reminderTimeChanged(_:)), for: .valueChanged)
+
+        updateReminderRows()
+    }
+
+    private func updateReminderRows() {
+        let on = NewsNotificationService.isEnabled
+        reminderValueLabel.text = on ? L10n("settings.enabled") : L10n("settings.disabled")
+        reminderTimeRow?.isHidden = !on
     }
 
     // MARK: - Mode Toggle
@@ -494,6 +532,36 @@ final class SettingsViewController: UIViewController {
         settings.duckOthers = sw.isOn
         duckValueLabel.text = sw.isOn ? L10n("settings.enabled") : L10n("settings.disabled")
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+
+    @objc private func reminderToggled(_ sw: UISwitch) {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        if sw.isOn {
+            NewsNotificationService.enableReminder { [weak self] granted in
+                // If the user declined the system prompt, reflect that back.
+                self?.reminderSwitch.setOn(granted, animated: true)
+                self?.updateReminderRows()
+                if !granted { self?.presentPermissionDeniedHint() }
+            }
+        } else {
+            NewsNotificationService.disableReminder()
+            updateReminderRows()
+        }
+    }
+
+    @objc private func reminderTimeChanged(_ picker: UIDatePicker) {
+        let comps = Calendar.current.dateComponents([.hour, .minute], from: picker.date)
+        NewsNotificationService.reminderHour = comps.hour ?? 8
+        NewsNotificationService.reminderMinute = comps.minute ?? 0
+        NewsNotificationService.refreshSchedule()
+    }
+
+    private func presentPermissionDeniedHint() {
+        let alert = UIAlertController(title: L10n("settings.news_reminder.denied_title"),
+                                      message: L10n("settings.news_reminder.denied_message"),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n("common.ok"), style: .default))
+        present(alert, animated: true)
     }
 
     // MARK: - Trait Collection

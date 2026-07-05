@@ -99,6 +99,10 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
 
         // First launch: onboarding → auto-started first practice session.
         presentOnboardingIfNeeded()
+
+        // A daily-news notification tapped on cold launch is buffered before
+        // the coordinators exist — import it now that they're ready.
+        drainPendingNewsBundle()
     }
 
     // MARK: - Onboarding
@@ -193,12 +197,28 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
             [weak self] note in
             guard let self = self else { return }
             self.tabBarController.selectedIndex = 0
-            
+
             // Highlight the newly added track if we have the track ID
             if let trackId = note.userInfo?["trackID"] as? String {
                 self.highlightTrackInLibrary(trackId: trackId)
             }
         }
+
+        // Daily-news notification tap → import the day's pack and practice.
+        center.addObserver(self, selector: #selector(handleOpenNewsBundle(_:)),
+                           name: .openNewsBundle, object: nil)
+    }
+
+    @objc private func handleOpenNewsBundle(_ note: Notification) {
+        guard let url = note.userInfo?["url"] as? URL else { return }
+        importBundle(from: url)
+    }
+
+    /// Import a daily-news tap that was buffered before the coordinators were
+    /// ready (cold launch). Called at the end of start().
+    private func drainPendingNewsBundle() {
+        guard let pending = NewsNotificationService.pendingBundleURL else { return }
+        importBundle(from: pending)
     }
     
     // MARK: - Pending Imports from Share Extension
@@ -322,9 +342,16 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     }
 
     private func importBundle(from manifestURL: URL) {
+        guard let importCoordinator = importCoordinator else {
+            // Coordinators not built yet (a notification tap during cold-launch
+            // init). Buffer and let drainPendingNewsBundle() retry after start().
+            NewsNotificationService.pendingBundleURL = manifestURL
+            return
+        }
+        NewsNotificationService.pendingBundleURL = nil
         // Switch to Import tab and trigger the import
         tabBarController.selectedIndex = 1
-        importCoordinator?.importBundle(from: manifestURL)
+        importCoordinator.importBundle(from: manifestURL)
     }
     
     // MARK: - UITabBarControllerDelegate
@@ -367,6 +394,9 @@ extension AppCoordinator: OnboardingViewControllerDelegate {
         container.settings.simpleSpeed = 0.8
         vc.dismiss(animated: true) { [weak self] in
             self?.autoStartFirstPractice()
+            // After the user has committed, offer the daily-news reminder that
+            // feeds their streak. Enable-on-grant; silent if declined.
+            NewsNotificationService.enableReminder()
         }
     }
 

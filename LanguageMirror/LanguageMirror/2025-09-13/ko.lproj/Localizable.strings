@@ -291,3 +291,13 @@
 "session_complete.done" = "완료";
 "settings.section.advanced" = "고급";
 "settings.practice_mode.help" = "심플은 한 가지 속도로, 프로그레션은 느리게 시작해 반복할수록 빨라져요.";
+
+/* Daily news reminder */
+"news_reminder.title" = "오늘의 뉴스 · Today's News";
+"news_reminder.body" = "오늘의 한국어 뉴스 팩이 준비됐어요 — 연속 기록을 이어가세요! 🔥";
+"settings.section.reminders" = "알림";
+"settings.news_reminder" = "매일 뉴스 알림";
+"settings.news_reminder_time" = "알림 시간";
+"settings.news_reminder.help" = "가장 최신 한국어 뉴스 팩을 연습하고 연속 기록을 이어가도록 매일 알려드려요.";
+"settings.news_reminder.denied_title" = "알림 꺼짐";
+"settings.news_reminder.denied_message" = "설정 앱에서 Language Mirror 알림을 켜면 매일 알림을 받을 수 있어요.";

@@ -126,6 +126,43 @@ final class EvaluationWalkTests: XCTestCase {
     /// Verifies the transcript banner shows the dimmed translation line.
     /// Requires `simctl openurl` fired just before the run with the
     /// news_2026_07_02_test deep link (springboard dialog pending).
+    /// Enables the Daily News Reminder in Settings, granting notification
+    /// permission via the system prompt, and confirms the enabled state.
+    @MainActor
+    func testEnableDailyNewsReminder() throws {
+        let app = XCUIApplication()
+        // Auto-accept the notification permission alert when it appears.
+        addUIInterruptionMonitor(withDescription: "Notifications") { alert in
+            for label in ["Allow", "허용"] {
+                if alert.buttons[label].exists { alert.buttons[label].tap(); return true }
+            }
+            return false
+        }
+        app.launch()
+        app.tabBars.firstMatch.buttons["Settings"].tap()
+        Thread.sleep(forTimeInterval: 1)
+
+        let reminderSwitch = app.switches.firstMatch
+        XCTAssertTrue(reminderSwitch.waitForExistence(timeout: 5))
+        reminderSwitch.tap()
+        Thread.sleep(forTimeInterval: 1)
+        app.tap()   // nudge the interruption monitor to dismiss the alert
+        Thread.sleep(forTimeInterval: 1)
+        shot("17b-reminder-enabled")
+
+        // Time row appears once enabled.
+        XCTAssertTrue(app.staticTexts["Reminder Time"].waitForExistence(timeout: 5),
+                      "Reminder time row should appear after enabling")
+    }
+
+    // Note: the daily-news notification TAP → import path is not covered by an
+    // automated test — XCUITest cannot reliably tap a notification banner in
+    // the iOS 26 simulator (and reinstalls reset notification permission), so
+    // didReceive never fires under automation. The tap handler routes into the
+    // same importBundle(from:) path exercised end-to-end by
+    // testTranslationBannerOnNewsPack, and the enable/permission flow is
+    // covered by testEnableDailyNewsReminder above.
+
     /// Settings: core controls up top, timing/preroll/duck behind Advanced.
     @MainActor
     func testSettingsBasicAdvancedSplit() throws {

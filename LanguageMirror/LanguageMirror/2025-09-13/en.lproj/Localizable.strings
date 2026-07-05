@@ -291,3 +291,13 @@
 "session_complete.done" = "Done";
 "settings.section.advanced" = "Advanced";
 "settings.practice_mode.help" = "Simple keeps one speed. Progression starts slow and speeds up as you repeat.";
+
+/* Daily news reminder */
+"news_reminder.title" = "오늘의 뉴스 · Today's News";
+"news_reminder.body" = "Today's Korean news pack is ready — keep your streak going! 🔥";
+"settings.section.reminders" = "Reminders";
+"settings.news_reminder" = "Daily News Reminder";
+"settings.news_reminder_time" = "Reminder Time";
+"settings.news_reminder.help" = "A daily nudge to practice the newest Korean news pack and keep your streak.";
+"settings.news_reminder.denied_title" = "Notifications Off";
+"settings.news_reminder.denied_message" = "Enable notifications for Language Mirror in the Settings app to get your daily reminder.";
