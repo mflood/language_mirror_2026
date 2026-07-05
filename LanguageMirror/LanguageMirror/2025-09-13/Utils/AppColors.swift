@@ -156,18 +156,21 @@ enum AppColors {
             : UIColor(red: 0.85, green: 0.92, blue: 1.0, alpha: 1.0) // Soft blue bg
     }
     
-    // MARK: - Pack Colors (Subtle, varied palette)
-    
+    // MARK: - Pack Colors (silk-ribbon palette)
+    //
+    // Muted "silk" tones from the Six Wands world — ribbon markers and
+    // pack accents. Deliberately no stock system colors.
+
     private static let packBaseColors: [UIColor] = [
-        .systemBlue,
-        .systemGreen,
-        .systemPurple,
-        .systemTeal,
-        .systemIndigo,
-        .systemPink,
-        .systemOrange,
-        .systemCyan,
-        .systemMint
+        UIColor(red: 0.63, green: 0.20, blue: 0.30, alpha: 1.0),  // crimson silk
+        UIColor(red: 0.16, green: 0.55, blue: 0.53, alpha: 1.0),  // mirror teal
+        UIColor(red: 0.69, green: 0.55, blue: 0.32, alpha: 1.0),  // antique gold
+        UIColor(red: 0.55, green: 0.52, blue: 0.78, alpha: 1.0),  // lavender
+        UIColor(red: 0.85, green: 0.49, blue: 0.42, alpha: 1.0),  // coral blush
+        UIColor(red: 0.52, green: 0.36, blue: 0.51, alpha: 1.0),  // plum silk
+        UIColor(red: 0.44, green: 0.54, blue: 0.38, alpha: 1.0),  // pine moss
+        UIColor(red: 0.40, green: 0.43, blue: 0.66, alpha: 1.0),  // dusk indigo
+        UIColor(red: 0.74, green: 0.54, blue: 0.58, alpha: 1.0),  // tea rose
     ]
     
     /// Get a pack background color by index

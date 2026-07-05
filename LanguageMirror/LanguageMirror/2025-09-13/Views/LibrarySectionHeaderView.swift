@@ -23,9 +23,24 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
     // Pack header mode
     private let containerView = UIView()
     private let colorStripeView = UIView()
+    private let ribbonMask = CAShapeLayer()
+    private let ribbonSize = CGSize(width: 10, height: 34)
     private let chevronImageView = UIImageView()
     private let packTitleLabel = UILabel()
     private let countBadge = UILabel()
+
+    /// A bookmark-ribbon pennant: a vertical strip with a notch cut out
+    /// of its bottom edge.
+    private static func ribbonPath(size: CGSize) -> UIBezierPath {
+        let p = UIBezierPath()
+        p.move(to: .zero)
+        p.addLine(to: CGPoint(x: size.width, y: 0))
+        p.addLine(to: CGPoint(x: size.width, y: size.height))
+        p.addLine(to: CGPoint(x: size.width / 2, y: size.height - size.width * 0.7))
+        p.addLine(to: CGPoint(x: 0, y: size.height))
+        p.close()
+        return p
+    }
 
     var onPackTap: (() -> Void)?
 
@@ -58,16 +73,19 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
             sectionRule.topAnchor.constraint(equalTo: sectionTitleLabel.bottomAnchor, constant: 5),
         ])
 
-        // Pack header container
+        // Pack header container — a museum plate with a silk ribbon
+        // bookmark hanging over its top edge.
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.backgroundColor = AppColors.cardBackground
-        containerView.layer.cornerRadius = 12
-        containerView.layer.cornerCurve = .continuous
+        containerView.applyGoldPlateBorder(cornerRadius: 12)
+        containerView.clipsToBounds = true
         addSubview(containerView)
 
         colorStripeView.translatesAutoresizingMaskIntoConstraints = false
-        colorStripeView.layer.cornerRadius = 2
         containerView.addSubview(colorStripeView)
+        ribbonMask.frame = CGRect(x: 0, y: 0, width: ribbonSize.width, height: ribbonSize.height)
+        colorStripeView.layer.mask = ribbonMask
+        ribbonMask.path = Self.ribbonPath(size: ribbonSize).cgPath
 
         chevronImageView.translatesAutoresizingMaskIntoConstraints = false
         chevronImageView.contentMode = .scaleAspectFit
@@ -96,10 +114,10 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
 
-            colorStripeView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            colorStripeView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            colorStripeView.widthAnchor.constraint(equalToConstant: 4),
-            colorStripeView.heightAnchor.constraint(equalToConstant: 32),
+            colorStripeView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14),
+            colorStripeView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            colorStripeView.widthAnchor.constraint(equalToConstant: ribbonSize.width),
+            colorStripeView.heightAnchor.constraint(equalToConstant: ribbonSize.height),
 
             chevronImageView.leadingAnchor.constraint(equalTo: colorStripeView.trailingAnchor, constant: 12),
             chevronImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
@@ -140,7 +158,6 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
             packTitleLabel.text = title
             countBadge.text = "\(count)"
             colorStripeView.backgroundColor = AppColors.packAccent(index: colorIndex)
-            containerView.backgroundColor = AppColors.packBackground(index: colorIndex)
 
             let targetRotation: CGFloat = expanded ? .pi / 2 : 0
             if animated {
