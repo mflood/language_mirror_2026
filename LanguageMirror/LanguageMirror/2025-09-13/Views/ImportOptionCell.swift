@@ -126,10 +126,21 @@ final class ImportOptionCell: UITableViewCell {
     
     // MARK: - Configuration
     
-    func configure(title: String, description: String, glyph: UIImage) {
+    func configure(title: String, description: String, glyph: UIImage, prominent: Bool = false) {
         titleLabel.text = title
         descriptionLabel.text = description
         iconImageView.image = glyph
+        if prominent {
+            // Filled-gold medallion — the one "start here" row.
+            iconContainerView.backgroundColor = AppColors.antiqueGold
+            iconContainerView.layer.borderWidth = 0
+            iconImageView.tintColor = UIColor(red: 0.15, green: 0.11, blue: 0.14, alpha: 1)  // plum dusk
+        } else {
+            iconContainerView.backgroundColor = AppColors.primaryBackground
+            iconContainerView.layer.borderWidth = 1.0 / UIScreen.main.scale
+            iconContainerView.layer.borderColor = AppColors.goldHairline.cgColor
+            iconImageView.tintColor = AppColors.antiqueGold
+        }
     }
     
     // MARK: - Animations

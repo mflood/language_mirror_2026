@@ -142,7 +142,8 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         cell.configure(
             title: row.title,
             description: row.description,
-            glyph: row.glyph
+            glyph: row.glyph,
+            prominent: row == .featured
         )
 
         return cell
