@@ -8,8 +8,10 @@ has to be baked into a PNG here. This script reproduces MiriView's `.happy`
 expression (aqua→lavender gradient body, glossy sheen, dot eyes, smile, coral
 cheeks) and writes miri.png / @2x / @3x into the MiriLaunch imageset.
 
-KEEP IN SYNC: if MiriView's colors or face change, update the constants below
-and re-run this, then commit the regenerated PNGs.
+SUPERSEDED (2026-07-05): the MiriLaunch imageset now holds the PAINTED Miri
+portrait from the brand/miri/ character-sheet work (generated via
+brand/miri/generate.py, prompt_launch). Do not re-run this script unless
+you deliberately want to revert to the old code-drawn flat mascot.
 
     python3 LanguageMirror/tools/generate_miri_launch.py
 
