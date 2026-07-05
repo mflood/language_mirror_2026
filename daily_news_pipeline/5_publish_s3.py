@@ -7,6 +7,8 @@ PNG pointing at the manifest URL — via the langpack `publisher` package.
 Output:
     work/<date>/qr.png
     Bundle assets uploaded to s3://turned.rip/lmaudio/<pack_id>/
+    s3://turned.rip/lmaudio/news_latest/bundle.json  (stable alias; see
+    NEWS_PUSH_PIPELINE_SPEC.md — the iOS daily reminder resolves this key)
 
 Safety: defaults to dry-run. Pass --commit to actually upload. Existing keys
 at the destination prefix are never overwritten unless --redeploy is passed
@@ -31,6 +33,8 @@ WORK_ROOT = HERE / "work"
 
 DESTINATION = "lmaudio"
 PREFIX_TEMPLATE = "lmaudio/{bundle_id}"
+# Stable alias the iOS daily reminder resolves (NEWS_PUSH_PIPELINE_SPEC.md).
+LATEST_ALIAS_KEY = "lmaudio/news_latest/bundle.json"
 
 
 def parse_args() -> argparse.Namespace:
@@ -84,6 +88,17 @@ def main() -> int:
     if not args.commit:
         print(f"Re-run with --commit to publish {len(files_to_upload)} files.")
         return 0
+
+    # news_latest alias (NEWS_PUSH_PIPELINE_SPEC.md, option A): the iOS app's
+    # daily reminder resolves "today's pack" via this stable key even when a
+    # run slips. Only bundle.json is aliased — its pack id and audio URLs stay
+    # dated, so the app dedups against the real pack and audio isn't duplicated.
+    print()
+    print(f"🔗 Updating {LATEST_ALIAS_KEY} alias...")
+    publish(dest, [(bundle_path, LATEST_ALIAS_KEY)],
+            allow_overwrite_keys=(LATEST_ALIAS_KEY,),   # rolling alias, always overwritten
+            invalidate_paths=[f"/{LATEST_ALIAS_KEY}"],
+            commit=True)
 
     print("🔳 Generating QR code...")
     write_qr_png(manifest_url, qr_path)

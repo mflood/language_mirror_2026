@@ -106,8 +106,8 @@ with A; do B only if Matthew wants server-driven, content-aware pushes.
 
 ## Acceptance for the pipeline side (Option A)
 
-- [ ] After publish, `lmaudio/news_latest/bundle.json` exists and equals the
+- [x] After publish, `lmaudio/news_latest/bundle.json` exists and equals the
       freshest day's `bundle.json` (dated `id`, dated audio URLs preserved).
-- [ ] CloudFront path `/lmaudio/news_latest/bundle.json` invalidated each run.
-- [ ] `curl https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_latest/bundle.json`
+- [x] CloudFront path `/lmaudio/news_latest/bundle.json` invalidated each run.
+- [x] `curl https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_latest/bundle.json`
       returns the current day's manifest.
