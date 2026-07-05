@@ -12,3 +12,4 @@ pyyaml>=6.0
 # langpack subsystems (editable installs; paths relative to this dir)
 -e ../../langpack/studypack
 -e ../../langpack/voicebox
+-e ../../langpack/publisher

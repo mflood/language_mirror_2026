@@ -35,33 +35,19 @@ import subprocess
 import sys
 from pathlib import Path
 
+from publisher import check_clobber, load_destination, publish, require_no_clobber
+
 HERE = Path(__file__).resolve().parent
 WORK_ROOT = HERE / "work"
 
 SITE_REPO = Path.home() / "Desktop" / "sixwandsstudiosllc"
 SITE_DIR = SITE_REPO / "sixwands.com"
-S3_BUCKET = "sixwandsstudios.com"
 
-# CloudFront distribution fronting sixwandsstudios.com — uploaded pages are
-# invalidated after each publish so edges don't serve stale copies for up to
-# the default 24h TTL.
-CLOUDFRONT_DISTRIBUTION_ID = "E3FOHY8GP6GID3"
+# All bucket/CloudFront/protected-key infrastructure lives in the publisher
+# destinations registry (~/.langpack/publisher.yaml), destination "website".
+DESTINATION = "website"
 
 APP_STORE_URL = "https://apps.apple.com/us/app/language-mirror/id6761317026"
-
-# Known-good top-level keys that MUST exist before any deploy. If any is missing
-# the deploy aborts — protects against accidental bucket-wipe scenarios.
-PROTECTED_TOP_LEVEL = {
-    "index.html",
-    "error.html",
-    "language-mirror.html",
-    "language-mirror-privacy.html",
-    "nardo.html",
-    "nardo-privacy.html",
-    "support.html",
-    "style.css",
-    "hero.png",
-}
 
 KO_MONTHS = ["", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
 EN_MONTHS = ["", "January", "February", "March", "April", "May", "June",
@@ -349,64 +335,6 @@ def render_archive_page(news_root: Path) -> str:
 """
 
 
-def preflight_bucket_check() -> None:
-    """Abort if any PROTECTED_TOP_LEVEL key is missing from the bucket root."""
-    print(f"🔍 Pre-flight: verifying integrity of s3://{S3_BUCKET}/")
-    result = subprocess.run(
-        ["aws", "s3api", "list-objects-v2", "--bucket", S3_BUCKET, "--delimiter", "/", "--prefix", ""],
-        capture_output=True, text=True, check=True,
-    )
-    keys = {obj["Key"] for obj in (json.loads(result.stdout).get("Contents") or [])}
-    missing = PROTECTED_TOP_LEVEL - keys
-    if missing:
-        raise SystemExit(
-            f"❌ Pre-flight FAILED. Top-level keys missing from s3://{S3_BUCKET}/: {sorted(missing)}\n"
-            f"   Refusing to deploy until the bucket integrity is restored."
-        )
-    print(f"   ✓ {len(PROTECTED_TOP_LEVEL)} protected keys all present:")
-    for k in sorted(PROTECTED_TOP_LEVEL):
-        print(f"     · s3://{S3_BUCKET}/{k}")
-
-
-def check_destination_for_clobber(s3_keys: list[str]) -> dict[str, bool]:
-    """For each target key, return whether it already exists on the bucket."""
-    result = subprocess.run(
-        ["aws", "s3api", "list-objects-v2", "--bucket", S3_BUCKET, "--prefix", "news/"],
-        capture_output=True, text=True, check=True,
-    )
-    existing = set()
-    if result.stdout.strip():
-        existing = {obj["Key"] for obj in (json.loads(result.stdout).get("Contents") or [])}
-    return {k: (k in existing) for k in s3_keys}
-
-
-def invalidate_cloudfront(paths: list[str]) -> None:
-    """Fire-and-forget CloudFront invalidation for the given paths."""
-    print(f"🌀 CloudFront invalidation ({CLOUDFRONT_DISTRIBUTION_ID}): {' '.join(paths)}")
-    result = subprocess.run(
-        ["aws", "cloudfront", "create-invalidation",
-         "--distribution-id", CLOUDFRONT_DISTRIBUTION_ID,
-         "--paths", *paths,
-         "--query", "Invalidation.Id", "--output", "text"],
-        capture_output=True, text=True,
-    )
-    if result.returncode != 0:
-        # Stale cache is annoying but not worth failing the publish over.
-        print(f"   ⚠ invalidation failed (page may stay cached up to 24h): {result.stderr.strip()}")
-    else:
-        print(f"   ✓ invalidation created: {result.stdout.strip()} (completes in a few minutes)")
-
-
-def cp_to_s3(local: Path, s3_key: str, content_type: str | None = None) -> None:
-    s3_dest = f"s3://{S3_BUCKET}/{s3_key}"
-    args = ["aws", "s3", "cp", str(local), s3_dest]
-    if content_type:
-        args += ["--content-type", content_type]
-    print(f"   ↑ {local}")
-    print(f"     → {s3_dest}")
-    subprocess.run(args, check=True)
-
-
 def main() -> int:
     args = parse_args()
     date = args.date or today_eastern()
@@ -453,79 +381,51 @@ def main() -> int:
     print(f"   {archive_html_path}")
     print()
 
-    # Map local files to S3 keys; check for clobber.
-    upload_plan = [
-        (day_html_path, f"news/{date}/index.html", "text/html"),
-        (day_dir / "qr.png", f"news/{date}/qr.png", "image/png"),
-        (meta_path, f"news/{date}/meta.json", "application/json"),
-        (archive_html_path, "news/index.html", "text/html"),
+    # Publish via the langpack publisher (gates + upload + verify + invalidate).
+    dest = load_destination(DESTINATION)
+    plan = [
+        (day_html_path, f"news/{date}/index.html"),
+        (day_dir / "qr.png", f"news/{date}/qr.png"),
+        (meta_path, f"news/{date}/meta.json"),
+        (archive_html_path, "news/index.html"),
     ]
-    print("Upload plan (local → s3):")
-    s3_keys = [k for _, k, _ in upload_plan]
-    clobber_map = check_destination_for_clobber(s3_keys)
-    for local, key, _ct in upload_plan:
-        dest = f"s3://{S3_BUCKET}/{key}"
-        verb = "OVERWRITE" if clobber_map[key] else "create"
-        # The rolling /news/index.html is expected to be overwritten on every
-        # publish; flag everything else loudly.
-        suffix = " (rolling archive page, expected)" if key == "news/index.html" and clobber_map[key] else ""
-        if clobber_map[key] and key != "news/index.html" and args.redeploy:
-            suffix = " (--redeploy: intentional overwrite)"
-        print(f"  [{verb}] {local}")
-        print(f"          → {dest}{suffix}")
-    unexpected_overwrites = [
-        k for k, c in clobber_map.items() if c and k != "news/index.html"
-    ]
-    if unexpected_overwrites and args.redeploy:
-        print(f"   ⚠ --redeploy set: overwriting {len(unexpected_overwrites)} existing day key(s).")
-        unexpected_overwrites = []
-    if unexpected_overwrites and args.commit:
-        raise SystemExit(
-            f"❌ Refusing to overwrite unexpected keys on the website bucket:\n"
-            f"   {unexpected_overwrites}\n"
-            f"   This would clobber an existing day's published page. If this re-publish\n"
-            f"   is intentional, re-run with --redeploy."
+
+    if args.commit:
+        # Clobber gate BEFORE the git commit so a refused publish leaves the
+        # site repo untouched (matches the original step-6 ordering).
+        clobber_map = check_clobber(dest, [k for _, k in plan])
+        require_no_clobber(dest, clobber_map,
+                           allow=("news/index.html",), redeploy=args.redeploy)
+
+        print("📦 Committing to git...")
+        subprocess.run(["git", "-C", str(SITE_REPO), "add",
+                        str(day_html_path.relative_to(SITE_REPO)),
+                        str((day_dir / "qr.png").relative_to(SITE_REPO)),
+                        str(meta_path.relative_to(SITE_REPO)),
+                        str(archive_html_path.relative_to(SITE_REPO))],
+                       check=True)
+        diff_check = subprocess.run(
+            ["git", "-C", str(SITE_REPO), "diff", "--cached", "--quiet"],
         )
-    if unexpected_overwrites:
-        print(f"   ⚠ would overwrite (pass --redeploy to allow): {unexpected_overwrites}")
-    print()
+        if diff_check.returncode == 0:
+            print("   (nothing to commit — files match HEAD)")
+        else:
+            subprocess.run(
+                ["git", "-C", str(SITE_REPO), "commit", "-m", f"news: publish {date}"],
+                check=True,
+            )
+            print(f"   ✓ committed news: publish {date}")
+
+    publish(dest, plan,
+            allow_overwrite_keys=("news/index.html",),  # rolling archive page
+            redeploy=args.redeploy,
+            invalidate_paths=[f"/news/{date}/*", "/news/index.html"],
+            commit=args.commit)
 
     if not args.commit:
-        print("--- DRY RUN — no git commit, no S3 upload ---")
         print("Re-run with --commit to deploy.")
         return 0
 
-    # 2. Git commit in the site repo
-    print("📦 Committing to git...")
-    subprocess.run(["git", "-C", str(SITE_REPO), "add",
-                    str(day_html_path.relative_to(SITE_REPO)),
-                    str((day_dir / "qr.png").relative_to(SITE_REPO)),
-                    str(meta_path.relative_to(SITE_REPO)),
-                    str(archive_html_path.relative_to(SITE_REPO))],
-                   check=True)
-    diff_check = subprocess.run(
-        ["git", "-C", str(SITE_REPO), "diff", "--cached", "--quiet"],
-    )
-    if diff_check.returncode == 0:
-        print("   (nothing to commit — files match HEAD)")
-    else:
-        subprocess.run(
-            ["git", "-C", str(SITE_REPO), "commit", "-m", f"news: publish {date}"],
-            check=True,
-        )
-        print(f"   ✓ committed news: publish {date}")
-
-    # 3. Pre-flight bucket integrity check
-    preflight_bucket_check()
-
-    # 4. cp-only S3 uploads
-    print(f"📤 Uploading to s3://{S3_BUCKET}/ (cp-only, no deletes)...")
-    for local, key, ct in upload_plan:
-        cp_to_s3(local, key, ct)
-    print()
-
-    # 5. Invalidate CloudFront so edges pick up the new pages immediately
-    invalidate_cloudfront([f"/news/{date}/*", "/news/index.html"])
     print()
     print(f"🎉 Published https://sixwandsstudios.com/news/{date}/")
     return 0
