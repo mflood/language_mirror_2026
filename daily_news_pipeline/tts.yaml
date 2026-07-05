@@ -32,3 +32,7 @@ elevenlabs:
   style: 0.0
 
 inter_turn_pause_ms: 400
+
+# Shared langpack audio cache (voicebox). The legacy cache/audio/ dir was
+# imported into this cache on 2026-07-04 and is now frozen.
+cache_dir: ~/.langpack/cache/audio

@@ -160,7 +160,8 @@ modules. Each step has a single responsibility and writes its output to
 |---|---|
 | `cache_lib.py` | Library class — sidecar-per-audio + lean library.json index. Cache key from sha256(text+provider+voice+model+settings). Greedy set-cover for example reuse. |
 | `cost_tracker.py` | StepCostRecorder + finalize_run. Per-step JSON in `work/<date>/costs/`; aggregated daily entry in `cache/cost_history/YYYY/MM/`. Provider pricing tables (estimates only). |
-| `tts_providers.py` | Abstract `TTSProvider` + `ElevenLabsProvider` + `PollyProvider`. Selected via `tts.yaml` or `--tts polly`. Audio key includes provider so cross-provider variants coexist. |
+| `tts_providers.py` | **Legacy** — superseded by the `voicebox` package (step 3 no longer imports it). Kept only because kdrama_poc still sys.path-imports it; delete after kdrama migrates. |
+| `studypack` / `voicebox` (packages) | langpack subsystems (editable installs from `~/workspace/langpack/`). Step 3 converts script.json → studypack in-memory and synthesizes via voicebox over the shared cache. |
 | `llm_providers.py` | Abstract `LLMProvider` + `AnthropicProvider` + `OpenAIProvider`. Per-step selection via `llm.yaml`. Handles GPT-5/o1/o3 `max_completion_tokens` quirk. |
 | `library_inspect.py` | CLI for inspecting library: `stats`, `vocab`, `examples`, `show <word>`, `play <word>`, `orphans`, `set-gloss`, `cost-history`. |
 | `verify_whisper.py` | Diagnostic: transcribe synthesized audio with Whisper large-v3, compare to script, produce mismatch report. Does NOT re-synthesize. |
@@ -239,11 +240,16 @@ body and flags violations.
 
 Two-tier cache:
 
-1. **Content-addressed audio cache** (`cache/audio/<key>.mp3`) — key is
-   sha256 of (text + provider + voice_id + model + settings). Every turn
-   in a script computes its key; cache hit copies the existing mp3,
-   cache miss synthesizes and adds to cache. Sidecar `<key>.json` has full
-   provenance (provider, voice, cost, duration, library role).
+1. **Content-addressed audio cache** — key is sha256 of (text + provider +
+   voice_id + model + settings). Every turn in a script computes its key;
+   cache hit copies the existing mp3, cache miss synthesizes and adds to
+   cache. Sidecar `<key>.json` has full provenance.
+   Since 2026-07-04 this lives in the **shared langpack cache** at
+   `~/.langpack/cache/audio` (configured via `cache_dir` in tts.yaml) and is
+   managed by the `voicebox` package — shared with the kdrama pipeline and
+   any future producer. The local `cache/audio/` dir is frozen legacy (its
+   contents were imported into the shared cache) and is only read by
+   `library_inspect.py play`.
 
 2. **Structural library** (`cache/library.json`) — vocab terms with locked
    canonical English glosses + example sentences tagged by which vocab

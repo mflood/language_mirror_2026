@@ -154,10 +154,12 @@ def main() -> int:
             continue
 
         for i, turn in enumerate(story["turns"]):
-            mp3 = turns_dir / f"turn_{i:03d}.mp3"
-            if not mp3.exists():
-                print(f"  ⚠ missing {mp3.name}")
+            # Per-turn files carry an audio_key suffix: turn_NNN_<key8>.mp3
+            candidates = sorted(turns_dir.glob(f"turn_{i:03d}_*.mp3"))
+            if not candidates:
+                print(f"  ⚠ missing turn_{i:03d}_*.mp3")
                 continue
+            mp3 = candidates[0]
             lang = turn["lang"]
             expected = turn["text"]
             threshold = args.threshold_ko if lang == "ko" else args.threshold_en
