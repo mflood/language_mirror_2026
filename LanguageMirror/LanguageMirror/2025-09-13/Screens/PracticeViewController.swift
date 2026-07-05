@@ -957,8 +957,21 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }
-    
+
+    /// A quick springy squash-and-settle for a tapped control.
+    private func springPress(_ view: UIView) {
+        UIView.animate(withDuration: 0.09, animations: {
+            view.transform = CGAffineTransform(scaleX: 0.88, y: 0.88)
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.32, delay: 0,
+                           usingSpringWithDamping: 0.5, initialSpringVelocity: 0.6) {
+                view.transform = .identity
+            }
+        })
+    }
+
     @objc private func playPauseButtonTapped() {
+        springPress(playPauseButton)
         if isPlaying && !isPaused {
             // Pause
             player.pause()
