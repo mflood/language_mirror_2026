@@ -49,14 +49,15 @@ day, which the library cache picks up across packs):
 
 ## Architecture
 
-The pipeline is 7 numbered steps plus a cron entry point and 5 helper
-modules. Each step has a single responsibility and writes its output to
+The pipeline is 8 numbered steps (incl. 2b) plus a cron entry point, two
+local helper modules, and five langpack subsystem packages. Each step has a single responsibility and writes its output to
 `work/<date>/`. Steps can be re-run independently.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │   run_daily.sh                                                      │
-│   cron entry point. Sources .env, runs 0→6, finalizes cost ledger.  │
+│   cron entry point. Sources .env, runs 0→2→2b→3→…→6, finalizes cost │
+│   ledger.                                                           │
 └─────────────────────────────────────────────────────────────────────┘
         │
         ▼
@@ -92,6 +93,14 @@ modules. Each step has a single responsibility and writes its output to
 └──────────────────────────────┘
         │ work/<date>/script.json  (turns + practice_sets)
         ▼
+┌──────────────────────────────┐
+│ 2b_translate_easy.py         │
+│ Per-sentence English for the │
+│ easy summary (haiku, ~$0.004)│
+│ → summary_en_easy in script  │
+└──────────────────────────────┘
+        │
+        ▼
 ┌──────────────────────────────┐    ┌────────────────────────────┐
 │ 3_synthesize.py              │    │ tts.yaml                   │
 │ Per turn: compute audio_key, │ ←──│ provider: polly|elevenlabs │
@@ -121,12 +130,11 @@ modules. Each step has a single responsibility and writes its output to
         ▼
 ┌──────────────────────────────┐
 │ 5_publish_s3.py              │
-│ Pre-flight: list keys at     │
-│ destination prefix; refuse   │
-│ to clobber.                  │
-│ Upload bundle + mp3s to      │
-│ s3://turned.rip/lmaudio/.    │
-│ Post-flight verify.          │
+│ Publish via langpack         │
+│ `publisher` (clobber gate,   │
+│ post-flight verify, CF       │
+│ invalidation) to lmaudio.    │
+│ Update news_latest alias.    │
 │ Generate QR PNG pointing at  │
 │ CloudFront manifest URL.     │
 └──────────────────────────────┘
@@ -134,15 +142,14 @@ modules. Each step has a single responsibility and writes its output to
         ▼
 ┌──────────────────────────────┐
 │ 6_deploy_news_page.py        │
-│ Render today's HTML page +   │
-│ rolling /news/index.html.    │
-│ Write to local git-versioned │
-│ site source tree.            │
-│ Pre-flight bucket integrity  │
-│ check on protected keys.     │
-│ Refuse to overwrite existing │
-│ date pages.                  │
-│ git commit + cp-only upload  │
+│ Render day page + rolling    │
+│ archive via langpack         │
+│ `pagesmith`; write to local  │
+│ git-versioned site tree;     │
+│ git commit; publish via      │
+│ `publisher` (protected-keys  │
+│ preflight, clobber gate,     │
+│ --redeploy, CF invalidation) │
 │ to sixwandsstudios.com.      │
 └──────────────────────────────┘
         │ https://sixwandsstudios.com/news/<date>/
@@ -405,6 +412,7 @@ daily_news_pipeline/
 ├── 0_fetch_feeds.py             ← pipeline step 0
 ├── 1_curate.py                  ← step 1
 ├── 2_generate_script.py         ← step 2
+├── 2b_translate_easy.py         ← step 2b (easy-summary EN)
 ├── 3_synthesize.py              ← step 3
 ├── 4_assemble_bundle.py         ← step 4
 ├── 5_publish_s3.py              ← step 5
@@ -419,11 +427,9 @@ daily_news_pipeline/
 ├── verify_whisper.py            ← QA diagnostic
 │
 ├── cache/                       ← gitignored runtime state
-│   ├── library.json             ← lean index (vocab + examples)
-│   ├── audio/
-│   │   ├── <key>.mp3            ← cached audio
-│   │   └── <key>.json           ← sidecar metadata
-│   └── cost_history/
+│   ├── library.json             ← FROZEN legacy (imported into ~/.langpack/lexicon/)
+│   ├── audio/                   ← FROZEN legacy (imported into ~/.langpack/cache/audio/)
+│   └── cost_history/            ← still live: aggregated daily cost ledger
 │       └── YYYY/MM/
 │           └── <date>_<HHMMSS>.json
 │

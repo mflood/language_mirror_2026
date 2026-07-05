@@ -5,6 +5,18 @@ listed; consult `git log` for the full history.
 
 ---
 
+## 2026-07-04/05 — langpack platform: pipeline decomposed into six subsystems
+
+- Extracted the daily-news pipeline's shared machinery into standalone repos
+  at ~/workspace/langpack/: studypack (schema), voicebox (TTS + shared cache),
+  publisher (gated S3/CDN), bundler (iOS bundles), lexicon (vocab library),
+  pagesmith (HTML renderers). kdrama_poc migrated onto the same subsystems.
+- Every extraction verified byte/UUID-identical against production artifacts;
+  tts_providers.py, cache_lib.py, library_inspect.py retired.
+- Pipeline steps are now thin orchestrators; see daily_news_pipeline/README.md
+  architecture diagram and each langpack repo's CLAUDE.md.
+
+
 ## 2026-07-05 — news_latest alias published for the daily reminder (pipeline side)
 
 - `5_publish_s3.py` now also copies each day's `bundle.json` to the stable
