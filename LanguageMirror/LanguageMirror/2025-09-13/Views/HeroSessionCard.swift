@@ -39,8 +39,7 @@ final class HeroSessionCard: UIView {
 
     private func setupUI() {
         backgroundColor = AppColors.cardBackground
-        layer.cornerRadius = 16
-        layer.cornerCurve = .continuous
+        applyGoldPlateBorder(cornerRadius: 16)
         applyAdaptiveShadow(radius: 12, opacity: 0.12)
 
         // Tap gesture

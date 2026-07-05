@@ -54,6 +54,7 @@ enum AppFont {
 
         let tab = UITabBarAppearance()
         tab.configureWithDefaultBackground()
+        tab.shadowColor = AppColors.goldHairline  // gold rule atop the tab bar
         for item in [tab.stackedLayoutAppearance, tab.inlineLayoutAppearance, tab.compactInlineLayoutAppearance] {
             item.normal.titleTextAttributes = [.font: rounded(10, weight: .medium)]
             item.selected.titleTextAttributes = [.font: rounded(10, weight: .semibold)]

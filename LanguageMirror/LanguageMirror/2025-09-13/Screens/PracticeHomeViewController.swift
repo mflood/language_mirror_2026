@@ -292,10 +292,15 @@ extension PracticeHomeViewController: UITableViewDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.attributedText = AppFont.plateCaption(L10n("practice_home.recent"))
         container.addSubview(label)
+        let rule = GoldRule()
+        container.addSubview(rule)
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: container.layoutMarginsGuide.leadingAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: container.layoutMarginsGuide.trailingAnchor),
-            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -6),
+            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10),
+            rule.leadingAnchor.constraint(equalTo: container.layoutMarginsGuide.leadingAnchor),
+            rule.trailingAnchor.constraint(equalTo: container.layoutMarginsGuide.trailingAnchor),
+            rule.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5),
         ])
         return container
     }

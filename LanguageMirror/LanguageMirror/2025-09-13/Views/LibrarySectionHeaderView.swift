@@ -18,6 +18,7 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
 
     // Section title mode
     private let sectionTitleLabel = UILabel()
+    private let sectionRule = GoldRule()
 
     // Pack header mode
     private let containerView = UIView()
@@ -45,11 +46,16 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
         sectionTitleLabel.font = .systemFont(ofSize: 18, weight: .semibold)
         sectionTitleLabel.textColor = AppColors.primaryText
         addSubview(sectionTitleLabel)
+        addSubview(sectionRule)
 
         NSLayoutConstraint.activate([
             sectionTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             sectionTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            sectionTitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6),
+            sectionTitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+
+            sectionRule.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            sectionRule.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            sectionRule.topAnchor.constraint(equalTo: sectionTitleLabel.bottomAnchor, constant: 5),
         ])
 
         // Pack header container
@@ -123,10 +129,12 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
         case .sectionTitle(let title):
             sectionTitleLabel.attributedText = AppFont.plateCaption(title)
             sectionTitleLabel.isHidden = false
+            sectionRule.isHidden = false
             containerView.isHidden = true
 
         case .packHeader(let title, let count, let expanded, let colorIndex):
             sectionTitleLabel.isHidden = true
+            sectionRule.isHidden = true
             containerView.isHidden = false
 
             packTitleLabel.text = title
