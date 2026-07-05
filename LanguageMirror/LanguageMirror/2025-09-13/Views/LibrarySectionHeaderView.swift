@@ -121,7 +121,7 @@ final class LibrarySectionHeaderView: UICollectionReusableView {
     func configure(mode: Mode, animated: Bool = true) {
         switch mode {
         case .sectionTitle(let title):
-            sectionTitleLabel.text = title
+            sectionTitleLabel.attributedText = AppFont.plateCaption(title)
             sectionTitleLabel.isHidden = false
             containerView.isHidden = true
 

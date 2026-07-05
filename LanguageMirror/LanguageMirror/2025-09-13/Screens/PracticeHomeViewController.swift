@@ -263,10 +263,6 @@ extension PracticeHomeViewController: UITableViewDataSource {
         return 1
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return recentSessions.isEmpty ? nil : L10n("practice_home.recent")
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recentSessions.count
     }
@@ -288,6 +284,25 @@ extension PracticeHomeViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension PracticeHomeViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard !recentSessions.isEmpty else { return nil }
+        let container = UIView()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = AppFont.plateCaption(L10n("practice_home.recent"))
+        container.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: container.layoutMarginsGuide.leadingAnchor),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: container.layoutMarginsGuide.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -6),
+        ])
+        return container
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return recentSessions.isEmpty ? 0 : 34
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
