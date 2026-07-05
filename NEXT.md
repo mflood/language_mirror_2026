@@ -3,6 +3,15 @@
 The 3 things to do next, in priority order. See `PRODUCT_IDEAS.md` for the
 broader backlog and `LOG.md` for what's already shipped.
 
+## ⏳ Release gate: refresh App Store screenshots in the Six Wands language
+
+Before shipping the next version: retake all App Store screenshots
+(`app_store/screenshots_raw/`) — the 2026-04 set predates the full
+Mije/Miri rebrand (plum field, serif plates, painted Miri, glyph tab
+bar, ink-wash covers, hexagram meter). The store listing is currently
+selling the old app. Do this LAST, after the remaining pre-release
+changes land, so the shots match the shipped build.
+
 ## 1. Bump build number and ship to TestFlight
 
 Lots of changes since the last archive: full Korean localization, transcript
