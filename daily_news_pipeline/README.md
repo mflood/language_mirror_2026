@@ -85,7 +85,7 @@ modules. Each step has a single responsibility and writes its output to
 │ model QA review.             │    │   openai/gpt-5.5           │
 │                              │    └────────────────────────────┘
 │ Applies library reuse:       │    ┌────────────────────────────┐
-│ - lock vocab glosses to      │ ←──│ cache_lib.Library          │
+│ - lock vocab glosses to      │ ←──│ lexicon (langpack)         │
 │   library canonical          │    │ vocab + examples + audio   │
 │ - opportunistic example      │    │ keys (cross-day reuse)     │
 │   reuse via greedy set cover │    └────────────────────────────┘
@@ -158,11 +158,11 @@ modules. Each step has a single responsibility and writes its output to
 
 | File | Role |
 |---|---|
-| `cache_lib.py` | Library class — sidecar-per-audio + lean library.json index. Cache key from sha256(text+provider+voice+model+settings). Greedy set-cover for example reuse. |
+| `lexicon` (package) | Shared vocabulary library at `~/.langpack/lexicon/ko-en.json`: canonical gloss locking, greedy set-cover example reuse, audio-key attachment. Inspect via the `lexicon` CLI. |
 | `cost_tracker.py` | StepCostRecorder + finalize_run. Per-step JSON in `work/<date>/costs/`; aggregated daily entry in `cache/cost_history/YYYY/MM/`. Provider pricing tables (estimates only). |
 | `studypack` / `voicebox` (packages) | langpack subsystems (editable installs from `~/workspace/langpack/`). Step 3 converts script.json → studypack in-memory and synthesizes via voicebox over the shared cache. |
 | `llm_providers.py` | Abstract `LLMProvider` + `AnthropicProvider` + `OpenAIProvider`. Per-step selection via `llm.yaml`. Handles GPT-5/o1/o3 `max_completion_tokens` quirk. |
-| `library_inspect.py` | CLI for inspecting library: `stats`, `vocab`, `examples`, `show <word>`, `play <word>`, `orphans`, `set-gloss`, `cost-history`. |
+| `cost_history.py` | Prints the aggregated daily cost ledger from `cache/cost_history/`. (Vocab inspection moved to the `lexicon` CLI.) |
 | `verify_whisper.py` | Diagnostic: transcribe synthesized audio with Whisper large-v3, compare to script, produce mismatch report. Does NOT re-synthesize. |
 
 ## Source feeds (current — `feeds.yaml`)
@@ -248,7 +248,7 @@ Two-tier cache:
    managed by the `voicebox` package — shared with the kdrama pipeline and
    any future producer. The local `cache/audio/` dir is frozen legacy (its
    contents were imported into the shared cache) and is only read by
-   `library_inspect.py play`.
+   the `lexicon play` CLI.
 
 2. **Structural library** (`cache/library.json`) — vocab terms with locked
    canonical English glosses + example sentences tagged by which vocab
@@ -266,13 +266,14 @@ cache is ~20%, climbing fast.
 Inspect the library:
 
 ```sh
-python3 library_inspect.py stats
-python3 library_inspect.py vocab --top 20
-python3 library_inspect.py show 협상       # full vocab entry with variants
-python3 library_inspect.py play 협상       # afplay the cached audio
-python3 library_inspect.py orphans         # audio files not referenced from index
-python3 library_inspect.py set-gloss 협상 "talks, negotiation"   # manually override
-python3 library_inspect.py cost-history    # all runs by date
+lexicon stats
+lexicon vocab --top 20
+lexicon show 협상       # full vocab entry with variants
+lexicon play 협상       # afplay the cached audio
+lexicon orphans         # cache audio not referenced by the lexicon
+lexicon set-gloss 협상 "talks, negotiation"   # manually override
+python3 cost_history.py                      # daily cost ledger
+python3 cost_history.py --since 2026-06-01           # runs by date
 ```
 
 ## Cost ledger
@@ -410,11 +411,11 @@ daily_news_pipeline/
 ├── 6_deploy_news_page.py        ← step 6
 ├── run_daily.sh                 ← cron entry point
 │
-├── cache_lib.py                 ← shared: library + audio cache
+├── (vocab library via lexicon)  ← langpack subsystem, ~/.langpack/lexicon/
 ├── cost_tracker.py              ← shared: cost recording
 ├── llm_providers.py             ← shared: LLM abstraction
 ├── (tts via voicebox package)   ← langpack subsystem
-├── library_inspect.py           ← admin CLI
+├── cost_history.py              ← cost ledger CLI
 ├── verify_whisper.py            ← QA diagnostic
 │
 ├── cache/                       ← gitignored runtime state

@@ -53,7 +53,7 @@ from pathlib import Path
 
 import yaml
 
-from cache_lib import Library
+from lexicon import Lexicon
 from cost_tracker import StepCostRecorder
 from llm_providers import LLMProvider, provider_for_step, max_tokens_for_step
 
@@ -380,7 +380,7 @@ def qa_review_story(story: dict, generated: dict) -> tuple[dict, list[str]]:
     return reviewed, changes
 
 
-def apply_library_reuse(data: dict, library: Library) -> dict:
+def apply_library_reuse(data: dict, library: Lexicon) -> dict:
     """
     Mutate `data` in place to:
       1. Lock vocab glosses to library canonical forms (where the Korean word
@@ -754,11 +754,11 @@ def main() -> int:
     print()
 
     # Load shared library for vocab/example reuse
-    library = Library.load(CACHE_ROOT)
+    library = Lexicon.load()  # shared store at ~/.langpack/lexicon/ko-en.json
     lib_stats_before = library.stats_summary()
-    print(f"📚 Library: {lib_stats_before['vocab_terms']} vocab, "
-          f"{lib_stats_before['example_sentences']} examples, "
-          f"{lib_stats_before['audio_files_on_disk']} cached audio files")
+    print(f"📚 Lexicon ({lib_stats_before['pair']}): "
+          f"{lib_stats_before['vocab_terms']} vocab, "
+          f"{lib_stats_before['example_sentences']} examples")
     print()
 
     story_outputs = []

@@ -14,7 +14,7 @@ steps 4-6 and verify_whisper are unchanged:
     work/<date>/costs/3_synthesize.json            (StepCostRecorder format)
 
 Pipeline-only concerns stay here: vocab/example library attachment
-(cache_lib.Library — library.json), the --max-chars spend gate, and cost
+(lexicon package — shared ~/.langpack/lexicon store), the --max-chars spend gate, and cost
 recording. TTS providers, cache keys, and concat now live in voicebox.
 
 Safety: defaults to dry-run (prints hits/misses + estimated spend, writes
@@ -40,7 +40,7 @@ import yaml
 from studypack.adapters import news as news_adapter
 from voicebox import key_params, synth_pack
 
-from cache_lib import Library
+from lexicon import Lexicon
 from cost_tracker import StepCostRecorder
 
 HERE = Path(__file__).resolve().parent
@@ -69,7 +69,7 @@ def today_eastern() -> str:
 
 
 def write_legacy_outputs(manifest: dict, script: dict, vb_dir: Path, out_dir: Path,
-                         pause_ms: int, library: Library,
+                         pause_ms: int, library: Lexicon,
                          recorder: StepCostRecorder, kp) -> None:
     """Map voicebox outputs into the legacy audio/ layout, write timings.json,
     attach library audio keys, and record per-turn costs."""
@@ -209,7 +209,7 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     vb_dir = out_dir / "vb"
 
-    library = Library.load(CACHE_ROOT)
+    library = Lexicon.load()  # shared store at ~/.langpack/lexicon/ko-en.json
     pre_stats = library.stats_summary()
     recorder = StepCostRecorder("3_synthesize", WORK_ROOT / date)
     kp = key_params(plan["provider"], cfg)
