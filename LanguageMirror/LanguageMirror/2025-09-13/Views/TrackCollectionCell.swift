@@ -10,7 +10,7 @@ final class TrackCollectionCell: UICollectionViewCell {
     // MARK: - Subviews
 
     private let cardView = UIView()
-    private let iconImageView = UIImageView()
+    private let coverView = CoverArtView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let durationBadge = DurationBadge()
@@ -39,11 +39,8 @@ final class TrackCollectionCell: UICollectionViewCell {
         cardView.layer.cornerCurve = .continuous
         contentView.addSubview(cardView)
 
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.contentMode = .scaleAspectFit
-        iconImageView.tintColor = AppColors.primaryAccent
-        iconImageView.image = UIImage(systemName: "waveform")
-        cardView.addSubview(iconImageView)
+        coverView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(coverView)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = .systemFont(ofSize: 16, weight: .medium)
@@ -85,12 +82,12 @@ final class TrackCollectionCell: UICollectionViewCell {
             cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
 
-            iconImageView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
-            iconImageView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
-            iconImageView.widthAnchor.constraint(equalToConstant: 32),
-            iconImageView.heightAnchor.constraint(equalToConstant: 32),
+            coverView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
+            coverView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            coverView.widthAnchor.constraint(equalToConstant: 46),
+            coverView.heightAnchor.constraint(equalToConstant: 46),
 
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: coverView.trailingAnchor, constant: 12),
             titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
             titleLabel.trailingAnchor.constraint(equalTo: durationBadge.leadingAnchor, constant: -8),
 
@@ -103,11 +100,11 @@ final class TrackCollectionCell: UICollectionViewCell {
             disclosureImageView.widthAnchor.constraint(equalToConstant: 12),
             disclosureImageView.heightAnchor.constraint(equalToConstant: 12),
 
-            subtitleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            subtitleLabel.leadingAnchor.constraint(equalTo: coverView.trailingAnchor, constant: 12),
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
             subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: disclosureImageView.leadingAnchor, constant: -8),
 
-            tagStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            tagStackView.leadingAnchor.constraint(equalTo: coverView.trailingAnchor, constant: 12),
             tagStackView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 6),
             tagStackView.trailingAnchor.constraint(lessThanOrEqualTo: disclosureImageView.leadingAnchor, constant: -8),
 
@@ -124,6 +121,7 @@ final class TrackCollectionCell: UICollectionViewCell {
     // MARK: - Configuration
 
     func configure(with track: Track, progress: Float = 0.0, subtitle: String? = nil) {
+        coverView.configure(seed: track.packId)
         titleLabel.text = track.title
 
         if let subtitle = subtitle, !subtitle.isEmpty {

@@ -13,7 +13,7 @@ final class TrackCell: UITableViewCell {
     // MARK: - Properties
     
     private let cardView = UIView()
-    private let iconImageView = UIImageView()
+    private let coverView = CoverArtView()
     private let titleLabel = UILabel()
     private let durationBadge = DurationBadge()
     private let tagStackView = UIStackView()
@@ -45,12 +45,9 @@ final class TrackCell: UITableViewCell {
         cardView.layer.cornerCurve = .continuous
         contentView.addSubview(cardView)
         
-        // Icon (audio wave symbol)
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.contentMode = .scaleAspectFit
-        iconImageView.tintColor = AppColors.primaryAccent
-        iconImageView.image = UIImage(systemName: "waveform")
-        cardView.addSubview(iconImageView)
+        // Branded cover tile (replaces the flat waveform icon).
+        coverView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(coverView)
         
         // Title label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -93,14 +90,14 @@ final class TrackCell: UITableViewCell {
             cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
             
-            // Icon
-            iconImageView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
-            iconImageView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
-            iconImageView.widthAnchor.constraint(equalToConstant: 32),
-            iconImageView.heightAnchor.constraint(equalToConstant: 32),
-            
+            // Cover tile
+            coverView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
+            coverView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            coverView.widthAnchor.constraint(equalToConstant: 46),
+            coverView.heightAnchor.constraint(equalToConstant: 46),
+
             // Title
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: coverView.trailingAnchor, constant: 12),
             titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
             titleLabel.trailingAnchor.constraint(equalTo: durationBadge.leadingAnchor, constant: -8),
             
@@ -116,7 +113,7 @@ final class TrackCell: UITableViewCell {
             disclosureImageView.heightAnchor.constraint(equalToConstant: 12),
             
             // Tag stack
-            tagStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            tagStackView.leadingAnchor.constraint(equalTo: coverView.trailingAnchor, constant: 12),
             tagStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             tagStackView.trailingAnchor.constraint(lessThanOrEqualTo: disclosureImageView.leadingAnchor, constant: -8),
             
@@ -136,6 +133,8 @@ final class TrackCell: UITableViewCell {
     
     func configure(with track: Track, progress: Float = 0.0) {
         titleLabel.text = track.title
+        // Seed the generated cover by pack so a pack's tracks share a look.
+        coverView.configure(seed: track.packId)
         
         // Configure duration badge
         if let durationMs = track.durationMs {
