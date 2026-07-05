@@ -111,8 +111,15 @@ enum NewsNotificationService {
 
     // MARK: - Day's bundle URL
 
+    /// Stable alias the pipeline copies the freshest pack to after each publish
+    /// (see NEWS_PUSH_PIPELINE_SPEC.md). Preferred over a client-constructed
+    /// dated URL: it always resolves even if a run slips or the device clock
+    /// disagrees, and its inner id/audio URLs stay dated so imports dedup.
+    static let latestNewsBundleURL = URL(string: "\(cloudFrontBase)/lmaudio/news_latest/bundle.json")!
+
     /// The news pack URL for a given day, following the pipeline's publish
-    /// pattern lmaudio/news_YYYY_MM_DD/bundle.json.
+    /// pattern lmaudio/news_YYYY_MM_DD/bundle.json. Retained for callers that
+    /// need a specific day; the daily reminder uses `latestNewsBundleURL`.
     static func newsBundleURL(for date: Date = Date()) -> URL? {
         var calendar = Calendar(identifier: .gregorian)
         // The daily pipeline dates packs in US/Eastern; match it so the
@@ -125,12 +132,12 @@ enum NewsNotificationService {
     }
 
     /// Resolve the bundle URL a tapped notification should open. Remote pushes
-    /// carry an explicit URL; local reminders derive today's.
+    /// carry an explicit dated URL; local reminders open the stable alias.
     static func bundleURL(fromNotificationUserInfo userInfo: [AnyHashable: Any]) -> URL? {
         if let explicit = userInfo[userInfoBundleURLKey] as? String, let url = URL(string: explicit) {
             return url
         }
-        return newsBundleURL()
+        return latestNewsBundleURL
     }
 
     /// A notification tapped on a COLD launch is delivered before the

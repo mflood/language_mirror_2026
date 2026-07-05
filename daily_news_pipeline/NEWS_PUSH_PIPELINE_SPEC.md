@@ -49,9 +49,8 @@ s3://turned.rip/lmaudio/news_latest/bundle.json   ← copy of the freshest bundl
   aliased, so no audio is duplicated. The bundle's `id`/pack `id` should remain
   the real dated id (e.g. `news_2026_07_02`) so the app dedups/updates cleanly
   rather than creating a "latest" pack that changes contents underneath it.
-- **App follow-up (tiny, tracked separately):** point the local reminder's tap
-  at `news_latest/bundle.json` instead of the constructed dated URL. Until then
-  the dated URL works on days the pipeline ran on schedule.
+- **App follow-up: DONE.** The local reminder's tap now opens
+  `news_latest/bundle.json` (`NewsNotificationService.latestNewsBundleURL`).
 
 This alone makes the shipped local-notification feature robust. **Do this one.**
 
