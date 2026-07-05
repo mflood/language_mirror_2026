@@ -41,20 +41,42 @@ enum AppColors {
     static let secondaryText = UIColor.secondaryLabel
     static let tertiaryText = UIColor.tertiaryLabel
     
-    // MARK: - Accent Colors
-    
-    /// Primary accent color with appropriate brightness
+    // MARK: - Brand Accent Colors
+    //
+    // "Mirror Aqua" is the signature brand color — a cool reflective teal
+    // that reads as a mirror/water surface and, crucially, is NOT the iOS
+    // default blue that made the app feel like a template. It carries CTAs,
+    // tab-bar selection, and the current-clip highlight app-wide.
+
+    /// Primary brand accent (Mirror Aqua).
     static let primaryAccent = UIColor { traitCollection in
         traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 0.4, green: 0.6, blue: 1.0, alpha: 1.0)   // Brighter blue
-            : UIColor(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)  // Standard blue
+            ? UIColor(red: 0.24, green: 0.80, blue: 0.78, alpha: 1.0)  // Bright aqua
+            : UIColor(red: 0.02, green: 0.62, blue: 0.60, alpha: 1.0)  // Deep teal
     }
-    
-    /// Gentle accent glow/tint
+
+    /// Warm secondary accent (Coral) — streaks, celebration highlights, the
+    /// occasional "reward" pop against all the cool tones.
+    static let brandSecondary = UIColor { traitCollection in
+        traitCollection.userInterfaceStyle == .dark
+            ? UIColor(red: 1.00, green: 0.52, blue: 0.46, alpha: 1.0)
+            : UIColor(red: 0.98, green: 0.42, blue: 0.38, alpha: 1.0)
+    }
+
+    /// Two-stop brand gradient (aqua → lavender), used for Miri's body,
+    /// pack cover fallbacks, and celebration flourishes.
+    static var brandGradientColors: [CGColor] {
+        [
+            UIColor(red: 0.36, green: 0.82, blue: 0.86, alpha: 1.0).cgColor,  // aqua
+            UIColor(red: 0.52, green: 0.56, blue: 0.95, alpha: 1.0).cgColor,  // lavender
+        ]
+    }
+
+    /// Gentle accent glow/tint derived from the brand color.
     static let accentGlow = UIColor { traitCollection in
         traitCollection.userInterfaceStyle == .dark
-            ? UIColor.systemBlue.withAlphaComponent(0.25)  // Softer glow
-            : UIColor.systemBlue.withAlphaComponent(0.08)  // Subtle tint
+            ? UIColor(red: 0.24, green: 0.80, blue: 0.78, alpha: 0.25)  // Softer glow
+            : UIColor(red: 0.02, green: 0.62, blue: 0.60, alpha: 0.08)  // Subtle tint
     }
     
     // MARK: - Duration Badge Colors (ADHD-friendly color coding)

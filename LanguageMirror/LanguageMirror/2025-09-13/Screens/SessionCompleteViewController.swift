@@ -46,7 +46,7 @@ final class SessionCompleteViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = L10n("session_complete.title")
-        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
+        titleLabel.font = AppFont.rounded(28, weight: .bold)
         titleLabel.textColor = AppColors.primaryText
         titleLabel.textAlignment = .center
 
@@ -56,7 +56,7 @@ final class SessionCompleteViewController: UIViewController {
             ? L10n("session_complete.sentences.one")
             : L10nf("session_complete.sentences", clipCount)
         statsLabel.text = L10nf("session_complete.stats", sentencesText, totalPlays)
-        statsLabel.font = .systemFont(ofSize: 17, weight: .medium)
+        statsLabel.font = AppFont.rounded(17, weight: .medium)
         statsLabel.textColor = AppColors.secondaryText
         statsLabel.textAlignment = .center
 
@@ -84,7 +84,7 @@ final class SessionCompleteViewController: UIViewController {
         againConfig.baseForegroundColor = .white
         againConfig.cornerStyle = .large
         var againAttrs = AttributeContainer()
-        againAttrs.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        againAttrs.font = AppFont.rounded(18, weight: .semibold)
         againConfig.attributedTitle = AttributedString(L10n("session_complete.again"), attributes: againAttrs)
         let againButton = UIButton(configuration: againConfig)
         againButton.translatesAutoresizingMaskIntoConstraints = false

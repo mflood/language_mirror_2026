@@ -60,7 +60,7 @@ final class OnboardingViewController: UIViewController {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = L10n("onboarding.title")
-        title.font = .systemFont(ofSize: 34, weight: .bold)
+        title.font = AppFont.rounded(34, weight: .bold)
         title.textColor = AppColors.primaryText
         title.textAlignment = .center
         title.numberOfLines = 0
@@ -76,7 +76,7 @@ final class OnboardingViewController: UIViewController {
         let question = UILabel()
         question.translatesAutoresizingMaskIntoConstraints = false
         question.text = L10n("onboarding.learning_question")
-        question.font = .systemFont(ofSize: 20, weight: .semibold)
+        question.font = AppFont.rounded(20, weight: .semibold)
         question.textColor = AppColors.primaryText
         question.textAlignment = .center
         question.numberOfLines = 0
@@ -118,7 +118,7 @@ final class OnboardingViewController: UIViewController {
         config.baseForegroundColor = .white
         config.cornerStyle = .large
         var attrs = AttributeContainer()
-        attrs.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        attrs.font = AppFont.rounded(20, weight: .semibold)
         config.attributedTitle = AttributedString("\(emoji)  \(title)", attributes: attrs)
         let button = UIButton(configuration: config)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -142,7 +142,7 @@ final class OnboardingViewController: UIViewController {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = L10n("onboarding.how.title")
-        title.font = .systemFont(ofSize: 28, weight: .bold)
+        title.font = AppFont.rounded(28, weight: .bold)
         title.textColor = AppColors.primaryText
         title.textAlignment = .center
 
@@ -165,7 +165,7 @@ final class OnboardingViewController: UIViewController {
         config.baseForegroundColor = .white
         config.cornerStyle = .large
         var attrs = AttributeContainer()
-        attrs.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        attrs.font = AppFont.rounded(20, weight: .semibold)
         config.attributedTitle = AttributedString("▶  " + L10n("onboarding.cta"), attributes: attrs)
         let cta = UIButton(configuration: config)
         cta.translatesAutoresizingMaskIntoConstraints = false
@@ -206,7 +206,7 @@ final class OnboardingViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = title
-        titleLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+        titleLabel.font = AppFont.rounded(18, weight: .semibold)
         titleLabel.textColor = AppColors.primaryText
 
         let bodyLabel = UILabel()

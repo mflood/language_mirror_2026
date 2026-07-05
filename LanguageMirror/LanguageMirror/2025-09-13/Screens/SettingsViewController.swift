@@ -209,7 +209,7 @@ final class SettingsViewController: UIViewController {
     private func configureControls() {
         // Mode toggle
         practiceModeSeg.selectedSegmentIndex = settings.useProgressionMode ? 1 : 0
-        practiceModeSeg.selectedSegmentTintColor = .systemIndigo
+        practiceModeSeg.selectedSegmentTintColor = AppColors.primaryAccent
         practiceModeSeg.addTarget(self, action: #selector(practiceModeChanged), for: .valueChanged)
 
         // Speed strip
@@ -220,7 +220,7 @@ final class SettingsViewController: UIViewController {
         repeatsSlider.minimumValue = 1
         repeatsSlider.maximumValue = 100
         repeatsSlider.value = Float(settings.globalRepeats)
-        repeatsSlider.minimumTrackTintColor = .systemBlue
+        repeatsSlider.minimumTrackTintColor = AppColors.primaryAccent
         repeatsSlider.addTarget(self, action: #selector(repeatsChanged), for: .valueChanged)
         repeatsValueLabel.text = "\(settings.globalRepeats)x"
 

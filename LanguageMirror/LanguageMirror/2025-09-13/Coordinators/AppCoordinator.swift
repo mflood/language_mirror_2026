@@ -42,8 +42,11 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     }
     
     func start() {
+        // Brand appearance (rounded titles + aqua tint) before any UI builds.
+        AppFont.installGlobalAppearance()
+
         // Child coordinators
-        
+
         let libraryCoordinator = LibraryCoordinator(container: container, appCoordinator: self)
         let importCoordinator  = ImportCoordinator(container: container)
         let practiceCoordinator = PracticeCoordinator(container: container, appCoordinator: self)
@@ -79,6 +82,7 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         tabBarController.viewControllers = [libraryNav, importNav, practiceNav, settingsNav]
         tabBarController.delegate = self
         
+        window.tintColor = AppColors.primaryAccent
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
 
