@@ -215,8 +215,10 @@ final class EvaluationWalkTests: XCTestCase {
         tabs.buttons["Library"].tap()
         Thread.sleep(forTimeInterval: 1)
 
-        // Library → track → Practice Set (12 clips)
-        app.staticTexts["Seoul Lunch Recommendations"].firstMatch.tap()
+        // Library → track → Practice Set (12 clips). Tap the cell (reliably
+        // navigates) rather than the label.
+        app.collectionViews.cells.containing(.staticText,
+            identifier: "Seoul Lunch Recommendations").firstMatch.tap()
         Thread.sleep(forTimeInterval: 1)
         let setRow = app.staticTexts["Practice Set"]
         XCTAssertTrue(setRow.waitForExistence(timeout: 5))

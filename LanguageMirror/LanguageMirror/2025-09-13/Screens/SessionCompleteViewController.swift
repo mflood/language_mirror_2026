@@ -20,7 +20,7 @@ final class SessionCompleteViewController: UIViewController {
     /// Consecutive practice days; hidden when nil (streak ships separately).
     private let streakDays: Int?
 
-    private let checkmarkView = UIImageView()
+    private let miriView = MiriView()
 
     init(setTitle: String, clipCount: Int, totalPlays: Int, streakDays: Int? = nil) {
         self.setTitle = setTitle
@@ -36,12 +36,12 @@ final class SessionCompleteViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = AppColors.calmBackground
 
-        let config = UIImage.SymbolConfiguration(pointSize: 72, weight: .semibold)
-        checkmarkView.image = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)
-        checkmarkView.tintColor = AppColors.primaryAccent
-        checkmarkView.translatesAutoresizingMaskIntoConstraints = false
-        checkmarkView.alpha = 0
-        checkmarkView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
+        // Miri celebrates with you — the reward moment gets a character,
+        // not a stock checkmark.
+        miriView.expression = .celebrating
+        miriView.translatesAutoresizingMaskIntoConstraints = false
+        miriView.alpha = 0
+        miriView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
 
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -103,14 +103,16 @@ final class SessionCompleteViewController: UIViewController {
             self.dismiss(animated: true) { self.onDone?() }
         }, for: .touchUpInside)
 
-        [checkmarkView, titleLabel, statsLabel, setLabel, streakLabel, againButton, doneButton]
+        [miriView, titleLabel, statsLabel, setLabel, streakLabel, againButton, doneButton]
             .forEach { view.addSubview($0) }
 
         NSLayoutConstraint.activate([
-            checkmarkView.topAnchor.constraint(equalTo: view.topAnchor, constant: 48),
-            checkmarkView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            miriView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
+            miriView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            miriView.widthAnchor.constraint(equalToConstant: 96),
+            miriView.heightAnchor.constraint(equalToConstant: 96),
 
-            titleLabel.topAnchor.constraint(equalTo: checkmarkView.bottomAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: miriView.bottomAnchor, constant: 12),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
 
@@ -143,8 +145,10 @@ final class SessionCompleteViewController: UIViewController {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         UIView.animate(withDuration: 0.5, delay: 0,
                        usingSpringWithDamping: 0.55, initialSpringVelocity: 0.8) {
-            self.checkmarkView.alpha = 1
-            self.checkmarkView.transform = .identity
+            self.miriView.alpha = 1
+            self.miriView.transform = .identity
+        } completion: { _ in
+            self.miriView.bounce()
         }
     }
 }

@@ -125,7 +125,8 @@ final class PracticeHomeViewController: UIViewController {
             icon: "waveform.path.ecg",
             title: L10n("empty.practice.title"),
             message: L10n("empty.practice.message"),
-            actionTitle: L10n("empty.practice.action")
+            actionTitle: L10n("empty.practice.action"),
+            miriExpression: .sleeping
         )
         emptyStateView.onActionTapped = { [weak self] in
             guard let self else { return }

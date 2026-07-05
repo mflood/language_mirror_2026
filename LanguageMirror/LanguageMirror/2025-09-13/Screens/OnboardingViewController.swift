@@ -23,6 +23,7 @@ final class OnboardingViewController: UIViewController {
     private var learningLanguage = "ko"
     private let pageOne = UIView()
     private let pageTwo = UIView()
+    private weak var heroMiri: MiriView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,12 @@ final class OnboardingViewController: UIViewController {
         buildPageTwo()
         pageTwo.alpha = 0
         pageTwo.isHidden = true
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        heroMiri?.startIdleFloat()
+        heroMiri?.wave()
     }
 
     // MARK: - Skip
@@ -56,6 +63,10 @@ final class OnboardingViewController: UIViewController {
         pageOne.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(pageOne)
         pinPage(pageOne)
+
+        let miri = MiriView()
+        miri.translatesAutoresizingMaskIntoConstraints = false
+        miri.expression = .happy
 
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
@@ -84,10 +95,16 @@ final class OnboardingViewController: UIViewController {
         let koreanButton = languageButton(emoji: "🇰🇷", title: L10n("onboarding.lang.korean"), lang: "ko")
         let englishButton = languageButton(emoji: "🇺🇸", title: L10n("onboarding.lang.english"), lang: "en")
 
-        [title, tagline, question, koreanButton, englishButton].forEach { pageOne.addSubview($0) }
+        [miri, title, tagline, question, koreanButton, englishButton].forEach { pageOne.addSubview($0) }
+        self.heroMiri = miri
 
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: pageOne.topAnchor, constant: 80),
+            miri.topAnchor.constraint(equalTo: pageOne.safeAreaLayoutGuide.topAnchor, constant: 40),
+            miri.centerXAnchor.constraint(equalTo: pageOne.centerXAnchor),
+            miri.widthAnchor.constraint(equalToConstant: 104),
+            miri.heightAnchor.constraint(equalToConstant: 104),
+
+            title.topAnchor.constraint(equalTo: miri.bottomAnchor, constant: 20),
             title.leadingAnchor.constraint(equalTo: pageOne.leadingAnchor, constant: 24),
             title.trailingAnchor.constraint(equalTo: pageOne.trailingAnchor, constant: -24),
 

@@ -14,6 +14,7 @@ final class EmptyStateView: UIView {
     
     private let containerView = UIView()
     private let iconImageView = UIImageView()
+    private let miriView = MiriView()
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
     private let actionButton = UIButton(type: .system)
@@ -48,6 +49,12 @@ final class EmptyStateView: UIView {
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.tintColor = AppColors.primaryAccent
         containerView.addSubview(iconImageView)
+
+        // Miri sits in the icon's spot when an empty state opts into the
+        // mascot (hidden otherwise so SF-symbol states are unaffected).
+        miriView.translatesAutoresizingMaskIntoConstraints = false
+        miriView.isHidden = true
+        containerView.addSubview(miriView)
         
         // Title
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -88,6 +95,11 @@ final class EmptyStateView: UIView {
             iconImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 80),
             iconImageView.heightAnchor.constraint(equalToConstant: 80),
+
+            miriView.centerXAnchor.constraint(equalTo: iconImageView.centerXAnchor),
+            miriView.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
+            miriView.widthAnchor.constraint(equalToConstant: 88),
+            miriView.heightAnchor.constraint(equalToConstant: 88),
             
             // Title
             titleLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 24),
@@ -118,12 +130,21 @@ final class EmptyStateView: UIView {
         icon: String,
         title: String,
         message: String,
-        actionTitle: String? = nil
+        actionTitle: String? = nil,
+        miriExpression: MiriView.Expression? = nil
     ) {
-        iconImageView.image = UIImage(systemName: icon)
+        if let miriExpression {
+            miriView.expression = miriExpression
+            miriView.isHidden = false
+            iconImageView.isHidden = true
+        } else {
+            iconImageView.image = UIImage(systemName: icon)
+            miriView.isHidden = true
+            iconImageView.isHidden = false
+        }
         titleLabel.text = title
         messageLabel.text = message
-        
+
         if let actionTitle = actionTitle {
             actionButton.setTitle(actionTitle, for: .normal)
             actionButton.isHidden = false
@@ -197,7 +218,8 @@ extension EmptyStateView {
             icon: "books.vertical",
             title: L10n("empty.library.title"),
             message: L10n("empty.library.message"),
-            actionTitle: L10n("empty.library.action")
+            actionTitle: L10n("empty.library.action"),
+            miriExpression: .happy
         )
         view.onActionTapped = onAction
         return view
