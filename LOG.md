@@ -5,6 +5,16 @@ listed; consult `git log` for the full history.
 
 ---
 
+## 2026-07-05 — news_latest alias published for the daily reminder (pipeline side)
+
+- `5_publish_s3.py` now also copies each day's `bundle.json` to the stable
+  key `lmaudio/news_latest/bundle.json` and CloudFront-invalidates it
+  (NEWS_PUSH_PIPELINE_SPEC.md option A; acceptance verified live).
+- Pack id + audio URLs inside stay dated, so the app dedups cleanly.
+- App follow-up tracked in NEXT.md #4: point the local reminder's tap at
+  the alias instead of the constructed dated URL.
+
+
 ## 2026-04-09 — Color-coded clip cells, swipe-to-reset, remote catalog, three more starter packs
 
 - Added 3 more Polly-generated starter packs:

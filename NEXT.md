@@ -25,3 +25,13 @@ Now that auto-import gives new users content immediately, onboarding should
 focus on **how to use** the practice loop (tap a clip → loops → swipe to
 reset → speed). Three screens with screenshots + short captions.
 Effort: 1–2 days.
+
+## 4. Point the daily-reminder tap at the news_latest alias
+
+The pipeline now publishes a stable manifest alias on every run:
+`https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_latest/bundle.json`
+(2026-07-05; see `daily_news_pipeline/NEWS_PUSH_PIPELINE_SPEC.md`, option A —
+pipeline acceptance boxes are checked). App follow-up: change
+`NewsNotificationService` so the local reminder's tap resolves that alias
+instead of constructing the dated URL — makes the reminder robust to
+skipped/late pipeline runs. Effort: minutes.

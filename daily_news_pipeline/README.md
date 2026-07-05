@@ -454,7 +454,12 @@ Intended setup: macOS launchd or cron at 8:00 ET, running `./run_daily.sh
 | Artifact | URL pattern |
 |---|---|
 | Pack manifest | `https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_YYYY_MM_DD/bundle.json` |
+| Latest-pack alias | `…/lmaudio/news_latest/bundle.json` — stable key, rewritten + CloudFront-invalidated on every publish; resolved by the iOS daily reminder (see `NEWS_PUSH_PIPELINE_SPEC.md`). Manifest only — its pack id and audio URLs stay dated. |
 | Audio tracks | `…/news_YYYY_MM_DD/story_N.mp3` |
 | QR scheme (deep link) | `languagemirror://bundle?url=<encoded manifest URL>` |
 | Day's landing page | `https://sixwandsstudios.com/news/YYYY-MM-DD/` |
 | Archive page | `https://sixwandsstudios.com/news/` |
+
+All uploads go through the langpack `publisher` package (destination registry
+at `~/.langpack/publisher.yaml`): cp-only, clobber-gated, post-flight
+verified, CloudFront-invalidated. Never deletes.
