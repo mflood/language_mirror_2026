@@ -564,14 +564,9 @@ final class SettingsViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    // MARK: - Trait Collection
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            view.backgroundColor = AppColors.calmBackground
-        }
-    }
+    // The background uses AppColors.calmBackground, a dynamic UIColor that
+    // resolves per-appearance automatically — no traitCollectionDidChange
+    // override needed (and that API is deprecated in iOS 17).
 }
 
 // MARK: - SpeedPresetStripDelegate
