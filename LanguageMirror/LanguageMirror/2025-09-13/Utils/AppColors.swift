@@ -12,8 +12,14 @@ enum AppColors {
     
     // MARK: - Backgrounds
     
-    /// Primary background - adapts to system
-    static let primaryBackground = UIColor.systemBackground
+    /// Primary background — the plum field (same as calmBackground), so
+    /// every main screen sits in the Six Wands universe rather than on
+    /// stock system black/white.
+    static let primaryBackground = UIColor { traitCollection in
+        traitCollection.userInterfaceStyle == .dark
+            ? UIColor(red: 0.15, green: 0.11, blue: 0.14, alpha: 1.0)  // Plum dusk
+            : UIColor(red: 0.965, green: 0.945, blue: 0.955, alpha: 1.0) // Morning fog
+    }
     
     /// Secondary background - adapts to system
     static let secondaryBackground = UIColor.secondarySystemBackground
