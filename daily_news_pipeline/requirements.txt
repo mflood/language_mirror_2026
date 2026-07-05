@@ -13,3 +13,4 @@ pyyaml>=6.0
 -e ../../langpack/studypack
 -e ../../langpack/voicebox
 -e ../../langpack/publisher
+-e ../../langpack/bundler

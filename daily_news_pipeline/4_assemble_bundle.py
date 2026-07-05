@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 """
-Step 4: Assemble the iOS-compatible bundle.json from script.json + per-story
-timings. Converts turn-range clip definitions into ms-range Clip objects,
-attaches translation transcripts to each Korean clip (so the app shows the
-English gloss when the Korean clip plays), and writes the final bundle to
-work/<date>/bundle.json.
+Step 4: Assemble. Thin orchestrator over the langpack `bundler` package.
 
-The bundle is structured to match the BundleManifest the iOS app expects
-(see bundle_pipeline/models.py).
+Flow: script.json → studypack (in-memory, studypack.adapters.news) + per-story
+audio timings → bundler.materialize → work/<date>/bundle.json (iOS schema,
+unchanged: 4 practice sets per story track, English glosses appended to
+single-Korean-turn clip titles, transcript spans with translations).
 
-Output:
-    work/<date>/bundle.json
+Timings come from work/<date>/audio/voicebox.manifest.json (written by the
+migrated step 3); for pre-migration dates the legacy story_N.timings.json
+files are used instead — both carry identical data.
 
 Usage:
-    python 4_assemble_bundle.py [--date YYYY-MM-DD]
+    python 4_assemble_bundle.py [--date YYYY-MM-DD] [--author AUTHOR]
 """
 
 from __future__ import annotations
@@ -22,19 +21,20 @@ import argparse
 import datetime as dt
 import json
 import sys
-import uuid
 from pathlib import Path
+
+from bundler import GroupAudio, materialize, timings_from_voicebox
+from studypack.adapters import news as news_adapter
 
 HERE = Path(__file__).resolve().parent
 WORK_ROOT = HERE / "work"
 
-# Matches the existing bundle pipeline's S3 publish config.
 CLOUDFRONT_BASE = "https://d1ni0tk3ua6bwo.cloudfront.net"
-PUBLISH_PREFIX_TEMPLATE = "/lmaudio/{bundle_id}"
+PUBLISH_PREFIX_TEMPLATE = "lmaudio/{bundle_id}"
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Assemble the day's bundle.json")
+    p = argparse.ArgumentParser(description="Assemble the day's iOS bundle.json")
     p.add_argument("--date", help="YYYY-MM-DD (default: today, US/Eastern)")
     p.add_argument("--author", default="Six Wands Studios")
     return p.parse_args()
@@ -45,252 +45,70 @@ def today_eastern() -> str:
     return now.strftime("%Y-%m-%d")
 
 
-def turn_range_to_ms(turn_range: list[int], turn_timings: list[dict]) -> tuple[int, int]:
-    """Convert (turn_start_idx, turn_end_idx) inclusive → (startMs, endMs)."""
-    a, b = turn_range
-    return turn_timings[a]["startMs"], turn_timings[b]["endMs"]
-
-
-def join_turns_text(turn_range: list[int], turn_timings: list[dict], lang_filter: str | None = None) -> str:
-    """Join the text of turns in range, optionally filtered by lang."""
-    a, b = turn_range
-    out = []
-    for i in range(a, b + 1):
-        t = turn_timings[i]
-        if lang_filter is not None and t["lang"] != lang_filter:
-            continue
-        out.append(t["text"])
-    return " ".join(out)
-
-
-def english_gloss_for_korean_clip(turn_range: list[int], turn_timings: list[dict], story: dict) -> str | None:
-    """
-    For a Korean-only clip in Set 2 (single Korean turn), find the matching
-    English translation by looking up the corresponding entry in vocab/examples
-    /expressions/summary_ko by text match.
-    """
-    a, b = turn_range
-    if a != b:
-        return None  # multi-turn clips don't get an inline gloss
-    ko_text = turn_timings[a]["text"]
-
-    for v in story.get("vocab", []):
-        if v["ko"] == ko_text:
-            return v["en"]
-    for ex in story.get("examples", []):
-        if ex["ko"] == ko_text:
-            return ex["en"]
-    for ex in story.get("expressions", []):
-        if ex["ko"] == ko_text:
-            return ex["en"]
-    summary_ko_easy = story.get("summary_ko_easy", []) or []
-    summary_en_easy = story.get("summary_en_easy", []) or []
-    summary_ko_natural = story.get("summary_ko_natural", []) or []
-    summary_en = story.get("summary_en", []) or []
-    # Match against easy summary (1:1 with summary_en_easy from step 2b)
-    for i, sentence in enumerate(summary_ko_easy):
-        if sentence == ko_text and i < len(summary_en_easy):
-            return summary_en_easy[i]
-    # Match against natural summary (3 sentences, 1:1 with English)
-    for i, sentence in enumerate(summary_ko_natural):
-        if sentence == ko_text and i < len(summary_en):
-            return summary_en[i]
-    return None
-
-
-# Roles that come in Korean/English pairs. The k-th turn with the ko role
-# translates the k-th turn with the en role (pairing by occurrence order,
-# NOT adjacency — the natural summary is grouped 3-ko-then-3-en).
-ROLE_TWINS = [
-    ("track_intro_ko", "track_intro_en"),
-    ("section_header_ko", "section_header_en"),
-    ("vocab_word", "vocab_gloss"),
-    ("example_ko", "example_en"),
-    ("expression_ko", "expression_en"),
-    ("summary_intro_ko", "summary_intro_en"),
-    ("summary_ko_natural", "summary_en"),
-]
-
-
-def build_turn_translations(story: dict) -> list[dict[str, str] | None]:
-    """
-    Per-turn `translations` maps for the transcript spans, keyed by BCP-47
-    base language code ("en", "ko"). Korean turns get {"en": ...} and their
-    English twin turns get the reverse {"ko": ...}. Easy-summary turns have
-    no spoken English twin; their English comes from summary_en_easy
-    (generated by step 2b) when present.
-    """
-    turns = story["turns"]
-    out: list[dict[str, str] | None] = [None] * len(turns)
-
-    # Occurrence-ordered turn indices per role. Old script.json formats
-    # (pre role-tagging, e.g. 2026-05-24) have no roles — nothing to pair.
-    by_role: dict[str, list[int]] = {}
-    for i, t in enumerate(turns):
-        role = t.get("role")
-        if role:
-            by_role.setdefault(role, []).append(i)
-    if not by_role:
-        print(f"⚠️  {story['story_id']}: turns carry no roles — skipping translations",
-              file=sys.stderr)
-        return out
-
-    for ko_role, en_role in ROLE_TWINS:
-        ko_idxs = by_role.get(ko_role, [])
-        en_idxs = by_role.get(en_role, [])
-        if len(ko_idxs) != len(en_idxs):
-            print(f"⚠️  {story['story_id']}: {ko_role} count {len(ko_idxs)} != "
-                  f"{en_role} count {len(en_idxs)} — skipping pair", file=sys.stderr)
-            continue
-        for ki, ei in zip(ko_idxs, en_idxs):
-            out[ki] = {"en": turns[ei]["text"]}
-            out[ei] = {"ko": turns[ki]["text"]}
-
-    # Easy summary: text-only English from step 2b (no spoken twin turn)
-    summary_en_easy = story.get("summary_en_easy", []) or []
-    easy_idxs = by_role.get("summary_ko_easy", [])
-    if summary_en_easy and len(easy_idxs) == len(summary_en_easy):
-        for k, i in enumerate(easy_idxs):
-            out[i] = {"en": summary_en_easy[k]}
-    elif easy_idxs:
-        print(f"⚠️  {story['story_id']}: no aligned summary_en_easy "
-              f"({len(easy_idxs)} turns vs {len(summary_en_easy)} translations) — "
-              f"run 2b_translate_easy.py", file=sys.stderr)
-
-    return out
-
-
-def build_clip(turn_range: list[int], clip_def: dict, turn_timings: list[dict], story: dict) -> dict:
-    start_ms, end_ms = turn_range_to_ms(turn_range, turn_timings)
-    language_code = clip_def.get("languageCode")
-    title = clip_def.get("title")
-    clip = {
-        "id": str(uuid.uuid4()),
-        "startMs": start_ms,
-        "endMs": end_ms,
-        "kind": "drill",
-        "title": title,
-        "repeats": None,
-        "startSpeed": None,
-        "endSpeed": None,
-        "languageCode": language_code,
-    }
-    # If single-Korean-turn clip, attach English gloss into the title so the
-    # app's transcript field shows it. The Track.transcripts list (built below)
-    # covers the structural transcript; the per-clip title carries the gloss.
-    if language_code == "ko-KR" and turn_range[0] == turn_range[1]:
-        gloss = english_gloss_for_korean_clip(turn_range, turn_timings, story)
-        if gloss and title:
-            clip["title"] = f"{title} — {gloss}"
-    return clip
-
-
-def build_track(story: dict, timings: dict, pack_id: str) -> dict:
-    turn_timings = timings["turns"]
-    duration_ms = timings["duration_ms"]
-    track_id_placeholder = str(uuid.uuid4())  # iOS import re-derives stable id from url
-
-    # Practice sets
-    practice_sets_out: list[dict] = []
-    for ps_def in story["practice_sets"]:
-        clips = [
-            build_clip(c["turn_range"], c, turn_timings, story)
-            for c in ps_def["clips"]
-        ]
-        practice_sets_out.append({
-            "id": str(uuid.uuid4()),
-            "trackId": track_id_placeholder,
-            "displayOrder": ps_def["displayOrder"],
-            "title": ps_def["title"],
-            "clips": clips,
-            "isFavorite": False,
-        })
-
-    # Transcripts — one span per turn with bilingual gloss for parallel display.
-    # `translations` (optional, base-language-code keyed) carries the other
-    # language's rendering of the span; the shipped app ignores the key.
-    turn_translations = build_turn_translations(story)
-    script_turns = story.get("turns", [])
-    if turn_translations and len(script_turns) != len(turn_timings):
-        # Script and timings disagree (e.g. script regenerated after
-        # synthesis, 2026-05-25) — index-based attachment would misalign.
-        print(f"⚠️  {story['story_id']}: {len(script_turns)} script turns vs "
-              f"{len(turn_timings)} timed turns — skipping translations",
-              file=sys.stderr)
-        turn_translations = []
-    transcripts: list[dict] = []
-    for i, t in enumerate(turn_timings):
-        span = {
-            "startMs": t["startMs"],
-            "endMs": t["endMs"],
-            "text": t["text"],
-            "speaker": t["speaker"],
-            "languageCode": "ko-KR" if t["lang"] == "ko" else "en-US",
-        }
-        # Attach only when the timed turn's text matches the script turn at
-        # the same index — guarantees a translation can never sit on the
-        # wrong span.
-        if (i < len(turn_translations) and turn_translations[i]
-                and script_turns[i]["text"] == t["text"]):
-            span["translations"] = turn_translations[i]
-        transcripts.append(span)
-
-    filename = f"{story['story_id']}.mp3"
-    url = f"{CLOUDFRONT_BASE}{PUBLISH_PREFIX_TEMPLATE.format(bundle_id=pack_id)}/{filename}"
-
-    return {
-        "id": filename,
-        "title": story["track_title_ko"],
-        "url": url,
-        "filename": filename,
-        "durationMs": duration_ms,
-        "languageCode": "ko-KR",
-        "practiceSets": practice_sets_out,
-        "transcripts": transcripts,
-    }
+def legacy_timings_audio(pack, audio_dir: Path) -> dict:
+    """Fallback for pre-voicebox dates: build the audio map from the legacy
+    per-story story_N.timings.json files."""
+    audio = {}
+    for unit in pack.units:
+        story_id = unit.id.replace("-", "_")
+        timings_path = audio_dir / f"{story_id}.timings.json"
+        if not timings_path.exists():
+            raise SystemExit(f"❌ timings not found: {timings_path}. Run step 3 first.")
+        t = json.loads(timings_path.read_text(encoding="utf-8"))
+        audio[(unit.id, "main")] = GroupAudio(
+            timings=[(turn["startMs"], turn["endMs"]) for turn in t["turns"]],
+            duration_ms=t["duration_ms"],
+        )
+    return audio
 
 
 def main() -> int:
     args = parse_args()
     date = args.date or today_eastern()
 
-    script_path = WORK_ROOT / date / "script.json"
-    audio_dir = WORK_ROOT / date / "audio"
+    work_dir = WORK_ROOT / date
+    script_path = work_dir / "script.json"
+    audio_dir = work_dir / "audio"
     if not script_path.exists():
         raise SystemExit(f"❌ script.json not found at {script_path}. Run step 2 first.")
-    if not audio_dir.exists():
-        raise SystemExit(f"❌ audio dir not found at {audio_dir}. Run step 3 first.")
 
     script = json.loads(script_path.read_text(encoding="utf-8"))
+    try:
+        pack, warnings = news_adapter.convert(script)
+    except news_adapter.LegacyFormatError as e:
+        raise SystemExit(f"❌ {e}")
+    for w in warnings:
+        print(f"  ⚠ studypack: {w}", file=sys.stderr)
+
+    vb_manifest_path = audio_dir / "voicebox.manifest.json"
+    if vb_manifest_path.exists():
+        vb = json.loads(vb_manifest_path.read_text(encoding="utf-8"))
+        audio = timings_from_voicebox(vb)
+    else:
+        audio = legacy_timings_audio(pack, audio_dir)
+
     pack_id = script["pack_id"]
+    bundle = materialize(
+        pack,
+        audio=audio,
+        prefix=PUBLISH_PREFIX_TEMPLATE.format(bundle_id=pack_id),
+        public_base=CLOUDFRONT_BASE,
+        pack_id=pack_id,
+        author=args.author,
+        gloss_titles=True,
+        track_name=lambda unit, group, single: f"{unit.id.replace('-', '_')}.mp3",
+        # legacy news convention: track.id == filename (iOS re-derives from url)
+        track_id=lambda unit, group, filename, single: filename,
+    )
 
-    tracks: list[dict] = []
-    for story in script["stories"]:
-        timings_path = audio_dir / f"{story['story_id']}.timings.json"
-        if not timings_path.exists():
-            print(f"❌ Missing timings for {story['story_id']}: {timings_path}", file=sys.stderr)
-            return 1
-        timings = json.loads(timings_path.read_text(encoding="utf-8"))
-        tracks.append(build_track(story, timings, pack_id))
-
-    pack = {
-        "id": pack_id,
-        "title": script["pack_title_ko"],
-        "author": args.author,
-        "coverUrl": None,
-        "coverFilename": None,
-        "tracks": tracks,
-    }
-    manifest = {
-        "id": pack_id,
-        "title": script["pack_title_ko"],
-        "packs": [pack],
-    }
-
-    out_path = WORK_ROOT / date / "bundle.json"
-    out_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    out_path = work_dir / "bundle.json"
+    out_path.write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n",
+                        encoding="utf-8")
+    n_tracks = len(bundle["packs"][0]["tracks"])
+    n_clips = sum(len(ps["clips"]) for t in bundle["packs"][0]["tracks"]
+                  for ps in t["practiceSets"])
     print(f"✅ Wrote {out_path}")
-    print(f"   {len(tracks)} tracks, {sum(len(ps['clips']) for t in tracks for ps in t['practiceSets'])} total clips")
+    print(f"   {n_tracks} tracks, {n_clips} total clips")
     return 0
 
 
