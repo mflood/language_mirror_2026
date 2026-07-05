@@ -20,7 +20,7 @@ final class SessionCompleteViewController: UIViewController {
     /// Consecutive practice days; hidden when nil (streak ships separately).
     private let streakDays: Int?
 
-    private let miriView = MiriView()
+    private let miriArtView = UIImageView(image: UIImage(named: "MiriCelebrateArt"))
 
     init(setTitle: String, clipCount: Int, totalPlays: Int, streakDays: Int? = nil) {
         self.setTitle = setTitle
@@ -36,17 +36,17 @@ final class SessionCompleteViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = AppColors.calmBackground
 
-        // Miri celebrates with you — the reward moment gets a character,
-        // not a stock checkmark.
-        miriView.expression = .celebrating
-        miriView.translatesAutoresizingMaskIntoConstraints = false
-        miriView.alpha = 0
-        miriView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
+        // Miri celebrates with you — the painted mirror-sprite from the
+        // brand/miri/ character canon, not a stock checkmark.
+        miriArtView.contentMode = .scaleAspectFit
+        miriArtView.translatesAutoresizingMaskIntoConstraints = false
+        miriArtView.alpha = 0
+        miriArtView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
 
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = L10n("session_complete.title")
-        titleLabel.font = AppFont.rounded(28, weight: .bold)
+        titleLabel.font = AppFont.plate(28, weight: .bold)
         titleLabel.textColor = AppColors.primaryText
         titleLabel.textAlignment = .center
 
@@ -103,16 +103,15 @@ final class SessionCompleteViewController: UIViewController {
             self.dismiss(animated: true) { self.onDone?() }
         }, for: .touchUpInside)
 
-        [miriView, titleLabel, statsLabel, setLabel, streakLabel, againButton, doneButton]
+        [miriArtView, titleLabel, statsLabel, setLabel, streakLabel, againButton, doneButton]
             .forEach { view.addSubview($0) }
 
         NSLayoutConstraint.activate([
-            miriView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
-            miriView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            miriView.widthAnchor.constraint(equalToConstant: 96),
-            miriView.heightAnchor.constraint(equalToConstant: 96),
+            miriArtView.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
+            miriArtView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            miriArtView.heightAnchor.constraint(equalToConstant: 132),
 
-            titleLabel.topAnchor.constraint(equalTo: miriView.bottomAnchor, constant: 12),
+            titleLabel.topAnchor.constraint(equalTo: miriArtView.bottomAnchor, constant: 12),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
 
@@ -145,10 +144,15 @@ final class SessionCompleteViewController: UIViewController {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         UIView.animate(withDuration: 0.5, delay: 0,
                        usingSpringWithDamping: 0.55, initialSpringVelocity: 0.8) {
-            self.miriView.alpha = 1
-            self.miriView.transform = .identity
+            self.miriArtView.alpha = 1
+            self.miriArtView.transform = .identity
         } completion: { _ in
-            self.miriView.bounce()
+            // A single gentle pulse — drift-and-glow, not Duolingo bounce.
+            UIView.animate(withDuration: 0.35, delay: 0.1, options: [.curveEaseInOut]) {
+                self.miriArtView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+            } completion: { _ in
+                UIView.animate(withDuration: 0.35) { self.miriArtView.transform = .identity }
+            }
         }
     }
 }
