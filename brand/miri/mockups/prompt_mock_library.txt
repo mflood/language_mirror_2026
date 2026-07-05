@@ -1,0 +1,20 @@
+Three reference images are attached:
+1. FIRST — "Mije" painting: the Six Wands Studios universe style (pop-surrealist, plum-gray field, matte grain, antique gold + crimson accents, misty East-Asian ink-landscape mood).
+2. SECOND — the "MIRI · THE MIRROR-SPRITE" character sheet: character canon and the exact color palette (Plum Field, Mirror Aqua, Lavender, Antique Gold, Crimson, Coral Blush).
+3. THIRD — a real iPhone screenshot of the Language Mirror app's LIBRARY screen (dark mode): a "Library" title, a search bar, a "CONTINUE PRACTICING" section with a small resume card, a "RECENTLY ADDED" section with track rows (each row: small square cover thumbnail, track title, tags like "imported korean mp3", a duration badge), two collapsible colored pack headers ("Seoul Lunch Recommendations", "Korean Greetings"), and a 4-tab bar (Library, Import, Practice, Settings).
+
+TASK: produce a high-fidelity UI MOCKUP that re-skins the THIRD image into the Six Wands design language. This is a RE-SKIN, not a redesign: keep the exact same layout, element positions, sections, texts and tab names. Rendered as a crisp, straight-on iPhone screen (full-bleed, no device frame, no perspective).
+
+Apply these materials:
+- BACKGROUND: deep plum-dusk field with an almost-subliminal matte paper grain and the faintest corner vignette. No pure black.
+- SECTION HEADERS: "CONTINUE PRACTICING" and "RECENTLY ADDED" set in an elegant refined serif with wide letter-spacing, pale gold, each sitting above a thin antique-gold rule line — museum-plate captions.
+- SEARCH BAR: inset plum field with a hairline gold rim and a small gold-line magnifier.
+- TRACK ROWS: each row a subtle museum plate — very dark plum card, hairline antique-gold border, matte, no drop shadows. Duration badges as small gold-rimmed chips.
+- COVER THUMBNAILS: this is the showpiece — each square cover becomes a tiny FRAMED PAINTING: an ornate hairline gold frame containing a miniature misty ink-wash landscape in the plum/aqua/lavender palette (mountains in fog, a gnarled pine, a moon over water — vary per row).
+- RESUME CARD ("Track 001 / Practice Set"): a slightly larger plate with an aqua hairline glow — the "Miri's attention" accent showing where the user left off — and a tiny gold hand-mirror glyph in its corner.
+- PACK HEADERS ("Seoul Lunch Recommendations", "Korean Greetings"): instead of flat blue/green bars, they become engraved plum plates with a hairline gold border, a small gold chevron, and a thin colored silk-ribbon marker on the left edge (crimson for one, aqua for the other) — like ribbon bookmarks in an old book.
+- TAB BAR: four thin antique-gold engraved line icons on plum: a wand-trumpet (Library, selected — filled gold with a soft aqua glow), a wax-sealed envelope (Import), a small hand-mirror (Practice), a six-line hexagram (Settings). Small serif labels beneath.
+- TYPE: titles and headers in refined serif; track names and metadata stay in a clean modern sans-serif, fully legible. Status bar stays normal iOS white.
+- Calm and quiet overall: ornament in the chrome and frames, generous breathing room, nothing busy.
+
+The result must look like a real, shippable, beautiful app screen — a gallery wall of little paintings — hushed, intricate, museum-plate quality, unmistakably from the same universe as the first two images.

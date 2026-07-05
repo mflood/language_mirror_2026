@@ -1,0 +1,13 @@
+Two reference images are attached:
+1. FIRST image — "Mije", the style reference: pop-surrealist lowbrow painting, desaturated plum-gray field, matte grainy hand-tinted texture, antique gold + crimson accents, misty East-Asian ink-landscape atmosphere. Note her soft white bob haircut with full bangs.
+2. SECOND image — the current character sheet for "MIRI · THE MIRROR-SPRITE". This is the character canon: keep the exact same character design, translucent glass-spirit face treatment, sheet layout, sections, captions, palette swatches, and title.
+
+Repaint this character sheet with ONE change: give Miri HAIR — soft bangs and a hint of a bob, rhyming with Mije's haircut so the two characters read as kin.
+
+CRITICAL — the hair is NOT real hair. It is made of the same luminous vapor as her face: wispy strands of moonlight in pale silvery-white with aqua→lavender iridescence, glowing softly, semi-transparent, the tips dissolving into the glass depth like breath on cold glass. It must cover the top third of the glass so her forehead no longer dominates: full soft bangs across the brow, and two gentle bob-curves hugging the sides of her face inside the oval of the glass. A tiny crimson micro-ribbon is tucked into the wisps on one side, echoing Mije's hair ribbons at miniature scale.
+
+The face beneath stays exactly as canon: translucent moonstone glow, edges dissolving into the glass, two large glassy dark eyes with bright catch-lights and the tiny warm smile as the most crisp, opaque elements, coral cheek-glow diffusing like ink in water. The curved specular window-highlight stays in front of everything, proving the glass surface.
+
+Apply the new vapor-hair consistently to the master portrait, all three expression studies (Happy / Celebrating / Sleeping — Sleeping stays dimmed to deep lavender dusk, her hair dimming with it), and the "Portrait" and "Card" fidelity tiers (Card stays flatter/simplified — its hair becomes two or three simple pale shapes). Update the flat gold "Glyph" tier minimally: add one simple curved fringe line across the upper circle so the mark keeps the bangs silhouette at 24 pixels.
+
+Everything else — gold filigree frame, crimson ribbon at handle, ink-wash mountains, plum field, gold rule lines, serif captions, palette swatch row, title "MIRI · THE MIRROR-SPRITE / Six Wands Studios" — stays faithful to the second reference image. Matte, grained, museum-plate quality.

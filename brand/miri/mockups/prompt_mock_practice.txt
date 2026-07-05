@@ -1,0 +1,19 @@
+Three reference images are attached:
+1. FIRST — "Mije" painting: the Six Wands Studios universe style (pop-surrealist, plum-gray field, matte grain, antique gold + crimson accents, misty ink-landscape mood).
+2. SECOND — the "MIRI · THE MIRROR-SPRITE" character sheet: character canon and the exact color palette (Plum Field, Mirror Aqua, Lavender, Antique Gold, Crimson, Coral Blush).
+3. THIRD — a real iPhone screenshot of the Language Mirror app's PRACTICE screen (dark mode): a numbered list of Korean sentences with progress bars, a speed-preset chip row near the bottom, a player bar with a pause button and "Clip 11/12 · Loop 6/8" text, and a 4-tab bar (Library, Import, Practice, Settings).
+
+TASK: produce a high-fidelity UI MOCKUP that re-skins the THIRD image into the Six Wands design language. This is a RE-SKIN, not a redesign: keep the exact same layout, element positions, sizes, list structure, the same Korean sentence texts, numbers, and tab names. Rendered as a crisp, straight-on iPhone screen (full-bleed, no device frame, no perspective).
+
+Apply these materials:
+- BACKGROUND: deep plum-dusk field (from the palette), with an almost-subliminal matte paper grain and the faintest vignette at the corners. No pure black.
+- LIST ROWS: each sentence row becomes a subtle "museum plate": very dark plum card with a hairline antique-gold border (1px, understated), soft matte finish, no drop shadows. The row number badges become thin gold-line circles. Completed checkmarks become tiny gold seals.
+- CURRENT SENTENCE: the active row glows with Mirror Aqua — aqua hairline border and a faint aqua inner luminescence, like Miri's glass lighting up. Its progress bar is a luminous aqua line. Non-active progress bars are dim lavender.
+- LOOP COUNTER: replace "Loop 6/8" in the header with a small I CHING HEXAGRAM meter: six short horizontal gold lines stacked vertically, the bottom lines lit gold (filled) and top lines faint (unfilled), representing progress. Keep it small and elegant next to the title.
+- SPEED CHIPS: small rounded plum chips with hairline gold rims; the selected chip is filled Mirror Aqua with dark text.
+- PLAYER BAR: matte plum plate with a hairline gold top rule. The pause button is a round gold-line medallion with four tiny filigree tips at compass points, glowing softly aqua. Beside the player text sits a TINY gold hand-mirror glyph (circle with filigree tips and stem handle, two dot eyes, fringe line) — Miri listening.
+- TAB BAR: four thin antique-gold engraved line icons on plum: a wand-trumpet (Library), a wax-sealed envelope (Import), a small hand-mirror (Practice, selected — filled gold with aqua glow), a six-line hexagram (Settings). Small serif labels beneath.
+- TYPE: section/header text in an elegant refined serif with slight letter-spacing; the Korean sentence text stays in a clean modern sans-serif, fully legible, unchanged.
+- Keep everything calm and quiet: ornament lives at edges and chrome; the sentence reading area stays clean and readable. Status bar (time, battery) stays normal iOS white.
+
+The result must look like a real, shippable, beautiful app screen — hushed, intricate, museum-plate quality, unmistakably from the same universe as the first two images.

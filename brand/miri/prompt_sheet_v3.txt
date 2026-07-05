@@ -1,0 +1,15 @@
+Two reference images are attached:
+1. FIRST image — "Mije", the style reference: pop-surrealist lowbrow painting, desaturated plum-gray field, matte grainy hand-tinted texture, antique gold + crimson accents, misty East-Asian ink-landscape atmosphere, large glassy eyes with a single bright catch-light.
+2. SECOND image — the current character sheet for "MIRI · THE MIRROR-SPRITE". This is the character canon: keep the exact same character design, sheet layout, sections, captions, palette swatches, and title.
+
+Repaint this character sheet with ONE change pushed much further: the FACE TRANSLUCENCY.
+
+Currently Miri's face reads as solid porcelain flesh inside the frame. It must instead read as a REFLECTION OF LIGHT SUSPENDED INSIDE CURVED GLASS:
+- The glass surface is clearly in front: a long curved specular window-highlight sweeps across the upper glass, and faint reflections of the misty landscape ghost across the surface.
+- The face beneath is made of luminous vapor and moonstone iridescence — semi-transparent, its edges dissolving into the aqua→lavender depth of the glass with no hard jaw/cheek contour. Through the thinner parts of the face (forehead edges, chin, outer cheeks) you can faintly see the deeper glass glow behind it.
+- The eyes and the tiny smile remain the most defined, most opaque elements — two large glassy dark eyes with bright catch-lights and the small warm smile stay crisp so she still reads instantly as a character. Coral cheek-glow diffuses like ink dropped in water.
+- Overall: a spirit of light living inside a mirror, not a doll's head behind glass. Depth inside the glass should feel several centimeters deep, like looking into a crystal ball.
+
+Apply this same translucent treatment consistently to the master portrait, all three expression studies (Happy / Celebrating / Sleeping — Sleeping stays dimmed to deep lavender dusk), and the "Portrait" and "Card" fidelity tiers (the "Card" tier stays flatter/simplified but its face still reads as glow, not skin). The flat gold "Glyph" tier stays exactly as it is.
+
+Everything else — gold filigree frame, crimson ribbon, handle, ink-wash mountains, plum field, gold rule lines, serif captions, palette swatch row, title "MIRI · THE MIRROR-SPRITE / Six Wands Studios" — stays faithful to the second reference image. Matte, grained, museum-plate quality.
