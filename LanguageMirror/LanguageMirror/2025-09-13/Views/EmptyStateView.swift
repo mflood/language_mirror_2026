@@ -14,7 +14,7 @@ final class EmptyStateView: UIView {
     
     private let containerView = UIView()
     private let iconImageView = UIImageView()
-    private let miriView = MiriView()
+    private let miriArtView = UIImageView()
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
     private let actionButton = UIButton(type: .system)
@@ -50,11 +50,13 @@ final class EmptyStateView: UIView {
         iconImageView.tintColor = AppColors.primaryAccent
         containerView.addSubview(iconImageView)
 
-        // Miri sits in the icon's spot when an empty state opts into the
-        // mascot (hidden otherwise so SF-symbol states are unaffected).
-        miriView.translatesAutoresizingMaskIntoConstraints = false
-        miriView.isHidden = true
-        containerView.addSubview(miriView)
+        // Painted Miri sits in the icon's spot when an empty state opts
+        // into the mascot (hidden otherwise so SF-symbol states are
+        // unaffected).
+        miriArtView.translatesAutoresizingMaskIntoConstraints = false
+        miriArtView.contentMode = .scaleAspectFit
+        miriArtView.isHidden = true
+        containerView.addSubview(miriArtView)
         
         // Title
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -96,10 +98,10 @@ final class EmptyStateView: UIView {
             iconImageView.widthAnchor.constraint(equalToConstant: 80),
             iconImageView.heightAnchor.constraint(equalToConstant: 80),
 
-            miriView.centerXAnchor.constraint(equalTo: iconImageView.centerXAnchor),
-            miriView.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
-            miriView.widthAnchor.constraint(equalToConstant: 88),
-            miriView.heightAnchor.constraint(equalToConstant: 88),
+            miriArtView.centerXAnchor.constraint(equalTo: iconImageView.centerXAnchor),
+            miriArtView.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
+            miriArtView.widthAnchor.constraint(equalToConstant: 100),
+            miriArtView.heightAnchor.constraint(equalToConstant: 100),
             
             // Title
             titleLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 24),
@@ -134,12 +136,20 @@ final class EmptyStateView: UIView {
         miriExpression: MiriView.Expression? = nil
     ) {
         if let miriExpression {
-            miriView.expression = miriExpression
-            miriView.isHidden = false
+            // Painted canon assets, keyed by the legacy expression enum so
+            // call sites stay unchanged.
+            let assetName: String
+            switch miriExpression {
+            case .happy: assetName = "MiriHappyArt"
+            case .celebrating: assetName = "MiriCelebrateArt"
+            case .sleeping: assetName = "MiriSleepArt"
+            }
+            miriArtView.image = UIImage(named: assetName)
+            miriArtView.isHidden = false
             iconImageView.isHidden = true
         } else {
             iconImageView.image = UIImage(systemName: icon)
-            miriView.isHidden = true
+            miriArtView.isHidden = true
             iconImageView.isHidden = false
         }
         titleLabel.text = title
