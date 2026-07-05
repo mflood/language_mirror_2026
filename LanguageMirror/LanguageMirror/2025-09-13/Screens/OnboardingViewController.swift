@@ -28,6 +28,7 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.calmBackground
+        view.addGrainField()
         buildSkipButton()
         buildPageOne()
         buildPageTwo()

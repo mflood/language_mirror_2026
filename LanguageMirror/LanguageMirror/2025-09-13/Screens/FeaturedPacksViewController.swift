@@ -35,10 +35,11 @@ final class FeaturedPacksViewController: UIViewController {
         super.viewDidLoad()
         title = L10n("featured.title")
         view.backgroundColor = AppColors.primaryBackground
+        view.addGrainField()
         navigationItem.largeTitleDisplayMode = .never
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = AppColors.primaryBackground
+        tableView.backgroundColor = .clear
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = UITableView.automaticDimension

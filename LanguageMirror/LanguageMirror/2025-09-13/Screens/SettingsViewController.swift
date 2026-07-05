@@ -62,6 +62,7 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
         title = L10n("tab.settings")
         view.backgroundColor = AppColors.calmBackground
+        view.addGrainField()
         buildLayout()
         configureControls()
         syncModeVisibility(animated: false)

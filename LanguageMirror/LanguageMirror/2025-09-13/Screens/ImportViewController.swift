@@ -77,7 +77,8 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.primaryBackground
-        tableView.backgroundColor = AppColors.primaryBackground
+        view.addGrainField()
+        tableView.backgroundColor = .clear
         tableView.register(ImportOptionCell.self, forCellReuseIdentifier: "importCell")
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
@@ -569,7 +570,8 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             view.backgroundColor = AppColors.primaryBackground
-            tableView.backgroundColor = AppColors.primaryBackground
+            view.addGrainField()
+            tableView.backgroundColor = .clear
         }
     }
 

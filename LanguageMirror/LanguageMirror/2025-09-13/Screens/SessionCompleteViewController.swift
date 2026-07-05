@@ -35,6 +35,7 @@ final class SessionCompleteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.calmBackground
+        view.addGrainField()
 
         // Miri celebrates with you — the painted mirror-sprite from the
         // brand/miri/ character canon, not a stock checkmark.

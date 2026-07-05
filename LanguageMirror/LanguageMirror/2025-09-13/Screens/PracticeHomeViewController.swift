@@ -48,6 +48,7 @@ final class PracticeHomeViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = AppColors.primaryBackground
+        view.addGrainField()
         title = L10n("tab.practice")
         navigationItem.largeTitleDisplayMode = .always
 
@@ -91,7 +92,7 @@ final class PracticeHomeViewController: UIViewController {
 
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = AppColors.primaryBackground
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.delegate = self
         tableView.dataSource = self

@@ -88,6 +88,7 @@ final class LibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.primaryBackground
+        view.addGrainField()
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
@@ -136,7 +137,7 @@ final class LibraryViewController: UIViewController {
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = AppColors.primaryBackground
+        collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
 
@@ -662,7 +663,8 @@ final class LibraryViewController: UIViewController {
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             view.backgroundColor = AppColors.primaryBackground
-            collectionView.backgroundColor = AppColors.primaryBackground
+            view.addGrainField()
+            collectionView.backgroundColor = .clear
         }
     }
 }

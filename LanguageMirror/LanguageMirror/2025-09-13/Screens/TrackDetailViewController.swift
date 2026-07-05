@@ -59,6 +59,7 @@ final class TrackDetailViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.calmBackground
+        view.addGrainField()
         navigationItem.largeTitleDisplayMode = .never
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
