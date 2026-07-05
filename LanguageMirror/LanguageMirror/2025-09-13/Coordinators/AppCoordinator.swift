@@ -61,22 +61,22 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
         
         let libraryNav  = libraryCoordinator.start()
         libraryNav.tabBarItem  = UITabBarItem(title: L10n("tab.library"),
-                                              image: UIImage(systemName: "books.vertical"),
+                                              image: SixWandsGlyphs.wandTrumpet,
                                               tag: 0)
 
         let importNav   = importCoordinator.start()
         importNav.tabBarItem   = UITabBarItem(title: L10n("tab.import"),
-                                              image: UIImage(systemName: "square.and.arrow.down"),
+                                              image: SixWandsGlyphs.sealedEnvelope,
                                               tag: 1)
 
         let practiceNav = practiceCoordinator.start()
         practiceNav.tabBarItem = UITabBarItem(title: L10n("tab.practice"),
-                                              image: UIImage(systemName: "repeat"),
+                                              image: SixWandsGlyphs.handMirror,
                                               tag: 2)
 
         let settingsNav = settingsCoordinator.start()
         settingsNav.tabBarItem = UITabBarItem(title: L10n("tab.settings"),
-                                              image: UIImage(systemName: "gearshape"),
+                                              image: SixWandsGlyphs.hexagram,
                                               tag: 3)
 
         tabBarController.viewControllers = [libraryNav, importNav, practiceNav, settingsNav]
