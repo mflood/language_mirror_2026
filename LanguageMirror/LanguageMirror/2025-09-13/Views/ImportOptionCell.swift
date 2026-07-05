@@ -130,12 +130,17 @@ final class ImportOptionCell: UITableViewCell {
         titleLabel.text = title
         descriptionLabel.text = description
         iconImageView.image = glyph
+        // Medallion grounds are FIXED colors in both appearances: the charms
+        // are painted against deep plum, so a dynamic light-mode ground
+        // exposes their baked-in shadow edges, and a dynamic dark-mode
+        // ground matches the field and swallows them.
         if prominent {
-            // Filled-gold medallion — the one "start here" row.
-            iconContainerView.backgroundColor = AppColors.antiqueGold
+            // Filled-gold medallion — the one "start here" row. Rich fixed
+            // gold; the dynamic antiqueGold reads washed as a fill.
+            iconContainerView.backgroundColor = UIColor(red: 0.78, green: 0.62, blue: 0.34, alpha: 1)
             iconContainerView.layer.borderWidth = 0
         } else {
-            iconContainerView.backgroundColor = AppColors.primaryBackground
+            iconContainerView.backgroundColor = UIColor(red: 0.13, green: 0.09, blue: 0.12, alpha: 1)  // deep plum shadowbox
             iconContainerView.layer.borderWidth = 1.0 / UIScreen.main.scale
             iconContainerView.layer.borderColor = AppColors.goldHairline.cgColor
         }
