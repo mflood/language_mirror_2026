@@ -163,6 +163,24 @@ final class EvaluationWalkTests: XCTestCase {
     // testTranslationBannerOnNewsPack, and the enable/permission flow is
     // covered by testEnableDailyNewsReminder above.
 
+    /// Practice tab with zero sessions must show the empty state (Miri +
+    /// "No Practice Sessions Yet"), not a blank screen. Skipping onboarding
+    /// avoids the auto-started session so the library has no practice history.
+    @MainActor
+    func testPracticeEmptyState() throws {
+        let app = XCUIApplication()
+        app.launch()
+        // Skip onboarding if present (Skip does NOT auto-start a session).
+        let skip = app.buttons["Skip"]
+        if skip.waitForExistence(timeout: 5) { skip.tap(); Thread.sleep(forTimeInterval: 1) }
+
+        app.tabBars.firstMatch.buttons["Practice"].tap()
+        Thread.sleep(forTimeInterval: 1.5)
+        shot("19-practice-empty")
+        XCTAssertTrue(app.staticTexts["No Practice Sessions Yet"].waitForExistence(timeout: 5),
+                      "Practice empty state not shown")
+    }
+
     /// Settings: core controls up top, timing/preroll/duck behind Advanced.
     @MainActor
     func testSettingsBasicAdvancedSplit() throws {

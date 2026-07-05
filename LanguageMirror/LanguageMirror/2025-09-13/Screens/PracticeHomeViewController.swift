@@ -70,29 +70,21 @@ final class PracticeHomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadData()
-        updateStreakHeader()
     }
 
-    /// Small "🔥 N-day streak" banner above the recents list. Only shown for
-    /// an actual streak (2+ days) — a "1-day streak" reads as sad, not
-    /// motivating.
-    private func updateStreakHeader() {
+    /// Streak banner ("🔥 N-day streak"), shown for a real streak (2+ days) —
+    /// a "1-day streak" reads as sad, not motivating. Returns nil otherwise.
+    /// Lives INSIDE the table header alongside the hero card so the two never
+    /// clobber each other's `tableView.tableHeaderView`.
+    private func makeStreakBanner() -> UILabel? {
         let streak = StreakTracker.currentStreak()
-        guard streak >= 2 else {
-            tableView.tableHeaderView = nil
-            return
-        }
+        guard streak >= 2 else { return nil }
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = L10nf("session_complete.streak", streak)
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.font = AppFont.rounded(17, weight: .semibold)
         label.textColor = AppColors.primaryText
-        label.textAlignment = .left
-        let container = UIView(frame: CGRect(x: 0, y: 0,
-                                             width: tableView.bounds.width, height: 44))
-        label.frame = container.bounds.insetBy(dx: 20, dy: 8)
-        label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        container.addSubview(label)
-        tableView.tableHeaderView = container
+        return label
     }
 
     // MARK: - Setup
@@ -202,16 +194,25 @@ final class PracticeHomeViewController: UIViewController {
             self.delegate?.practiceHomeViewController(self, didSelectPracticeSet: hero.practiceSet, forTrack: hero.track)
         }
 
-        // Size and set as table header
+        // Header = optional streak banner stacked above the hero card, in a
+        // single container (one owner of tableHeaderView).
         let headerContainer = UIView()
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 12
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        if let streak = makeStreakBanner() {
+            stack.addArrangedSubview(streak)
+        }
         heroCard.translatesAutoresizingMaskIntoConstraints = false
-        headerContainer.addSubview(heroCard)
+        stack.addArrangedSubview(heroCard)
+        headerContainer.addSubview(stack)
 
         NSLayoutConstraint.activate([
-            heroCard.topAnchor.constraint(equalTo: headerContainer.topAnchor, constant: 16),
-            heroCard.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor, constant: 20),
-            heroCard.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor, constant: -20),
-            heroCard.bottomAnchor.constraint(equalTo: headerContainer.bottomAnchor, constant: -8),
+            stack.topAnchor.constraint(equalTo: headerContainer.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor, constant: 20),
+            stack.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor, constant: -20),
+            stack.bottomAnchor.constraint(equalTo: headerContainer.bottomAnchor, constant: -8),
         ])
 
         // Calculate fitting size
