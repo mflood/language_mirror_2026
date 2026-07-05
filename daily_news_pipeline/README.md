@@ -99,7 +99,7 @@ modules. Each step has a single responsibility and writes its output to
 │ synth via active provider.   │    │ elevenlabs: voice_a, b...  │
 │ Concat turns into mp3 per    │    └────────────────────────────┘
 │ story; write timings.json.   │    ┌────────────────────────────┐
-│                              │ ←──│ tts_providers.py           │
+│                              │ ←──│ voicebox (langpack)        │
 │ Caches: writes mp3 + sidecar │    │ ElevenLabs + Polly adapters│
 │ JSON (provider, voice, cost, │    └────────────────────────────┘
 │ duration, library role).     │
@@ -160,7 +160,6 @@ modules. Each step has a single responsibility and writes its output to
 |---|---|
 | `cache_lib.py` | Library class — sidecar-per-audio + lean library.json index. Cache key from sha256(text+provider+voice+model+settings). Greedy set-cover for example reuse. |
 | `cost_tracker.py` | StepCostRecorder + finalize_run. Per-step JSON in `work/<date>/costs/`; aggregated daily entry in `cache/cost_history/YYYY/MM/`. Provider pricing tables (estimates only). |
-| `tts_providers.py` | **Legacy** — superseded by the `voicebox` package (step 3 no longer imports it). Kept only because kdrama_poc still sys.path-imports it; delete after kdrama migrates. |
 | `studypack` / `voicebox` (packages) | langpack subsystems (editable installs from `~/workspace/langpack/`). Step 3 converts script.json → studypack in-memory and synthesizes via voicebox over the shared cache. |
 | `llm_providers.py` | Abstract `LLMProvider` + `AnthropicProvider` + `OpenAIProvider`. Per-step selection via `llm.yaml`. Handles GPT-5/o1/o3 `max_completion_tokens` quirk. |
 | `library_inspect.py` | CLI for inspecting library: `stats`, `vocab`, `examples`, `show <word>`, `play <word>`, `orphans`, `set-gloss`, `cost-history`. |
@@ -414,7 +413,7 @@ daily_news_pipeline/
 ├── cache_lib.py                 ← shared: library + audio cache
 ├── cost_tracker.py              ← shared: cost recording
 ├── llm_providers.py             ← shared: LLM abstraction
-├── tts_providers.py             ← shared: TTS abstraction
+├── (tts via voicebox package)   ← langpack subsystem
 ├── library_inspect.py           ← admin CLI
 ├── verify_whisper.py            ← QA diagnostic
 │
