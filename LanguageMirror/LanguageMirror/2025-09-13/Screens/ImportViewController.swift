@@ -51,34 +51,26 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
             }
         }
 
-        var iconName: String {
+        var glyph: UIImage {
             switch self {
-            case .featured: return "sparkles"
-            case .fromVideo: return "video.fill"
-            case .fromFiles: return "folder.fill"
-            case .record: return "mic.fill"
-            case .fromURL: return "link"
-            case .fromS3Bundle: return "cloud.fill"
-            }
-        }
-
-        var iconColor: UIColor {
-            switch self {
-            case .featured: return .systemOrange
-            case .fromVideo: return .systemPurple
-            case .fromFiles: return .systemBlue
-            case .record: return .systemRed
-            case .fromURL: return .systemGreen
-            case .fromS3Bundle: return .systemCyan
+            case .featured: return SixWandsGlyphs.spark
+            case .fromVideo: return SixWandsGlyphs.videoCamera
+            case .fromFiles: return SixWandsGlyphs.folder
+            case .record: return SixWandsGlyphs.microphone
+            case .fromURL: return SixWandsGlyphs.chainLink
+            case .fromS3Bundle: return SixWandsGlyphs.sealedScroll
             }
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.primaryBackground
-        view.addGrainField()
-        tableView.backgroundColor = .clear
+        // UITableViewController: view IS the table view, so the plum field
+        // and grain live in backgroundView (which doesn't scroll).
+        let field = UIView()
+        field.backgroundColor = AppColors.primaryBackground
+        field.addGrainField()
+        tableView.backgroundView = field
         tableView.register(ImportOptionCell.self, forCellReuseIdentifier: "importCell")
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
@@ -113,8 +105,28 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         sections[section].rows.count
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        sections[section].header.map { L10n($0) }
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = sections[section].header else { return nil }
+        let container = UIView()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = AppFont.plateCaption(L10n(header))
+        container.addSubview(label)
+        let rule = GoldRule()
+        container.addSubview(rule)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -16),
+            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10),
+            rule.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+            rule.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
+            rule.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5),
+        ])
+        return container
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        sections[section].header == nil ? 8 : 40
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -130,8 +142,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         cell.configure(
             title: row.title,
             description: row.description,
-            iconName: row.iconName,
-            iconColor: row.iconColor
+            glyph: row.glyph
         )
 
         return cell
@@ -563,18 +574,6 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         present(a, animated: true)
     }
     
-    // MARK: - Trait Collection
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            view.backgroundColor = AppColors.primaryBackground
-            view.addGrainField()
-            tableView.backgroundColor = .clear
-        }
-    }
-
     // MARK: - UIDocumentPickerDelegate
     
     func documentPicker(_ controller: UIDocumentPickerViewController,

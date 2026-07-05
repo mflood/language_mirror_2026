@@ -44,16 +44,20 @@ final class ImportOptionCell: UITableViewCell {
         cardView.layer.cornerCurve = .continuous
         contentView.addSubview(cardView)
         
-        // Icon container (circular background)
+        // Icon medallion — engraved gold glyph in a hairline gold ring on
+        // the plum field, replacing the old candy-colored circles.
         iconContainerView.translatesAutoresizingMaskIntoConstraints = false
         iconContainerView.layer.cornerRadius = 24
         iconContainerView.layer.cornerCurve = .continuous
+        iconContainerView.backgroundColor = AppColors.primaryBackground
+        iconContainerView.layer.borderWidth = 1.0 / UIScreen.main.scale
+        iconContainerView.layer.borderColor = AppColors.goldHairline.cgColor
         cardView.addSubview(iconContainerView)
-        
+
         // Icon
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.contentMode = .scaleAspectFit
-        iconImageView.tintColor = .white
+        iconImageView.tintColor = AppColors.antiqueGold
         iconContainerView.addSubview(iconImageView)
         
         // Title label
@@ -122,11 +126,10 @@ final class ImportOptionCell: UITableViewCell {
     
     // MARK: - Configuration
     
-    func configure(title: String, description: String, iconName: String, iconColor: UIColor) {
+    func configure(title: String, description: String, glyph: UIImage) {
         titleLabel.text = title
         descriptionLabel.text = description
-        iconImageView.image = UIImage(systemName: iconName)
-        iconContainerView.backgroundColor = iconColor
+        iconImageView.image = glyph
     }
     
     // MARK: - Animations

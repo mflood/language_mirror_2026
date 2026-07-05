@@ -102,6 +102,92 @@ enum SixWandsGlyphs {
         }
     }
 
+    // MARK: - Import options
+
+    /// Featured packs — a four-point spark with a small companion star.
+    static var spark: UIImage {
+        draw { c in
+            let cx: CGFloat = 11, cy: CGFloat = 12.5
+            c.move(to: CGPoint(x: cx, y: cy - 8)); c.addLine(to: CGPoint(x: cx, y: cy + 8))
+            c.move(to: CGPoint(x: cx - 8, y: cy)); c.addLine(to: CGPoint(x: cx + 8, y: cy))
+            c.strokePath()
+            // companion star, upper right
+            let sx: CGFloat = 20, sy: CGFloat = 5.5
+            c.move(to: CGPoint(x: sx, y: sy - 3)); c.addLine(to: CGPoint(x: sx, y: sy + 3))
+            c.move(to: CGPoint(x: sx - 3, y: sy)); c.addLine(to: CGPoint(x: sx + 3, y: sy))
+            c.strokePath()
+        }
+    }
+
+    /// Import from video — camera body with lens wedge.
+    static var videoCamera: UIImage {
+        draw { c in
+            c.addPath(UIBezierPath(roundedRect: CGRect(x: 3.5, y: 7, width: 12.5, height: 11),
+                                   cornerRadius: 2.5).cgPath)
+            c.strokePath()
+            c.move(to: CGPoint(x: 16, y: 11))
+            c.addLine(to: CGPoint(x: 21.5, y: 8))
+            c.addLine(to: CGPoint(x: 21.5, y: 17))
+            c.addLine(to: CGPoint(x: 16, y: 14))
+            c.strokePath()
+        }
+    }
+
+    /// Import from files — a folder.
+    static var folder: UIImage {
+        draw { c in
+            let p = UIBezierPath()
+            p.move(to: CGPoint(x: 3.5, y: 19))
+            p.addLine(to: CGPoint(x: 3.5, y: 7.5))
+            p.addLine(to: CGPoint(x: 9.5, y: 7.5))
+            p.addLine(to: CGPoint(x: 11.5, y: 10))
+            p.addLine(to: CGPoint(x: 21.5, y: 10))
+            p.addLine(to: CGPoint(x: 21.5, y: 19))
+            p.close()
+            c.addPath(p.cgPath)
+            c.strokePath()
+        }
+    }
+
+    /// Record — a microphone capsule with stand.
+    static var microphone: UIImage {
+        draw { c in
+            c.addPath(UIBezierPath(roundedRect: CGRect(x: 9.5, y: 3.5, width: 6, height: 11),
+                                   cornerRadius: 3).cgPath)
+            c.strokePath()
+            c.addArc(center: CGPoint(x: 12.5, y: 12), radius: 6.5,
+                     startAngle: 0, endAngle: .pi, clockwise: false)
+            c.strokePath()
+            c.move(to: CGPoint(x: 12.5, y: 18.5)); c.addLine(to: CGPoint(x: 12.5, y: 21.5))
+            c.move(to: CGPoint(x: 9, y: 21.5)); c.addLine(to: CGPoint(x: 16, y: 21.5))
+            c.strokePath()
+        }
+    }
+
+    /// Download from URL — two chain links.
+    static var chainLink: UIImage {
+        draw { c in
+            c.addPath(UIBezierPath(roundedRect: CGRect(x: 3.5, y: 9.5, width: 11, height: 6),
+                                   cornerRadius: 3).cgPath)
+            c.addPath(UIBezierPath(roundedRect: CGRect(x: 10.5, y: 9.5, width: 11, height: 6),
+                                   cornerRadius: 3).cgPath)
+            c.strokePath()
+        }
+    }
+
+    /// Install pack from link — a wax-sealed scroll (bundle manifest).
+    static var sealedScroll: UIImage {
+        draw { c in
+            c.addPath(UIBezierPath(roundedRect: CGRect(x: 5.5, y: 3.5, width: 14, height: 18),
+                                   cornerRadius: 2.5).cgPath)
+            c.strokePath()
+            c.move(to: CGPoint(x: 8.5, y: 8)); c.addLine(to: CGPoint(x: 16.5, y: 8))
+            c.move(to: CGPoint(x: 8.5, y: 11.5)); c.addLine(to: CGPoint(x: 16.5, y: 11.5))
+            c.strokePath()
+            c.fillEllipse(in: CGRect(x: 10.6, y: 14.6, width: 3.8, height: 3.8))
+        }
+    }
+
     /// Settings — an I Ching hexagram, mixed solid and broken lines.
     static var hexagram: UIImage {
         draw { c in
