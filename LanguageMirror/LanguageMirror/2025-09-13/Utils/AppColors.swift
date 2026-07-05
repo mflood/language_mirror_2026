@@ -21,18 +21,21 @@ enum AppColors {
     /// Tertiary background - adapts to system
     static let tertiaryBackground = UIColor.tertiarySystemBackground
     
-    /// Card background with soft depth
+    /// Card background with soft depth — a museum-plate plum, one step
+    /// lighter than the field it sits on.
     static let cardBackground = UIColor { traitCollection in
         traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 0.15, green: 0.15, blue: 0.17, alpha: 1.0)  // Soft dark blue-gray
-            : UIColor(red: 0.98, green: 0.98, blue: 1.0, alpha: 1.0)   // Soft cool white
+            ? UIColor(red: 0.19, green: 0.14, blue: 0.18, alpha: 1.0)  // Plum plate
+            : UIColor(red: 0.99, green: 0.975, blue: 0.985, alpha: 1.0) // Fog-white plate
     }
-    
-    /// Calm background for main views
+
+    /// Calm background for main views — the Six Wands "plum field":
+    /// deep plum-dusk in dark mode (Miri's native habitat), pale mauve
+    /// morning-fog in light mode. Sampled from the Miri v6 character sheet.
     static let calmBackground = UIColor { traitCollection in
         traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 0.11, green: 0.12, blue: 0.14, alpha: 1.0)  // Deep blue-gray
-            : UIColor(red: 0.97, green: 0.98, blue: 0.99, alpha: 1.0)  // Soft cool white
+            ? UIColor(red: 0.15, green: 0.11, blue: 0.14, alpha: 1.0)  // Plum dusk
+            : UIColor(red: 0.965, green: 0.945, blue: 0.955, alpha: 1.0) // Morning fog
     }
     
     // MARK: - Text Colors
@@ -77,6 +80,33 @@ enum AppColors {
         traitCollection.userInterfaceStyle == .dark
             ? UIColor(red: 0.24, green: 0.80, blue: 0.78, alpha: 0.25)  // Softer glow
             : UIColor(red: 0.02, green: 0.62, blue: 0.60, alpha: 0.08)  // Subtle tint
+    }
+
+    // MARK: - Six Wands Substances
+    //
+    // The Mije/Miri universe materials (see brand/miri/): antique-gold
+    // ornament on a plum field. Gold is structure — rules, hairline plate
+    // borders, seals — never large fills.
+
+    /// Antique gold for ornament strokes and plate captions.
+    static let antiqueGold = UIColor { traitCollection in
+        traitCollection.userInterfaceStyle == .dark
+            ? UIColor(red: 0.76, green: 0.65, blue: 0.45, alpha: 1.0)
+            : UIColor(red: 0.60, green: 0.48, blue: 0.28, alpha: 1.0)
+    }
+
+    /// Hairline gold for rules and plate borders — quiet by design.
+    static let goldHairline = UIColor { traitCollection in
+        traitCollection.userInterfaceStyle == .dark
+            ? UIColor(red: 0.76, green: 0.65, blue: 0.45, alpha: 0.40)
+            : UIColor(red: 0.60, green: 0.48, blue: 0.28, alpha: 0.30)
+    }
+
+    /// Deep silk crimson (Mije's ribbons) — reserved small accents only.
+    static let brandCrimson = UIColor { traitCollection in
+        traitCollection.userInterfaceStyle == .dark
+            ? UIColor(red: 0.71, green: 0.24, blue: 0.35, alpha: 1.0)
+            : UIColor(red: 0.60, green: 0.17, blue: 0.27, alpha: 1.0)
     }
     
     // MARK: - Duration Badge Colors (ADHD-friendly color coding)
