@@ -58,13 +58,16 @@ final class TrackDetailViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AppColors.calmBackground
-        view.addGrainField()
+        // UITableViewController: view IS the table view — the plum field and
+        // grain live in backgroundView (which doesn't scroll).
+        let field = UIView()
+        field.backgroundColor = AppColors.calmBackground
+        field.addGrainField()
+        tableView.backgroundView = field
         navigationItem.largeTitleDisplayMode = .never
-        
+
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.register(PracticeSetCell.self, forCellReuseIdentifier: "PracticeSetCell")
-        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
         
@@ -114,14 +117,13 @@ final class TrackDetailViewController: UITableViewController {
         let cardView = UIView()
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.backgroundColor = AppColors.cardBackground
-        cardView.layer.cornerRadius = 16
-        cardView.layer.cornerCurve = .continuous
+        cardView.applyGoldPlateBorder(cornerRadius: 16)
         headerView.addSubview(cardView)
-        
+
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = track.title
-        titleLabel.font = .systemFont(ofSize: 22, weight: .semibold)
+        titleLabel.font = AppFont.plate(22, weight: .semibold)
         titleLabel.textColor = AppColors.primaryText
         titleLabel.numberOfLines = 0
         cardView.addSubview(titleLabel)
@@ -217,27 +219,32 @@ final class TrackDetailViewController: UITableViewController {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 15, weight: .semibold)
-        label.textColor = AppColors.secondaryText
+        let title: String
         switch Section(rawValue: section)! {
         case .practiceSets:
-            label.text = L10n("track_detail.section.practice_sets")
+            title = L10n("track_detail.section.practice_sets")
         case .transcripts:
-            label.text = L10n("track_detail.section.transcripts")
+            title = L10n("track_detail.section.transcripts")
         }
-        
+        label.attributedText = AppFont.plateCaption(title)
+
+        let rule = GoldRule()
         container.addSubview(label)
+        container.addSubview(rule)
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
             label.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -20),
-            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4)
+            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10),
+            rule.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            rule.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
+            rule.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5),
         ])
-        
+
         return container
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        32
+        38
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

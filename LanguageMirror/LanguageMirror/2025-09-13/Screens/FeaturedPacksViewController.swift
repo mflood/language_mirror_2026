@@ -223,8 +223,7 @@ extension FeaturedPacksViewController: UITableViewDataSource, UITableViewDelegat
 final class FeaturedPackCell: UITableViewCell {
 
     private let cardView = UIView()
-    private let iconBackground = UIView()
-    private let iconView = UIImageView()
+    private let coverView = CoverArtView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let metaLabel = UILabel()
@@ -243,22 +242,16 @@ final class FeaturedPackCell: UITableViewCell {
 
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.backgroundColor = AppColors.cardBackground
-        cardView.layer.cornerRadius = 14
-        cardView.layer.cornerCurve = .continuous
+        cardView.applyGoldPlateBorder(cornerRadius: 14)
         contentView.addSubview(cardView)
 
-        iconBackground.translatesAutoresizingMaskIntoConstraints = false
-        iconBackground.layer.cornerRadius = 12
-        iconBackground.layer.cornerCurve = .continuous
-        cardView.addSubview(iconBackground)
-
-        iconView.translatesAutoresizingMaskIntoConstraints = false
-        iconView.contentMode = .scaleAspectFit
-        iconView.tintColor = .white
-        iconBackground.addSubview(iconView)
+        // Ink-wash cover plate, seeded per pack — the gallery-wall look
+        // from the Library.
+        coverView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(coverView)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = .preferredFont(forTextStyle: .headline)
+        titleLabel.font = AppFont.plate(17, weight: .semibold)
         titleLabel.textColor = AppColors.primaryText
         titleLabel.numberOfLines = 2
         cardView.addSubview(titleLabel)
@@ -285,18 +278,13 @@ final class FeaturedPackCell: UITableViewCell {
             cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            iconBackground.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 14),
-            iconBackground.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
-            iconBackground.widthAnchor.constraint(equalToConstant: 56),
-            iconBackground.heightAnchor.constraint(equalToConstant: 56),
-
-            iconView.centerXAnchor.constraint(equalTo: iconBackground.centerXAnchor),
-            iconView.centerYAnchor.constraint(equalTo: iconBackground.centerYAnchor),
-            iconView.widthAnchor.constraint(equalToConstant: 28),
-            iconView.heightAnchor.constraint(equalToConstant: 28),
+            coverView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 14),
+            coverView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
+            coverView.widthAnchor.constraint(equalToConstant: 56),
+            coverView.heightAnchor.constraint(equalToConstant: 56),
 
             titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 14),
-            titleLabel.leadingAnchor.constraint(equalTo: iconBackground.trailingAnchor, constant: 14),
+            titleLabel.leadingAnchor.constraint(equalTo: coverView.trailingAnchor, constant: 14),
             titleLabel.trailingAnchor.constraint(equalTo: chevron.leadingAnchor, constant: -8),
 
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
@@ -335,9 +323,7 @@ final class FeaturedPackCell: UITableViewCell {
         }
         metaLabel.text = metaParts.joined(separator: " · ")
 
-        let symbol = pack.iconSymbol ?? "books.vertical.fill"
-        iconView.image = UIImage(systemName: symbol, withConfiguration: UIImage.SymbolConfiguration(weight: .semibold))
-        iconBackground.backgroundColor = UIColor(hex: pack.accentColor) ?? AppColors.primaryAccent
+        coverView.configure(seed: pack.id)
     }
 
     private func languageDisplayName(_ code: String) -> String {
