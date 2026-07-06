@@ -8,8 +8,7 @@ from typing import Any
 
 from .artifacts import artifact_path, load_json_if_exists
 from .audio import clean_track_title, find_audio_files, get_audio_duration_ms
-from .config import BundleConfig, PublishConfig
-from .models import (
+from bundler.models import (
     BundleManifest,
     BundlePack,
     BundleTrack,
@@ -17,13 +16,16 @@ from .models import (
     PracticeSet,
     TranscriptSpan,
 )
+from publisher import load_destination
+
+from .config import BundleConfig
 from .paths import WorkPaths
 
 logger = logging.getLogger(__name__)
 
 
-def _audio_https_url(publish_cfg: PublishConfig, bundle_id: str, filename: str) -> str:
-    return f"{publish_cfg.cloudfront_https_base}{publish_cfg.cloudfront_prefix(bundle_id)}/{filename}"
+def _audio_https_url(dest, bundle_id: str, filename: str) -> str:
+    return dest.public_url(f"lmaudio/{bundle_id}/{filename}")
 
 
 def _full_track_practice_set(duration_ms: int, language_code: str | None) -> PracticeSet:
@@ -116,7 +118,7 @@ def assemble_manifest(work_root: Path, bundle_id: str, config_path: Path | None 
     wp = WorkPaths(work_root=work_root, bundle_id=bundle_id)
     logger.info("Assembling manifest: bundle_id=%s work_root=%s", bundle_id, str(work_root))
     cfg = BundleConfig.load(config_path or wp.config_path)
-    publish_cfg = PublishConfig.load(cfg.publish_config_path)
+    publish_cfg = load_destination("lmaudio")
 
     audio_files = find_audio_files(wp.audio_dir)
     if not audio_files:

@@ -63,21 +63,3 @@ def download_prefix_to_dir(
         s3.download_file(bucket, key, str(out_path))
         downloaded.append(out_path)
     return downloaded
-
-
-def upload_files(bucket: str, key_prefix: str, files: list[Path]) -> None:
-    """
-    Upload files to s3://bucket/key_prefix/<filename>.
-    """
-    import boto3
-
-    s3 = boto3.client("s3")
-    key_prefix = key_prefix.strip("/")
-    if key_prefix:
-        key_prefix += "/"
-
-    for f in files:
-        key = f"{key_prefix}{f.name}"
-        s3.upload_file(str(f), bucket, key)
-
-

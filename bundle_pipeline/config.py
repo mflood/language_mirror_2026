@@ -15,39 +15,6 @@ def _require(d: dict[str, Any], key: str) -> Any:
 
 
 @dataclass(frozen=True)
-class PublishConfig:
-    publish_bucket: str
-    publish_prefix_template: str
-    cloudfront_https_base: str
-    cloudfront_prefix_template: str
-
-    @staticmethod
-    def load(path: Path) -> "PublishConfig":
-        import yaml  # dependency: pyyaml
-
-        logger.debug("Reading publish config: %s", str(path))
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        return PublishConfig(
-            publish_bucket=str(_require(data, "publish_bucket")),
-            publish_prefix_template=str(_require(data, "publish_prefix_template")),
-            cloudfront_https_base=str(_require(data, "cloudfront_https_base")).rstrip("/"),
-            cloudfront_prefix_template=str(_require(data, "cloudfront_prefix_template")).strip(),
-        )
-
-    def publish_prefix(self, bundle_id: str) -> str:
-        return self.publish_prefix_template.format(bundle_id=bundle_id).strip("/")
-
-    def cloudfront_prefix(self, bundle_id: str) -> str:
-        p = self.cloudfront_prefix_template.format(bundle_id=bundle_id)
-        if not p.startswith("/"):
-            p = "/" + p
-        return p.rstrip("/")
-
-    def manifest_https_url(self, bundle_id: str, manifest_filename: str = "bundle.json") -> str:
-        return f"{self.cloudfront_https_base}{self.cloudfront_prefix(bundle_id)}/{manifest_filename}"
-
-
-@dataclass(frozen=True)
 class BundleConfig:
     bundle_id: str
     source_s3: str
@@ -59,7 +26,7 @@ class BundleConfig:
     cover_filename: str | None
     whisper_model: str
     gpt_model: str
-    publish_config_path: Path
+    publish_config_path: Path  # DEPRECATED: unused since publish moved to langpack publisher
 
     @staticmethod
     def default_path(work_root: Path, bundle_id: str) -> Path:

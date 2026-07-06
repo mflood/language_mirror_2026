@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 """
+DEPRECATED (2026-07): span translations are now produced natively by the
+platform (news step 2b + studypack refs). This tool remains only for
+backfilling old published bundles.
+
 Generic span-translation enricher for any bundle.json — no script.json needed
 (unlike the daily news pipeline, which derives translations from turn roles).
 Used to backfill packs produced by other pipelines (starters, akc, hccc drama
