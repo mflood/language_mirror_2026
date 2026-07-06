@@ -303,4 +303,83 @@ final class EvaluationWalkTests: XCTestCase {
         Thread.sleep(forTimeInterval: 3)
         shot("14-practice-again")
     }
+
+    /// Read-only tour of every reachable screen WITHOUT mutating app state:
+    /// no imports, no session starts, no persisted toggles. Safe to run on
+    /// a lived-in simulator — this is the /brand-tour skill's quick mode.
+    /// Shots are numbered 20+ so they sort after the funnel's.
+    @MainActor
+    func testBrandTour() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Skip onboarding if present (fresh install) — Skip does NOT auto-start.
+        let skip = app.buttons["Skip"]
+        if skip.waitForExistence(timeout: 3) { skip.tap(); Thread.sleep(forTimeInterval: 1) }
+
+        let tabs = app.tabBars.firstMatch
+
+        // 1. Library home
+        tabs.buttons["Library"].tap()
+        Thread.sleep(forTimeInterval: 1.5)
+        shot("20-library-home")
+
+        // 2. Track detail (read-only browse), then back
+        let trackCell = app.collectionViews.firstMatch.cells.firstMatch
+        if trackCell.waitForExistence(timeout: 5) && trackCell.isHittable {
+            trackCell.tap()
+            Thread.sleep(forTimeInterval: 1.5)
+            shot("21-track-detail")
+            let back = app.navigationBars.buttons.firstMatch
+            if back.exists { back.tap(); Thread.sleep(forTimeInterval: 0.8) }
+        }
+
+        // 3. Add tab, top and scrolled to Advanced
+        tabs.buttons["Add"].tap()
+        Thread.sleep(forTimeInterval: 1)
+        shot("22-add-top")
+        app.swipeUp()
+        Thread.sleep(forTimeInterval: 0.8)
+        shot("23-add-advanced")
+
+        // 4. Featured Packs (browse only — no downloads)
+        app.swipeDown()
+        Thread.sleep(forTimeInterval: 0.8)
+        let featured = app.staticTexts["Featured Packs"]
+        if featured.waitForExistence(timeout: 4) && featured.isHittable {
+            featured.tap()
+            Thread.sleep(forTimeInterval: 2.5)   // catalog fetch
+            shot("24-featured-packs")
+            let back = app.navigationBars.buttons.firstMatch
+            if back.exists { back.tap(); Thread.sleep(forTimeInterval: 0.8) }
+        }
+
+        // 5. Practice home (whatever state exists — hero card or empty Miri)
+        tabs.buttons["Practice"].tap()
+        Thread.sleep(forTimeInterval: 1.2)
+        shot("25-practice-home")
+
+        // 6. Settings, collapsed then Advanced expanded (view-state only),
+        //    collapsed again to leave things as found.
+        tabs.buttons["Settings"].tap()
+        Thread.sleep(forTimeInterval: 1)
+        shot("26-settings")
+        let advanced = app.buttons["settings.advanced.toggle"]
+        if advanced.waitForExistence(timeout: 4) {
+            if !advanced.isHittable { app.swipeUp(); Thread.sleep(forTimeInterval: 0.5) }
+            if advanced.isHittable {
+                advanced.tap()
+                Thread.sleep(forTimeInterval: 0.8)
+                app.swipeUp()
+                Thread.sleep(forTimeInterval: 0.5)
+                shot("27-settings-advanced")
+                app.swipeDown()
+                Thread.sleep(forTimeInterval: 0.5)
+                if advanced.isHittable { advanced.tap() }
+            }
+        }
+
+        // Home again
+        tabs.buttons["Library"].tap()
+    }
 }

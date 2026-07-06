@@ -20,9 +20,10 @@ OUT=<scratchpad>/brand_tour_<date>                # one folder per run
 
 ## Modes
 
-**Quick** (default, ~2 min per appearance): state-safe tests only —
-`testSettingsBasicAdvancedSplit`, `testEnableDailyNewsReminder`,
-`testTranslationBannerOnNewsPack`.
+**Quick** (default, ~1.5 min per appearance): `testBrandTour` — a
+dedicated read-only walk (library, track detail, Add top+advanced,
+Featured Packs, practice home, settings collapsed+expanded) that
+mutates no app state. Safe on a lived-in simulator.
 
 **Full** (~6 min per appearance): everything, including state-mutating
 tests. ASK FIRST or confirm the user is okay wiping sim app data,
