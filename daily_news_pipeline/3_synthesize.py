@@ -201,10 +201,15 @@ def main() -> int:
     if t["chars_debited"] > CONFIRM_CHAR_THRESHOLD:
         print(f"⚠ This run will debit {t['chars_debited']} chars "
               f"(above {CONFIRM_CHAR_THRESHOLD}).")
-        confirm = input("Type 'YES' to proceed: ")
-        if confirm != "YES":
-            print("Aborted.")
-            return 1
+        if sys.stdin.isatty():
+            confirm = input("Type 'YES' to proceed: ")
+            if confirm != "YES":
+                print("Aborted.")
+                return 1
+        else:
+            # Unattended (launchd/cron): the --max-chars hard cap already
+            # gated this run; log the threshold crossing and proceed.
+            print("  (non-interactive run — proceeding; hard cap already enforced)")
 
     out_dir.mkdir(parents=True, exist_ok=True)
     vb_dir = out_dir / "vb"

@@ -17,6 +17,12 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
+
+# Unattended-run hardening (launchd provides a bare environment):
+# explicit venv python + ffmpeg on PATH.
+PY="$HOME/.pyenv/versions/six_wands_language_mirror/bin/python"
+[ -x "$PY" ] || PY="$(command -v python3)"
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 REPO_ROOT="$(cd "$HERE/.." && pwd)"
 
 COMMIT_FLAG=""
@@ -69,15 +75,15 @@ log "  Daily news pipeline · date=$DATE · commit=${COMMIT_FLAG:-NO}"
 log "  Log: $LOG"
 log "═══════════════════════════════════════════════════════════"
 
-step "0/7 fetch feeds"   python3 "$HERE/0_fetch_feeds.py" --date "$DATE"
-step "1/7 curate"        python3 "$HERE/1_curate.py" --date "$DATE" $COMMIT_FLAG
+step "0/7 fetch feeds"   "$PY" "$HERE/0_fetch_feeds.py" --date "$DATE"
+step "1/7 curate"        "$PY" "$HERE/1_curate.py" --date "$DATE" $COMMIT_FLAG
 [ -n "$COMMIT_FLAG" ] || { log "(dry-run mode — stopping after step 1; re-run with --commit to continue)"; exit 0; }
-step "2/7 generate script" python3 "$HERE/2_generate_script.py" --date "$DATE" $COMMIT_FLAG
-step "2b/7 translate easy" python3 "$HERE/2b_translate_easy.py" --date "$DATE"
-step "3/7 synthesize"      python3 "$HERE/3_synthesize.py" --date "$DATE" $COMMIT_FLAG
-step "4/7 assemble bundle" python3 "$HERE/4_assemble_bundle.py" --date "$DATE"
-step "5/7 publish s3"      python3 "$HERE/5_publish_s3.py" --date "$DATE" $COMMIT_FLAG
-step "6/7 deploy web"      python3 "$HERE/6_deploy_news_page.py" --date "$DATE" $COMMIT_FLAG
+step "2/7 generate script" "$PY" "$HERE/2_generate_script.py" --date "$DATE" $COMMIT_FLAG
+step "2b/7 translate easy" "$PY" "$HERE/2b_translate_easy.py" --date "$DATE"
+step "3/7 synthesize"      "$PY" "$HERE/3_synthesize.py" --date "$DATE" $COMMIT_FLAG
+step "4/7 assemble bundle" "$PY" "$HERE/4_assemble_bundle.py" --date "$DATE"
+step "5/7 publish s3"      "$PY" "$HERE/5_publish_s3.py" --date "$DATE" $COMMIT_FLAG
+step "6/7 deploy web"      "$PY" "$HERE/6_deploy_news_page.py" --date "$DATE" $COMMIT_FLAG
 
 # Aggregate per-step cost reports into a single cost_history entry
 python3 -c "

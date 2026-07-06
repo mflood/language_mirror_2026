@@ -453,8 +453,22 @@ daily_news_pipeline/
 
 ## Cron (not yet wired up)
 
-Intended setup: macOS launchd or cron at 8:00 ET, running `./run_daily.sh
---commit`. Not currently scheduled — runs are triggered manually.
+Scheduled via macOS launchd since 2026-07-06: the LaunchAgent
+`~/Library/LaunchAgents/com.sixwands.dailynews.plist` runs
+`scheduled_run.sh --commit` daily at **08:00 ET** (this machine's local
+time), posting a macOS notification with the outcome. If the Mac is asleep
+at 08:00, launchd runs the job on next wake. Logs: `work/<date>/run.log`
+(per-run) and `launchd.log` (wrapper).
+
+```bash
+launchctl kickstart gui/$(id -u)/com.sixwands.dailynews   # run now
+launchctl unload ~/Library/LaunchAgents/com.sixwands.dailynews.plist  # pause
+```
+
+Unattended-run notes: run_daily.sh sources .env itself, pins the venv
+python, and prepends /opt/homebrew/bin (ffmpeg); step 3's large-spend
+confirmation auto-proceeds when non-interactive (the --max-chars hard cap
+still applies).
 
 ## Publishing destinations
 
