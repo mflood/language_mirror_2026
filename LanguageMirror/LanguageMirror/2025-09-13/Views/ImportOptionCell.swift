@@ -165,7 +165,9 @@ final class ImportOptionCell: UITableViewCell {
             iconContainerView.layer.borderWidth = 0
             goldGradient.isHidden = false
         } else {
-            iconContainerView.backgroundColor = UIColor(red: 0.13, green: 0.09, blue: 0.12, alpha: 1)  // deep plum shadowbox
+            // Parchment ground — the stamps are plum ink on cream, so the
+            // medallion reads as a bookplate in both appearances.
+            iconContainerView.backgroundColor = UIColor(red: 0.93, green: 0.89, blue: 0.83, alpha: 1)
             iconContainerView.layer.borderWidth = 1.0 / UIScreen.main.scale
             iconContainerView.layer.borderColor = AppColors.goldHairline.cgColor
             goldGradient.isHidden = true
