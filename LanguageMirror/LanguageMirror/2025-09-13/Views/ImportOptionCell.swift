@@ -14,6 +14,7 @@ final class ImportOptionCell: UITableViewCell {
     
     private let cardView = UIView()
     private let iconContainerView = UIView()
+    private let goldGradient = CAGradientLayer()
     private let iconImageView = UIImageView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
@@ -52,7 +53,22 @@ final class ImportOptionCell: UITableViewCell {
         iconContainerView.backgroundColor = AppColors.primaryBackground
         iconContainerView.layer.borderWidth = 1.0 / UIScreen.main.scale
         iconContainerView.layer.borderColor = AppColors.goldHairline.cgColor
+        iconContainerView.clipsToBounds = true
         cardView.addSubview(iconContainerView)
+
+        // Coined-metal inner gradient for the featured (gold) medallion:
+        // a soft radial light falling from the upper left.
+        goldGradient.type = .radial
+        goldGradient.colors = [
+            UIColor(red: 0.90, green: 0.76, blue: 0.48, alpha: 1).cgColor,
+            UIColor(red: 0.78, green: 0.62, blue: 0.34, alpha: 1).cgColor,
+            UIColor(red: 0.60, green: 0.45, blue: 0.22, alpha: 1).cgColor,
+        ]
+        goldGradient.locations = [0, 0.55, 1]
+        goldGradient.startPoint = CGPoint(x: 0.35, y: 0.28)
+        goldGradient.endPoint = CGPoint(x: 1.25, y: 1.25)
+        goldGradient.isHidden = true
+        iconContainerView.layer.insertSublayer(goldGradient, at: 0)
 
         // Icon
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -124,8 +140,16 @@ final class ImportOptionCell: UITableViewCell {
         cardView.applyAdaptiveShadow(radius: 8, opacity: 0.1)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        goldGradient.frame = iconContainerView.bounds
+        CATransaction.commit()
+    }
+
     // MARK: - Configuration
-    
+
     func configure(title: String, description: String, glyph: UIImage?, prominent: Bool = false) {
         titleLabel.text = title
         descriptionLabel.text = description
@@ -136,13 +160,15 @@ final class ImportOptionCell: UITableViewCell {
         // ground matches the field and swallows them.
         if prominent {
             // Filled-gold medallion — the one "start here" row. Rich fixed
-            // gold; the dynamic antiqueGold reads washed as a fill.
+            // gold under a coined-metal radial gradient.
             iconContainerView.backgroundColor = UIColor(red: 0.78, green: 0.62, blue: 0.34, alpha: 1)
             iconContainerView.layer.borderWidth = 0
+            goldGradient.isHidden = false
         } else {
             iconContainerView.backgroundColor = UIColor(red: 0.13, green: 0.09, blue: 0.12, alpha: 1)  // deep plum shadowbox
             iconContainerView.layer.borderWidth = 1.0 / UIScreen.main.scale
             iconContainerView.layer.borderColor = AppColors.goldHairline.cgColor
+            goldGradient.isHidden = true
         }
     }
     
