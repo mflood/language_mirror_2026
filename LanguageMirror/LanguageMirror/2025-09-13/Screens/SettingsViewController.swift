@@ -97,7 +97,8 @@ final class SettingsViewController: UIViewController {
         ])
 
         // --- Daily News Reminder Section ---
-        let reminderSection = makeSectionStack(header: L10n("settings.section.reminders"))
+        let reminderSection = makeSectionStack(header: L10n("settings.section.reminders"),
+                                               stamp: "SettingsStampBell")
         let reminderRow = makeSwitchRow(title: L10n("settings.news_reminder"),
                                         valueLabel: reminderValueLabel, toggle: reminderSwitch)
         reminderSection.addArrangedSubview(reminderRow)
@@ -108,7 +109,8 @@ final class SettingsViewController: UIViewController {
         contentStack.addArrangedSubview(reminderSection)
 
         // --- Practice Mode Section ---
-        let modeSection = makeSectionStack(header: L10n("settings.section.practice_mode"))
+        let modeSection = makeSectionStack(header: L10n("settings.section.practice_mode"),
+                                           stamp: "SettingsStampMirror")
         practiceModeSeg.translatesAutoresizingMaskIntoConstraints = false
         modeSection.addArrangedSubview(practiceModeSeg)
         modeSection.addArrangedSubview(makeHelperText(L10n("settings.practice_mode.help")))
@@ -195,16 +197,16 @@ final class SettingsViewController: UIViewController {
         button.accessibilityIdentifier = "settings.advanced.toggle"
 
         var config = UIButton.Configuration.plain()
-        config.title = L10n("settings.section.advanced").uppercased()
         var attrs = AttributeContainer()
-        attrs.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        attrs.foregroundColor = AppColors.secondaryText
+        attrs.font = AppFont.plate(13, weight: .semibold)
+        attrs.foregroundColor = AppColors.antiqueGold
+        attrs.kern = 13 * 0.12
         config.attributedTitle = AttributedString(L10n("settings.section.advanced").uppercased(), attributes: attrs)
         config.image = UIImage(systemName: "chevron.right")
         config.imagePlacement = .trailing
         config.imagePadding = 6
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)
-        config.baseForegroundColor = AppColors.secondaryText
+        config.baseForegroundColor = AppColors.antiqueGold
         config.contentInsets = .zero
         button.configuration = config
 
@@ -219,7 +221,12 @@ final class SettingsViewController: UIViewController {
             }
         }, for: .touchUpInside)
 
-        return button
+        let row = UIStackView(arrangedSubviews: [makeStampMedallion("SettingsStampCompass"), button])
+        row.axis = .horizontal
+        row.spacing = 10
+        row.alignment = .center
+        row.translatesAutoresizingMaskIntoConstraints = false
+        return row
     }
 
     // MARK: - Configure Controls
@@ -363,21 +370,55 @@ final class SettingsViewController: UIViewController {
         )
     }
 
-    private func makeSectionStack(header: String) -> UIStackView {
+    private func makeSectionStack(header: String, stamp: String? = nil) -> UIStackView {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 12
         stack.translatesAutoresizingMaskIntoConstraints = false
-        let label = makeSectionHeaderLabel(header)
-        stack.addArrangedSubview(label)
+
+        let headerRow = UIStackView()
+        headerRow.axis = .horizontal
+        headerRow.spacing = 10
+        headerRow.alignment = .center
+        if let stamp {
+            headerRow.addArrangedSubview(makeStampMedallion(stamp))
+        }
+        headerRow.addArrangedSubview(makeSectionHeaderLabel(header))
+        stack.addArrangedSubview(headerRow)
+
+        let rule = GoldRule()
+        stack.addArrangedSubview(rule)
+        stack.setCustomSpacing(6, after: headerRow)
         return stack
+    }
+
+    /// Parchment medallion with a plum-ink stamp — the bookplate treatment
+    /// from the Add screen, at section-header scale.
+    private func makeStampMedallion(_ assetName: String) -> UIView {
+        let circle = UIView()
+        circle.translatesAutoresizingMaskIntoConstraints = false
+        circle.backgroundColor = UIColor(red: 0.93, green: 0.89, blue: 0.83, alpha: 1)
+        circle.layer.cornerRadius = 16
+        circle.layer.borderWidth = 1.0 / UIScreen.main.scale
+        circle.layer.borderColor = AppColors.goldHairline.cgColor
+        let stampView = UIImageView(image: UIImage(named: assetName))
+        stampView.translatesAutoresizingMaskIntoConstraints = false
+        stampView.contentMode = .scaleAspectFit
+        circle.addSubview(stampView)
+        NSLayoutConstraint.activate([
+            circle.widthAnchor.constraint(equalToConstant: 32),
+            circle.heightAnchor.constraint(equalToConstant: 32),
+            stampView.centerXAnchor.constraint(equalTo: circle.centerXAnchor),
+            stampView.centerYAnchor.constraint(equalTo: circle.centerYAnchor),
+            stampView.widthAnchor.constraint(equalToConstant: 24),
+            stampView.heightAnchor.constraint(equalToConstant: 24),
+        ])
+        return circle
     }
 
     private func makeSectionHeaderLabel(_ text: String) -> UILabel {
         let label = UILabel()
-        label.text = text.uppercased()
-        label.font = .systemFont(ofSize: 13, weight: .semibold)
-        label.textColor = AppColors.secondaryText
+        label.attributedText = AppFont.plateCaption(text)
         return label
     }
 
