@@ -200,21 +200,84 @@ final class FeaturedPacksViewController: UIViewController {
     }
 }
 
+// MARK: - Today's News
+
+extension FeaturedPacksViewController {
+    /// The daily news bundle, pinned above the catalog. Points at the
+    /// pipeline's stable `news_latest` alias so no date math is needed —
+    /// the same URL the daily-reminder notification resolves.
+    static func todaysNewsPack() -> FeaturedPack {
+        let df = DateFormatter()
+        df.dateStyle = .medium
+        df.timeStyle = .none
+        return FeaturedPack(
+            id: "news_latest",
+            title: L10n("featured.news.title"),
+            subtitle: L10nf("featured.news.subtitle", df.string(from: Date())),
+            languageCode: "ko",
+            level: nil,
+            trackCount: nil,
+            durationSeconds: nil,
+            author: nil,
+            iconSymbol: nil,
+            accentColor: nil,
+            source: FeaturedPackSource(
+                kind: "remote",
+                bundleId: nil,
+                manifestUrl: NewsNotificationService.latestNewsBundleURL.absoluteString)
+        )
+    }
+}
+
 // MARK: - DataSource / Delegate
 
 extension FeaturedPacksViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { packs.count }
+
+    private var sections: [(header: String, packs: [FeaturedPack])] {
+        [(L10n("featured.section.news"), [Self.todaysNewsPack()]),
+         (L10n("featured.section.starter"), packs)]
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int { sections.count }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        sections[section].packs.count
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard !sections[section].packs.isEmpty else { return nil }
+        let container = UIView()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = AppFont.plateCaption(sections[section].header)
+        let rule = GoldRule()
+        container.addSubview(label)
+        container.addSubview(rule)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -16),
+            label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10),
+            rule.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+            rule.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
+            rule.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5),
+        ])
+        return container
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        sections[section].packs.isEmpty ? 0 : 42
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeaturedPackCell", for: indexPath) as! FeaturedPackCell
-        cell.configure(with: packs[indexPath.row])
+        cell.configure(with: sections[indexPath.section].packs[indexPath.row])
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        confirmInstall(packs[indexPath.row])
+        confirmInstall(sections[indexPath.section].packs[indexPath.row])
     }
 }
 
