@@ -291,7 +291,7 @@ final class SettingsViewController: UIViewController {
         gapSlider.minimumValue = 0.0
         gapSlider.maximumValue = 2.0
         gapSlider.value = Float(settings.gapSeconds)
-        gapSlider.minimumTrackTintColor = .systemGreen
+        gapSlider.minimumTrackTintColor = AppColors.primaryAccent
         gapSlider.addTarget(self, action: #selector(gapChanged), for: .valueChanged)
         gapValueLabel.text = String(format: "%.1fs", settings.gapSeconds)
 
@@ -299,7 +299,7 @@ final class SettingsViewController: UIViewController {
         interGapSlider.minimumValue = 0.0
         interGapSlider.maximumValue = 2.0
         interGapSlider.value = Float(settings.interSegmentGapSeconds)
-        interGapSlider.minimumTrackTintColor = .systemPurple
+        interGapSlider.minimumTrackTintColor = AppColors.primaryAccent
         interGapSlider.addTarget(self, action: #selector(interGapChanged), for: .valueChanged)
         interGapValueLabel.text = String(format: "%.1fs", settings.interSegmentGapSeconds)
 
@@ -307,7 +307,7 @@ final class SettingsViewController: UIViewController {
         let ms = settings.prerollMs
         let idx = [0, 100, 200, 300].firstIndex(of: max(0, min(ms, 300))) ?? 0
         prerollSeg.selectedSegmentIndex = idx
-        prerollSeg.selectedSegmentTintColor = .systemOrange
+        prerollSeg.selectedSegmentTintColor = AppColors.primaryAccent
         prerollSeg.addTarget(self, action: #selector(prerollChanged), for: .valueChanged)
 
         // Duck
@@ -458,6 +458,8 @@ final class SettingsViewController: UIViewController {
         container.addSubview(valueLabel)
 
         slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumTrackTintColor = AppColors.primaryAccent
+        slider.maximumTrackTintColor = AppColors.goldHairline
         container.addSubview(slider)
 
         NSLayoutConstraint.activate([

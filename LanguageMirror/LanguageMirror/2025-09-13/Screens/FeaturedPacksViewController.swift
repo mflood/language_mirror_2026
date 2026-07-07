@@ -227,7 +227,7 @@ final class FeaturedPackCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let metaLabel = UILabel()
-    private let chevron = UIImageView(image: UIImage(systemName: "arrow.down.circle.fill"))
+    private let chevron = UIImageView(image: UIImage(systemName: "arrow.down.circle"))
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -267,8 +267,10 @@ final class FeaturedPackCell: UITableViewCell {
         metaLabel.textColor = AppColors.tertiaryText
         cardView.addSubview(metaLabel)
 
+        // Quiet engraved download mark — outline gold, not a filled aqua disc.
         chevron.translatesAutoresizingMaskIntoConstraints = false
-        chevron.tintColor = AppColors.primaryAccent
+        chevron.tintColor = AppColors.antiqueGold
+        chevron.preferredSymbolConfiguration = UIImage.SymbolConfiguration(weight: .light)
         chevron.contentMode = .scaleAspectFit
         cardView.addSubview(chevron)
 
