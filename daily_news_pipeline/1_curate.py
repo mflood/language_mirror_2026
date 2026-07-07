@@ -61,7 +61,30 @@ def today_eastern() -> str:
     return now.strftime("%Y-%m-%d")
 
 
-def build_curation_prompt(items: list[dict]) -> str:
+RECENT_DAYS = 7
+
+
+def recent_chosen(date: str, days: int = RECENT_DAYS) -> list[dict]:
+    """Stories chosen in the `days` calendar days before `date` — used to
+    keep a story that lingers in a feed window from being picked twice."""
+    from datetime import date as _date, timedelta
+    d = _date.fromisoformat(date)
+    out: list[dict] = []
+    for back in range(1, days + 1):
+        path = WORK_ROOT / (d - timedelta(days=back)).isoformat() / "chosen.json"
+        if not path.exists():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        for s in data.get("stories", []):
+            if s.get("link") or s.get("headline"):
+                out.append({"link": s.get("link", ""), "headline": s.get("headline", "")})
+    return out
+
+
+def build_curation_prompt(items: list[dict], recent: list[dict] | None = None) -> str:
     hard = [it for it in items if it["genre"] == "hard"]
     features = [it for it in items if it["genre"] != "hard"]
 
@@ -70,6 +93,15 @@ def build_curation_prompt(items: list[dict]) -> str:
         source = it["source"]
         summary = (it.get("summary") or "")[:300]
         return f"[{i}] ({source}) {title}\n    {summary}"
+
+    recent_block = ""
+    if recent:
+        lines = "\n".join(f"- {r['headline']}" for r in recent if r.get("headline"))
+        recent_block = (
+            "ALREADY COVERED in recent daily packs — do NOT pick these stories\n"
+            "again, even under a different headline or from a different outlet:\n"
+            f"{lines}\n\n"
+        )
 
     hard_block = "\n".join(render(it, i) for i, it in enumerate(hard))
     feature_block = "\n".join(render(it, i + len(hard)) for i, it in enumerate(features))
@@ -118,7 +150,7 @@ DUPLICATION RULE:
   Fed decision), count that as ONE story and pick the version with the best
   headline + summary.
 
-HARD NEWS POOL ({len(hard)} items):
+{recent_block}HARD NEWS POOL ({len(hard)} items):
 {hard_block}
 
 FEATURE POOL ({len(features)} items):
@@ -198,7 +230,15 @@ def main() -> int:
     feeds_data = json.loads(feeds_path.read_text(encoding="utf-8"))
     items = feeds_data["items"]
 
-    prompt = build_curation_prompt(items)
+    recent = recent_chosen(date)
+    recent_links = {r["link"] for r in recent if r.get("link")}
+    before = len(items)
+    items = [it for it in items if it.get("link") not in recent_links]
+    if before != len(items):
+        print(f"  ⏭ dropped {before - len(items)} feed item(s) already chosen "
+              f"in the last {RECENT_DAYS} days")
+
+    prompt = build_curation_prompt(items, recent=recent)
     out_path = WORK_ROOT / date / "chosen.json"
 
     if not args.config.exists():
