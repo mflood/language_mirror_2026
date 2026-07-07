@@ -108,7 +108,6 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
     // MARK: - Onboarding
 
     private static let onboardingCompletedKey = "onboarding.completed"
-    static let learningLanguageKey = "onboarding.learningLanguage"
 
     private func presentOnboardingIfNeeded() {
         guard !UserDefaults.standard.bool(forKey: Self.onboardingCompletedKey) else { return }
@@ -385,10 +384,8 @@ final class AppCoordinator: NSObject, UITabBarControllerDelegate {
 // MARK: - OnboardingViewControllerDelegate
 
 extension AppCoordinator: OnboardingViewControllerDelegate {
-    func onboardingDidFinish(_ vc: OnboardingViewController, learningLanguage: String) {
-        let defaults = UserDefaults.standard
-        defaults.set(true, forKey: Self.onboardingCompletedKey)
-        defaults.set(learningLanguage, forKey: Self.learningLanguageKey)
+    func onboardingDidFinish(_ vc: OnboardingViewController) {
+        UserDefaults.standard.set(true, forKey: Self.onboardingCompletedKey)
         // Gentle first-session defaults: slowed audio is the whole point of
         // shadowing practice, and it's much less intimidating on day one.
         container.settings.simpleSpeed = 0.8

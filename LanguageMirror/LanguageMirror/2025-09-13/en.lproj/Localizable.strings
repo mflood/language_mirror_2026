@@ -88,6 +88,10 @@
 "import.help.message" = "📹 Import from Video\nExtract audio from any video file\n\n📁 Import from Files\n• Tap Share button in Voice Memos → LanguageMirror\n• Or browse: Files → On My iPhone → Voice Memos\n\n🎤 Record Audio\nCreate new tracks with your microphone\n\n🔗 Download from URL\nDirect links to audio files (mp3, m4a, wav)\n\n☁️ Install Bundle\nDownload bundles from remote JSON manifests";
 
 /* ── Featured Packs ── */
+"featured.section.news" = "Today's News";
+"featured.section.starter" = "Starter Packs";
+"featured.news.title" = "Daily Korean News";
+"featured.news.subtitle" = "Fresh listening practice — %@";
 "featured.title" = "Featured Packs";
 "featured.empty" = "No featured packs available right now.";
 "featured.error" = "Couldn't load the featured packs catalog.";
@@ -268,9 +272,6 @@
 /* Onboarding */
 "onboarding.title" = "Language Mirror";
 "onboarding.tagline" = "Sound like a native. Shadow real audio, one clip at a time.";
-"onboarding.learning_question" = "Which language are you learning?";
-"onboarding.lang.korean" = "Korean";
-"onboarding.lang.english" = "English";
 "onboarding.skip" = "Skip";
 "onboarding.how.title" = "How it works";
 "onboarding.how.step1.title" = "Listen";
@@ -279,6 +280,7 @@
 "onboarding.how.step2.body" = "Short clips repeat automatically, slowed down while you learn.";
 "onboarding.how.step3.title" = "Speak along";
 "onboarding.how.step3.body" = "Shadow each clip until it feels natural.";
+"onboarding.continue" = "Continue";
 "onboarding.cta" = "Start your first practice";
 
 /* Session complete */

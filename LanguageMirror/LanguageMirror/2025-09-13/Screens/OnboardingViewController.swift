@@ -11,8 +11,7 @@
 import UIKit
 
 protocol OnboardingViewControllerDelegate: AnyObject {
-    /// direction is the BCP-47 base code of the language being learned ("ko"/"en").
-    func onboardingDidFinish(_ vc: OnboardingViewController, learningLanguage: String)
+    func onboardingDidFinish(_ vc: OnboardingViewController)
     func onboardingDidSkip(_ vc: OnboardingViewController)
 }
 
@@ -20,7 +19,6 @@ final class OnboardingViewController: UIViewController {
 
     weak var delegate: OnboardingViewControllerDelegate?
 
-    private var learningLanguage = "ko"
     private let pageOne = UIView()
     private let pageTwo = UIView()
     private weak var heroMiri: UIImageView?
@@ -89,27 +87,35 @@ final class OnboardingViewController: UIViewController {
         tagline.textAlignment = .center
         tagline.numberOfLines = 0
 
-        let question = UILabel()
-        question.translatesAutoresizingMaskIntoConstraints = false
-        question.text = L10n("onboarding.learning_question")
-        question.font = AppFont.rounded(20, weight: .semibold)
-        question.textColor = AppColors.primaryText
-        question.textAlignment = .center
-        question.numberOfLines = 0
+        // No "which language are you learning?" question — the app serves
+        // every direction, and anything direction-sensitive (translations)
+        // follows the system locale.
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = AppColors.primaryAccent
+        config.baseForegroundColor = .white
+        config.cornerStyle = .large
+        var attrs = AttributeContainer()
+        attrs.font = AppFont.rounded(20, weight: .semibold)
+        config.attributedTitle = AttributedString(L10n("onboarding.continue"), attributes: attrs)
+        let continueButton = UIButton(configuration: config)
+        continueButton.translatesAutoresizingMaskIntoConstraints = false
+        continueButton.accessibilityIdentifier = "onboarding.continue"
+        continueButton.addAction(UIAction { [weak self] _ in
+            guard let self else { return }
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            self.showPageTwo()
+        }, for: .touchUpInside)
 
-        let koreanButton = languageButton(emoji: "🇰🇷", title: L10n("onboarding.lang.korean"), lang: "ko")
-        let englishButton = languageButton(emoji: "🇺🇸", title: L10n("onboarding.lang.english"), lang: "en")
-
-        [miri, title, tagline, question, koreanButton, englishButton].forEach { pageOne.addSubview($0) }
+        [miri, title, tagline, continueButton].forEach { pageOne.addSubview($0) }
         self.heroMiri = miri
 
         NSLayoutConstraint.activate([
-            miri.topAnchor.constraint(equalTo: pageOne.safeAreaLayoutGuide.topAnchor, constant: 36),
+            miri.topAnchor.constraint(equalTo: pageOne.safeAreaLayoutGuide.topAnchor, constant: 72),
             miri.centerXAnchor.constraint(equalTo: pageOne.centerXAnchor),
-            miri.widthAnchor.constraint(equalToConstant: 140),
-            miri.heightAnchor.constraint(equalToConstant: 140),
+            miri.widthAnchor.constraint(equalToConstant: 160),
+            miri.heightAnchor.constraint(equalToConstant: 160),
 
-            title.topAnchor.constraint(equalTo: miri.bottomAnchor, constant: 20),
+            title.topAnchor.constraint(equalTo: miri.bottomAnchor, constant: 24),
             title.leadingAnchor.constraint(equalTo: pageOne.leadingAnchor, constant: 24),
             title.trailingAnchor.constraint(equalTo: pageOne.trailingAnchor, constant: -24),
 
@@ -117,41 +123,11 @@ final class OnboardingViewController: UIViewController {
             tagline.leadingAnchor.constraint(equalTo: pageOne.leadingAnchor, constant: 32),
             tagline.trailingAnchor.constraint(equalTo: pageOne.trailingAnchor, constant: -32),
 
-            question.topAnchor.constraint(equalTo: tagline.bottomAnchor, constant: 64),
-            question.leadingAnchor.constraint(equalTo: pageOne.leadingAnchor, constant: 24),
-            question.trailingAnchor.constraint(equalTo: pageOne.trailingAnchor, constant: -24),
-
-            koreanButton.topAnchor.constraint(equalTo: question.bottomAnchor, constant: 24),
-            koreanButton.leadingAnchor.constraint(equalTo: pageOne.leadingAnchor, constant: 32),
-            koreanButton.trailingAnchor.constraint(equalTo: pageOne.trailingAnchor, constant: -32),
-            koreanButton.heightAnchor.constraint(equalToConstant: 64),
-
-            englishButton.topAnchor.constraint(equalTo: koreanButton.bottomAnchor, constant: 16),
-            englishButton.leadingAnchor.constraint(equalTo: pageOne.leadingAnchor, constant: 32),
-            englishButton.trailingAnchor.constraint(equalTo: pageOne.trailingAnchor, constant: -32),
-            englishButton.heightAnchor.constraint(equalToConstant: 64),
+            continueButton.leadingAnchor.constraint(equalTo: pageOne.leadingAnchor, constant: 32),
+            continueButton.trailingAnchor.constraint(equalTo: pageOne.trailingAnchor, constant: -32),
+            continueButton.bottomAnchor.constraint(equalTo: pageOne.safeAreaLayoutGuide.bottomAnchor, constant: -32),
+            continueButton.heightAnchor.constraint(equalToConstant: 60),
         ])
-    }
-
-    private func languageButton(emoji: String, title: String, lang: String) -> UIButton {
-        var config = UIButton.Configuration.filled()
-        config.title = "\(emoji)  \(title)"
-        config.baseBackgroundColor = AppColors.primaryAccent
-        config.baseForegroundColor = .white
-        config.cornerStyle = .large
-        var attrs = AttributeContainer()
-        attrs.font = AppFont.rounded(20, weight: .semibold)
-        config.attributedTitle = AttributedString("\(emoji)  \(title)", attributes: attrs)
-        let button = UIButton(configuration: config)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.accessibilityIdentifier = "onboarding.lang.\(lang)"
-        button.addAction(UIAction { [weak self] _ in
-            guard let self else { return }
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            self.learningLanguage = lang
-            self.showPageTwo()
-        }, for: .touchUpInside)
-        return button
     }
 
     // MARK: - Page 2: how it works → CTA
@@ -195,7 +171,7 @@ final class OnboardingViewController: UIViewController {
         cta.addAction(UIAction { [weak self] _ in
             guard let self else { return }
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-            self.delegate?.onboardingDidFinish(self, learningLanguage: self.learningLanguage)
+            self.delegate?.onboardingDidFinish(self)
         }, for: .touchUpInside)
 
         [title, steps, cta].forEach { pageTwo.addSubview($0) }

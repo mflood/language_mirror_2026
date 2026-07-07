@@ -27,11 +27,11 @@ final class EvaluationWalkTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        // 0. Onboarding, if present: pick Korean, view how-it-works, auto-start.
-        let koreanButton = app.buttons["onboarding.lang.ko"]
-        if koreanButton.waitForExistence(timeout: 5) {
-            shot("00a-onboarding-language")
-            koreanButton.tap()
+        // 0. Onboarding, if present: continue, view how-it-works, auto-start.
+        let continueButton = app.buttons["onboarding.continue"]
+        if continueButton.waitForExistence(timeout: 5) {
+            shot("00a-onboarding-welcome")
+            continueButton.tap()
             Thread.sleep(forTimeInterval: 1)
             shot("00b-onboarding-how")
             let cta = app.buttons["onboarding.cta"]
