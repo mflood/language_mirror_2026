@@ -87,6 +87,12 @@ final class FeaturedCatalogServiceLocal: FeaturedCatalogService {
 
     func loadCatalog() async throws -> FeaturedCatalog {
         let decoder = makeDecoder()
+        // Test hook: force the embedded copy (skip remote + cache) so UI tests
+        // can exercise packs that only exist in this build's embedded catalog,
+        // before the remote catalog is published. Opt-in via launch argument.
+        if ProcessInfo.processInfo.arguments.contains("-forceEmbeddedCatalog") {
+            return try loadEmbeddedCatalog(decoder: decoder)
+        }
         // 1. Try remote (with short timeout). On success, write to cache and return.
         if let remote = await fetchRemoteCatalog(decoder: decoder) {
             persistRemoteCache(remote.data)

@@ -1,0 +1,88 @@
+{
+  "topic": "Two people meet for the first time at a weekend farmers' market in a US city and strike up a friendly conversation",
+  "language": "en-US",
+  "title": "Meeting at the Farmers' Market",
+  "english_title": "Meeting at the Farmers' Market",
+  "turns": [
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "What a beautiful day for the market!",
+      "translations": {
+        "ko": "장보기 정말 좋은 날이다!"
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "I know, the weather is perfect.",
+      "translations": {
+        "ko": "그러게, 날씨 완벽하네."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I'm Sarah, by the way.",
+      "translations": {
+        "ko": "참, 난 사라야."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Nice to meet you, Sarah. I'm Tom.",
+      "translations": {
+        "ko": "반가워, 사라. 난 톰이야."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "Are you from around here?",
+      "translations": {
+        "ko": "여기 사는 사람이야?"
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Actually, I just moved here from Chicago last month.",
+      "translations": {
+        "ko": "사실 지난달에 시카고에서 여기로 이사 왔어."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "Oh wow, welcome! I've lived here my whole life.",
+      "translations": {
+        "ko": "오 진짜, 환영해! 난 여기서 쭉 살았어."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "That's cool. So what do you do for work?",
+      "translations": {
+        "ko": "좋네. 그럼 무슨 일 해?"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I'm a teacher at the local high school.",
+      "translations": {
+        "ko": "나 동네 고등학교에서 선생님이야."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Nice! I work in graphic design.",
+      "translations": {
+        "ko": "좋네! 난 그래픽 디자인 일 해."
+      }
+    }
+  ]
+}

@@ -1,7 +1,23 @@
 {
-  "version": 2,
-  "updatedAt": "2026-04-12T00:00:00Z",
+  "version": 3,
+  "updatedAt": "2026-07-09T00:00:00Z",
   "packs": [
+    {
+      "id": "starter_english_greetings",
+      "title": "Everyday English Greetings",
+      "subtitle": "Two strangers meet at a farmers' market — natural small talk, with Korean translations",
+      "languageCode": "en-US",
+      "level": "beginner",
+      "trackCount": 1,
+      "durationSeconds": 23,
+      "author": "Six Wands Studios",
+      "iconSymbol": "hand.wave.fill",
+      "accentColor": "#2AA198",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_english_greetings"
+      }
+    },
     {
       "id": "starter_korean_poem",
       "title": "서시 — Prologue",
