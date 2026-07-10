@@ -14,17 +14,17 @@ Legend:  ☐ do it   👁 your eyes/ears (subjective — no test covers this)
 
 - ☐ Decide the surface: **real device** for anything marked 👁 (voice, OLED
   plum, launch screen, notifications). The simulator lies about all of these.
-- 🚪 **Do NOT publish the remote `featured_catalog.json` yet.** The five English
-  packs + Dickinson poem are *embedded* in this build; the catalog is
-  remote-first. Publishing before this build is live on the App Store makes
-  current users tap English packs that their installed app doesn't have. Order
-  is: ship this build → *then* publish the catalog. (See NEXT.md.)
-- ☐ **To actually SEE the English packs while dogfooding a pre-publish build:**
-  in Xcode, Edit Scheme → Run → Arguments → add launch argument
-  `-forceEmbeddedCatalog`. This makes Featured Packs use the embedded catalog
-  (English packs at top) — an accurate preview of what users get post-publish.
-  Remove it before archiving. (Without it, Featured Packs shows only the old
-  remote Korean catalog — expected, not a bug.)
+- ✅ **The English packs are already LIVE and version-safe.** They're published
+  as **remote** bundles (audio on CloudFront) and referenced remotely in the
+  live `featured_catalog.json`. Any app version — including all current
+  users — can download and install them, so there is NO dangerous
+  publish-ordering gate here (the old "ship then publish" concern only applied
+  to *embedded* packs, which these no longer are). Current users see the five
+  English packs now, without updating.
+- ☐ Because they're live, dogfood them on the **current** app too: open Add →
+  Featured Packs and confirm the five English packs appear and install by
+  download. (A dev build needs no special launch arg now that the catalog is
+  published.)
 
 ## 1. First run (needs a FRESH install)
 
@@ -124,8 +124,11 @@ Requires `-forceEmbeddedCatalog` (§0) or a post-publish build.
 4. 🚪 Refresh **App Store screenshots** — the current store set predates the
    whole rebrand (NEXT.md release gate).
 5. ☐ Submit; get the build **live**.
-6. 🚪 **ONLY AFTER the build is live:** publish the updated
-   `featured_catalog.json` to `s3://turned.rip/lmaudio/featured_catalog.json`
-   so users see the English packs.
+6. ✅ Catalog already published — English packs are remote and live for all
+   versions, so no post-ship catalog step is needed. (To add/change catalog
+   packs later: publish any new bundles to `s3://turned.rip/lmaudio/<id>/`
+   first, then `./sample_bundle_pipeline/publish_catalog.sh` + invalidate
+   `/lmaudio/featured_catalog.json`. Keep new packs `remote` for the same
+   version-safety.)
 7. 🚪 Confirm the pipeline is publishing `news_en_latest` (the English news
-   edition) before/at the same time, so the English news row has content.
+   edition) so the English news row has content.

@@ -304,15 +304,16 @@ final class EvaluationWalkTests: XCTestCase {
         shot("14-practice-again")
     }
 
-    /// End-to-end proof that an embedded ENGLISH pack installs from Featured
+    /// End-to-end proof that a REMOTE ENGLISH pack installs from Featured
     /// Packs, plays, and shows its Korean translation gloss — the mirror
-    /// direction (English audio for Korean learners). Also a regression guard
-    /// for the embedded-bundle install path.
+    /// direction (English audio for Korean learners). The packs are remote
+    /// (audio on CloudFront) so any app version can install them; this test
+    /// downloads the bundle from the CDN, exercising the real install path.
     @MainActor
     func testInstallEnglishPack() throws {
         let app = XCUIApplication()
-        // Force the embedded catalog so the not-yet-published English pack is
-        // present (the remote catalog is authoritative in production).
+        // Use the embedded catalog copy for a hermetic run (identical to the
+        // published remote catalog — English packs as remote entries).
         app.launchArguments += ["-forceEmbeddedCatalog"]
         app.launch()
         let skip = app.buttons["Skip"]

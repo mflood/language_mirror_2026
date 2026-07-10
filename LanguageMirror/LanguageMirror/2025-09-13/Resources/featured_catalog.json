@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "updatedAt": "2026-07-10T00:00:00Z",
   "packs": [
     {
@@ -14,8 +14,9 @@
       "iconSymbol": "hand.wave.fill",
       "accentColor": "#2AA198",
       "source": {
-        "kind": "embedded",
-        "bundleId": "starter_english_greetings"
+        "kind": "remote",
+        "bundleId": null,
+        "manifestUrl": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/starter_english_greetings/bundle.json"
       }
     },
     {
@@ -30,8 +31,9 @@
       "iconSymbol": "map.fill",
       "accentColor": "#2AA198",
       "source": {
-        "kind": "embedded",
-        "bundleId": "starter_english_directions"
+        "kind": "remote",
+        "bundleId": null,
+        "manifestUrl": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/starter_english_directions/bundle.json"
       }
     },
     {
@@ -46,8 +48,9 @@
       "iconSymbol": "cup.and.saucer.fill",
       "accentColor": "#2AA198",
       "source": {
-        "kind": "embedded",
-        "bundleId": "starter_english_cafe"
+        "kind": "remote",
+        "bundleId": null,
+        "manifestUrl": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/starter_english_cafe/bundle.json"
       }
     },
     {
@@ -62,8 +65,9 @@
       "iconSymbol": "cloud.rain.fill",
       "accentColor": "#5A6FA5",
       "source": {
-        "kind": "embedded",
-        "bundleId": "starter_english_story"
+        "kind": "remote",
+        "bundleId": null,
+        "manifestUrl": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/starter_english_story/bundle.json"
       }
     },
     {
@@ -78,8 +82,9 @@
       "iconSymbol": "sparkles",
       "accentColor": "#4A6FA5",
       "source": {
-        "kind": "embedded",
-        "bundleId": "starter_english_poem"
+        "kind": "remote",
+        "bundleId": null,
+        "manifestUrl": "https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/starter_english_poem/bundle.json"
       }
     },
     {
