@@ -1,1 +1,1 @@
-Langston Hughes, 'Dreams' (1922, public domain). A short beloved poem about holding fast to one's dreams — a thematic mirror to Yun Dong-ju's 서시 (living with integrity). Single reflective narrator.
+Emily Dickinson (d. 1886), 'Hope is the thing with feathers' — a beloved public-domain poem (whole catalog PD; author died 140 years ago). Hope as a small bird that sings through every storm — a thematic mirror to Yun Dong-ju's 서시. Single reflective narrator.

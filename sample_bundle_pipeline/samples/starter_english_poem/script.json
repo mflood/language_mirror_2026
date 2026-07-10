@@ -1,55 +1,103 @@
 {
-  "topic": "Langston Hughes — 'Dreams' (public domain, 1922)",
+  "topic": "Emily Dickinson — 'Hope is the thing with feathers' (public domain)",
   "language": "en-US",
-  "title": "Dreams",
-  "english_title": "Dreams — Langston Hughes",
+  "title": "Hope is the Thing with Feathers",
+  "english_title": "Hope is the Thing with Feathers — Emily Dickinson",
   "turns": [
     {
       "speaker": "A",
       "voice": "narrator",
-      "text": "Hold fast to dreams",
+      "text": "Hope is the thing with feathers",
       "translations": {
-        "ko": "꿈을 꼭 붙잡아라"
+        "ko": "희망은 깃털을 가진 것"
       }
     },
     {
       "speaker": "A",
       "voice": "narrator",
-      "text": "For if dreams die",
+      "text": "That perches in the soul,",
       "translations": {
-        "ko": "꿈이 죽으면"
+        "ko": "영혼 속에 앉아 있는"
       }
     },
     {
       "speaker": "A",
       "voice": "narrator",
-      "text": "Life is a broken-winged bird that cannot fly.",
+      "text": "And sings the tune without the words,",
       "translations": {
-        "ko": "인생은 날 수 없는 부러진 날개의 새가 되니"
+        "ko": "그리고 말 없는 노래를 부르는"
       }
     },
     {
       "speaker": "A",
       "voice": "narrator",
-      "text": "Hold fast to dreams",
+      "text": "And never stops at all,",
       "translations": {
-        "ko": "꿈을 꼭 붙잡아라"
+        "ko": "그리고 결코 멈추지 않는"
       }
     },
     {
       "speaker": "A",
       "voice": "narrator",
-      "text": "For when dreams go",
+      "text": "And sweetest in the gale is heard;",
       "translations": {
-        "ko": "꿈이 사라지면"
+        "ko": "그리고 폭풍 속에서 가장 달콤하게 들리는"
       }
     },
     {
       "speaker": "A",
       "voice": "narrator",
-      "text": "Life is a barren field frozen with snow.",
+      "text": "And sore must be the storm",
       "translations": {
-        "ko": "인생은 눈으로 얼어붙은 메마른 들판이 되니"
+        "ko": "그리고 얼마나 거센 폭풍이어야 할까"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "That could abash the little bird",
+      "translations": {
+        "ko": "그 작은 새를 주눅들게 할 수 있을"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "That kept so many warm.",
+      "translations": {
+        "ko": "그토록 많은 이를 따뜻하게 해준"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "I've heard it in the chillest land,",
+      "translations": {
+        "ko": "나는 그것을 가장 추운 땅에서 들었고"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "And on the strangest sea;",
+      "translations": {
+        "ko": "그리고 가장 낯선 바다 위에서도"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "Yet, never, in extremity,",
+      "translations": {
+        "ko": "하지만 결코, 극한의 순간에도"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "It asked a crumb of me.",
+      "translations": {
+        "ko": "그것은 내게 빵 부스러기 하나 요구하지 않았다"
       }
     }
   ]
