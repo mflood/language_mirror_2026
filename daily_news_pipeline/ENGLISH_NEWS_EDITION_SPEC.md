@@ -95,6 +95,47 @@ edition in {ko, en}: steps 2–6 with `--edition`. Cost roughly doubles for 2–
 - The English row imports gracefully-fails until `news_en_latest` exists, so
   the app can ship ahead of the pipeline.
 
+## Copyright / verbatim-copy guard (REQUIRED for the en edition)
+
+The en edition is English source → English output, so the LLM can lift
+distinctive phrasing straight from a copyrighted article. Facts are free;
+*expression* is not. The existing cross-model QA review (`qa_review_story`)
+checks factual fidelity, difficulty, and grammar — it does **not** check for
+copying. Two layers close that gap:
+
+1. **Prompt instruction (generation + QA):** the en script prompt must state,
+   as a non-negotiable alongside FACTUAL FIDELITY: *"Restate every fact in your
+   own words at the target reading level. Do NOT reuse the source's sentences
+   or distinctive phrasing. No sentence may share a run of 6+ consecutive words
+   with the source article. Quote only when unavoidable and clearly marked."*
+   The pedagogy already pushes this way (simplify to ~CEFR B1, 5–12 word
+   sentences, everyday vocab) — a properly simplified summary is necessarily
+   reworded — but say it explicitly. The `summary_en_natural` (news register)
+   is the highest-risk field; watch it hardest.
+
+2. **Deterministic gate (`check_verbatim_overlap.py`, added):** after step 2
+   (and the QA pass), run every English string (summaries + examples +
+   title) against the source body. It reports the longest run of consecutive
+   words each generated sentence shares with the source and flags any run ≥ 6
+   words. Wire it as a gate: on a flag, regenerate that story's script (or
+   the offending sentence) once; if it still flags, drop the story from the
+   day rather than ship a copy. It's deterministic, free, and doesn't rely on
+   the model policing itself.
+
+   ```
+   from check_verbatim_overlap import check_texts, english_texts_from_script
+   flags = check_texts(source_body, english_texts_from_script(script), min_run=6)
+   ```
+
+   Run it on the **ko edition's** English fields too (`summary_en`) as a light
+   safeguard — lower risk (those are translations of the Korean), but free to
+   check.
+
+Note: the embedded `starter_english_*` packs are ORIGINAL works (topic-
+generated dialogue) or public domain (the Hughes poem) — no source article,
+no exposure. This guard is specifically for the news edition's article-derived
+text.
+
 ## Acceptance
 
 1. `run_daily.sh --commit` produces BOTH `news_latest` and `news_en_latest`
@@ -104,3 +145,6 @@ edition in {ko, en}: steps 2–6 with `--edition`. Cost roughly doubles for 2–
    span) and plays in the app via the "Daily English News" row.
 3. The Korean edition output is byte-for-byte unchanged when run without
    `--edition en` (no regression).
+4. Every published English news bundle passes `check_verbatim_overlap.py`
+   against its source article (no 6+ word verbatim runs) — a copyright gate,
+   not advisory.
