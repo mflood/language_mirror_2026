@@ -78,12 +78,17 @@ log "═════════════════════════
 step "0/7 fetch feeds"   "$PY" "$HERE/0_fetch_feeds.py" --date "$DATE"
 step "1/7 curate"        "$PY" "$HERE/1_curate.py" --date "$DATE" $COMMIT_FLAG
 [ -n "$COMMIT_FLAG" ] || { log "(dry-run mode — stopping after step 1; re-run with --commit to continue)"; exit 0; }
-step "2/7 generate script" "$PY" "$HERE/2_generate_script.py" --date "$DATE" $COMMIT_FLAG
-step "2b/7 translate easy" "$PY" "$HERE/2b_translate_easy.py" --date "$DATE"
-step "3/7 synthesize"      "$PY" "$HERE/3_synthesize.py" --date "$DATE" $COMMIT_FLAG
-step "4/7 assemble bundle" "$PY" "$HERE/4_assemble_bundle.py" --date "$DATE"
-step "5/7 publish s3"      "$PY" "$HERE/5_publish_s3.py" --date "$DATE" $COMMIT_FLAG
-step "6/7 deploy web"      "$PY" "$HERE/6_deploy_news_page.py" --date "$DATE" $COMMIT_FLAG
+# Two editions from one curate pass (ENGLISH_NEWS_EDITION_SPEC.md):
+#   ko — Korean-audio pack for English speakers (news_latest)
+#   en — English-audio pack for Korean learners (news_en_latest)
+for ED in ko en; do
+    step "2/7 generate script ($ED)" "$PY" "$HERE/2_generate_script.py" --date "$DATE" --edition "$ED" $COMMIT_FLAG
+    step "2b/7 translate easy ($ED)" "$PY" "$HERE/2b_translate_easy.py" --date "$DATE" --edition "$ED"
+    step "3/7 synthesize ($ED)"      "$PY" "$HERE/3_synthesize.py" --date "$DATE" --edition "$ED" $COMMIT_FLAG
+    step "4/7 assemble bundle ($ED)" "$PY" "$HERE/4_assemble_bundle.py" --date "$DATE" --edition "$ED"
+    step "5/7 publish s3 ($ED)"      "$PY" "$HERE/5_publish_s3.py" --date "$DATE" --edition "$ED" $COMMIT_FLAG
+done
+step "6/7 deploy web (ko)" "$PY" "$HERE/6_deploy_news_page.py" --date "$DATE" $COMMIT_FLAG
 
 # Aggregate per-step cost reports into a single cost_history entry
 python3 -c "
@@ -94,6 +99,6 @@ print(f'💰 Cost ledger: {out}')
 " 2>&1 | tee -a "$LOG"
 
 log "🎉 Daily pipeline complete for $DATE"
-log "   Manifest: $WORK_DIR/bundle.json"
-log "   QR:       $WORK_DIR/qr.png"
+log "   Manifests: $WORK_DIR/bundle.json + bundle_en.json"
+log "   QR:        $WORK_DIR/qr.png + qr_en.png"
 log "   Web:      https://sixwandsstudios.com/news/$DATE/"

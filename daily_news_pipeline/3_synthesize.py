@@ -41,6 +41,8 @@ from studypack.adapters import news as news_adapter
 from voicebox import key_params, synth_pack
 
 from lexicon import Lexicon
+
+import edition
 from cost_tracker import StepCostRecorder
 
 HERE = Path(__file__).resolve().parent
@@ -55,6 +57,7 @@ CONFIRM_CHAR_THRESHOLD = 15_000
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Synthesize per-story audio (via voicebox)")
     p.add_argument("--date", help="YYYY-MM-DD (default: today, US/Eastern)")
+    edition.add_edition_arg(p)
     p.add_argument("--config", type=Path, default=DEFAULT_TTS_CONFIG, help="tts.yaml path")
     p.add_argument("--tts", help="Override provider from tts.yaml (polly | elevenlabs)")
     p.add_argument("--max-chars", type=int, default=DEFAULT_MAX_CHARS,
@@ -97,7 +100,9 @@ def write_legacy_outputs(manifest: dict, script: dict, vb_dir: Path, out_dir: Pa
             shutil.copy2(src, dest)
             hits += span["from_cache"]
 
-            # Library attachment (vocab/example audio variants) — unchanged
+            # Library attachment. Slots are positional ("ko"=key term,
+            # "en"=gloss), so this holds for the en-ko store too:
+            # vocab_word is always the key-language term.
             role = turn.get("role", "unique")
             text_key = turn.get("library_text_key")
             if role in ("vocab_word", "vocab_gloss") and text_key:
@@ -148,10 +153,14 @@ def main() -> int:
     args = parse_args()
     date = args.date or today_eastern()
 
-    script_path = WORK_ROOT / date / "script.json"
+    sfx = edition.suffix(args.edition)
+    script_path = WORK_ROOT / date / f"script{sfx}.json"
     if not script_path.exists():
-        raise SystemExit(f"❌ script.json not found at {script_path}. Run step 2 first.")
+        raise SystemExit(f"❌ {script_path.name} not found at {script_path}. Run step 2 first.")
     script = json.loads(script_path.read_text(encoding="utf-8"))
+    if script.get("edition", "ko") != args.edition:
+        raise SystemExit(f"❌ {script_path.name} is edition {script.get('edition', 'ko')!r}, "
+                         f"but --edition {args.edition} was requested.")
 
     if not args.config.exists():
         raise SystemExit(f"❌ tts config not found: {args.config}")
@@ -169,7 +178,7 @@ def main() -> int:
     for w in warnings:
         print(f"  ⚠ studypack: {w}", file=sys.stderr)
 
-    out_dir = WORK_ROOT / date / "audio"
+    out_dir = WORK_ROOT / date / f"audio{sfx}"
     pause_ms = int(cfg.get("inter_turn_pause_ms", 400))
 
     # Dry pass (no writes, no provider): plan + spend gate on MISS chars.
@@ -214,9 +223,10 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     vb_dir = out_dir / "vb"
 
-    library = Lexicon.load()  # shared store at ~/.langpack/lexicon/ko-en.json
+    library = (Lexicon.load() if args.edition == "ko"
+               else Lexicon.load(pair="en-ko"))  # shared stores at ~/.langpack/lexicon/
     pre_stats = library.stats_summary()
-    recorder = StepCostRecorder("3_synthesize", WORK_ROOT / date)
+    recorder = StepCostRecorder(f"3_synthesize{sfx}", WORK_ROOT / date)
     kp = key_params(plan["provider"], cfg)
 
     manifest = synth_pack(pack, cfg, vb_dir, commit=True, concat=True)

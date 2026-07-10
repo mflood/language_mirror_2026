@@ -24,6 +24,8 @@ import sys
 from pathlib import Path
 
 from bundler import GroupAudio, materialize, timings_from_voicebox
+
+import edition
 from studypack.adapters import news as news_adapter
 
 HERE = Path(__file__).resolve().parent
@@ -36,6 +38,7 @@ PUBLISH_PREFIX_TEMPLATE = "lmaudio/{bundle_id}"
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Assemble the day's iOS bundle.json")
     p.add_argument("--date", help="YYYY-MM-DD (default: today, US/Eastern)")
+    edition.add_edition_arg(p)
     p.add_argument("--author", default="Six Wands Studios")
     return p.parse_args()
 
@@ -67,12 +70,16 @@ def main() -> int:
     date = args.date or today_eastern()
 
     work_dir = WORK_ROOT / date
-    script_path = work_dir / "script.json"
-    audio_dir = work_dir / "audio"
+    sfx = edition.suffix(args.edition)
+    script_path = work_dir / f"script{sfx}.json"
+    audio_dir = work_dir / f"audio{sfx}"
     if not script_path.exists():
-        raise SystemExit(f"❌ script.json not found at {script_path}. Run step 2 first.")
+        raise SystemExit(f"❌ {script_path.name} not found at {script_path}. Run step 2 first.")
 
     script = json.loads(script_path.read_text(encoding="utf-8"))
+    if script.get("edition", "ko") != args.edition:
+        raise SystemExit(f"❌ {script_path.name} is edition {script.get('edition', 'ko')!r}, "
+                         f"but --edition {args.edition} was requested.")
     try:
         pack, warnings = news_adapter.convert(script)
     except news_adapter.LegacyFormatError as e:
@@ -101,7 +108,7 @@ def main() -> int:
         track_id=lambda unit, group, filename, single: filename,
     )
 
-    out_path = work_dir / "bundle.json"
+    out_path = work_dir / f"bundle{sfx}.json"
     out_path.write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n",
                         encoding="utf-8")
     n_tracks = len(bundle["packs"][0]["tracks"])

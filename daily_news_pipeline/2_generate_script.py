@@ -62,6 +62,8 @@ WORK_ROOT = HERE / "work"
 CACHE_ROOT = HERE / "cache"
 DEFAULT_LLM_CONFIG = HERE / "llm.yaml"
 
+import edition
+
 
 KO_MONTHS = ["", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
 EN_MONTHS = ["", "January", "February", "March", "April", "May", "June",
@@ -74,6 +76,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--config", type=Path, default=DEFAULT_LLM_CONFIG, help="llm.yaml path")
     p.add_argument("--commit", action="store_true", help="Actually call the LLM.")
     p.add_argument("--no-qa", action="store_true", help="Skip the cross-model QA review (saves ~$0.10/run)")
+    edition.add_edition_arg(p)
     return p.parse_args()
 
 
@@ -251,6 +254,123 @@ comes first and reads idiomatically; English is the cushion.
 """
 
 
+
+
+def build_story_prompt_en(story: dict) -> str:
+    return f"""You are building an English-language news listening pack for Korean speakers
+learning English (intermediate level, roughly CEFR B1-B2 — Korean high school
+to university English).
+
+SOURCE ARTICLE (English, U.S. news):
+Headline: {story['headline']}
+Source: {story['source']}
+
+Body:
+{story['body']}
+
+Produce a JSON object with this exact shape (no markdown fences, no prose):
+
+{{
+  "track_title_en": "<short English title, 3-7 words>",
+  "track_title_ko": "<Korean title>",
+  "vocab": [
+    {{ "en": "<English word or phrase>", "ko": "<short Korean gloss>" }},
+    ... Pick the items an intermediate Korean learner actually struggles
+    with, in priority order: PHRASAL VERBS (lift, call off, step down),
+    IDIOMS and fixed COLLOCATIONS (take effect, on the rise, face charges),
+    POLYSEMOUS VERBS in their news sense (face, hold, back, run), then
+    high-value single content words. SKIP: proper nouns, numbers/dates,
+    and words with direct Korean cognates (컴퓨터, 뉴스…).
+    Minimum 5 entries, maximum 12. Do not pad; pick the most pedagogically
+    valuable. List in order of first appearance in your English summary.
+  ],
+  "examples": [
+    {{ "en": "<easy English example sentence>", "ko": "<Korean translation>" }},
+    ... 1 to 12 example sentences total. Every vocab item MUST appear in at
+    least one example. Combine 2-3 vocab items per sentence when natural.
+
+    SCAFFOLDING REQUIREMENT — example sentences must be STRICTLY EASIER than
+    the easy summary. The pedagogy is: vocab → easy examples (rehearsal) →
+    easy summary (real use). If the examples are as hard as the summary,
+    they fail as scaffolding.
+
+    Make examples EASIER than the easy summary by all of these means:
+      a. Everyday subjects: I / we / my friend / the students / my family /
+         people. NOT news subjects like the president, the government,
+         officials, authorities, experts.
+      b. Everyday contexts: school, family, neighborhood, daily life.
+         NOT diplomatic/economic/medical/political contexts.
+      c. Present tense. Past tense ONLY when the action clearly happened
+         today/yesterday in everyday life.
+      d. No embedded clauses. No relative clauses. No quoted speech.
+         ONE subject, ONE verb per sentence.
+      e. Sentence length: 5-12 words. Shorter is better.
+      f. Use the vocab item in a context a beginner would meet in real
+         life — not in its formal news usage.
+
+    EXAMPLES of the difficulty contrast (do this):
+      vocab: lift (해제하다), suspension (정지)
+      EASY summary line: "FIFA lifted the player's suspension yesterday."
+      Good example: "My mom lifted the box for me."
+      Good example: "Our school lifted the phone ban."
+
+      vocab: negotiate (협상하다)
+      Bad example (news-style): "Both sides negotiated a ceasefire deal."
+      Good example: "I negotiate with my brother about chores."
+  ],
+  "expressions": [
+    {{ "en": "<English expression>", "ko": "<Korean translation>" }},
+    ... 2 entries — useful collocations, idiomatic patterns, or paraphrases
+    drawn directly from the news story content. Not single words; phrases.
+  ],
+  "summary_en_easy": [
+    "<sentence 1>", "<sentence 2>", "..."
+  ],
+  "summary_en_natural": [
+    "<sentence 1>", "<sentence 2>", "<sentence 3>"
+  ],
+  "summary_ko": [
+    "<sentence 1>", "<sentence 2>", "<sentence 3>"
+  ]
+}}
+
+⚠ FACTUAL FIDELITY (BOTH SUMMARY LEVELS) — non-negotiable:
+- NEVER invent facts, numbers, names, dates, or events not in the article body.
+- NEVER fabricate direct quotes. If you didn't see the exact words in the source,
+  do not use quotation marks. Paraphrasing without quotes is fine.
+- NEVER attribute a statement to someone who didn't make it in the article.
+- If the article says "around 50,000", say "약 5만 명" / "about 50,000" — never
+  false precision.
+- If a number, date, or detail isn't in the article, omit that detail.
+- Easy and Natural summaries MUST convey the SAME FACTS — just at different
+  linguistic complexity.
+
+TWO SUMMARY LEVELS:
+You will produce the same 3 facts at TWO difficulty levels.
+
+   summary_en_easy — for lower-intermediate learners (CEFR A2-B1):
+     ── Max 12 words per sentence
+     ── Common verbs outside the vocab list (go, come, say, make, get,
+        want, open, close, start, stop, help, work, live…)
+     ── Simple past or present tense; no perfect aspect, no passive voice
+        unless unavoidable
+     ── No embedded or relative clauses; ONE subject, ONE verb
+     ── Concrete phrasing, no nominalizations ("they decided" not
+        "a decision was made")
+     ── Break ideas into more, shorter sentences if needed
+     ── 4-8 sentences total
+
+   summary_en_natural — for intermediate-plus learners (CEFR B2):
+     ── Natural broadcast-news English register
+     ── Up to 20 words per sentence; relative clauses OK
+     ── 3 sentences total — the same 3 facts as the easy version
+     ── This is what a US news anchor would actually read
+
+KOREAN SUMMARY (summary_ko): natural Korean rendering of the natural English
+summary, sentence-aligned (3 sentences, same order). English comes first and
+reads idiomatically; Korean is the comprehension cushion for the learner.
+"""
+
 # Cost tracker + per-step LLM providers installed by main().
 _cost_recorder: StepCostRecorder | None = None
 _llm_script: LLMProvider | None = None
@@ -360,9 +480,86 @@ fixed) so we have an audit trail. If nothing changed, set "_qa_changes": [].
 """
 
 
-def qa_review_story(story: dict, generated: dict) -> tuple[dict, list[str]]:
+
+def build_qa_review_prompt_en(story: dict, generated: dict) -> str:
+    """en-edition mirror of build_qa_review_prompt."""
+    return f"""You are reviewing an English-language learning pack you just generated.
+The audience is Korean speakers learning English (CEFR B1-B2). Carefully check
+the script below for any errors and correct them. Be conservative — only change
+things that are actually wrong. If everything is correct, return the input
+UNCHANGED.
+
+CHECK FOR:
+
+1. FACTUAL FIDELITY (CRITICAL — applies to BOTH summary levels and examples):
+   a. Every fact, number, date, name, and event in the summaries MUST appear
+      in the source article body. Flag any invented details.
+   b. No fabricated quotes. Flag any text inside quotation marks that doesn't
+      match the source verbatim.
+   c. No attributions of statements to people who weren't quoted in the source.
+   d. Numerical hedging: if the source says "around 50,000", flag any summary
+      with false precision.
+   e. The easy and natural summaries MUST cover the SAME facts.
+
+2. EASY-LEVEL DIFFICULTY COMPLIANCE (summary_en_easy only):
+   a. ≤12 words per sentence. Flag longer ones.
+   b. No perfect aspect, no passive voice, no embedded or relative clauses.
+   c. Non-vocab verbs are high-frequency (go, say, make, get, open, start…).
+      Flag formal verbs like implement, allocate, facilitate outside the
+      vocab list.
+
+3. NATURAL-LEVEL CHECK (summary_en_natural only):
+   a. Natural broadcast-news register.
+   b. 3 sentences total — same facts as easy version.
+
+4. EXAMPLE SCAFFOLDING (each example MUST be strictly easier than the easy
+   summary):
+   a. Subjects are everyday people/things (I, we, my friend, the students,
+      my family). Flag news subjects (the president, officials, authorities).
+   b. Contexts are daily-life. Flag examples that read like mini headlines.
+   c. Present tense preferred; ONE subject, ONE verb; no relative clauses.
+   d. Length 5-12 words.
+   e. The vocab item appears in an everyday usage, not its news meaning.
+
+5. ENGLISH GRAMMAR: articles, prepositions, agreement, natural word order.
+
+6. VOCAB COVERAGE: Each vocab item appears in the easy English summary AND
+   in at least one example sentence.
+
+7. GLOSS ACCURACY: Korean glosses accurately reflect the English. Flag
+   awkward or wrong Korean (translationese, wrong register).
+
+8. TYPOS / SPACING: English spelling, Korean spacing and 받침.
+
+ORIGINAL ARTICLE (English source — use as ground truth for facts):
+Headline: {story['headline']}
+Body:
+{story['body'][:2000]}
+
+GENERATED SCRIPT TO REVIEW:
+{json.dumps(generated, ensure_ascii=False, indent=2)}
+
+Return ONLY a JSON object with the SAME schema as the input (track_title_en,
+track_title_ko, vocab, examples, expressions, summary_en_easy,
+summary_en_natural, summary_ko). No markdown fences, no prose outside the
+JSON. If you made changes, include a top-level "_qa_changes" array (list of
+short strings describing what you fixed) so we have an audit trail. If
+nothing changed, set "_qa_changes": [].
+"""
+
+
+QA_REQUIRED_KEYS = {
+    "ko": {"track_title_ko", "track_title_en", "vocab", "examples", "expressions",
+           "summary_ko_easy", "summary_ko_natural", "summary_en"},
+    "en": {"track_title_ko", "track_title_en", "vocab", "examples", "expressions",
+           "summary_en_easy", "summary_en_natural", "summary_ko"},
+}
+
+
+def qa_review_story(story: dict, generated: dict, ed: str = "ko") -> tuple[dict, list[str]]:
     """Run Claude QA review on a generated story; return (corrected, change_list)."""
-    prompt = build_qa_review_prompt(story, generated)
+    builder = build_qa_review_prompt if ed == "ko" else build_qa_review_prompt_en
+    prompt = builder(story, generated)
     raw = call_llm(_llm_qa, _max_tokens_qa, prompt, label=f"qa:{story['story_id']}")
     cleaned = strip_fences(raw)
     try:
@@ -372,7 +569,7 @@ def qa_review_story(story: dict, generated: dict) -> tuple[dict, list[str]]:
         return generated, []
     changes = reviewed.pop("_qa_changes", []) or []
     # Ensure all required keys made it through (defensive — fall back to original if not)
-    required = {"track_title_ko", "track_title_en", "vocab", "examples", "expressions", "summary_ko_easy", "summary_ko_natural", "summary_en"}
+    required = QA_REQUIRED_KEYS[ed]
     if not required.issubset(reviewed.keys()):
         missing = required - set(reviewed.keys())
         print(f"     ⚠ QA review output missing keys {missing}, keeping original")
@@ -380,7 +577,8 @@ def qa_review_story(story: dict, generated: dict) -> tuple[dict, list[str]]:
     return reviewed, changes
 
 
-def apply_library_reuse(data: dict, library: Lexicon) -> dict:
+def apply_library_reuse(data: dict, library: Lexicon,
+                        key_lang: str = "ko", gloss_lang: str = "en") -> dict:
     """
     Mutate `data` in place to:
       1. Lock vocab glosses to library canonical forms (where the Korean word
@@ -392,15 +590,15 @@ def apply_library_reuse(data: dict, library: Lexicon) -> dict:
     Returns a report dict describing what was reused / replaced.
     """
     day_vocab = data["vocab"]
-    day_vocab_set = [v["ko"] for v in day_vocab]
+    day_vocab_set = [v[key_lang] for v in day_vocab]
 
-    # 1. Lock glosses
+    # 1. Lock glosses (store fields are positional: "ko"=key term, "en"=gloss)
     locked = []
     for v in day_vocab:
-        existing = library.lookup_vocab(v["ko"])
-        if existing and existing["canonical_en"] != v["en"]:
-            locked.append((v["ko"], v["en"], existing["canonical_en"]))
-            v["en"] = existing["canonical_en"]
+        existing = library.lookup_vocab(v[key_lang])
+        if existing and existing["canonical_en"] != v[gloss_lang]:
+            locked.append((v[key_lang], v[gloss_lang], existing["canonical_en"]))
+            v[gloss_lang] = existing["canonical_en"]
 
     # 2. Find cached examples that cover today's vocab (greedy set cover)
     cached, uncovered = library.find_examples_covering(day_vocab_set, max_n=12)
@@ -408,8 +606,8 @@ def apply_library_reuse(data: dict, library: Lexicon) -> dict:
     # Normalize cached examples to {ko, en, vocab_covered}
     cached_examples = [
         {
-            "ko": ex["ko"],
-            "en": ex["en"],
+            key_lang: ex["ko"],
+            gloss_lang: ex["en"],
             "vocab_covered": sorted(set(ex["vocab_covered"]) & set(day_vocab_set)),
         }
         for ex in cached
@@ -417,12 +615,12 @@ def apply_library_reuse(data: dict, library: Lexicon) -> dict:
 
     # 3. Greedy fill from Claude's fresh examples for remaining uncovered vocab
     # First, annotate Claude's examples with which of today's vocab they contain.
-    def coverage_of(ex_ko: str) -> list[str]:
-        return [v for v in day_vocab_set if v in ex_ko]
+    def coverage_of(ex_text: str) -> list[str]:
+        return [v for v in day_vocab_set if v in ex_text]
 
     fresh_candidates = []
     for ex in data["examples"]:
-        cov = coverage_of(ex["ko"])
+        cov = coverage_of(ex[key_lang])
         if cov:
             fresh_candidates.append({**ex, "vocab_covered": cov})
 
@@ -448,7 +646,8 @@ def apply_library_reuse(data: dict, library: Lexicon) -> dict:
     combined = cached_examples + fresh_picks
     combined.sort(key=lambda ex: min((vocab_idx.get(v, 999) for v in ex["vocab_covered"]), default=999))
     data["examples"] = [
-        {"ko": ex["ko"], "en": ex["en"], "vocab_covered": ex["vocab_covered"]}
+        {key_lang: ex[key_lang], gloss_lang: ex[gloss_lang],
+         "vocab_covered": ex["vocab_covered"]}
         for ex in combined
     ]
 
@@ -692,6 +891,214 @@ def build_turns_for_story(story_data: dict, date_iso: str) -> tuple[list[dict], 
     return turns, practice_sets
 
 
+
+def build_turns_for_story_en(story_data: dict, date_iso: str) -> tuple[list[dict], list[dict]]:
+    """en-edition mirror of build_turns_for_story: English practiced (Voice A),
+    Korean glosses (Voice B). Same role machinery, languages swapped."""
+    turns: list[dict] = []
+    idx = {
+        "vocab_word": [],
+        "vocab_block": [],
+        "example_block": [],
+        "example_en": [],
+        "expression_block": [],
+        "expression_en": [],
+        "summary_en_sentence": [],
+        "summary_en_range": None,
+        "korean_summary_block": None,
+    }
+
+    def add(speaker: str, lang: str, text: str, role: str = "unique", library_text_key: str | None = None) -> int:
+        turn: dict = {"speaker": speaker, "lang": lang, "text": text, "role": role}
+        if library_text_key is not None:
+            turn["library_text_key"] = library_text_key
+        turns.append(turn)
+        return len(turns) - 1
+
+    # --- Story intro (EN title → KO translation) ---------------------------
+    intro_en_idx = add("A", "en", story_data["track_title_en"], role="track_intro_en")
+    intro_ko_idx = add("B", "ko", story_data["track_title_ko"], role="track_intro_ko")
+    track_intro_range = (intro_en_idx, intro_ko_idx)
+
+    # --- Section: Vocabulary / 어휘 -----------------------------------------
+    add("A", "en", "Vocabulary", role="section_header_en")
+    add("B", "ko", "어휘",       role="section_header_ko")
+
+    for v in story_data["vocab"]:
+        en_idx = add("A", "en", v["en"], role="vocab_word",  library_text_key=v["en"])
+        ko_idx = add("B", "ko", v["ko"], role="vocab_gloss", library_text_key=v["en"])
+        idx["vocab_word"].append(en_idx)
+        idx["vocab_block"].append((en_idx, ko_idx))
+
+    # --- Section: Example sentences / 예문 ----------------------------------
+    add("A", "en", "Example sentences", role="section_header_en")
+    add("B", "ko", "예문",              role="section_header_ko")
+
+    for ex in story_data["examples"]:
+        en_idx = add("A", "en", ex["en"], role="example_en", library_text_key=ex["en"])
+        ko_idx = add("B", "ko", ex["ko"], role="example_ko", library_text_key=ex["en"])
+        idx["example_en"].append(en_idx)
+        idx["example_block"].append((en_idx, ko_idx))
+
+    # --- Section: Key expressions / 표현 ------------------------------------
+    add("A", "en", "Key Expressions", role="section_header_en")
+    add("B", "ko", "표현",            role="section_header_ko")
+
+    for ex in story_data["expressions"]:
+        en_idx = add("A", "en", ex["en"], role="expression_en")
+        ko_idx = add("B", "ko", ex["ko"], role="expression_ko")
+        idx["expression_en"].append(en_idx)
+        idx["expression_block"].append((en_idx, ko_idx))
+
+    # --- Section: News (easy English summary) ------------------------------
+    add("A", "en", "News", role="section_header_en")
+    add("B", "ko", "뉴스", role="section_header_ko")
+    add("A", "en", "Here's today's summary in easy English.", role="summary_intro_en")
+    add("B", "ko", "오늘의 쉬운 영어 요약입니다.",             role="summary_intro_ko")
+
+    summary_easy_start = len(turns)
+    for sentence in story_data["summary_en_easy"]:
+        i = add("A", "en", sentence, role="summary_en_easy")
+        idx["summary_en_sentence"].append(i)
+    summary_easy_end = len(turns) - 1
+    idx["summary_en_range"] = (summary_easy_start, summary_easy_end)
+
+    # --- Korean summary block (comprehension cushion) -----------------------
+    ko_intro_en_idx = add("A", "en", "Here's the full summary, in Korean.", role="summary_intro_en")
+    ko_intro_ko_idx = add("B", "ko", "오늘의 한국어 요약입니다.",           role="summary_intro_ko")
+    ko_summary_start = len(turns)
+    for sentence in story_data["summary_ko"]:
+        add("B", "ko", sentence, role="summary_ko")
+    ko_summary_end = len(turns) - 1
+    idx["korean_summary_block"] = (ko_intro_en_idx, ko_summary_end)
+
+    # --- Natural English summary block (advanced listening) ----------------
+    nat_intro_en_idx = add("A", "en", "And now, the natural English version.", role="summary_intro_en")
+    nat_intro_ko_idx = add("B", "ko", "이제 자연스러운 영어 뉴스입니다.",      role="summary_intro_ko")
+    nat_summary_start = len(turns)
+    for sentence in story_data["summary_en_natural"]:
+        add("A", "en", sentence, role="summary_en_natural")
+    nat_summary_end = len(turns) - 1
+    idx["natural_summary_block"] = (nat_intro_en_idx, nat_summary_end)
+    idx["natural_summary_english_range"] = (nat_summary_start, nat_summary_end)
+
+    # === Build PracticeSets =================================================
+    beginner_clips: list[dict] = []
+    beginner_clips.append({
+        "turn_range": list(track_intro_range),
+        "title": "Headline",
+        "languageCode": None,
+    })
+    beginner_clips.append({
+        "turn_range": [track_intro_range[1] + 1, track_intro_range[1] + 2],
+        "title": "Vocabulary / 어휘",
+        "languageCode": None,
+    })
+    for i, block in enumerate(idx["vocab_block"], start=1):
+        en_word = story_data["vocab"][i - 1]["en"]
+        beginner_clips.append({
+            "turn_range": list(block),
+            "title": f"Vocab {i}: {en_word}",
+            "languageCode": None,
+        })
+    after_vocab = idx["vocab_block"][-1][1]
+    beginner_clips.append({
+        "turn_range": [after_vocab + 1, after_vocab + 2],
+        "title": "Example sentences / 예문",
+        "languageCode": None,
+    })
+    for i, block in enumerate(idx["example_block"], start=1):
+        beginner_clips.append({
+            "turn_range": list(block),
+            "title": f"Example {i}",
+            "languageCode": None,
+        })
+    after_examples = idx["example_block"][-1][1]
+    beginner_clips.append({
+        "turn_range": [after_examples + 1, after_examples + 2],
+        "title": "Key Expressions / 표현",
+        "languageCode": None,
+    })
+    for i, block in enumerate(idx["expression_block"], start=1):
+        beginner_clips.append({
+            "turn_range": list(block),
+            "title": f"Expression {i}",
+            "languageCode": None,
+        })
+    after_expressions = idx["expression_block"][-1][1]
+    beginner_clips.append({
+        "turn_range": [after_expressions + 1, idx["summary_en_range"][1]],
+        "title": "News (Easy English summary)",
+        "languageCode": "en-US",
+    })
+    beginner_clips.append({
+        "turn_range": list(idx["korean_summary_block"]),
+        "title": "Korean summary",
+        "languageCode": "ko-KR",
+    })
+    beginner_clips.append({
+        "turn_range": list(idx["natural_summary_block"]),
+        "title": "Natural English summary",
+        "languageCode": "en-US",
+    })
+
+    # Set 2 — English phrase loops — every English-only stretch as its own clip
+    set2_clips: list[dict] = []
+    for i, word_turn in enumerate(idx["vocab_word"], start=1):
+        en_word = story_data["vocab"][i - 1]["en"]
+        set2_clips.append({
+            "turn_range": [word_turn, word_turn],
+            "title": f"Vocab {i}: {en_word}",
+            "languageCode": "en-US",
+        })
+    for i, en_turn in enumerate(idx["example_en"], start=1):
+        set2_clips.append({
+            "turn_range": [en_turn, en_turn],
+            "title": f"Example {i}",
+            "languageCode": "en-US",
+        })
+    for i, en_turn in enumerate(idx["expression_en"], start=1):
+        set2_clips.append({
+            "turn_range": [en_turn, en_turn],
+            "title": f"Expression {i}",
+            "languageCode": "en-US",
+        })
+    for i, en_turn in enumerate(idx["summary_en_sentence"], start=1):
+        set2_clips.append({
+            "turn_range": [en_turn, en_turn],
+            "title": f"Summary sentence {i}",
+            "languageCode": "en-US",
+        })
+
+    set3_clips = [{
+        "turn_range": list(idx["summary_en_range"]),
+        "title": "Easy English summary",
+        "languageCode": "en-US",
+    }]
+
+    set4_clips = [{
+        "turn_range": list(idx["natural_summary_english_range"]),
+        "title": "Natural English summary",
+        "languageCode": "en-US",
+    }]
+
+    practice_sets = [
+        {"title": "Beginner (with Korean)",   "displayOrder": 0, "clips": beginner_clips},
+        {"title": "English phrase loops",     "displayOrder": 1, "clips": set2_clips},
+        {"title": "Easy English summary",     "displayOrder": 2, "clips": set3_clips},
+        {"title": "Natural English summary",  "displayOrder": 3, "clips": set4_clips},
+    ]
+    return turns, practice_sets
+
+
+def render_date_titles_en(date: str) -> tuple[str, str]:
+    y, m, d = date.split("-")
+    yi, mi, di = int(y), int(m), int(d)
+    ko = f"{yi}년 {mi}월 {di}일 영어 뉴스"
+    en = f"Daily English News, {EN_MONTHS[mi]} {di}, {yi}"
+    return ko, en
+
+
 def render_date_titles(date: str) -> tuple[str, str]:
     y, m, d = date.split("-")
     yi, mi, di = int(y), int(m), int(d)
@@ -710,25 +1117,34 @@ def main() -> int:
     chosen = json.loads(chosen_path.read_text(encoding="utf-8"))
     stories = chosen["stories"]
 
-    pack_id = f"news_{date.replace('-', '_')}"
-    pack_title_ko, pack_title_en = render_date_titles(date)
+    ed = args.edition
+    sfx = edition.suffix(ed)
+    pack_id = f"news{sfx}_{date.replace('-', '_')}"
+    if ed == "ko":
+        pack_title_ko, pack_title_en = render_date_titles(date)
+    else:
+        pack_title_ko, pack_title_en = render_date_titles_en(date)
 
-    out_path = WORK_ROOT / date / "script.json"
+    out_path = WORK_ROOT / date / f"script{sfx}.json"
 
     if not args.config.exists():
         raise SystemExit(f"❌ llm.yaml not found: {args.config}")
     llm_cfg = yaml.safe_load(args.config.read_text(encoding="utf-8")) or {}
 
-    print(f"═══ Generating script for {date} ═══")
+    print(f"═══ Generating script for {date} (edition: {ed}) ═══")
     print(f"  Pack ID:   {pack_id}")
     print(f"  Title:     {pack_title_ko} / {pack_title_en}")
     print(f"  Stories:   {len(stories)}")
     print(f"  Output:    {out_path}")
     print()
 
+    prompt_builder = build_story_prompt if ed == "ko" else build_story_prompt_en
+    turns_builder = build_turns_for_story if ed == "ko" else build_turns_for_story_en
+    key_lang, gloss_lang = ("ko", "en") if ed == "ko" else ("en", "ko")
+
     if not args.commit:
         sample = stories[0]
-        prompt = build_story_prompt(sample)
+        prompt = prompt_builder(sample)
         print("--- DRY RUN — sample prompt for first story ---")
         print(prompt[:2000])
         if len(prompt) > 2000:
@@ -740,7 +1156,7 @@ def main() -> int:
     # Install cost recorder + LLM providers (per-step)
     global _cost_recorder, _llm_script, _llm_qa, _max_tokens_script, _max_tokens_qa
     work_date_dir = WORK_ROOT / date
-    _cost_recorder = StepCostRecorder("2_generate_script", work_date_dir)
+    _cost_recorder = StepCostRecorder(f"2_generate_script{sfx}", work_date_dir)
     _llm_script = provider_for_step("script", llm_cfg)
     _max_tokens_script = max_tokens_for_step("script", llm_cfg, default=4096)
     if not args.no_qa:
@@ -754,7 +1170,9 @@ def main() -> int:
     print()
 
     # Load shared library for vocab/example reuse
-    library = Lexicon.load()  # shared store at ~/.langpack/lexicon/ko-en.json
+    # Shared store: ko-en.json keyed by Korean; en-ko.json keyed by English
+    # (store fields are positional: "ko" = key term, "en"/"canonical_en" = gloss)
+    library = Lexicon.load() if ed == "ko" else Lexicon.load(pair="en-ko")
     lib_stats_before = library.stats_summary()
     print(f"📚 Lexicon ({lib_stats_before['pair']}): "
           f"{lib_stats_before['vocab_terms']} vocab, "
@@ -764,7 +1182,7 @@ def main() -> int:
     story_outputs = []
     for s in stories:
         print(f"━━━ [{s['story_id']}] {s['headline'][:70]}")
-        prompt = build_story_prompt(s)
+        prompt = prompt_builder(s)
         raw = call_llm(_llm_script, _max_tokens_script, prompt, label=f"script:{s['story_id']}")
         cleaned = strip_fences(raw)
         try:
@@ -776,7 +1194,7 @@ def main() -> int:
 
         qa_changes: list[str] = []
         if not args.no_qa:
-            data, qa_changes = qa_review_story(s, data)
+            data, qa_changes = qa_review_story(s, data, ed)
             if qa_changes:
                 print(f"     ✎ QA made {len(qa_changes)} change(s):")
                 for c in qa_changes:
@@ -785,11 +1203,11 @@ def main() -> int:
                 print(f"     ✓ QA: no changes needed")
 
         # ── Library reuse: lock glosses + opportunistic example reuse ─────
-        reuse_report = apply_library_reuse(data, library)
+        reuse_report = apply_library_reuse(data, library, key_lang, gloss_lang)
         if reuse_report["locked_glosses"]:
             print(f"     🔒 Library locked {len(reuse_report['locked_glosses'])} gloss(es):")
-            for ko, claude_en, locked_en in reuse_report["locked_glosses"]:
-                print(f"        · {ko}: '{claude_en}' → '{locked_en}' (locked)")
+            for term, fresh_gloss, locked_gloss in reuse_report["locked_glosses"]:
+                print(f"        · {term}: '{fresh_gloss}' → '{locked_gloss}' (locked)")
         print(f"     📚 Examples: {reuse_report['cached_examples_used']} cached + "
               f"{reuse_report['fresh_examples_added']} fresh = "
               f"{reuse_report['final_example_count']} total")
@@ -798,11 +1216,14 @@ def main() -> int:
 
         # Record new vocab + fresh examples back to the library
         for v in data["vocab"]:
-            library.record_vocab(v["ko"], v["en"], date)
+            library.record_vocab(v[key_lang], v[gloss_lang], date)
         for ex in data["examples"]:
-            library.record_example(ex["ko"], ex["en"], ex.get("vocab_covered", []), date)
+            library.record_example(ex[key_lang], ex[gloss_lang], ex.get("vocab_covered", []), date)
 
-        turns, practice_sets = build_turns_for_story(data, date)
+        turns, practice_sets = turns_builder(data, date)
+        summary_fields = (("summary_ko_easy", "summary_ko_natural", "summary_en")
+                          if ed == "ko" else
+                          ("summary_en_easy", "summary_en_natural", "summary_ko"))
         story_outputs.append({
             "story_id": s["story_id"],
             "category": s["category"],
@@ -814,9 +1235,7 @@ def main() -> int:
             "vocab": data["vocab"],
             "examples": data["examples"],
             "expressions": data["expressions"],
-            "summary_ko_easy": data["summary_ko_easy"],
-            "summary_ko_natural": data["summary_ko_natural"],
-            "summary_en": data["summary_en"],
+            **{k: data[k] for k in summary_fields},
             "qa_changes": qa_changes,
             "turns": turns,
             "practice_sets": practice_sets,
@@ -825,6 +1244,7 @@ def main() -> int:
 
     payload = {
         "date": date,
+        "edition": ed,
         "pack_id": pack_id,
         "pack_title_ko": pack_title_ko,
         "pack_title_en": pack_title_en,

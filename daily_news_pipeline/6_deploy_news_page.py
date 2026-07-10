@@ -28,6 +28,8 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+
+import edition
 import json
 import shutil
 import subprocess
@@ -56,6 +58,7 @@ EN_MONTHS = ["", "January", "February", "March", "April", "May", "June",
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Deploy today's news page to sixwandsstudios.com")
     p.add_argument("--date", help="YYYY-MM-DD (default: today, US/Eastern)")
+    edition.add_edition_arg(p)
     p.add_argument("--commit", action="store_true", help="Git-commit + upload to S3.")
     p.add_argument("--redeploy", action="store_true",
                    help="Allow overwriting an already-published day page (still cp-only, never deletes).")
@@ -134,6 +137,10 @@ def render_archive_page(news_root: Path) -> str:
 
 def main() -> int:
     args = parse_args()
+    if getattr(args, "edition", "ko") != "ko":
+        print("⏭ English-edition web pages are not yet supported (see "
+              "ENGLISH_NEWS_EDITION_SPEC.md step 6) — nothing to do.")
+        return 0
     date = args.date or today_eastern()
 
     work_dir = WORK_ROOT / date

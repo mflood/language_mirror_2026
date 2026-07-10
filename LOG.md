@@ -5,6 +5,19 @@ listed; consult `git log` for the full history.
 
 ---
 
+## 2026-07-10 — English News Edition shipped (Korean learners of English)
+
+- Daily pipeline now produces two editions from one curate pass: ko (original)
+  and en (English audio, Korean glosses) via --edition on steps 2–5.
+  Publishes news_en_YYYY_MM_DD + lmaudio/news_en_latest alias — the app's
+  "Daily English News" row and locale-aware reminder were already wired.
+- studypack adapter is edition-aware (Languages.primary from script,
+  direction-agnostic translation pairing); new en-ko lexicon store.
+- First production run verified via launchd kickstart: both aliases live,
+  248/248 en spans carry ko glosses, voices mirrored (en→A, ko→B).
+  ko edition byte-identical (no regression). ~$4.2/day for both editions.
+
+
 ## 2026-07-04/05 — langpack platform: pipeline decomposed into six subsystems
 
 - Extracted the daily-news pipeline's shared machinery into standalone repos

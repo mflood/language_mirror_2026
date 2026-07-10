@@ -50,7 +50,17 @@ day, which the library cache picks up across packs):
 ## Architecture
 
 The pipeline is 8 numbered steps (incl. 2b) plus a cron entry point, two
-local helper modules, and five langpack subsystem packages. Each step has a single responsibility and writes its output to
+local helper modules, and five langpack subsystem packages.
+
+**Two editions per day** (ENGLISH_NEWS_EDITION_SPEC.md): steps 0–1 curate
+once; steps 2–5 then run per edition via `--edition {ko,en}` (default ko).
+The `en` edition mirrors the pack — English audio practiced, Korean glosses —
+for Korean learners of English, publishing to `lmaudio/news_en_YYYY_MM_DD/`
+and the `lmaudio/news_en_latest/bundle.json` alias. Per-edition artifacts
+share `work/<date>/` with an `_en` suffix (`script_en.json`, `audio_en/`,
+`bundle_en.json`, `qr_en.png`). The en vocab library is a separate lexicon
+store (`~/.langpack/lexicon/en-ko.json`, keyed by English term). Step 6 web
+pages are ko-only for now. Each step has a single responsibility and writes its output to
 `work/<date>/`. Steps can be re-run independently.
 
 ```

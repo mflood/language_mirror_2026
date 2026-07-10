@@ -27,6 +27,8 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+
+import edition
 import re
 import sys
 from pathlib import Path
@@ -44,7 +46,8 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Translate easy-summary sentences to English")
     p.add_argument("--date", help="YYYY-MM-DD (default: today, US/Eastern)")
     p.add_argument("--force", action="store_true",
-                   help="Re-translate even if summary_en_easy already exists")
+                   help="Re-translate even if the gloss field already exists")
+    edition.add_edition_arg(p)
     return p.parse_args()
 
 
@@ -53,19 +56,25 @@ def today_eastern() -> str:
     return now.strftime("%Y-%m-%d")
 
 
-def build_prompt(story: dict) -> str:
-    sentences = story["summary_ko_easy"]
+# Per-edition: (source summary field, gloss field to write, prompt builder)
+def build_prompt(story: dict, ed: str = "ko") -> str:
+    if ed == "ko":
+        sentences = story["summary_ko_easy"]
+        src_lang, dst_lang = "Korean", "English"
+    else:
+        sentences = story["summary_en_easy"]
+        src_lang, dst_lang = "English", "Korean"
     numbered = "\n".join(f"{i + 1}. {s}" for i, s in enumerate(sentences))
-    return f"""Translate each numbered Korean sentence into natural, simple English.
-These are sentences from an easy Korean news summary for language learners.
+    return f"""Translate each numbered {src_lang} sentence into natural, simple {dst_lang}.
+These are sentences from an easy {src_lang} news summary for language learners.
 Context — the story headline: {story.get('headline', '(unknown)')}
 
 Rules:
 - Translate each sentence independently and faithfully (no merging, no adding facts).
-- Keep the English simple and natural, matching the easy register of the Korean.
+- Keep the {dst_lang} simple and natural, matching the easy register of the {src_lang}.
 - Return ONLY a JSON array of strings, one per sentence, same order, same count ({len(sentences)}).
 
-Korean sentences:
+{src_lang} sentences:
 {numbered}"""
 
 
@@ -87,9 +96,14 @@ def main() -> int:
     date = args.date or today_eastern()
     work_dir = WORK_ROOT / date
 
-    script_path = work_dir / "script.json"
+    ed = args.edition
+    sfx = edition.suffix(ed)
+    src_field, dst_field = (("summary_ko_easy", "summary_en_easy") if ed == "ko"
+                            else ("summary_en_easy", "summary_ko_easy"))
+
+    script_path = work_dir / f"script{sfx}.json"
     if not script_path.exists():
-        raise SystemExit(f"❌ script.json not found at {script_path}. Run step 2 first.")
+        raise SystemExit(f"❌ {script_path.name} not found at {script_path}. Run step 2 first.")
 
     script = json.loads(script_path.read_text(encoding="utf-8"))
 
@@ -97,30 +111,30 @@ def main() -> int:
     provider: LLMProvider = provider_for_step("translate_easy", llm_cfg)
     max_tokens = max_tokens_for_step("translate_easy", llm_cfg)
 
-    recorder = StepCostRecorder("2b_translate_easy", work_dir)
+    recorder = StepCostRecorder(f"2b_translate_easy{sfx}", work_dir)
 
     translated = 0
     skipped = 0
     for story in script["stories"]:
-        ko = story.get("summary_ko_easy") or []
-        if not ko:
-            print(f"  ⏭  {story['story_id']}: no summary_ko_easy, skipping")
+        src_sents = story.get(src_field) or []
+        if not src_sents:
+            print(f"  ⏭  {story['story_id']}: no {src_field}, skipping")
             skipped += 1
             continue
-        existing = story.get("summary_en_easy") or []
-        if not args.force and len(existing) == len(ko):
-            print(f"  ⏭  {story['story_id']}: summary_en_easy already present ({len(ko)} sentences)")
+        existing = story.get(dst_field) or []
+        if not args.force and len(existing) == len(src_sents):
+            print(f"  ⏭  {story['story_id']}: {dst_field} already present ({len(src_sents)} sentences)")
             skipped += 1
             continue
 
-        print(f"  📡 {story['story_id']}: translating {len(ko)} sentences → {provider.name}/{provider.model}")
-        resp = provider.chat(build_prompt(story), max_tokens=max_tokens)
+        print(f"  📡 {story['story_id']}: translating {len(src_sents)} sentences → {provider.name}/{provider.model}")
+        resp = provider.chat(build_prompt(story, ed), max_tokens=max_tokens)
         cost = recorder.add_llm_call(
             provider=resp.provider, model=resp.model,
             input_tokens=resp.input_tokens, output_tokens=resp.output_tokens,
             label=f"translate_easy:{story['story_id']}", response_chars=len(resp.text),
         )
-        story["summary_en_easy"] = parse_response(resp.text, len(ko))
+        story[dst_field] = parse_response(resp.text, len(src_sents))
         print(f"     ✓ input={resp.input_tokens} output={resp.output_tokens} tokens  est_cost=${cost:.4f}")
         translated += 1
 

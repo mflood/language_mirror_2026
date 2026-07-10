@@ -136,14 +136,14 @@ generated dialogue) or public domain (the Hughes poem) — no source article,
 no exposure. This guard is specifically for the news edition's article-derived
 text.
 
-## Acceptance
+## Acceptance (all verified 2026-07-10 — first production run via launchd)
 
-1. `run_daily.sh --commit` produces BOTH `news_latest` and `news_en_latest`
+1. ✅ `run_daily.sh --commit` produces BOTH `news_latest` and `news_en_latest`
    bundles from one curate pass.
-2. The English bundle validates against the iOS schema (same as the embedded
+2. ✅ The English bundle validates against the iOS schema (same as the embedded
    `starter_english_*` packs: `transcripts[].translations.ko` present on every
    span) and plays in the app via the "Daily English News" row.
-3. The Korean edition output is byte-for-byte unchanged when run without
+3. ✅ The Korean edition output is byte-for-byte unchanged when run without
    `--edition en` (no regression).
 4. Every published English news bundle passes `check_verbatim_overlap.py`
    against its source article (no 6+ word verbatim runs) — a copyright gate,

@@ -23,6 +23,8 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+
+import edition
 import json
 from pathlib import Path
 
@@ -33,14 +35,19 @@ WORK_ROOT = HERE / "work"
 
 DESTINATION = "lmaudio"
 PREFIX_TEMPLATE = "lmaudio/{bundle_id}"
-# Stable alias the iOS daily reminder resolves (NEWS_PUSH_PIPELINE_SPEC.md).
-LATEST_ALIAS_KEY = "lmaudio/news_latest/bundle.json"
+# Stable aliases the iOS daily reminder resolves (NEWS_PUSH_PIPELINE_SPEC.md +
+# ENGLISH_NEWS_EDITION_SPEC.md): one per edition.
+LATEST_ALIAS_KEYS = {
+    "ko": "lmaudio/news_latest/bundle.json",
+    "en": "lmaudio/news_en_latest/bundle.json",
+}
 
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Publish the day's bundle to S3 + generate QR")
     p.add_argument("--date", help="YYYY-MM-DD (default: today, US/Eastern)")
     p.add_argument("--commit", action="store_true", help="Actually upload to S3.")
+    edition.add_edition_arg(p)
     p.add_argument("--redeploy", action="store_true",
                    help="Allow overwriting an already-published pack (cp-only, never deletes).")
     return p.parse_args()
@@ -55,23 +62,27 @@ def main() -> int:
     args = parse_args()
     date = args.date or today_eastern()
 
+    sfx = edition.suffix(args.edition)
     work_dir = WORK_ROOT / date
-    bundle_path = work_dir / "bundle.json"
-    audio_dir = work_dir / "audio"
+    bundle_path = work_dir / f"bundle{sfx}.json"
+    audio_dir = work_dir / f"audio{sfx}"
     if not bundle_path.exists():
-        raise SystemExit(f"❌ bundle.json not found at {bundle_path}. Run step 4 first.")
+        raise SystemExit(f"❌ {bundle_path.name} not found at {bundle_path}. Run step 4 first.")
 
     manifest = json.loads(bundle_path.read_text(encoding="utf-8"))
     pack_id = manifest["id"]
     prefix = PREFIX_TEMPLATE.format(bundle_id=pack_id)
+    latest_alias_key = LATEST_ALIAS_KEYS[args.edition]
 
     dest = load_destination(DESTINATION)
     mp3_files = sorted(p for p in audio_dir.glob("*.mp3") if p.is_file())
+    # The S3 key is always bundle.json even when the local file is bundle_en.json
+    plan = [(bundle_path, f"{prefix}/bundle.json")]
+    plan += [(f, f"{prefix}/{f.name}") for f in mp3_files]
     files_to_upload = [bundle_path] + mp3_files
-    plan = [(f, f"{prefix}/{f.name}") for f in files_to_upload]
 
-    manifest_url = dest.public_url(f"{prefix}/{bundle_path.name}")
-    qr_path = work_dir / "qr.png"
+    manifest_url = dest.public_url(f"{prefix}/bundle.json")
+    qr_path = work_dir / f"qr{sfx}.png"
 
     print(f"═══ Publishing {pack_id} for {date} ═══")
     print(f"  Destination:   {DESTINATION} (s3://{dest.bucket}/)")
@@ -94,10 +105,10 @@ def main() -> int:
     # run slips. Only bundle.json is aliased — its pack id and audio URLs stay
     # dated, so the app dedups against the real pack and audio isn't duplicated.
     print()
-    print(f"🔗 Updating {LATEST_ALIAS_KEY} alias...")
-    publish(dest, [(bundle_path, LATEST_ALIAS_KEY)],
-            allow_overwrite_keys=(LATEST_ALIAS_KEY,),   # rolling alias, always overwritten
-            invalidate_paths=[f"/{LATEST_ALIAS_KEY}"],
+    print(f"🔗 Updating {latest_alias_key} alias...")
+    publish(dest, [(bundle_path, latest_alias_key)],
+            allow_overwrite_keys=(latest_alias_key,),   # rolling alias, always overwritten
+            invalidate_paths=[f"/{latest_alias_key}"],
             commit=True)
 
     print("🔳 Generating QR code...")

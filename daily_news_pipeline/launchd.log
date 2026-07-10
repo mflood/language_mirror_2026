@@ -1,0 +1,2698 @@
+[19:12:29] ═══════════════════════════════════════════════════════════
+[19:12:29]   Daily news pipeline · date=2026-07-06 · commit=NO
+[19:12:30]   Log: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-06/run.log
+[19:12:30] ═══════════════════════════════════════════════════════════
+[19:12:30] ═══ 0/7 fetch feeds ═══
+═══ Fetching feeds for 2026-07-06 ═══
+  ↓ NPR                  (hard) 10 items
+  ↓ Guardian US          (hard) 20 items
+  ↓ BBC US/Canada        (hard) 20 items
+  ↓ CBS News             (hard) 20 items
+  ↓ Politico             (hard) 20 items
+  ↓ Fox News             (hard) 20 items
+  ↓ Washington Examiner  (hard) 10 items
+  ↓ NY Post              (hard) 20 items
+  ↓ Ars Technica         (tech) 20 items
+  ↓ Science News         (science) 20 items
+  ↓ ESPN                 (sports) 20 items
+  ↓ NPR Arts             (arts) 10 items
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-06/feeds.json (210 items)
+[19:12:33] ✓ 0/7 fetch feeds
+[19:12:33] ═══ 1/7 curate ═══
+═══ Curating 210 items for 2026-07-06 ═══
+  Output:  /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-06/chosen.json
+
+--- DRY RUN — prompt that WOULD be sent ---
+You are curating today's U.S. news for a Korean-language learning podcast.
+The audience is English speakers learning Korean who want to stay in touch with
+U.S. news (not Korean domestic news) while practicing Korean comprehension.
+
+PEDAGOGICAL CONSTRAINT — this matters more than "most important news":
+Politics and diplomacy stories use vocabulary-dense Korean (외교, 협상, 봉쇄,
+해제, 비상사태, 결의안, 제재…) and abstract sentence structures that are
+genuinely hard for intermediate learners. Sports, science, and human-interest
+stories use more concrete, learnable vocabulary (선수, 결승선, 사고, 환자…)
+with simpler sentence shapes. We want the pack to teach AND inform.
+
+CURATION TARGET (4 stories total):
+- 2 hard-news stories — the most-covered top stories of the day
+- 2 feature stories — concrete subject matter, ideally from two different
+  genres
+
+FEATURE GENRE PREFERENCE (apply when choosing the 2 features):
+  Rank from most-preferred to least-preferred:
+    1. explainer / how-it-works / human-interest — best for learners
+       (vocab transfers to daily life: 가방, 공항, 학교, 병원, 가족 등).
+       These often appear in the HARD pool from NPR/CBS/Politico under
+       innocuous-sounding headlines like "How X works" or "Why Y matters".
+    2. science (new discoveries, health, environment)
+    3. arts / culture / books / film
+    4. tech (only if non-politics)
+    5. sports — LAST resort. Sports vocab (구단, 결승, 시즌) does not transfer
+       well to other contexts. Our audience leans general-interest, not fans.
+       Only pick a sports story if no other feature option exists.
+
+  When the FEATURE POOL is dominated by sports/tech, look in the HARD POOL
+  for explainer-style stories — those qualify as features. Reclassify them
+  by listing their category as "feature" in your output.
+
+CATEGORY MIX RULE:
+- If ALL the top hard-news stories are politics/diplomacy/conflict (vocab
+  dense), pick only 1 hard-news story and pull a 3rd feature instead.
+- Prefer breadth: 2 different feature topics > 2 in the same to
+... [truncated, full length 57163 chars] ...
+
+Re-run with --commit to actually curate + fetch bodies.
+[19:12:33] ✓ 1/7 curate
+[19:12:33] (dry-run mode — stopping after step 1; re-run with --commit to continue)
+[10:00:05] ═══════════════════════════════════════════════════════════
+[10:00:05]   Daily news pipeline · date=2026-07-07 · commit=--commit
+[10:00:05]   Log: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/run.log
+[10:00:05] ═══════════════════════════════════════════════════════════
+[10:00:05] ═══ 0/7 fetch feeds ═══
+═══ Fetching feeds for 2026-07-07 ═══
+  ↓ NPR                  (hard) 10 items
+  ↓ Guardian US          (hard) 20 items
+  ↓ BBC US/Canada        (hard) 20 items
+  ↓ CBS News             (hard) 20 items
+  ↓ Politico             (hard) 20 items
+  ↓ Fox News             (hard) 20 items
+  ↓ Washington Examiner  (hard) 10 items
+  ↓ NY Post              (hard) 20 items
+  ↓ Ars Technica         (tech) 20 items
+  ↓ Science News         (science) 20 items
+  ↓ ESPN                 (sports) 20 items
+  ↓ NPR Arts             (arts) 10 items
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/feeds.json (210 items)
+[10:00:08] ✓ 0/7 fetch feeds
+[10:00:08] ═══ 1/7 curate ═══
+═══ Curating 210 items for 2026-07-07 ═══
+  Output:  /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/chosen.json
+
+📡 Using LLM: anthropic/claude-sonnet-4-5 (max_tokens=2048)
+  📡 [curate] → anthropic
+     model=claude-sonnet-4-5  prompt_chars=55826  max_tokens=2048
+     ✓ usage: input=14439 output=257 tokens  est_cost=$0.0472  response_chars=970
+📰 Claude chose 4 stories. Fetching bodies...
+  ↓ story_1: Graham Platner faces calls to leave Maine Senate race after sexual ass
+     ↓ trafilatura GET https://www.npr.org/2026/07/07/nx-s1-5884020/graham-platner-faces-calls-to-leave-maine-senate-race-after-sexual-assault-allegation
+     ↓ fetched 134646 bytes; extracting main content...
+     ✓ extracted 345 chars (capped at 3000)
+  ↓ story_2: Trump lauds Erdogan, announces lifting sanctions as NATO summit begins
+     ↓ trafilatura GET https://www.cbsnews.com/news/nato-summit-begins-in-turkey-as-trump-pushes-for-more-defense-spending/
+     ↓ fetched 638722 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_3: Meet 'Project 2029' — and its war on the annoyance economy
+     ↓ trafilatura GET https://www.npr.org/sections/planet-money/2026/07/07/g-s1-131879/meet-project-2029-and-its-war-on-the-annoyance-economy
+     ↓ fetched 167691 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_4: Hate food waste? 7 creative ways to turn your leftovers into a new mea
+     ↓ trafilatura GET https://www.npr.org/2026/07/06/nx-s1-5879248/hate-food-waste-7-creative-ways-to-turn-your-leftovers-into-a-new-meal
+     ↓ fetched 155476 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/chosen.json (4 stories)
+[10:00:18] ✓ 1/7 curate
+[10:00:18] ═══ 2/7 generate script ═══
+═══ Generating script for 2026-07-07 ═══
+  Pack ID:   news_2026_07_07
+  Title:     2026년 7월 7일 뉴스 / US News, July 7, 2026
+  Stories:   4
+  Output:    /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/script.json
+
+📡 Script LLM: anthropic/claude-sonnet-4-5  (max_tokens=4096)
+📡 QA LLM:     openai/gpt-5.5  (max_tokens=4096)  ← cross-model review
+
+📚 Lexicon (ko-en): 672 vocab, 393 examples
+
+━━━ [story_1] Graham Platner faces calls to leave Maine Senate race after sexual ass
+     📡 [script:story_1] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=7624  max_tokens=4096
+        ✓ usage: input=2582 output=933 tokens  est_cost=$0.0217  response_chars=1822
+        ↳ running total: input=2582 output=933 cost=$0.0217
+     📡 [qa:story_1] → openai
+        model=gpt-5.5  prompt_chars=5948  max_tokens=4096
+        ✓ usage: input=1752 output=4096 tokens  est_cost=$0.0445  response_chars=0
+        ↳ running total: input=4334 output=5029 cost=$0.0662
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 0 cached + 4 fresh = 4 total
+        ⚠ Uncovered vocab (no example): ['보도하다', '부인하다', '직면하다', '철회하다']
+   ✓ 55 turns, 42 clips across 3 sets
+━━━ [story_2] Trump lauds Erdogan, announces lifting sanctions as NATO summit begins
+     📡 [script:story_2] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10269  max_tokens=4096
+        ✓ usage: input=3195 output=1351 tokens  est_cost=$0.0299  response_chars=2655
+        ↳ running total: input=7529 output=6380 cost=$0.0961
+     📡 [qa:story_2] → openai
+        model=gpt-5.5  prompt_chars=8469  max_tokens=4096
+        ✓ usage: input=2350 output=4096 tokens  est_cost=$0.0457  response_chars=0
+        ↳ running total: input=9879 output=10476 cost=$0.1417
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 4 gloss(es):
+        · 해제하다: 'to lift, remove' → 'to lift, release' (locked)
+        · 발표하다: 'to announce' → 'to announce, present' (locked)
+        · 관계: 'relationship, ties' → 'relationship' (locked)
+        · 참여하다: 'to participate, join' → 'to participate' (locked)
+     📚 Examples: 1 cached + 5 fresh = 6 total
+        ⚠ Uncovered vocab (no example): ['강화하다', '발표하다', '참여하다', '해제하다']
+   ✓ 65 turns, 52 clips across 3 sets
+━━━ [story_3] Meet 'Project 2029' — and its war on the annoyance economy
+     📡 [script:story_3] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10252  max_tokens=4096
+        ✓ usage: input=3169 output=1374 tokens  est_cost=$0.0301  response_chars=2644
+        ↳ running total: input=13048 output=11850 cost=$0.1718
+     📡 [qa:story_3] → openai
+        model=gpt-5.5  prompt_chars=8478  max_tokens=4096
+        ✓ usage: input=2371 output=4096 tokens  est_cost=$0.0457  response_chars=0
+        ↳ running total: input=15419 output=15946 cost=$0.2175
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 1 gloss(es):
+        · 요금: 'fee, charge' → 'fee, toll' (locked)
+     📚 Examples: 2 cached + 5 fresh = 7 total
+        ⚠ Uncovered vocab (no example): ['개발하다', '낭비하다', '성가시다', '취소하다']
+   ✓ 69 turns, 56 clips across 3 sets
+━━━ [story_4] Hate food waste? 7 creative ways to turn your leftovers into a new mea
+     📡 [script:story_4] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10270  max_tokens=4096
+        ✓ usage: input=3308 output=1383 tokens  est_cost=$0.0307  response_chars=2537
+        ↳ running total: input=18727 output=17329 cost=$0.2482
+     📡 [qa:story_4] → openai
+        model=gpt-5.5  prompt_chars=8384  max_tokens=4096
+        ✓ usage: input=2417 output=4096 tokens  est_cost=$0.0458  response_chars=0
+        ↳ running total: input=21144 output=21425 cost=$0.2940
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 1 gloss(es):
+        · 굽다: 'to bake' → 'to bake, grill' (locked)
+     📚 Examples: 5 cached + 3 fresh = 8 total
+        ⚠ Uncovered vocab (no example): ['굽다', '만들다', '방법']
+   ✓ 74 turns, 61 clips across 3 sets
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/script.json
+   Cost report: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/costs/2_generate_script.json
+   Total Claude usage: input=21144 output=21425 tokens  est_total_cost=$0.2940
+   📚 Library now: 697 vocab (+25), 410 examples (+17)
+[10:06:32] ✓ 2/7 generate script
+[10:06:32] ═══ 2b/7 translate easy ═══
+  📡 story_1: translating 5 sentences → anthropic/claude-haiku-4-5
+     ✓ input=272 output=75 tokens  est_cost=$0.0005
+  📡 story_2: translating 7 sentences → anthropic/claude-haiku-4-5
+     ✓ input=383 output=121 tokens  est_cost=$0.0008
+  📡 story_3: translating 7 sentences → anthropic/claude-haiku-4-5
+     ✓ input=367 output=122 tokens  est_cost=$0.0008
+  📡 story_4: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=376 output=134 tokens  est_cost=$0.0008
+✅ Updated /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/script.json (4 stories translated, 0 skipped)
+[10:06:40] ✓ 2b/7 translate easy
+[10:06:40] ═══ 3/7 synthesize ═══
+═══ Synthesizing audio for 2026-07-07 (via voicebox) ═══
+  Provider:      elevenlabs/eleven_multilingual_v2 (from tts.yaml)
+  Cache:         /Users/matthewflood/.langpack/cache/audio
+  Stories:       4
+  Total turns:   263  (cache hits 111, to synthesize 152)
+  Chars to debit: 4818  (cap 20000)
+  Estimated cost: $1.2907
+  Output:        /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio
+
+  ▶ story-1/main span 000 synth ko chars=16 key=b72b9061 est=$0.0053
+  ▶ story-1/main span 001 synth en chars=43 key=39d50230 est=$0.0095
+  ⚡ story-1/main span 002 cache HIT key=4d364c1e
+  ⚡ story-1/main span 003 cache HIT key=315a2a4f
+  ▶ story-1/main span 004 synth ko chars=4 key=c6bc7659 est=$0.0013
+  ▶ story-1/main span 005 synth en chars=7 key=b2bcd4c2 est=$0.0015
+  ▶ story-1/main span 006 synth ko chars=2 key=98cc52d9 est=$0.0007
+  ⚡ story-1/main span 007 cache HIT key=7ef5bb1f
+  ▶ story-1/main span 008 synth ko chars=4 key=6a3255e9 est=$0.0013
+  ⚡ story-1/main span 009 cache HIT key=1fc611ed
+  ▶ story-1/main span 010 synth ko chars=3 key=961b1482 est=$0.0010
+  ▶ story-1/main span 011 synth en chars=14 key=9a7c5b04 est=$0.0031
+  ▶ story-1/main span 012 synth ko chars=2 key=89e5810f est=$0.0007
+  ▶ story-1/main span 013 synth en chars=10 key=686fd564 est=$0.0022
+  ▶ story-1/main span 014 synth ko chars=4 key=753e8b8d est=$0.0013
+  ▶ story-1/main span 015 synth en chars=9 key=a2869376 est=$0.0020
+  ⚡ story-1/main span 016 cache HIT key=8d4c05bd
+  ⚡ story-1/main span 017 cache HIT key=488e0633
+  ▶ story-1/main span 018 synth ko chars=2 key=df61c265 est=$0.0007
+  ▶ story-1/main span 019 synth en chars=5 key=ba80ce67 est=$0.0011
+  ⚡ story-1/main span 020 cache HIT key=9414ddfe
+  ⚡ story-1/main span 021 cache HIT key=72b537ee
+  ▶ story-1/main span 022 synth ko chars=17 key=7ebdb4ba est=$0.0056
+  ▶ story-1/main span 023 synth en chars=30 key=12a1351b est=$0.0066
+  ▶ story-1/main span 024 synth ko chars=14 key=d5abb86c est=$0.0046
+  ▶ story-1/main span 025 synth en chars=34 key=d2dc3f78 est=$0.0075
+  ▶ story-1/main span 026 synth ko chars=15 key=50575473 est=$0.0049
+  ▶ story-1/main span 027 synth en chars=38 key=72694dc2 est=$0.0084
+  ▶ story-1/main span 028 synth ko chars=16 key=4f2909df est=$0.0053
+  ▶ story-1/main span 029 synth en chars=29 key=d19871c3 est=$0.0064
+  ⚡ story-1/main span 030 cache HIT key=366f90a8
+  ⚡ story-1/main span 031 cache HIT key=7482a5c6
+  ▶ story-1/main span 032 synth ko chars=10 key=9e29ee9c est=$0.0033
+  ▶ story-1/main span 033 synth en chars=17 key=31cff594 est=$0.0037
+  ⚡ story-1/main span 034 cache HIT key=d627df31
+  ▶ story-1/main span 035 synth en chars=19 key=8e21f209 est=$0.0042
+  ⚡ story-1/main span 036 cache HIT key=48468155
+  ⚡ story-1/main span 037 cache HIT key=98f22f62
+  ⚡ story-1/main span 038 cache HIT key=b49cd69c
+  ⚡ story-1/main span 039 cache HIT key=9c21df61
+  ▶ story-1/main span 040 synth ko chars=33 key=6a1d09db est=$0.0109
+  ▶ story-1/main span 041 synth ko chars=26 key=dd10814c est=$0.0086
+  ▶ story-1/main span 042 synth ko chars=28 key=cc82c061 est=$0.0092
+  ▶ story-1/main span 043 synth ko chars=15 key=a454d4b9 est=$0.0049
+  ▶ story-1/main span 044 synth ko chars=22 key=8080c090 est=$0.0073
+  ⚡ story-1/main span 045 cache HIT key=a74c5d89
+  ⚡ story-1/main span 046 cache HIT key=80849b6a
+  ▶ story-1/main span 047 synth en chars=81 key=01a21b82 est=$0.0178
+  ▶ story-1/main span 048 synth en chars=94 key=367fd51c est=$0.0207
+  ▶ story-1/main span 049 synth en chars=29 key=66557e35 est=$0.0064
+  ⚡ story-1/main span 050 cache HIT key=f42ad9fb
+  ⚡ story-1/main span 051 cache HIT key=59d0f128
+  ▶ story-1/main span 052 synth ko chars=48 key=0b1a4ddc est=$0.0158
+  ▶ story-1/main span 053 synth ko chars=43 key=8ebf728f est=$0.0142
+  ▶ story-1/main span 054 synth ko chars=21 key=1b62b977 est=$0.0069
+  ✓ track story-1/main.mp3 (126555 ms, 55 spans)
+  ▶ story-2/main span 000 synth ko chars=16 key=5a01cf41 est=$0.0053
+  ▶ story-2/main span 001 synth en chars=43 key=a070d9b1 est=$0.0095
+  ⚡ story-2/main span 002 cache HIT key=4d364c1e
+  ⚡ story-2/main span 003 cache HIT key=315a2a4f
+  ▶ story-2/main span 004 synth ko chars=2 key=10a25177 est=$0.0007
+  ▶ story-2/main span 005 synth en chars=9 key=f4bc56d0 est=$0.0020
+  ⚡ story-2/main span 006 cache HIT key=061f1c9b
+  ⚡ story-2/main span 007 cache HIT key=7a85f76c
+  ⚡ story-2/main span 008 cache HIT key=ad70d20c
+  ⚡ story-2/main span 009 cache HIT key=6036db48
+  ▶ story-2/main span 010 synth ko chars=2 key=b0285d1b est=$0.0007
+  ▶ story-2/main span 011 synth en chars=14 key=c277f35e est=$0.0031
+  ▶ story-2/main span 012 synth ko chars=4 key=e711b100 est=$0.0013
+  ▶ story-2/main span 013 synth en chars=6 key=bf7469d1 est=$0.0013
+  ⚡ story-2/main span 014 cache HIT key=204af004
+  ⚡ story-2/main span 015 cache HIT key=09eb10c6
+  ▶ story-2/main span 016 synth ko chars=4 key=123919a4 est=$0.0013
+  ▶ story-2/main span 017 synth en chars=13 key=b07f609c est=$0.0029
+  ▶ story-2/main span 018 synth ko chars=4 key=ae0b821a est=$0.0013
+  ▶ story-2/main span 019 synth en chars=7 key=b620afd6 est=$0.0015
+  ⚡ story-2/main span 020 cache HIT key=d91cbc70
+  ⚡ story-2/main span 021 cache HIT key=acfb1256
+  ▶ story-2/main span 022 synth ko chars=3 key=f62669a4 est=$0.0010
+  ▶ story-2/main span 023 synth en chars=11 key=aeb55d88 est=$0.0024
+  ⚡ story-2/main span 024 cache HIT key=9414ddfe
+  ⚡ story-2/main span 025 cache HIT key=72b537ee
+  ▶ story-2/main span 026 synth ko chars=19 key=3dca271b est=$0.0063
+  ▶ story-2/main span 027 synth en chars=38 key=00bd8f9e est=$0.0084
+  ▶ story-2/main span 028 synth ko chars=15 key=f8fd1911 est=$0.0049
+  ▶ story-2/main span 029 synth en chars=32 key=060161be est=$0.0070
+  ▶ story-2/main span 030 synth ko chars=17 key=f06b3275 est=$0.0056
+  ▶ story-2/main span 031 synth en chars=29 key=46a95a8b est=$0.0064
+  ⚡ story-2/main span 032 cache HIT key=96e96923
+  ⚡ story-2/main span 033 cache HIT key=d4636749
+  ▶ story-2/main span 034 synth ko chars=19 key=9314cd9c est=$0.0063
+  ▶ story-2/main span 035 synth en chars=34 key=d6f6b871 est=$0.0075
+  ▶ story-2/main span 036 synth ko chars=19 key=e67e1649 est=$0.0063
+  ▶ story-2/main span 037 synth en chars=35 key=f4ba05d5 est=$0.0077
+  ⚡ story-2/main span 038 cache HIT key=366f90a8
+  ⚡ story-2/main span 039 cache HIT key=7482a5c6
+  ▶ story-2/main span 040 synth ko chars=8 key=7716f21b est=$0.0026
+  ▶ story-2/main span 041 synth en chars=17 key=a3997ebd est=$0.0037
+  ▶ story-2/main span 042 synth ko chars=8 key=94120559 est=$0.0026
+  ▶ story-2/main span 043 synth en chars=32 key=95a160b5 est=$0.0070
+  ⚡ story-2/main span 044 cache HIT key=48468155
+  ⚡ story-2/main span 045 cache HIT key=98f22f62
+  ⚡ story-2/main span 046 cache HIT key=b49cd69c
+  ⚡ story-2/main span 047 cache HIT key=9c21df61
+  ▶ story-2/main span 048 synth ko chars=29 key=9ed31daa est=$0.0096
+  ▶ story-2/main span 049 synth ko chars=32 key=2ac18426 est=$0.0106
+  ▶ story-2/main span 050 synth ko chars=36 key=52a29540 est=$0.0119
+  ▶ story-2/main span 051 synth ko chars=39 key=9d919429 est=$0.0129
+  ▶ story-2/main span 052 synth ko chars=38 key=9470bebd est=$0.0125
+  ▶ story-2/main span 053 synth ko chars=21 key=822e195a est=$0.0069
+  ▶ story-2/main span 054 synth ko chars=34 key=12cc9dd0 est=$0.0112
+  ⚡ story-2/main span 055 cache HIT key=a74c5d89
+  ⚡ story-2/main span 056 cache HIT key=80849b6a
+  ▶ story-2/main span 057 synth en chars=212 key=eadfe892 est=$0.0466
+  ▶ story-2/main span 058 synth en chars=144 key=5780cb5b est=$0.0317
+  ▶ story-2/main span 059 synth en chars=161 key=ac097fbb est=$0.0354
+  ⚡ story-2/main span 060 cache HIT key=f42ad9fb
+  ⚡ story-2/main span 061 cache HIT key=59d0f128
+  ▶ story-2/main span 062 synth ko chars=100 key=fb563d84 est=$0.0330
+  ▶ story-2/main span 063 synth ko chars=79 key=45b8a64c est=$0.0261
+  ▶ story-2/main span 064 synth ko chars=88 key=b30770a8 est=$0.0290
+  ✓ track story-2/main.mp3 (205601 ms, 65 spans)
+  ▶ story-3/main span 000 synth ko chars=11 key=677bdd91 est=$0.0036
+  ▶ story-3/main span 001 synth en chars=32 key=d0bcc3b1 est=$0.0070
+  ⚡ story-3/main span 002 cache HIT key=4d364c1e
+  ⚡ story-3/main span 003 cache HIT key=315a2a4f
+  ▶ story-3/main span 004 synth ko chars=4 key=7c0eb925 est=$0.0013
+  ▶ story-3/main span 005 synth en chars=20 key=0913023b est=$0.0044
+  ▶ story-3/main span 006 synth ko chars=2 key=71797e8c est=$0.0007
+  ▶ story-3/main span 007 synth en chars=4 key=5953ab83 est=$0.0009
+  ▶ story-3/main span 008 synth ko chars=3 key=37979051 est=$0.0010
+  ▶ story-3/main span 009 synth en chars=6 key=cc384e92 est=$0.0013
+  ⚡ story-3/main span 010 cache HIT key=c1787d5e
+  ⚡ story-3/main span 011 cache HIT key=1bfca6a1
+  ▶ story-3/main span 012 synth ko chars=2 key=a8b49d46 est=$0.0007
+  ▶ story-3/main span 013 synth en chars=12 key=bc7ab723 est=$0.0026
+  ⚡ story-3/main span 014 cache HIT key=33b4d285
+  ⚡ story-3/main span 015 cache HIT key=3f75b885
+  ⚡ story-3/main span 016 cache HIT key=8110d015
+  ⚡ story-3/main span 017 cache HIT key=dcd49bdf
+  ▶ story-3/main span 018 synth ko chars=2 key=69b619b9 est=$0.0007
+  ▶ story-3/main span 019 synth en chars=8 key=aae26b0e est=$0.0018
+  ▶ story-3/main span 020 synth ko chars=4 key=88dac739 est=$0.0013
+  ▶ story-3/main span 021 synth en chars=8 key=625d539c est=$0.0018
+  ▶ story-3/main span 022 synth ko chars=3 key=9124a83b est=$0.0010
+  ▶ story-3/main span 023 synth en chars=7 key=9380bc7e est=$0.0015
+  ⚡ story-3/main span 024 cache HIT key=951b9126
+  ⚡ story-3/main span 025 cache HIT key=d2a6ae3a
+  ⚡ story-3/main span 026 cache HIT key=9414ddfe
+  ⚡ story-3/main span 027 cache HIT key=72b537ee
+  ▶ story-3/main span 028 synth ko chars=21 key=0e0593d2 est=$0.0069
+  ▶ story-3/main span 029 synth en chars=39 key=7ec53091 est=$0.0086
+  ▶ story-3/main span 030 synth ko chars=12 key=2b9d126d est=$0.0040
+  ▶ story-3/main span 031 synth en chars=22 key=8ca5a346 est=$0.0048
+  ⚡ story-3/main span 032 cache HIT key=d3a3abcb
+  ⚡ story-3/main span 033 cache HIT key=1830ea25
+  ▶ story-3/main span 034 synth ko chars=16 key=d75d3c10 est=$0.0053
+  ▶ story-3/main span 035 synth en chars=36 key=302bbb42 est=$0.0079
+  ⚡ story-3/main span 036 cache HIT key=7e9a3a3a
+  ⚡ story-3/main span 037 cache HIT key=4943c8e1
+  ▶ story-3/main span 038 synth ko chars=15 key=dcf9ba02 est=$0.0049
+  ▶ story-3/main span 039 synth en chars=31 key=3726ddea est=$0.0068
+  ▶ story-3/main span 040 synth ko chars=15 key=e3d91801 est=$0.0049
+  ▶ story-3/main span 041 synth en chars=33 key=e3db757e est=$0.0073
+  ⚡ story-3/main span 042 cache HIT key=366f90a8
+  ⚡ story-3/main span 043 cache HIT key=7482a5c6
+  ▶ story-3/main span 044 synth ko chars=6 key=39605a0c est=$0.0020
+  ▶ story-3/main span 045 synth en chars=17 key=714dedd2 est=$0.0037
+  ▶ story-3/main span 046 synth ko chars=9 key=03b643b9 est=$0.0030
+  ▶ story-3/main span 047 synth en chars=27 key=6292fff9 est=$0.0059
+  ⚡ story-3/main span 048 cache HIT key=48468155
+  ⚡ story-3/main span 049 cache HIT key=98f22f62
+  ⚡ story-3/main span 050 cache HIT key=b49cd69c
+  ⚡ story-3/main span 051 cache HIT key=9c21df61
+  ▶ story-3/main span 052 synth ko chars=31 key=c125ca82 est=$0.0102
+  ▶ story-3/main span 053 synth ko chars=26 key=8c66a81f est=$0.0086
+  ▶ story-3/main span 054 synth ko chars=32 key=039db177 est=$0.0106
+  ▶ story-3/main span 055 synth ko chars=27 key=b620a8e5 est=$0.0089
+  ▶ story-3/main span 056 synth ko chars=30 key=5b54d92e est=$0.0099
+  ▶ story-3/main span 057 synth ko chars=31 key=27e2cc54 est=$0.0102
+  ▶ story-3/main span 058 synth ko chars=29 key=9f0bb0c7 est=$0.0096
+  ⚡ story-3/main span 059 cache HIT key=a74c5d89
+  ⚡ story-3/main span 060 cache HIT key=80849b6a
+  ▶ story-3/main span 061 synth en chars=228 key=924862b0 est=$0.0502
+  ▶ story-3/main span 062 synth en chars=180 key=8a7416ca est=$0.0396
+  ▶ story-3/main span 063 synth en chars=126 key=a30677b1 est=$0.0277
+  ⚡ story-3/main span 064 cache HIT key=f42ad9fb
+  ⚡ story-3/main span 065 cache HIT key=59d0f128
+  ▶ story-3/main span 066 synth ko chars=109 key=6fd0d1b1 est=$0.0360
+  ▶ story-3/main span 067 synth ko chars=86 key=7bf37993 est=$0.0284
+  ▶ story-3/main span 068 synth ko chars=70 key=66bacc99 est=$0.0231
+  ✓ track story-3/main.mp3 (202884 ms, 69 spans)
+  ⚡ story-4/main span 000 cache HIT key=c366036c
+  ⚡ story-4/main span 001 cache HIT key=aadc02bb
+  ⚡ story-4/main span 002 cache HIT key=4d364c1e
+  ⚡ story-4/main span 003 cache HIT key=315a2a4f
+  ⚡ story-4/main span 004 cache HIT key=5529da41
+  ⚡ story-4/main span 005 cache HIT key=267c71f0
+  ⚡ story-4/main span 006 cache HIT key=0e5c1063
+  ⚡ story-4/main span 007 cache HIT key=13a54834
+  ▶ story-4/main span 008 synth ko chars=3 key=1c32c560 est=$0.0010
+  ⚡ story-4/main span 009 cache HIT key=a8b104e0
+  ⚡ story-4/main span 010 cache HIT key=be24480f
+  ⚡ story-4/main span 011 cache HIT key=f7ca07fc
+  ▶ story-4/main span 012 synth ko chars=3 key=e18081f8 est=$0.0010
+  ▶ story-4/main span 013 synth en chars=7 key=96845fe3 est=$0.0015
+  ▶ story-4/main span 014 synth ko chars=2 key=b00e5fef est=$0.0007
+  ▶ story-4/main span 015 synth en chars=11 key=9cf45ccc est=$0.0024
+  ⚡ story-4/main span 016 cache HIT key=1ac25670
+  ⚡ story-4/main span 017 cache HIT key=b7c1c251
+  ⚡ story-4/main span 018 cache HIT key=b68614fe
+  ⚡ story-4/main span 019 cache HIT key=84280fa4
+  ▶ story-4/main span 020 synth ko chars=1 key=60712a65 est=$0.0003
+  ▶ story-4/main span 021 synth en chars=4 key=24ff25c5 est=$0.0009
+  ⚡ story-4/main span 022 cache HIT key=b176c1c7
+  ⚡ story-4/main span 023 cache HIT key=3d664e41
+  ⚡ story-4/main span 024 cache HIT key=ff195c8c
+  ⚡ story-4/main span 025 cache HIT key=b359f923
+  ▶ story-4/main span 026 synth ko chars=4 key=99b17433 est=$0.0013
+  ▶ story-4/main span 027 synth en chars=8 key=1c6532db est=$0.0018
+  ⚡ story-4/main span 028 cache HIT key=9414ddfe
+  ⚡ story-4/main span 029 cache HIT key=72b537ee
+  ⚡ story-4/main span 030 cache HIT key=d85dbbe7
+  ⚡ story-4/main span 031 cache HIT key=839f4fd6
+  ⚡ story-4/main span 032 cache HIT key=03a47022
+  ⚡ story-4/main span 033 cache HIT key=3b3d2043
+  ▶ story-4/main span 034 synth ko chars=16 key=b40a1bf2 est=$0.0053
+  ▶ story-4/main span 035 synth en chars=25 key=f6942128 est=$0.0055
+  ⚡ story-4/main span 036 cache HIT key=ad6d91e0
+  ⚡ story-4/main span 037 cache HIT key=f670fa13
+  ⚡ story-4/main span 038 cache HIT key=2730faf2
+  ⚡ story-4/main span 039 cache HIT key=8c719fcc
+  ▶ story-4/main span 040 synth ko chars=18 key=066537f6 est=$0.0059
+  ▶ story-4/main span 041 synth en chars=29 key=2acecad1 est=$0.0064
+  ⚡ story-4/main span 042 cache HIT key=de0949b5
+  ⚡ story-4/main span 043 cache HIT key=aa8039ad
+  ▶ story-4/main span 044 synth ko chars=16 key=69ae5488 est=$0.0053
+  ▶ story-4/main span 045 synth en chars=27 key=fa35dfe2 est=$0.0059
+  ⚡ story-4/main span 046 cache HIT key=366f90a8
+  ⚡ story-4/main span 047 cache HIT key=7482a5c6
+  ▶ story-4/main span 048 synth ko chars=16 key=8b174197 est=$0.0053
+  ⚡ story-4/main span 049 cache HIT key=4e60bf9c
+  ▶ story-4/main span 050 synth ko chars=16 key=8c04d736 est=$0.0053
+  ▶ story-4/main span 051 synth en chars=30 key=7c8f7d5f est=$0.0066
+  ⚡ story-4/main span 052 cache HIT key=48468155
+  ⚡ story-4/main span 053 cache HIT key=98f22f62
+  ⚡ story-4/main span 054 cache HIT key=b49cd69c
+  ⚡ story-4/main span 055 cache HIT key=9c21df61
+  ▶ story-4/main span 056 synth ko chars=22 key=a410e115 est=$0.0073
+  ▶ story-4/main span 057 synth ko chars=24 key=fe9bdc69 est=$0.0079
+  ▶ story-4/main span 058 synth ko chars=29 key=974c3e2e est=$0.0096
+  ▶ story-4/main span 059 synth ko chars=19 key=8aa77f43 est=$0.0063
+  ▶ story-4/main span 060 synth ko chars=24 key=8446299f est=$0.0079
+  ▶ story-4/main span 061 synth ko chars=29 key=ca4ab102 est=$0.0096
+  ▶ story-4/main span 062 synth ko chars=27 key=39d09108 est=$0.0089
+  ▶ story-4/main span 063 synth ko chars=25 key=83aee100 est=$0.0083
+  ⚡ story-4/main span 064 cache HIT key=a74c5d89
+  ⚡ story-4/main span 065 cache HIT key=80849b6a
+  ▶ story-4/main span 066 synth en chars=113 key=78fe24ea est=$0.0249
+  ▶ story-4/main span 067 synth en chars=224 key=d9077452 est=$0.0493
+  ▶ story-4/main span 068 synth en chars=110 key=c5b99b02 est=$0.0242
+  ⚡ story-4/main span 069 cache HIT key=f42ad9fb
+  ⚡ story-4/main span 070 cache HIT key=59d0f128
+  ▶ story-4/main span 071 synth ko chars=59 key=6a4f6667 est=$0.0195
+  ▶ story-4/main span 072 synth ko chars=112 key=337c031b est=$0.0370
+  ▶ story-4/main span 073 synth ko chars=56 key=878fd6a4 est=$0.0185
+  ✓ track story-4/main.mp3 (198424 ms, 74 spans)
+
+   ✓ story_1: 55 turns (19 cached), track 126555 ms
+   ✓ story_2: 65 turns (24 cached), track 205601 ms
+   ✓ story_3: 69 turns (26 cached), track 202884 ms
+   ✓ story_4: 74 turns (42 cached), track 198424 ms
+
+🎉 Synthesized 4 tracks via elevenlabs.
+   elevenlabs debit:   4818 chars across 152 freshly-synthesized turns  est_cost=$1.2907
+   📦 Shared cache:  111 hits / 263 total turns  (42.2% hit rate)  at /Users/matthewflood/.langpack/cache/audio
+   📚 Library:       vocab/example audio keys attached (library.json entries: 697 vocab, 410 examples)
+   Cost report:      /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/costs/3_synthesize.json
+[10:10:06] ✓ 3/7 synthesize
+[10:10:06] ═══ 4/7 assemble bundle ═══
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/bundle.json
+   4 tracks, 211 total clips
+[10:10:06] ✓ 4/7 assemble bundle
+[10:10:06] ═══ 5/7 publish s3 ═══
+═══ Publishing news_2026_07_07 for 2026-07-07 ═══
+  Destination:   lmaudio (s3://turned.rip/)
+  Prefix:        lmaudio/news_2026_07_07/
+  Manifest URL:  https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_07/bundle.json
+  QR output:     /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/qr.png
+
+Upload plan (local → s3://turned.rip/):
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/bundle.json
+          → lmaudio/news_2026_07_07/bundle.json
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_1.mp3
+          → lmaudio/news_2026_07_07/story_1.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_2.mp3
+          → lmaudio/news_2026_07_07/story_2.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_3.mp3
+          → lmaudio/news_2026_07_07/story_3.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_4.mp3
+          → lmaudio/news_2026_07_07/story_4.mp3
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/bundle.json
+     → s3://turned.rip/lmaudio/news_2026_07_07/bundle.json
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_1.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_07/story_1.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_2.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_07/story_2.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_3.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_07/story_3.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/audio/story_4.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_07/story_4.mp3
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_2026_07_07/bundle.json
+   ✓ s3://turned.rip/lmaudio/news_2026_07_07/story_1.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_07/story_2.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_07/story_3.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_07/story_4.mp3
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_2026_07_07/bundle.json
+   ✓ invalidation created: I3XFRWOQCUA8O2G7X89U3LRT9E (completes in a few minutes)
+
+🔗 Updating lmaudio/news_latest/bundle.json alias...
+Upload plan (local → s3://turned.rip/):
+  [OVERWRITE] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/bundle.json
+          → lmaudio/news_latest/bundle.json (expected overwrite)
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/bundle.json
+     → s3://turned.rip/lmaudio/news_latest/bundle.json
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_latest/bundle.json
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_latest/bundle.json
+   ✓ invalidation created: I5DJU63ZX3PF6TKR76DKDP2P6A (completes in a few minutes)
+🔳 Generating QR code...
+✅ QR code: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/qr.png
+   App URL:      languagemirror://bundle?url=https%3A%2F%2Fd1ni0tk3ua6bwo.cloudfront.net%2Flmaudio%2Fnews_2026_07_07%2Fbundle.json
+   Manifest URL: https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_07/bundle.json
+[10:10:23] ✓ 5/7 publish s3
+[10:10:23] ═══ 6/7 deploy web ═══
+[main 084ec85] news: publish 2026-07-07
+ 4 files changed, 276 insertions(+)
+ create mode 100644 sixwands.com/news/2026-07-07/index.html
+ create mode 100644 sixwands.com/news/2026-07-07/meta.json
+ create mode 100644 sixwands.com/news/2026-07-07/qr.png
+📝 Wrote local site files under /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/index.html
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/qr.png
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/meta.json
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+
+📦 Committing to git...
+   ✓ committed news: publish 2026-07-07
+Upload plan (local → s3://sixwandsstudios.com/):
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/index.html
+          → news/2026-07-07/index.html
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/qr.png
+          → news/2026-07-07/qr.png
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/meta.json
+          → news/2026-07-07/meta.json
+  [OVERWRITE] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+          → news/index.html (expected overwrite)
+🔍 Pre-flight: verifying integrity of s3://sixwandsstudios.com/
+   ✓ 9 protected keys all present
+📤 Uploading to s3://sixwandsstudios.com/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/index.html
+     → s3://sixwandsstudios.com/news/2026-07-07/index.html
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/qr.png
+     → s3://sixwandsstudios.com/news/2026-07-07/qr.png
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-07/meta.json
+     → s3://sixwandsstudios.com/news/2026-07-07/meta.json
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+     → s3://sixwandsstudios.com/news/index.html
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://sixwandsstudios.com/news/2026-07-07/index.html
+   ✓ s3://sixwandsstudios.com/news/2026-07-07/qr.png
+   ✓ s3://sixwandsstudios.com/news/2026-07-07/meta.json
+   ✓ s3://sixwandsstudios.com/news/index.html
+🌀 CloudFront invalidation (E3FOHY8GP6GID3): /news/2026-07-07/* /news/index.html
+   ✓ invalidation created: ICM8HS6M8GA54T9SNCGQYD5MZU (completes in a few minutes)
+
+🎉 Published https://sixwandsstudios.com/news/2026-07-07/
+[10:10:30] ✓ 6/7 deploy web
+💰 Cost ledger: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/cache/cost_history/2026/07/2026-07-07_141030.json
+[10:10:30] 🎉 Daily pipeline complete for 2026-07-07
+[10:10:30]    Manifest: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/bundle.json
+[10:10:30]    QR:       /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-07/qr.png
+[10:10:30]    Web:      https://sixwandsstudios.com/news/2026-07-07/
+[10:00:05] ═══════════════════════════════════════════════════════════
+[10:00:05]   Daily news pipeline · date=2026-07-08 · commit=--commit
+[10:00:05]   Log: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/run.log
+[10:00:05] ═══════════════════════════════════════════════════════════
+[10:00:05] ═══ 0/7 fetch feeds ═══
+═══ Fetching feeds for 2026-07-08 ═══
+  ↓ NPR                  (hard) 10 items
+  ↓ Guardian US          (hard) 20 items
+  ↓ BBC US/Canada        (hard) 20 items
+  ↓ CBS News             (hard) 20 items
+  ↓ Politico             (hard) 20 items
+  ↓ Fox News             (hard) 20 items
+  ↓ Washington Examiner  (hard) 10 items
+  ↓ NY Post              (hard) 20 items
+  ↓ Ars Technica         (tech) 20 items
+  ↓ Science News         (science) 20 items
+  ↓ ESPN                 (sports) 20 items
+  ↓ NPR Arts             (arts) 10 items
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/feeds.json (210 items)
+[10:00:07] ✓ 0/7 fetch feeds
+[10:00:07] ═══ 1/7 curate ═══
+  ⏭ dropped 2 feed item(s) already chosen in the last 7 days
+═══ Curating 208 items for 2026-07-08 ═══
+  Output:  /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/chosen.json
+
+📡 Using LLM: anthropic/claude-sonnet-4-5 (max_tokens=2048)
+  📡 [curate] → anthropic
+     model=claude-sonnet-4-5  prompt_chars=57083  max_tokens=2048
+     ✓ usage: input=14805 output=259 tokens  est_cost=$0.0483  response_chars=997
+📰 Claude chose 4 stories. Fetching bodies...
+  ↓ story_1: Trump says he believes the Iran ceasefire is 'over.' And, IOC lifts Ru
+     ↓ trafilatura GET https://www.npr.org/2026/07/08/g-s1-132474/up-first-newsletter-trump-iran-ceasefire-nato-graham-platner-ioc-russia
+     ↓ fetched 181781 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_2: Trump administration abruptly cancels grants for teen pregnancy preven
+     ↓ trafilatura GET https://www.npr.org/2026/07/08/nx-s1-5885054/teen-pregnancy-prevention-trump-hhs
+     ↓ fetched 167046 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_3: This factory was severely short on workers. Then it offered flexible w
+     ↓ trafilatura GET https://www.npr.org/2026/07/08/nx-s1-5876084/manufacturing-flexible-part-time-work
+     ↓ fetched 184035 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_4: What's behind the push to make peptide therapies more readily availabl
+     ↓ trafilatura GET https://www.npr.org/2026/07/08/nx-s1-5885073/fda-peptides-compounding-pharmacies
+     ↓ fetched 151124 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/chosen.json (4 stories)
+[10:00:19] ✓ 1/7 curate
+[10:00:19] ═══ 2/7 generate script ═══
+═══ Generating script for 2026-07-08 ═══
+  Pack ID:   news_2026_07_08
+  Title:     2026년 7월 8일 뉴스 / US News, July 8, 2026
+  Stories:   4
+  Output:    /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/script.json
+
+📡 Script LLM: anthropic/claude-sonnet-4-5  (max_tokens=4096)
+📡 QA LLM:     openai/gpt-5.5  (max_tokens=4096)  ← cross-model review
+
+📚 Lexicon (ko-en): 697 vocab, 410 examples
+
+━━━ [story_1] Trump says he believes the Iran ceasefire is 'over.' And, IOC lifts Ru
+     📡 [script:story_1] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10281  max_tokens=4096
+        ✓ usage: input=3189 output=1399 tokens  est_cost=$0.0306  response_chars=2667
+        ↳ running total: input=3189 output=1399 cost=$0.0306
+     📡 [qa:story_1] → openai
+        model=gpt-5.5  prompt_chars=8514  max_tokens=4096
+        ✓ usage: input=2427 output=4096 tokens  est_cost=$0.0458  response_chars=0
+        ↳ running total: input=5616 output=5495 cost=$0.0764
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 2 gloss(es):
+        · 비난하다: 'to criticize' → 'to condemn' (locked)
+        · 해제하다: 'to lift, to remove' → 'to lift, release' (locked)
+     📚 Examples: 4 cached + 1 fresh = 5 total
+        ⚠ Uncovered vocab (no example): ['끝나다', '돌아오다', '믿다', '비난하다', '해제하다']
+   ✓ 64 turns, 51 clips across 3 sets
+━━━ [story_2] Trump administration abruptly cancels grants for teen pregnancy preven
+     📡 [script:story_2] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10268  max_tokens=4096
+        ✓ usage: input=3121 output=1327 tokens  est_cost=$0.0293  response_chars=2685
+        ↳ running total: input=8737 output=6822 cost=$0.1056
+     📡 [qa:story_2] → openai
+        model=gpt-5.5  prompt_chars=8551  max_tokens=4096
+        ✓ usage: input=2352 output=4096 tokens  est_cost=$0.0457  response_chars=0
+        ↳ running total: input=11089 output=10918 cost=$0.1513
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 1 gloss(es):
+        · 단체: 'organization, group' → 'organization' (locked)
+     📚 Examples: 2 cached + 6 fresh = 8 total
+        ⚠ Uncovered vocab (no example): ['잃다', '취소하다', '효과적이다']
+   ✓ 71 turns, 58 clips across 3 sets
+━━━ [story_3] This factory was severely short on workers. Then it offered flexible w
+     📡 [script:story_3] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10267  max_tokens=4096
+        ✓ usage: input=3208 output=1365 tokens  est_cost=$0.0301  response_chars=2725
+        ↳ running total: input=14297 output=12283 cost=$0.1814
+     📡 [qa:story_3] → openai
+        model=gpt-5.5  prompt_chars=8622  max_tokens=4096
+        ✓ usage: input=2423 output=4096 tokens  est_cost=$0.0458  response_chars=0
+        ↳ running total: input=16720 output=16379 cost=$0.2272
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 1 gloss(es):
+        · 검사: 'inspection' → 'examination, test' (locked)
+     📚 Examples: 1 cached + 7 fresh = 8 total
+        ⚠ Uncovered vocab (no example): ['부족하다', '선택하다', '유연하다']
+   ✓ 74 turns, 61 clips across 3 sets
+━━━ [story_4] What's behind the push to make peptide therapies more readily availabl
+     📡 [script:story_4] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10265  max_tokens=4096
+        ✓ usage: input=3143 output=1391 tokens  est_cost=$0.0303  response_chars=2864
+        ↳ running total: input=19863 output=17770 cost=$0.2575
+     📡 [qa:story_4] → openai
+        model=gpt-5.5  prompt_chars=8759  max_tokens=4096
+        ✓ usage: input=2429 output=4096 tokens  est_cost=$0.0458  response_chars=0
+        ↳ running total: input=22292 output=21866 cost=$0.3033
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 5 cached + 5 fresh = 10 total
+        ⚠ Uncovered vocab (no example): ['추천하다', '합성하다']
+   ✓ 78 turns, 65 clips across 3 sets
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/script.json
+   Cost report: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/costs/2_generate_script.json
+   Total Claude usage: input=22292 output=21866 tokens  est_total_cost=$0.3033
+   📚 Library now: 727 vocab (+30), 429 examples (+19)
+[10:08:41] ✓ 2/7 generate script
+[10:08:41] ═══ 2b/7 translate easy ═══
+  📡 story_1: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=408 output=126 tokens  est_cost=$0.0008
+  📡 story_2: translating 7 sentences → anthropic/claude-haiku-4-5
+     ✓ input=321 output=101 tokens  est_cost=$0.0007
+  📡 story_3: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=360 output=133 tokens  est_cost=$0.0008
+  📡 story_4: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=339 output=114 tokens  est_cost=$0.0007
+✅ Updated /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/script.json (4 stories translated, 0 skipped)
+[10:08:47] ✓ 2b/7 translate easy
+[10:08:47] ═══ 3/7 synthesize ═══
+═══ Synthesizing audio for 2026-07-08 (via voicebox) ═══
+  Provider:      elevenlabs/eleven_multilingual_v2 (from tts.yaml)
+  Cache:         /Users/matthewflood/.langpack/cache/audio
+  Stories:       4
+  Total turns:   287  (cache hits 112, to synthesize 175)
+  Chars to debit: 5604  (cap 20000)
+  Estimated cost: $1.4862
+  Output:        /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio
+
+  ▶ story-1/main span 000 synth ko chars=18 key=3e43ef34 est=$0.0059
+  ▶ story-1/main span 001 synth en chars=33 key=2de6b110 est=$0.0073
+  ⚡ story-1/main span 002 cache HIT key=4d364c1e
+  ⚡ story-1/main span 003 cache HIT key=315a2a4f
+  ⚡ story-1/main span 004 cache HIT key=e637e704
+  ⚡ story-1/main span 005 cache HIT key=a0a7b0f6
+  ▶ story-1/main span 006 synth ko chars=3 key=16eb2f82 est=$0.0010
+  ▶ story-1/main span 007 synth en chars=18 key=365b6fa6 est=$0.0040
+  ▶ story-1/main span 008 synth ko chars=2 key=2ab08d40 est=$0.0007
+  ▶ story-1/main span 009 synth en chars=10 key=8d7343e1 est=$0.0022
+  ⚡ story-1/main span 010 cache HIT key=35c20350
+  ⚡ story-1/main span 011 cache HIT key=15d0033c
+  ▶ story-1/main span 012 synth ko chars=2 key=bfd0b295 est=$0.0007
+  ▶ story-1/main span 013 synth en chars=19 key=685550cb est=$0.0042
+  ⚡ story-1/main span 014 cache HIT key=647782d0
+  ⚡ story-1/main span 015 cache HIT key=2be273a9
+  ⚡ story-1/main span 016 cache HIT key=f14a357b
+  ⚡ story-1/main span 017 cache HIT key=cb6865fc
+  ⚡ story-1/main span 018 cache HIT key=061f1c9b
+  ⚡ story-1/main span 019 cache HIT key=7a85f76c
+  ⚡ story-1/main span 020 cache HIT key=6e76eb6e
+  ⚡ story-1/main span 021 cache HIT key=dcced437
+  ▶ story-1/main span 022 synth ko chars=4 key=7639b89d est=$0.0013
+  ▶ story-1/main span 023 synth en chars=23 key=ea5d9bf3 est=$0.0051
+  ⚡ story-1/main span 024 cache HIT key=9414ddfe
+  ⚡ story-1/main span 025 cache HIT key=72b537ee
+  ⚡ story-1/main span 026 cache HIT key=9eca2897
+  ⚡ story-1/main span 027 cache HIT key=f0d7c601
+  ⚡ story-1/main span 028 cache HIT key=0707ef8b
+  ⚡ story-1/main span 029 cache HIT key=74fbc5fb
+  ▶ story-1/main span 030 synth ko chars=15 key=8c92d8a5 est=$0.0049
+  ▶ story-1/main span 031 synth en chars=27 key=bdc6c7ec est=$0.0059
+  ⚡ story-1/main span 032 cache HIT key=e9d82adc
+  ⚡ story-1/main span 033 cache HIT key=ee54786c
+  ⚡ story-1/main span 034 cache HIT key=47aeb29b
+  ⚡ story-1/main span 035 cache HIT key=8766a308
+  ⚡ story-1/main span 036 cache HIT key=366f90a8
+  ⚡ story-1/main span 037 cache HIT key=7482a5c6
+  ▶ story-1/main span 038 synth ko chars=11 key=6be33164 est=$0.0036
+  ▶ story-1/main span 039 synth en chars=32 key=6518b357 est=$0.0070
+  ▶ story-1/main span 040 synth ko chars=8 key=dc0494b1 est=$0.0026
+  ▶ story-1/main span 041 synth en chars=20 key=0c16f6f9 est=$0.0044
+  ⚡ story-1/main span 042 cache HIT key=48468155
+  ⚡ story-1/main span 043 cache HIT key=98f22f62
+  ⚡ story-1/main span 044 cache HIT key=b49cd69c
+  ⚡ story-1/main span 045 cache HIT key=9c21df61
+  ▶ story-1/main span 046 synth ko chars=33 key=09683509 est=$0.0109
+  ▶ story-1/main span 047 synth ko chars=40 key=aac44cc8 est=$0.0132
+  ▶ story-1/main span 048 synth ko chars=18 key=b0603976 est=$0.0059
+  ▶ story-1/main span 049 synth ko chars=22 key=5e2352d1 est=$0.0073
+  ▶ story-1/main span 050 synth ko chars=29 key=05461345 est=$0.0096
+  ▶ story-1/main span 051 synth ko chars=34 key=bc702007 est=$0.0112
+  ▶ story-1/main span 052 synth ko chars=27 key=01be8f8a est=$0.0089
+  ▶ story-1/main span 053 synth ko chars=30 key=0a2e1182 est=$0.0099
+  ⚡ story-1/main span 054 cache HIT key=a74c5d89
+  ⚡ story-1/main span 055 cache HIT key=80849b6a
+  ▶ story-1/main span 056 synth en chars=221 key=bf563c6d est=$0.0486
+  ▶ story-1/main span 057 synth en chars=121 key=cef2a009 est=$0.0266
+  ▶ story-1/main span 058 synth en chars=177 key=d65226cb est=$0.0389
+  ⚡ story-1/main span 059 cache HIT key=f42ad9fb
+  ⚡ story-1/main span 060 cache HIT key=59d0f128
+  ▶ story-1/main span 061 synth ko chars=106 key=7883497e est=$0.0350
+  ▶ story-1/main span 062 synth ko chars=75 key=8a6a6b97 est=$0.0248
+  ▶ story-1/main span 063 synth ko chars=90 key=1d5c95e5 est=$0.0297
+  ✓ track story-1/main.mp3 (198562 ms, 64 spans)
+  ▶ story-2/main span 000 synth ko chars=16 key=b2b78f42 est=$0.0053
+  ▶ story-2/main span 001 synth en chars=41 key=79fddbca est=$0.0090
+  ⚡ story-2/main span 002 cache HIT key=4d364c1e
+  ⚡ story-2/main span 003 cache HIT key=315a2a4f
+  ▶ story-2/main span 004 synth ko chars=3 key=817c73c9 est=$0.0010
+  ▶ story-2/main span 005 synth en chars=14 key=f0553e04 est=$0.0031
+  ⚡ story-2/main span 006 cache HIT key=33b4d285
+  ⚡ story-2/main span 007 cache HIT key=3f75b885
+  ▶ story-2/main span 008 synth ko chars=3 key=c782e14e est=$0.0010
+  ▶ story-2/main span 009 synth en chars=15 key=f5f2cc33 est=$0.0033
+  ▶ story-2/main span 010 synth ko chars=2 key=2f9a3a81 est=$0.0007
+  ▶ story-2/main span 011 synth en chars=9 key=4ad323e8 est=$0.0020
+  ▶ story-2/main span 012 synth ko chars=2 key=8a2c748a est=$0.0007
+  ▶ story-2/main span 013 synth en chars=10 key=d24acb0d est=$0.0022
+  ▶ story-2/main span 014 synth ko chars=3 key=4a6b42dc est=$0.0010
+  ▶ story-2/main span 015 synth en chars=18 key=7db10fab est=$0.0040
+  ⚡ story-2/main span 016 cache HIT key=1d76c968
+  ⚡ story-2/main span 017 cache HIT key=2ff246d2
+  ⚡ story-2/main span 018 cache HIT key=98868b62
+  ⚡ story-2/main span 019 cache HIT key=255f58d9
+  ▶ story-2/main span 020 synth ko chars=3 key=e857ec96 est=$0.0010
+  ▶ story-2/main span 021 synth en chars=3 key=e4cde14b est=$0.0007
+  ▶ story-2/main span 022 synth ko chars=2 key=5bed6429 est=$0.0007
+  ⚡ story-2/main span 023 cache HIT key=dfa844b2
+  ▶ story-2/main span 024 synth ko chars=5 key=b2ff9508 est=$0.0016
+  ▶ story-2/main span 025 synth en chars=15 key=a32c77d5 est=$0.0033
+  ⚡ story-2/main span 026 cache HIT key=9414ddfe
+  ⚡ story-2/main span 027 cache HIT key=72b537ee
+  ▶ story-2/main span 028 synth ko chars=17 key=afd4dbb6 est=$0.0056
+  ▶ story-2/main span 029 synth en chars=30 key=d6700ca5 est=$0.0066
+  ▶ story-2/main span 030 synth ko chars=15 key=667f41af est=$0.0049
+  ▶ story-2/main span 031 synth en chars=27 key=709964ca est=$0.0059
+  ▶ story-2/main span 032 synth ko chars=16 key=a2c96fd2 est=$0.0053
+  ▶ story-2/main span 033 synth en chars=38 key=b4df5995 est=$0.0084
+  ▶ story-2/main span 034 synth ko chars=16 key=9f2f5c9f est=$0.0053
+  ▶ story-2/main span 035 synth en chars=43 key=08127c5d est=$0.0095
+  ▶ story-2/main span 036 synth ko chars=10 key=6f9edb01 est=$0.0033
+  ▶ story-2/main span 037 synth en chars=20 key=3048853a est=$0.0044
+  ⚡ story-2/main span 038 cache HIT key=a90f5ac5
+  ⚡ story-2/main span 039 cache HIT key=0002a570
+  ⚡ story-2/main span 040 cache HIT key=f271680a
+  ⚡ story-2/main span 041 cache HIT key=e1fb1850
+  ▶ story-2/main span 042 synth ko chars=14 key=a43f85fd est=$0.0046
+  ▶ story-2/main span 043 synth en chars=31 key=5381c64b est=$0.0068
+  ⚡ story-2/main span 044 cache HIT key=366f90a8
+  ⚡ story-2/main span 045 cache HIT key=7482a5c6
+  ▶ story-2/main span 046 synth ko chars=13 key=f20f3961 est=$0.0043
+  ▶ story-2/main span 047 synth en chars=33 key=21869bbe est=$0.0073
+  ▶ story-2/main span 048 synth ko chars=11 key=4fdfd493 est=$0.0036
+  ▶ story-2/main span 049 synth en chars=26 key=1be02829 est=$0.0057
+  ⚡ story-2/main span 050 cache HIT key=48468155
+  ⚡ story-2/main span 051 cache HIT key=98f22f62
+  ⚡ story-2/main span 052 cache HIT key=b49cd69c
+  ⚡ story-2/main span 053 cache HIT key=9c21df61
+  ▶ story-2/main span 054 synth ko chars=29 key=1209608b est=$0.0096
+  ▶ story-2/main span 055 synth ko chars=17 key=56e1b4bc est=$0.0056
+  ▶ story-2/main span 056 synth ko chars=20 key=74620278 est=$0.0066
+  ▶ story-2/main span 057 synth ko chars=19 key=c08dcab7 est=$0.0063
+  ▶ story-2/main span 058 synth ko chars=32 key=2efa60c7 est=$0.0106
+  ▶ story-2/main span 059 synth ko chars=25 key=5a9c5c19 est=$0.0083
+  ▶ story-2/main span 060 synth ko chars=28 key=7ed165df est=$0.0092
+  ⚡ story-2/main span 061 cache HIT key=a74c5d89
+  ⚡ story-2/main span 062 cache HIT key=80849b6a
+  ▶ story-2/main span 063 synth en chars=164 key=60272a68 est=$0.0361
+  ▶ story-2/main span 064 synth en chars=189 key=0ff1096b est=$0.0416
+  ▶ story-2/main span 065 synth en chars=155 key=3564344d est=$0.0341
+  ⚡ story-2/main span 066 cache HIT key=f42ad9fb
+  ⚡ story-2/main span 067 cache HIT key=59d0f128
+  ▶ story-2/main span 068 synth ko chars=85 key=cec1b743 est=$0.0281
+  ▶ story-2/main span 069 synth ko chars=86 key=d449ab93 est=$0.0284
+  ▶ story-2/main span 070 synth ko chars=72 key=adf1af1d est=$0.0238
+  ✓ track story-2/main.mp3 (205729 ms, 71 spans)
+  ▶ story-3/main span 000 synth ko chars=12 key=15b3310c est=$0.0040
+  ▶ story-3/main span 001 synth en chars=32 key=597e0070 est=$0.0070
+  ⚡ story-3/main span 002 cache HIT key=4d364c1e
+  ⚡ story-3/main span 003 cache HIT key=315a2a4f
+  ▶ story-3/main span 004 synth ko chars=2 key=a807f281 est=$0.0007
+  ▶ story-3/main span 005 synth en chars=7 key=2dcaed72 est=$0.0015
+  ▶ story-3/main span 006 synth ko chars=4 key=99151374 est=$0.0013
+  ▶ story-3/main span 007 synth en chars=23 key=0241f55b est=$0.0051
+  ▶ story-3/main span 008 synth ko chars=4 key=87864205 est=$0.0013
+  ▶ story-3/main span 009 synth en chars=8 key=b58adfba est=$0.0018
+  ▶ story-3/main span 010 synth ko chars=2 key=636ac23c est=$0.0007
+  ▶ story-3/main span 011 synth en chars=11 key=647dba16 est=$0.0024
+  ▶ story-3/main span 012 synth ko chars=4 key=eb12c7fb est=$0.0013
+  ▶ story-3/main span 013 synth en chars=9 key=42b15be0 est=$0.0020
+  ▶ story-3/main span 014 synth ko chars=2 key=01bcbb54 est=$0.0007
+  ▶ story-3/main span 015 synth en chars=11 key=0bc334ef est=$0.0024
+  ▶ story-3/main span 016 synth ko chars=1 key=2306deea est=$0.0003
+  ▶ story-3/main span 017 synth en chars=3 key=60741b52 est=$0.0007
+  ▶ story-3/main span 018 synth ko chars=2 key=f3506545 est=$0.0007
+  ▶ story-3/main span 019 synth en chars=5 key=3749f37d est=$0.0011
+  ▶ story-3/main span 020 synth ko chars=2 key=d8d4043e est=$0.0007
+  ▶ story-3/main span 021 synth en chars=8 key=56437a36 est=$0.0018
+  ▶ story-3/main span 022 synth ko chars=2 key=61ef3e89 est=$0.0007
+  ▶ story-3/main span 023 synth en chars=7 key=86100b41 est=$0.0015
+  ⚡ story-3/main span 024 cache HIT key=f8c668b2
+  ⚡ story-3/main span 025 cache HIT key=bd9421cc
+  ▶ story-3/main span 026 synth ko chars=2 key=216d2528 est=$0.0007
+  ▶ story-3/main span 027 synth en chars=15 key=7bbdfe4d est=$0.0033
+  ⚡ story-3/main span 028 cache HIT key=9414ddfe
+  ⚡ story-3/main span 029 cache HIT key=72b537ee
+  ▶ story-3/main span 030 synth ko chars=18 key=76098ee8 est=$0.0059
+  ▶ story-3/main span 031 synth en chars=41 key=f7f560fd est=$0.0090
+  ▶ story-3/main span 032 synth ko chars=14 key=802bded9 est=$0.0046
+  ▶ story-3/main span 033 synth en chars=23 key=42d9a92c est=$0.0051
+  ▶ story-3/main span 034 synth ko chars=15 key=8807dad5 est=$0.0049
+  ▶ story-3/main span 035 synth en chars=30 key=e34d0082 est=$0.0066
+  ▶ story-3/main span 036 synth ko chars=15 key=83e189e5 est=$0.0049
+  ▶ story-3/main span 037 synth en chars=32 key=0edcc117 est=$0.0070
+  ▶ story-3/main span 038 synth ko chars=15 key=c84ddee9 est=$0.0049
+  ▶ story-3/main span 039 synth en chars=33 key=7a8e77d9 est=$0.0073
+  ▶ story-3/main span 040 synth ko chars=14 key=471b7a0c est=$0.0046
+  ▶ story-3/main span 041 synth en chars=30 key=c3d552e1 est=$0.0066
+  ⚡ story-3/main span 042 cache HIT key=f0b7ba85
+  ⚡ story-3/main span 043 cache HIT key=d88e1243
+  ▶ story-3/main span 044 synth ko chars=14 key=43001ee4 est=$0.0046
+  ▶ story-3/main span 045 synth en chars=26 key=a7dd3de3 est=$0.0057
+  ⚡ story-3/main span 046 cache HIT key=366f90a8
+  ⚡ story-3/main span 047 cache HIT key=7482a5c6
+  ▶ story-3/main span 048 synth ko chars=8 key=8166e0df est=$0.0026
+  ▶ story-3/main span 049 synth en chars=22 key=4c69eaa2 est=$0.0048
+  ▶ story-3/main span 050 synth ko chars=9 key=7d496419 est=$0.0030
+  ▶ story-3/main span 051 synth en chars=26 key=5e406057 est=$0.0057
+  ⚡ story-3/main span 052 cache HIT key=48468155
+  ⚡ story-3/main span 053 cache HIT key=98f22f62
+  ⚡ story-3/main span 054 cache HIT key=b49cd69c
+  ⚡ story-3/main span 055 cache HIT key=9c21df61
+  ▶ story-3/main span 056 synth ko chars=34 key=414a0898 est=$0.0112
+  ▶ story-3/main span 057 synth ko chars=21 key=d40fe1e7 est=$0.0069
+  ▶ story-3/main span 058 synth ko chars=25 key=a023e929 est=$0.0083
+  ▶ story-3/main span 059 synth ko chars=33 key=5b468824 est=$0.0109
+  ▶ story-3/main span 060 synth ko chars=18 key=79980e62 est=$0.0059
+  ▶ story-3/main span 061 synth ko chars=26 key=f72dde0e est=$0.0086
+  ▶ story-3/main span 062 synth ko chars=22 key=f97bc42e est=$0.0073
+  ▶ story-3/main span 063 synth ko chars=28 key=8c585810 est=$0.0092
+  ⚡ story-3/main span 064 cache HIT key=a74c5d89
+  ⚡ story-3/main span 065 cache HIT key=80849b6a
+  ▶ story-3/main span 066 synth en chars=140 key=6c28f1af est=$0.0308
+  ▶ story-3/main span 067 synth en chars=163 key=2ca6b9bd est=$0.0359
+  ▶ story-3/main span 068 synth en chars=172 key=345f38eb est=$0.0378
+  ⚡ story-3/main span 069 cache HIT key=f42ad9fb
+  ⚡ story-3/main span 070 cache HIT key=59d0f128
+  ▶ story-3/main span 071 synth ko chars=59 key=d9e193ba est=$0.0195
+  ▶ story-3/main span 072 synth ko chars=79 key=c40d9676 est=$0.0261
+  ▶ story-3/main span 073 synth ko chars=93 key=19b5829f est=$0.0307
+  ✓ track story-3/main.mp3 (197778 ms, 74 spans)
+  ▶ story-4/main span 000 synth ko chars=11 key=47c3b6d3 est=$0.0036
+  ▶ story-4/main span 001 synth en chars=26 key=f33862ab est=$0.0057
+  ⚡ story-4/main span 002 cache HIT key=4d364c1e
+  ⚡ story-4/main span 003 cache HIT key=315a2a4f
+  ▶ story-4/main span 004 synth ko chars=3 key=0daa3046 est=$0.0010
+  ⚡ story-4/main span 005 cache HIT key=efc42b23
+  ⚡ story-4/main span 006 cache HIT key=e85105ed
+  ⚡ story-4/main span 007 cache HIT key=a5c401c2
+  ⚡ story-4/main span 008 cache HIT key=4d71d3ca
+  ⚡ story-4/main span 009 cache HIT key=2ca02a71
+  ▶ story-4/main span 010 synth ko chars=2 key=256fa32d est=$0.0007
+  ▶ story-4/main span 011 synth en chars=8 key=7ed6f064 est=$0.0018
+  ▶ story-4/main span 012 synth ko chars=2 key=90b0c63c est=$0.0007
+  ▶ story-4/main span 013 synth en chars=11 key=91e132cc est=$0.0024
+  ⚡ story-4/main span 014 cache HIT key=8b95b332
+  ⚡ story-4/main span 015 cache HIT key=12e1a59a
+  ⚡ story-4/main span 016 cache HIT key=4c06a4d3
+  ⚡ story-4/main span 017 cache HIT key=04b5a886
+  ▶ story-4/main span 018 synth ko chars=4 key=430a9f65 est=$0.0013
+  ▶ story-4/main span 019 synth en chars=12 key=d04aad82 est=$0.0026
+  ▶ story-4/main span 020 synth ko chars=4 key=a9d7ee42 est=$0.0013
+  ▶ story-4/main span 021 synth en chars=13 key=573119c6 est=$0.0029
+  ▶ story-4/main span 022 synth ko chars=2 key=3f53175f est=$0.0007
+  ▶ story-4/main span 023 synth en chars=16 key=bddadc7e est=$0.0035
+  ▶ story-4/main span 024 synth ko chars=4 key=a7b83033 est=$0.0013
+  ▶ story-4/main span 025 synth en chars=10 key=dca5d281 est=$0.0022
+  ⚡ story-4/main span 026 cache HIT key=8a7f4a28
+  ⚡ story-4/main span 027 cache HIT key=8cae6ccd
+  ⚡ story-4/main span 028 cache HIT key=9414ddfe
+  ⚡ story-4/main span 029 cache HIT key=72b537ee
+  ▶ story-4/main span 030 synth ko chars=19 key=28d4ab37 est=$0.0063
+  ▶ story-4/main span 031 synth en chars=36 key=f69c21e0 est=$0.0079
+  ⚡ story-4/main span 032 cache HIT key=f03f4b3a
+  ⚡ story-4/main span 033 cache HIT key=d5224041
+  ⚡ story-4/main span 034 cache HIT key=e44dc3b4
+  ⚡ story-4/main span 035 cache HIT key=ae261dea
+  ▶ story-4/main span 036 synth ko chars=14 key=d2a6aba4 est=$0.0046
+  ▶ story-4/main span 037 synth en chars=28 key=0d132e71 est=$0.0062
+  ▶ story-4/main span 038 synth ko chars=17 key=8fcac9ba est=$0.0056
+  ▶ story-4/main span 039 synth en chars=37 key=80cbaa83 est=$0.0081
+  ⚡ story-4/main span 040 cache HIT key=958815ae
+  ⚡ story-4/main span 041 cache HIT key=1e70cf00
+  ⚡ story-4/main span 042 cache HIT key=6e328679
+  ⚡ story-4/main span 043 cache HIT key=da10e677
+  ▶ story-4/main span 044 synth ko chars=13 key=0ea6c1e6 est=$0.0043
+  ▶ story-4/main span 045 synth en chars=26 key=2a12c3d7 est=$0.0057
+  ▶ story-4/main span 046 synth ko chars=14 key=1f8a1fff est=$0.0046
+  ▶ story-4/main span 047 synth en chars=32 key=416042c6 est=$0.0070
+  ⚡ story-4/main span 048 cache HIT key=569b89ae
+  ⚡ story-4/main span 049 cache HIT key=b40c6529
+  ⚡ story-4/main span 050 cache HIT key=366f90a8
+  ⚡ story-4/main span 051 cache HIT key=7482a5c6
+  ▶ story-4/main span 052 synth ko chars=11 key=8350a559 est=$0.0036
+  ▶ story-4/main span 053 synth en chars=25 key=d65b4fad est=$0.0055
+  ▶ story-4/main span 054 synth ko chars=12 key=10e826e7 est=$0.0040
+  ▶ story-4/main span 055 synth en chars=25 key=ee4805c4 est=$0.0055
+  ⚡ story-4/main span 056 cache HIT key=48468155
+  ⚡ story-4/main span 057 cache HIT key=98f22f62
+  ⚡ story-4/main span 058 cache HIT key=b49cd69c
+  ⚡ story-4/main span 059 cache HIT key=9c21df61
+  ▶ story-4/main span 060 synth ko chars=23 key=db2ba6c0 est=$0.0076
+  ▶ story-4/main span 061 synth ko chars=31 key=3e0b3427 est=$0.0102
+  ▶ story-4/main span 062 synth ko chars=25 key=9ad3e153 est=$0.0083
+  ▶ story-4/main span 063 synth ko chars=16 key=adce5054 est=$0.0053
+  ▶ story-4/main span 064 synth ko chars=23 key=baad3503 est=$0.0076
+  ▶ story-4/main span 065 synth ko chars=26 key=dae4e746 est=$0.0086
+  ▶ story-4/main span 066 synth ko chars=26 key=d456fcdd est=$0.0086
+  ▶ story-4/main span 067 synth ko chars=17 key=1b8bebd2 est=$0.0056
+  ⚡ story-4/main span 068 cache HIT key=a74c5d89
+  ⚡ story-4/main span 069 cache HIT key=80849b6a
+  ▶ story-4/main span 070 synth en chars=194 key=406b94fc est=$0.0427
+  ▶ story-4/main span 071 synth en chars=161 key=c7cc60f4 est=$0.0354
+  ▶ story-4/main span 072 synth en chars=182 key=8c6a77d0 est=$0.0400
+  ⚡ story-4/main span 073 cache HIT key=f42ad9fb
+  ⚡ story-4/main span 074 cache HIT key=59d0f128
+  ▶ story-4/main span 075 synth ko chars=99 key=2db0631c est=$0.0327
+  ▶ story-4/main span 076 synth ko chars=70 key=4ac35e72 est=$0.0231
+  ▶ story-4/main span 077 synth ko chars=85 key=78a13ac4 est=$0.0281
+  ✓ track story-4/main.mp3 (217116 ms, 78 spans)
+
+   ✓ story_1: 64 turns (34 cached), track 198562 ms
+   ✓ story_2: 71 turns (25 cached), track 205729 ms
+   ✓ story_3: 74 turns (18 cached), track 197778 ms
+   ✓ story_4: 78 turns (35 cached), track 217116 ms
+
+🎉 Synthesized 4 tracks via elevenlabs.
+   elevenlabs debit:   5604 chars across 175 freshly-synthesized turns  est_cost=$1.4862
+   📦 Shared cache:  112 hits / 287 total turns  (39.0% hit rate)  at /Users/matthewflood/.langpack/cache/audio
+   📚 Library:       vocab/example audio keys attached (library.json entries: 727 vocab, 429 examples)
+   Cost report:      /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/costs/3_synthesize.json
+[10:13:14] ✓ 3/7 synthesize
+[10:13:14] ═══ 4/7 assemble bundle ═══
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/bundle.json
+   4 tracks, 235 total clips
+[10:13:14] ✓ 4/7 assemble bundle
+[10:13:14] ═══ 5/7 publish s3 ═══
+═══ Publishing news_2026_07_08 for 2026-07-08 ═══
+  Destination:   lmaudio (s3://turned.rip/)
+  Prefix:        lmaudio/news_2026_07_08/
+  Manifest URL:  https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_08/bundle.json
+  QR output:     /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/qr.png
+
+Upload plan (local → s3://turned.rip/):
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/bundle.json
+          → lmaudio/news_2026_07_08/bundle.json
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_1.mp3
+          → lmaudio/news_2026_07_08/story_1.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_2.mp3
+          → lmaudio/news_2026_07_08/story_2.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_3.mp3
+          → lmaudio/news_2026_07_08/story_3.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_4.mp3
+          → lmaudio/news_2026_07_08/story_4.mp3
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/bundle.json
+     → s3://turned.rip/lmaudio/news_2026_07_08/bundle.json
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_1.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_08/story_1.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_2.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_08/story_2.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_3.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_08/story_3.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/audio/story_4.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_08/story_4.mp3
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_2026_07_08/bundle.json
+   ✓ s3://turned.rip/lmaudio/news_2026_07_08/story_1.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_08/story_2.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_08/story_3.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_08/story_4.mp3
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_2026_07_08/bundle.json
+   ✓ invalidation created: I8BVFGBAPZQC33E5NO2ILDJA02 (completes in a few minutes)
+
+🔗 Updating lmaudio/news_latest/bundle.json alias...
+Upload plan (local → s3://turned.rip/):
+  [OVERWRITE] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/bundle.json
+          → lmaudio/news_latest/bundle.json (expected overwrite)
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/bundle.json
+     → s3://turned.rip/lmaudio/news_latest/bundle.json
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_latest/bundle.json
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_latest/bundle.json
+   ✓ invalidation created: IBNYCI9M51LXLESX7TBPL9LGUD (completes in a few minutes)
+🔳 Generating QR code...
+✅ QR code: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/qr.png
+   App URL:      languagemirror://bundle?url=https%3A%2F%2Fd1ni0tk3ua6bwo.cloudfront.net%2Flmaudio%2Fnews_2026_07_08%2Fbundle.json
+   Manifest URL: https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_08/bundle.json
+[10:13:27] ✓ 5/7 publish s3
+[10:13:27] ═══ 6/7 deploy web ═══
+[main f9cb226] news: publish 2026-07-08
+ 4 files changed, 284 insertions(+)
+ create mode 100644 sixwands.com/news/2026-07-08/index.html
+ create mode 100644 sixwands.com/news/2026-07-08/meta.json
+ create mode 100644 sixwands.com/news/2026-07-08/qr.png
+📝 Wrote local site files under /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/index.html
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/qr.png
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/meta.json
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+
+📦 Committing to git...
+   ✓ committed news: publish 2026-07-08
+Upload plan (local → s3://sixwandsstudios.com/):
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/index.html
+          → news/2026-07-08/index.html
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/qr.png
+          → news/2026-07-08/qr.png
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/meta.json
+          → news/2026-07-08/meta.json
+  [OVERWRITE] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+          → news/index.html (expected overwrite)
+🔍 Pre-flight: verifying integrity of s3://sixwandsstudios.com/
+   ✓ 12 protected keys all present
+📤 Uploading to s3://sixwandsstudios.com/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/index.html
+     → s3://sixwandsstudios.com/news/2026-07-08/index.html
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/qr.png
+     → s3://sixwandsstudios.com/news/2026-07-08/qr.png
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-08/meta.json
+     → s3://sixwandsstudios.com/news/2026-07-08/meta.json
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+     → s3://sixwandsstudios.com/news/index.html
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://sixwandsstudios.com/news/2026-07-08/index.html
+   ✓ s3://sixwandsstudios.com/news/2026-07-08/qr.png
+   ✓ s3://sixwandsstudios.com/news/2026-07-08/meta.json
+   ✓ s3://sixwandsstudios.com/news/index.html
+🌀 CloudFront invalidation (E3FOHY8GP6GID3): /news/2026-07-08/* /news/index.html
+   ✓ invalidation created: I81F33LNJBJEQM0275UZWS0ZR0 (completes in a few minutes)
+
+🎉 Published https://sixwandsstudios.com/news/2026-07-08/
+[10:13:31] ✓ 6/7 deploy web
+💰 Cost ledger: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/cache/cost_history/2026/07/2026-07-08_141331.json
+[10:13:31] 🎉 Daily pipeline complete for 2026-07-08
+[10:13:31]    Manifest: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/bundle.json
+[10:13:31]    QR:       /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-08/qr.png
+[10:13:31]    Web:      https://sixwandsstudios.com/news/2026-07-08/
+[10:00:05] ═══════════════════════════════════════════════════════════
+[10:00:05]   Daily news pipeline · date=2026-07-09 · commit=--commit
+[10:00:05]   Log: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/run.log
+[10:00:05] ═══════════════════════════════════════════════════════════
+[10:00:05] ═══ 0/7 fetch feeds ═══
+═══ Fetching feeds for 2026-07-09 ═══
+  ↓ NPR                  (hard) 10 items
+  ↓ Guardian US          (hard) 20 items
+  ↓ BBC US/Canada        (hard) 20 items
+  ↓ CBS News             (hard) 20 items
+  ↓ Politico             (hard) 20 items
+  ↓ Fox News             (hard) 20 items
+  ↓ Washington Examiner  (hard) 10 items
+  ↓ NY Post              (hard) 20 items
+  ↓ Ars Technica         (tech) 20 items
+  ↓ Science News         (science) 20 items
+  ↓ ESPN                 (sports) 20 items
+  ↓ NPR Arts             (arts) 10 items
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/feeds.json (210 items)
+[10:00:07] ✓ 0/7 fetch feeds
+[10:00:08] ═══ 1/7 curate ═══
+  ⏭ dropped 1 feed item(s) already chosen in the last 7 days
+═══ Curating 209 items for 2026-07-09 ═══
+  Output:  /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/chosen.json
+
+📡 Using LLM: anthropic/claude-sonnet-4-5 (max_tokens=2048)
+  📡 [curate] → anthropic
+     model=claude-sonnet-4-5  prompt_chars=57858  max_tokens=2048
+     ✓ usage: input=14919 output=259 tokens  est_cost=$0.0486  response_chars=945
+📰 Claude chose 4 stories. Fetching bodies...
+  ↓ story_1: Former coach at Bucknell University charged in death of freshman footb
+     ↓ trafilatura GET https://www.npr.org/2026/07/09/g-s1-132703/bucknell-university-coach-death-freshman-football-player-sickle-cell
+     ↓ fetched 134640 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_2: A Florida airport is officially renamed for Trump. What does he stand 
+     ↓ trafilatura GET https://www.npr.org/2026/07/09/nx-s1-5825868/trump-airport-florida-pbi-trademark
+     ↓ fetched 195495 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_3: New aviation mechanics graduate with jobs in hand, thanks to a labor s
+     ↓ trafilatura GET https://www.npr.org/2026/07/09/nx-s1-5860843/aviation-mechanics-labor-shortage
+     ↓ fetched 170237 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_4: Pickles glow when you plug them in. Science explains why
+     ↓ trafilatura GET https://www.sciencenews.org/article/pickle-glow-electricity-experiment
+     ↓ fetched 789311 bytes; extracting main content...
+     ✓ extracted 2539 chars (capped at 3000)
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/chosen.json (4 stories)
+[10:00:18] ✓ 1/7 curate
+[10:00:18] ═══ 2/7 generate script ═══
+═══ Generating script for 2026-07-09 ═══
+  Pack ID:   news_2026_07_09
+  Title:     2026년 7월 9일 뉴스 / US News, July 9, 2026
+  Stories:   4
+  Output:    /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/script.json
+
+📡 Script LLM: anthropic/claude-sonnet-4-5  (max_tokens=4096)
+📡 QA LLM:     openai/gpt-5.5  (max_tokens=4096)  ← cross-model review
+
+📚 Lexicon (ko-en): 727 vocab, 429 examples
+
+━━━ [story_1] Former coach at Bucknell University charged in death of freshman footb
+     📡 [script:story_1] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10274  max_tokens=4096
+        ✓ usage: input=3175 output=1487 tokens  est_cost=$0.0318  response_chars=3022
+        ↳ running total: input=3175 output=1487 cost=$0.0318
+     📡 [qa:story_1] → openai
+        model=gpt-5.5  prompt_chars=8926  max_tokens=4096
+        ✓ usage: input=2509 output=4096 tokens  est_cost=$0.0460  response_chars=0
+        ↳ running total: input=5684 output=5583 cost=$0.0778
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 2 gloss(es):
+        · 사망하다: 'to die' → 'to die, to be killed' (locked)
+        · 질환: 'medical condition' → 'disease, disorder' (locked)
+     📚 Examples: 4 cached + 3 fresh = 7 total
+        ⚠ Uncovered vocab (no example): ['고소하다', '무시하다', '사망하다', '쓰러지다', '피하다']
+   ✓ 72 turns, 59 clips across 3 sets
+━━━ [story_2] A Florida airport is officially renamed for Trump. What does he stand 
+     📡 [script:story_2] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10272  max_tokens=4096
+        ✓ usage: input=3154 output=1389 tokens  est_cost=$0.0303  response_chars=2730
+        ↳ running total: input=8838 output=6972 cost=$0.1081
+     📡 [qa:story_2] → openai
+        model=gpt-5.5  prompt_chars=8552  max_tokens=4096
+        ✓ usage: input=2407 output=4096 tokens  est_cost=$0.0458  response_chars=0
+        ↳ running total: input=11245 output=11068 cost=$0.1539
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 1 gloss(es):
+        · 바뀌다: 'to change, be changed' → 'to change' (locked)
+     📚 Examples: 4 cached + 5 fresh = 9 total
+        ⚠ Uncovered vocab (no example): ['바뀌다']
+   ✓ 73 turns, 60 clips across 3 sets
+━━━ [story_3] New aviation mechanics graduate with jobs in hand, thanks to a labor s
+     📡 [script:story_3] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10271  max_tokens=4096
+        ✓ usage: input=3215 output=1585 tokens  est_cost=$0.0334  response_chars=3146
+        ↳ running total: input=14460 output=12653 cost=$0.1873
+     📡 [qa:story_3] → openai
+        model=gpt-5.5  prompt_chars=9047  max_tokens=4096
+        ✓ usage: input=2594 output=4096 tokens  est_cost=$0.0461  response_chars=0
+        ↳ running total: input=17054 output=16749 cost=$0.2334
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 1 cached + 5 fresh = 6 total
+        ⚠ Uncovered vocab (no example): ['완료하다', '은퇴하다', '졸업하다', '취직하다', '필요하다']
+   ✓ 70 turns, 57 clips across 3 sets
+━━━ [story_4] Pickles glow when you plug them in. Science explains why
+     📡 [script:story_4] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=9798  max_tokens=4096
+        ✓ usage: input=3093 output=1370 tokens  est_cost=$0.0298  response_chars=2670
+        ↳ running total: input=20147 output=18119 cost=$0.2633
+     📡 [qa:story_4] → openai
+        model=gpt-5.5  prompt_chars=8534  max_tokens=4096
+        ✓ usage: input=2440 output=4096 tokens  est_cost=$0.0458  response_chars=0
+        ↳ running total: input=22587 output=22215 cost=$0.3091
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 3 gloss(es):
+        · 빛나다: 'to glow, to shine' → 'to shine, to stand out' (locked)
+        · 바뀌다: 'to change, to switch' → 'to change' (locked)
+        · 모으다: 'to collect, to gather' → 'to gather' (locked)
+     📚 Examples: 1 cached + 6 fresh = 7 total
+        ⚠ Uncovered vocab (no example): ['모으다', '바뀌다', '빛나다', '전류', '폭발하다']
+   ✓ 72 turns, 59 clips across 3 sets
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/script.json
+   Cost report: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/costs/2_generate_script.json
+   Total Claude usage: input=22587 output=22215 tokens  est_total_cost=$0.3091
+   📚 Library now: 758 vocab (+31), 448 examples (+19)
+[10:08:34] ✓ 2/7 generate script
+[10:08:34] ═══ 2b/7 translate easy ═══
+  📡 story_1: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=357 output=125 tokens  est_cost=$0.0008
+  📡 story_2: translating 9 sentences → anthropic/claude-haiku-4-5
+     ✓ input=379 output=124 tokens  est_cost=$0.0008
+  📡 story_3: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=368 output=128 tokens  est_cost=$0.0008
+  📡 story_4: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=338 output=131 tokens  est_cost=$0.0008
+✅ Updated /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/script.json (4 stories translated, 0 skipped)
+[10:08:41] ✓ 2b/7 translate easy
+[10:08:41] ═══ 3/7 synthesize ═══
+═══ Synthesizing audio for 2026-07-09 (via voicebox) ═══
+  Provider:      elevenlabs/eleven_multilingual_v2 (from tts.yaml)
+  Cache:         /Users/matthewflood/.langpack/cache/audio
+  Stories:       4
+  Total turns:   287  (cache hits 104, to synthesize 183)
+  Chars to debit: 6178  (cap 20000)
+  Estimated cost: $1.6241
+  Output:        /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio
+
+  ▶ story-1/main span 000 synth ko chars=16 key=63c6ce0c est=$0.0053
+  ▶ story-1/main span 001 synth en chars=41 key=b48cd9ea est=$0.0090
+  ⚡ story-1/main span 002 cache HIT key=4d364c1e
+  ⚡ story-1/main span 003 cache HIT key=315a2a4f
+  ▶ story-1/main span 004 synth ko chars=2 key=1dfd6f5b est=$0.0007
+  ▶ story-1/main span 005 synth en chars=5 key=4367ed4a est=$0.0011
+  ⚡ story-1/main span 006 cache HIT key=ddd0721e
+  ⚡ story-1/main span 007 cache HIT key=7ba220e7
+  ⚡ story-1/main span 008 cache HIT key=bea848ad
+  ⚡ story-1/main span 009 cache HIT key=4e83603a
+  ⚡ story-1/main span 010 cache HIT key=337402c0
+  ⚡ story-1/main span 011 cache HIT key=2308a865
+  ▶ story-1/main span 012 synth ko chars=4 key=13279099 est=$0.0013
+  ⚡ story-1/main span 013 cache HIT key=2b3b75b1
+  ⚡ story-1/main span 014 cache HIT key=b9e7890a
+  ⚡ story-1/main span 015 cache HIT key=f0edea91
+  ⚡ story-1/main span 016 cache HIT key=37cf5009
+  ⚡ story-1/main span 017 cache HIT key=9da1f516
+  ▶ story-1/main span 018 synth ko chars=2 key=cdc0eba5 est=$0.0007
+  ▶ story-1/main span 019 synth en chars=8 key=ff4f9bfa est=$0.0018
+  ▶ story-1/main span 020 synth ko chars=4 key=3ed4b868 est=$0.0013
+  ▶ story-1/main span 021 synth en chars=19 key=cf9f8f81 est=$0.0042
+  ▶ story-1/main span 022 synth ko chars=4 key=8f46b79b est=$0.0013
+  ▶ story-1/main span 023 synth en chars=20 key=78386594 est=$0.0044
+  ▶ story-1/main span 024 synth ko chars=3 key=90f8fee9 est=$0.0010
+  ▶ story-1/main span 025 synth en chars=8 key=b643bef9 est=$0.0018
+  ▶ story-1/main span 026 synth ko chars=2 key=24b729d6 est=$0.0007
+  ▶ story-1/main span 027 synth en chars=7 key=3b8face0 est=$0.0015
+  ⚡ story-1/main span 028 cache HIT key=9414ddfe
+  ⚡ story-1/main span 029 cache HIT key=72b537ee
+  ▶ story-1/main span 030 synth ko chars=19 key=94ca82fc est=$0.0063
+  ▶ story-1/main span 031 synth en chars=31 key=2ef2f84d est=$0.0068
+  ⚡ story-1/main span 032 cache HIT key=1b792f88
+  ⚡ story-1/main span 033 cache HIT key=1a2f9114
+  ⚡ story-1/main span 034 cache HIT key=64efd1c7
+  ⚡ story-1/main span 035 cache HIT key=be5a10a3
+  ⚡ story-1/main span 036 cache HIT key=6266a84d
+  ⚡ story-1/main span 037 cache HIT key=54848334
+  ⚡ story-1/main span 038 cache HIT key=7d6ee09c
+  ⚡ story-1/main span 039 cache HIT key=db8f8f1e
+  ▶ story-1/main span 040 synth ko chars=12 key=530f8a86 est=$0.0040
+  ▶ story-1/main span 041 synth en chars=42 key=e9834d5e est=$0.0092
+  ▶ story-1/main span 042 synth ko chars=17 key=921b0ee9 est=$0.0056
+  ▶ story-1/main span 043 synth en chars=47 key=3bda6be3 est=$0.0103
+  ⚡ story-1/main span 044 cache HIT key=366f90a8
+  ⚡ story-1/main span 045 cache HIT key=7482a5c6
+  ▶ story-1/main span 046 synth ko chars=13 key=70eb4409 est=$0.0043
+  ▶ story-1/main span 047 synth en chars=33 key=15fee475 est=$0.0073
+  ▶ story-1/main span 048 synth ko chars=12 key=d2dc41ad est=$0.0040
+  ▶ story-1/main span 049 synth en chars=34 key=726bb0b9 est=$0.0075
+  ⚡ story-1/main span 050 cache HIT key=48468155
+  ⚡ story-1/main span 051 cache HIT key=98f22f62
+  ⚡ story-1/main span 052 cache HIT key=b49cd69c
+  ⚡ story-1/main span 053 cache HIT key=9c21df61
+  ▶ story-1/main span 054 synth ko chars=24 key=743c3c31 est=$0.0079
+  ▶ story-1/main span 055 synth ko chars=27 key=068135cf est=$0.0089
+  ▶ story-1/main span 056 synth ko chars=30 key=689fb132 est=$0.0099
+  ▶ story-1/main span 057 synth ko chars=19 key=6333537a est=$0.0063
+  ▶ story-1/main span 058 synth ko chars=25 key=8ca16729 est=$0.0083
+  ▶ story-1/main span 059 synth ko chars=24 key=d23224cb est=$0.0079
+  ▶ story-1/main span 060 synth ko chars=20 key=dfff9627 est=$0.0066
+  ▶ story-1/main span 061 synth ko chars=28 key=737e254f est=$0.0092
+  ⚡ story-1/main span 062 cache HIT key=a74c5d89
+  ⚡ story-1/main span 063 cache HIT key=80849b6a
+  ▶ story-1/main span 064 synth en chars=121 key=1b9603eb est=$0.0266
+  ▶ story-1/main span 065 synth en chars=211 key=7e5b7dd1 est=$0.0464
+  ▶ story-1/main span 066 synth en chars=277 key=3a21f2d7 est=$0.0609
+  ⚡ story-1/main span 067 cache HIT key=f42ad9fb
+  ⚡ story-1/main span 068 cache HIT key=59d0f128
+  ▶ story-1/main span 069 synth ko chars=48 key=44e895d3 est=$0.0158
+  ▶ story-1/main span 070 synth ko chars=99 key=fc05b3ba est=$0.0327
+  ▶ story-1/main span 071 synth ko chars=111 key=21b58518 est=$0.0366
+  ✓ track story-1/main.mp3 (207472 ms, 72 spans)
+  ▶ story-2/main span 000 synth ko chars=15 key=5caac483 est=$0.0049
+  ▶ story-2/main span 001 synth en chars=33 key=b81b5223 est=$0.0073
+  ⚡ story-2/main span 002 cache HIT key=4d364c1e
+  ⚡ story-2/main span 003 cache HIT key=315a2a4f
+  ⚡ story-2/main span 004 cache HIT key=9ba5a028
+  ⚡ story-2/main span 005 cache HIT key=583c4f0c
+  ▶ story-2/main span 006 synth ko chars=2 key=282ffd63 est=$0.0007
+  ▶ story-2/main span 007 synth en chars=4 key=44eff0fe est=$0.0009
+  ⚡ story-2/main span 008 cache HIT key=a417bed8
+  ⚡ story-2/main span 009 cache HIT key=ee8b9dae
+  ⚡ story-2/main span 010 cache HIT key=192fc0cf
+  ⚡ story-2/main span 011 cache HIT key=bced4339
+  ▶ story-2/main span 012 synth ko chars=2 key=c2bddb51 est=$0.0007
+  ▶ story-2/main span 013 synth en chars=9 key=0b3a5ee5 est=$0.0020
+  ▶ story-2/main span 014 synth ko chars=3 key=e5d94a65 est=$0.0010
+  ▶ story-2/main span 015 synth en chars=13 key=69df6827 est=$0.0029
+  ⚡ story-2/main span 016 cache HIT key=9737bf63
+  ⚡ story-2/main span 017 cache HIT key=eb206a4f
+  ⚡ story-2/main span 018 cache HIT key=24b729d6
+  ⚡ story-2/main span 019 cache HIT key=3b8face0
+  ▶ story-2/main span 020 synth ko chars=2 key=e67b58e1 est=$0.0007
+  ▶ story-2/main span 021 synth en chars=14 key=9470f7f6 est=$0.0031
+  ▶ story-2/main span 022 synth ko chars=2 key=04f620d8 est=$0.0007
+  ▶ story-2/main span 023 synth en chars=5 key=c6d517a1 est=$0.0011
+  ⚡ story-2/main span 024 cache HIT key=9414ddfe
+  ⚡ story-2/main span 025 cache HIT key=72b537ee
+  ⚡ story-2/main span 026 cache HIT key=76a2bef4
+  ⚡ story-2/main span 027 cache HIT key=77fc7c1d
+  ▶ story-2/main span 028 synth ko chars=19 key=0aa0c25f est=$0.0063
+  ▶ story-2/main span 029 synth en chars=34 key=211ea419 est=$0.0075
+  ⚡ story-2/main span 030 cache HIT key=8cd13104
+  ⚡ story-2/main span 031 cache HIT key=cf94c9a5
+  ▶ story-2/main span 032 synth ko chars=19 key=ea857801 est=$0.0063
+  ▶ story-2/main span 033 synth en chars=52 key=ddf4ce75 est=$0.0114
+  ▶ story-2/main span 034 synth ko chars=19 key=0910139b est=$0.0063
+  ▶ story-2/main span 035 synth en chars=48 key=95bfcf61 est=$0.0106
+  ⚡ story-2/main span 036 cache HIT key=229aa991
+  ⚡ story-2/main span 037 cache HIT key=942d2d2c
+  ⚡ story-2/main span 038 cache HIT key=921b0ee9
+  ⚡ story-2/main span 039 cache HIT key=3bda6be3
+  ▶ story-2/main span 040 synth ko chars=18 key=9cf3f4fc est=$0.0059
+  ▶ story-2/main span 041 synth en chars=30 key=fd78232f est=$0.0066
+  ▶ story-2/main span 042 synth ko chars=16 key=a69db643 est=$0.0053
+  ▶ story-2/main span 043 synth en chars=36 key=1341e4d4 est=$0.0079
+  ⚡ story-2/main span 044 cache HIT key=366f90a8
+  ⚡ story-2/main span 045 cache HIT key=7482a5c6
+  ▶ story-2/main span 046 synth ko chars=9 key=3932765c est=$0.0030
+  ▶ story-2/main span 047 synth en chars=21 key=62053c0b est=$0.0046
+  ▶ story-2/main span 048 synth ko chars=10 key=8dd47c66 est=$0.0033
+  ▶ story-2/main span 049 synth en chars=20 key=b647e95d est=$0.0044
+  ⚡ story-2/main span 050 cache HIT key=48468155
+  ⚡ story-2/main span 051 cache HIT key=98f22f62
+  ⚡ story-2/main span 052 cache HIT key=b49cd69c
+  ⚡ story-2/main span 053 cache HIT key=9c21df61
+  ▶ story-2/main span 054 synth ko chars=22 key=28fb3e93 est=$0.0073
+  ▶ story-2/main span 055 synth ko chars=25 key=9880badc est=$0.0083
+  ▶ story-2/main span 056 synth ko chars=18 key=c2a6ccad est=$0.0059
+  ▶ story-2/main span 057 synth ko chars=26 key=83035475 est=$0.0086
+  ▶ story-2/main span 058 synth ko chars=26 key=0f5d388a est=$0.0086
+  ▶ story-2/main span 059 synth ko chars=18 key=7ad4fe04 est=$0.0059
+  ▶ story-2/main span 060 synth ko chars=13 key=bd0c64d6 est=$0.0043
+  ▶ story-2/main span 061 synth ko chars=30 key=6a94badb est=$0.0099
+  ▶ story-2/main span 062 synth ko chars=30 key=34185d42 est=$0.0099
+  ⚡ story-2/main span 063 cache HIT key=a74c5d89
+  ⚡ story-2/main span 064 cache HIT key=80849b6a
+  ▶ story-2/main span 065 synth en chars=246 key=329562ef est=$0.0541
+  ▶ story-2/main span 066 synth en chars=180 key=679f839c est=$0.0396
+  ▶ story-2/main span 067 synth en chars=189 key=be760115 est=$0.0416
+  ⚡ story-2/main span 068 cache HIT key=f42ad9fb
+  ⚡ story-2/main span 069 cache HIT key=59d0f128
+  ▶ story-2/main span 070 synth ko chars=107 key=6204c6d3 est=$0.0353
+  ▶ story-2/main span 071 synth ko chars=92 key=8b51e498 est=$0.0304
+  ▶ story-2/main span 072 synth ko chars=80 key=890ea9d2 est=$0.0264
+  ✓ track story-2/main.mp3 (222174 ms, 73 spans)
+  ▶ story-3/main span 000 synth ko chars=9 key=0ae7bd49 est=$0.0030
+  ▶ story-3/main span 001 synth en chars=26 key=e2b6c71d est=$0.0057
+  ⚡ story-3/main span 002 cache HIT key=4d364c1e
+  ⚡ story-3/main span 003 cache HIT key=315a2a4f
+  ▶ story-3/main span 004 synth ko chars=4 key=2afa267e est=$0.0013
+  ▶ story-3/main span 005 synth en chars=11 key=9cccc952 est=$0.0024
+  ▶ story-3/main span 006 synth ko chars=3 key=8553fa40 est=$0.0010
+  ▶ story-3/main span 007 synth en chars=8 key=bb7aa6f5 est=$0.0018
+  ▶ story-3/main span 008 synth ko chars=2 key=ea4e8d83 est=$0.0007
+  ▶ story-3/main span 009 synth en chars=10 key=8de1573d est=$0.0022
+  ▶ story-3/main span 010 synth ko chars=3 key=107714e6 est=$0.0010
+  ▶ story-3/main span 011 synth en chars=22 key=99ddeb2b est=$0.0048
+  ▶ story-3/main span 012 synth ko chars=4 key=df590051 est=$0.0013
+  ▶ story-3/main span 013 synth en chars=12 key=bb578342 est=$0.0026
+  ▶ story-3/main span 014 synth ko chars=2 key=db559247 est=$0.0007
+  ▶ story-3/main span 015 synth en chars=8 key=7d9f2f0c est=$0.0018
+  ▶ story-3/main span 016 synth ko chars=4 key=3684718c est=$0.0013
+  ▶ story-3/main span 017 synth en chars=9 key=96013c9a est=$0.0020
+  ▶ story-3/main span 018 synth ko chars=4 key=ecc8caba est=$0.0013
+  ▶ story-3/main span 019 synth en chars=21 key=e55b7fab est=$0.0046
+  ▶ story-3/main span 020 synth ko chars=2 key=4a936776 est=$0.0007
+  ▶ story-3/main span 021 synth en chars=13 key=296f4acb est=$0.0029
+  ▶ story-3/main span 022 synth ko chars=2 key=902b3e15 est=$0.0007
+  ▶ story-3/main span 023 synth en chars=7 key=ca2112a5 est=$0.0015
+  ⚡ story-3/main span 024 cache HIT key=ae0b821a
+  ⚡ story-3/main span 025 cache HIT key=b620afd6
+  ▶ story-3/main span 026 synth ko chars=4 key=e310038f est=$0.0013
+  ⚡ story-3/main span 027 cache HIT key=6fa43a6b
+  ⚡ story-3/main span 028 cache HIT key=9414ddfe
+  ⚡ story-3/main span 029 cache HIT key=72b537ee
+  ▶ story-3/main span 030 synth ko chars=18 key=8ac3d6b4 est=$0.0059
+  ▶ story-3/main span 031 synth en chars=28 key=e982b962 est=$0.0062
+  ▶ story-3/main span 032 synth ko chars=23 key=d1cc83af est=$0.0076
+  ▶ story-3/main span 033 synth en chars=50 key=2e85dcdc est=$0.0110
+  ▶ story-3/main span 034 synth ko chars=13 key=cb166878 est=$0.0043
+  ▶ story-3/main span 035 synth en chars=39 key=424c8d91 est=$0.0086
+  ▶ story-3/main span 036 synth ko chars=17 key=995356d9 est=$0.0056
+  ▶ story-3/main span 037 synth en chars=33 key=e05ee8a4 est=$0.0073
+  ▶ story-3/main span 038 synth ko chars=25 key=9f0e7a5d est=$0.0083
+  ▶ story-3/main span 039 synth en chars=51 key=a1421e91 est=$0.0112
+  ⚡ story-3/main span 040 cache HIT key=9314cd9c
+  ⚡ story-3/main span 041 cache HIT key=d6f6b871
+  ⚡ story-3/main span 042 cache HIT key=366f90a8
+  ⚡ story-3/main span 043 cache HIT key=7482a5c6
+  ▶ story-3/main span 044 synth ko chars=12 key=b9da76a1 est=$0.0040
+  ▶ story-3/main span 045 synth en chars=29 key=2c869182 est=$0.0064
+  ▶ story-3/main span 046 synth ko chars=6 key=318ff1fb est=$0.0020
+  ▶ story-3/main span 047 synth en chars=14 key=6cb49969 est=$0.0031
+  ⚡ story-3/main span 048 cache HIT key=48468155
+  ⚡ story-3/main span 049 cache HIT key=98f22f62
+  ⚡ story-3/main span 050 cache HIT key=b49cd69c
+  ⚡ story-3/main span 051 cache HIT key=9c21df61
+  ▶ story-3/main span 052 synth ko chars=28 key=8842ee7d est=$0.0092
+  ▶ story-3/main span 053 synth ko chars=28 key=78c3f0cd est=$0.0092
+  ▶ story-3/main span 054 synth ko chars=21 key=59df3248 est=$0.0069
+  ▶ story-3/main span 055 synth ko chars=24 key=560ac183 est=$0.0079
+  ▶ story-3/main span 056 synth ko chars=27 key=256ac00b est=$0.0089
+  ▶ story-3/main span 057 synth ko chars=27 key=d7f9ed5d est=$0.0089
+  ▶ story-3/main span 058 synth ko chars=26 key=702120f6 est=$0.0086
+  ▶ story-3/main span 059 synth ko chars=28 key=7ac72e44 est=$0.0092
+  ⚡ story-3/main span 060 cache HIT key=a74c5d89
+  ⚡ story-3/main span 061 cache HIT key=80849b6a
+  ▶ story-3/main span 062 synth en chars=216 key=065084ee est=$0.0475
+  ▶ story-3/main span 063 synth en chars=239 key=b9c8a98d est=$0.0526
+  ▶ story-3/main span 064 synth en chars=207 key=47d3c1e1 est=$0.0455
+  ⚡ story-3/main span 065 cache HIT key=f42ad9fb
+  ⚡ story-3/main span 066 cache HIT key=59d0f128
+  ▶ story-3/main span 067 synth ko chars=92 key=4644d441 est=$0.0304
+  ▶ story-3/main span 068 synth ko chars=118 key=00aa48bc est=$0.0389
+  ▶ story-3/main span 069 synth ko chars=102 key=733a6d20 est=$0.0337
+  ✓ track story-3/main.mp3 (234956 ms, 70 spans)
+  ▶ story-4/main span 000 synth ko chars=15 key=4a703476 est=$0.0049
+  ▶ story-4/main span 001 synth en chars=34 key=5548413e est=$0.0075
+  ⚡ story-4/main span 002 cache HIT key=4d364c1e
+  ⚡ story-4/main span 003 cache HIT key=315a2a4f
+  ▶ story-4/main span 004 synth ko chars=2 key=0c459d67 est=$0.0007
+  ▶ story-4/main span 005 synth en chars=11 key=67d4d246 est=$0.0024
+  ⚡ story-4/main span 006 cache HIT key=db96eccf
+  ⚡ story-4/main span 007 cache HIT key=38790181
+  ⚡ story-4/main span 008 cache HIT key=79876c28
+  ⚡ story-4/main span 009 cache HIT key=7a21fb62
+  ▶ story-4/main span 010 synth ko chars=3 key=860bdfb4 est=$0.0010
+  ▶ story-4/main span 011 synth en chars=17 key=1dc44cd6 est=$0.0037
+  ▶ story-4/main span 012 synth ko chars=2 key=8673fc2f est=$0.0007
+  ▶ story-4/main span 013 synth en chars=16 key=22d1aa0d est=$0.0035
+  ▶ story-4/main span 014 synth ko chars=2 key=4142dae9 est=$0.0007
+  ▶ story-4/main span 015 synth en chars=8 key=55e90231 est=$0.0018
+  ▶ story-4/main span 016 synth ko chars=2 key=8ac05bca est=$0.0007
+  ▶ story-4/main span 017 synth en chars=6 key=b0e250f1 est=$0.0013
+  ▶ story-4/main span 018 synth ko chars=4 key=3ec759fc est=$0.0013
+  ▶ story-4/main span 019 synth en chars=10 key=7b322246 est=$0.0022
+  ▶ story-4/main span 020 synth ko chars=2 key=ab274cf7 est=$0.0007
+  ▶ story-4/main span 021 synth en chars=9 key=325d6038 est=$0.0020
+  ⚡ story-4/main span 022 cache HIT key=a417bed8
+  ⚡ story-4/main span 023 cache HIT key=ee8b9dae
+  ▶ story-4/main span 024 synth ko chars=3 key=a04ec438 est=$0.0010
+  ▶ story-4/main span 025 synth en chars=18 key=8c0bf2ad est=$0.0040
+  ⚡ story-4/main span 026 cache HIT key=b0d0e8f6
+  ⚡ story-4/main span 027 cache HIT key=2d281d13
+  ⚡ story-4/main span 028 cache HIT key=9414ddfe
+  ⚡ story-4/main span 029 cache HIT key=72b537ee
+  ▶ story-4/main span 030 synth ko chars=19 key=e4595d19 est=$0.0063
+  ▶ story-4/main span 031 synth en chars=37 key=dcf0ae75 est=$0.0081
+  ⚡ story-4/main span 032 cache HIT key=c31d6831
+  ⚡ story-4/main span 033 cache HIT key=b37e96d4
+  ▶ story-4/main span 034 synth ko chars=11 key=158f0e93 est=$0.0036
+  ▶ story-4/main span 035 synth en chars=22 key=e2cf6edd est=$0.0048
+  ▶ story-4/main span 036 synth ko chars=13 key=38dd12cc est=$0.0043
+  ▶ story-4/main span 037 synth en chars=24 key=5dbdd3fd est=$0.0053
+  ▶ story-4/main span 038 synth ko chars=17 key=20f54eb2 est=$0.0056
+  ▶ story-4/main span 039 synth en chars=26 key=8afd34fe est=$0.0057
+  ▶ story-4/main span 040 synth ko chars=17 key=936fe208 est=$0.0056
+  ▶ story-4/main span 041 synth en chars=31 key=8983ea52 est=$0.0068
+  ▶ story-4/main span 042 synth ko chars=15 key=ce8a31c3 est=$0.0049
+  ▶ story-4/main span 043 synth en chars=40 key=c65da7ee est=$0.0088
+  ⚡ story-4/main span 044 cache HIT key=366f90a8
+  ⚡ story-4/main span 045 cache HIT key=7482a5c6
+  ▶ story-4/main span 046 synth ko chars=7 key=3bd32a32 est=$0.0023
+  ▶ story-4/main span 047 synth en chars=22 key=79a34882 est=$0.0048
+  ▶ story-4/main span 048 synth ko chars=7 key=252764b5 est=$0.0023
+  ▶ story-4/main span 049 synth en chars=19 key=d9baa32b est=$0.0042
+  ⚡ story-4/main span 050 cache HIT key=48468155
+  ⚡ story-4/main span 051 cache HIT key=98f22f62
+  ⚡ story-4/main span 052 cache HIT key=b49cd69c
+  ⚡ story-4/main span 053 cache HIT key=9c21df61
+  ▶ story-4/main span 054 synth ko chars=22 key=ab3db189 est=$0.0073
+  ▶ story-4/main span 055 synth ko chars=20 key=771d344e est=$0.0066
+  ▶ story-4/main span 056 synth ko chars=29 key=a3b14709 est=$0.0096
+  ▶ story-4/main span 057 synth ko chars=24 key=ce12ad34 est=$0.0079
+  ▶ story-4/main span 058 synth ko chars=18 key=2f2df722 est=$0.0059
+  ▶ story-4/main span 059 synth ko chars=14 key=3d2a779e est=$0.0046
+  ▶ story-4/main span 060 synth ko chars=16 key=4d9c3d6f est=$0.0053
+  ▶ story-4/main span 061 synth ko chars=26 key=cff27e8a est=$0.0086
+  ⚡ story-4/main span 062 cache HIT key=a74c5d89
+  ⚡ story-4/main span 063 cache HIT key=80849b6a
+  ▶ story-4/main span 064 synth en chars=129 key=083499bf est=$0.0284
+  ▶ story-4/main span 065 synth en chars=206 key=1e550e49 est=$0.0453
+  ▶ story-4/main span 066 synth en chars=139 key=8d91842c est=$0.0306
+  ⚡ story-4/main span 067 cache HIT key=f42ad9fb
+  ⚡ story-4/main span 068 cache HIT key=59d0f128
+  ▶ story-4/main span 069 synth ko chars=57 key=92b53d96 est=$0.0188
+  ▶ story-4/main span 070 synth ko chars=91 key=c76e5752 est=$0.0300
+  ▶ story-4/main span 071 synth ko chars=66 key=d1a7ac5b est=$0.0218
+  ✓ track story-4/main.mp3 (186851 ms, 72 spans)
+
+   ✓ story_1: 72 turns (33 cached), track 207472 ms
+   ✓ story_2: 73 turns (32 cached), track 222174 ms
+   ✓ story_3: 70 turns (19 cached), track 234956 ms
+   ✓ story_4: 72 turns (24 cached), track 186851 ms
+
+🎉 Synthesized 4 tracks via elevenlabs.
+   elevenlabs debit:   6105 chars across 179 freshly-synthesized turns  est_cost=$1.6060
+   📦 Shared cache:  108 hits / 287 total turns  (37.6% hit rate)  at /Users/matthewflood/.langpack/cache/audio
+   📚 Library:       vocab/example audio keys attached (library.json entries: 758 vocab, 448 examples)
+   Cost report:      /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/costs/3_synthesize.json
+[10:12:44] ✓ 3/7 synthesize
+[10:12:44] ═══ 4/7 assemble bundle ═══
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/bundle.json
+   4 tracks, 235 total clips
+[10:12:44] ✓ 4/7 assemble bundle
+[10:12:44] ═══ 5/7 publish s3 ═══
+═══ Publishing news_2026_07_09 for 2026-07-09 ═══
+  Destination:   lmaudio (s3://turned.rip/)
+  Prefix:        lmaudio/news_2026_07_09/
+  Manifest URL:  https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_09/bundle.json
+  QR output:     /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/qr.png
+
+Upload plan (local → s3://turned.rip/):
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/bundle.json
+          → lmaudio/news_2026_07_09/bundle.json
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_1.mp3
+          → lmaudio/news_2026_07_09/story_1.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_2.mp3
+          → lmaudio/news_2026_07_09/story_2.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_3.mp3
+          → lmaudio/news_2026_07_09/story_3.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_4.mp3
+          → lmaudio/news_2026_07_09/story_4.mp3
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/bundle.json
+     → s3://turned.rip/lmaudio/news_2026_07_09/bundle.json
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_1.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_09/story_1.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_2.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_09/story_2.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_3.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_09/story_3.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/audio/story_4.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_09/story_4.mp3
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_2026_07_09/bundle.json
+   ✓ s3://turned.rip/lmaudio/news_2026_07_09/story_1.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_09/story_2.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_09/story_3.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_09/story_4.mp3
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_2026_07_09/bundle.json
+   ✓ invalidation created: IC45XXBMW9VD8VFT3FJPBKX7JZ (completes in a few minutes)
+
+🔗 Updating lmaudio/news_latest/bundle.json alias...
+Upload plan (local → s3://turned.rip/):
+  [OVERWRITE] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/bundle.json
+          → lmaudio/news_latest/bundle.json (expected overwrite)
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/bundle.json
+     → s3://turned.rip/lmaudio/news_latest/bundle.json
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_latest/bundle.json
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_latest/bundle.json
+   ✓ invalidation created: I4PULJLEWZKC8CXJ1WQ9WIBJFF (completes in a few minutes)
+🔳 Generating QR code...
+✅ QR code: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/qr.png
+   App URL:      languagemirror://bundle?url=https%3A%2F%2Fd1ni0tk3ua6bwo.cloudfront.net%2Flmaudio%2Fnews_2026_07_09%2Fbundle.json
+   Manifest URL: https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_09/bundle.json
+[10:13:00] ✓ 5/7 publish s3
+[10:13:00] ═══ 6/7 deploy web ═══
+[main 935320d] news: publish 2026-07-09
+ 4 files changed, 287 insertions(+)
+ create mode 100644 sixwands.com/news/2026-07-09/index.html
+ create mode 100644 sixwands.com/news/2026-07-09/meta.json
+ create mode 100644 sixwands.com/news/2026-07-09/qr.png
+📝 Wrote local site files under /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/index.html
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/qr.png
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/meta.json
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+
+📦 Committing to git...
+   ✓ committed news: publish 2026-07-09
+Upload plan (local → s3://sixwandsstudios.com/):
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/index.html
+          → news/2026-07-09/index.html
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/qr.png
+          → news/2026-07-09/qr.png
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/meta.json
+          → news/2026-07-09/meta.json
+  [OVERWRITE] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+          → news/index.html (expected overwrite)
+🔍 Pre-flight: verifying integrity of s3://sixwandsstudios.com/
+   ✓ 12 protected keys all present
+📤 Uploading to s3://sixwandsstudios.com/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/index.html
+     → s3://sixwandsstudios.com/news/2026-07-09/index.html
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/qr.png
+     → s3://sixwandsstudios.com/news/2026-07-09/qr.png
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-09/meta.json
+     → s3://sixwandsstudios.com/news/2026-07-09/meta.json
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+     → s3://sixwandsstudios.com/news/index.html
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://sixwandsstudios.com/news/2026-07-09/index.html
+   ✓ s3://sixwandsstudios.com/news/2026-07-09/qr.png
+   ✓ s3://sixwandsstudios.com/news/2026-07-09/meta.json
+   ✓ s3://sixwandsstudios.com/news/index.html
+🌀 CloudFront invalidation (E3FOHY8GP6GID3): /news/2026-07-09/* /news/index.html
+   ✓ invalidation created: IEEZEI7I3FK5TARELTLXNU1Q3X (completes in a few minutes)
+
+🎉 Published https://sixwandsstudios.com/news/2026-07-09/
+[10:13:03] ✓ 6/7 deploy web
+💰 Cost ledger: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/cache/cost_history/2026/07/2026-07-09_141303.json
+[10:13:03] 🎉 Daily pipeline complete for 2026-07-09
+[10:13:03]    Manifest: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/bundle.json
+[10:13:03]    QR:       /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-09/qr.png
+[10:13:03]    Web:      https://sixwandsstudios.com/news/2026-07-09/
+[09:15:28] ═══════════════════════════════════════════════════════════
+[09:15:28]   Daily news pipeline · date=2026-07-10 · commit=--commit
+[09:15:28]   Log: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/run.log
+[09:15:28] ═══════════════════════════════════════════════════════════
+[09:15:28] ═══ 0/7 fetch feeds ═══
+═══ Fetching feeds for 2026-07-10 ═══
+  ↓ NPR                  (hard) 10 items
+  ↓ Guardian US          (hard) 20 items
+  ↓ BBC US/Canada        (hard) 20 items
+  ↓ CBS News             (hard) 20 items
+  ↓ Politico             (hard) 20 items
+  ↓ Fox News             (hard) 20 items
+  ↓ Washington Examiner  (hard) 10 items
+  ↓ NY Post              (hard) 20 items
+  ↓ Ars Technica         (tech) 20 items
+  ↓ Science News         (science) 20 items
+  ↓ ESPN                 (sports) 20 items
+  ↓ NPR Arts             (arts) 10 items
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/feeds.json (210 items)
+[09:15:30] ✓ 0/7 fetch feeds
+[09:15:30] ═══ 1/7 curate ═══
+  ⏭ dropped 1 feed item(s) already chosen in the last 7 days
+═══ Curating 209 items for 2026-07-10 ═══
+  Output:  /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/chosen.json
+
+📡 Using LLM: anthropic/claude-sonnet-4-5 (max_tokens=2048)
+  📡 [curate] → anthropic
+     model=claude-sonnet-4-5  prompt_chars=57520  max_tokens=2048
+     ✓ usage: input=14961 output=297 tokens  est_cost=$0.0493  response_chars=1110
+📰 Claude chose 4 stories. Fetching bodies...
+  ↓ story_1: Man killed by ICE agents not intended target of immigration arrest, DH
+     ↓ trafilatura GET https://www.theguardian.com/us-news/2026/jul/09/houston-man-killed-ice-agents
+     ↓ fetched 304929 bytes; extracting main content...
+     ✓ extracted 2675 chars (capped at 3000)
+  ↓ story_2: Taliban declares war on smartphones
+     ↓ trafilatura GET https://www.npr.org/2026/07/10/g-s1-132396/smartphones-taliban-afghanistan-ban
+     ↓ fetched 160174 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+  ↓ story_3: Wally Funk, last of Mercury 13 and oldest woman in space, dies at 87
+     ↓ trafilatura GET https://arstechnica.com/space/2026/07/wally-funk-last-of-mercury-13-and-oldest-woman-in-space-dies-at-87/
+     ↓ fetched 152698 bytes; extracting main content...
+     ✓ extracted 1961 chars (capped at 3000)
+  ↓ story_4: Young people are flocking to estate sales
+     ↓ trafilatura GET https://www.npr.org/2026/07/08/nx-s1-5876157/young-people-are-flocking-to-estate-sales
+     ↓ fetched 136803 bytes; extracting main content...
+     ✓ extracted 3000 chars (capped at 3000)
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/chosen.json (4 stories)
+[09:15:40] ✓ 1/7 curate
+[09:15:40] ═══ 2/7 generate script (ko) ═══
+═══ Generating script for 2026-07-10 (edition: ko) ═══
+  Pack ID:   news_2026_07_10
+  Title:     2026년 7월 10일 뉴스 / US News, July 10, 2026
+  Stories:   4
+  Output:    /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/script.json
+
+📡 Script LLM: anthropic/claude-sonnet-4-5  (max_tokens=4096)
+📡 QA LLM:     openai/gpt-5.5  (max_tokens=4096)  ← cross-model review
+
+📚 Lexicon (ko-en): 758 vocab, 448 examples
+
+━━━ [story_1] Man killed by ICE agents not intended target of immigration arrest, DH
+     📡 [script:story_1] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=9953  max_tokens=4096
+        ✓ usage: input=3108 output=1419 tokens  est_cost=$0.0306  response_chars=2863
+        ↳ running total: input=3108 output=1419 cost=$0.0306
+     📡 [qa:story_1] → openai
+        model=gpt-5.5  prompt_chars=8667  max_tokens=4096
+        ✓ usage: input=2441 output=4096 tokens  est_cost=$0.0458  response_chars=0
+        ↳ running total: input=5549 output=5515 cost=$0.0765
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 3 gloss(es):
+        · 총격: 'shooting' → 'shooting, gunfire' (locked)
+        · 목표: 'target' → 'goal, target' (locked)
+        · 사망하다: 'to die' → 'to die, to be killed' (locked)
+     📚 Examples: 3 cached + 3 fresh = 6 total
+        ⚠ Uncovered vocab (no example): ['사망하다', '제공하다', '주장하다']
+   ✓ 65 turns, 52 clips across 3 sets
+━━━ [story_2] Taliban declares war on smartphones
+     📡 [script:story_2] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10229  max_tokens=4096
+        ✓ usage: input=3110 output=1504 tokens  est_cost=$0.0319  response_chars=3016
+        ↳ running total: input=8659 output=7019 cost=$0.1083
+     📡 [qa:story_2] → openai
+        model=gpt-5.5  prompt_chars=8859  max_tokens=4096
+        ✓ usage: input=2465 output=4096 tokens  est_cost=$0.0459  response_chars=0
+        ↳ running total: input=11124 output=11115 cost=$0.1542
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 2 gloss(es):
+        · 걱정: 'worry, concern' → 'concern, worry' (locked)
+        · 파괴하다: 'to destroy, to smash' → 'to destroy, devastate' (locked)
+     📚 Examples: 2 cached + 5 fresh = 7 total
+        ⚠ Uncovered vocab (no example): ['금지하다', '정부', '파괴하다', '확대되다']
+   ✓ 72 turns, 59 clips across 3 sets
+━━━ [story_3] Wally Funk, last of Mercury 13 and oldest woman in space, dies at 87
+     📡 [script:story_3] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=9232  max_tokens=4096
+        ✓ usage: input=2998 output=1412 tokens  est_cost=$0.0302  response_chars=2687
+        ↳ running total: input=14122 output=12527 cost=$0.1844
+     📡 [qa:story_3] → openai
+        model=gpt-5.5  prompt_chars=8524  max_tokens=4096
+        ✓ usage: input=2506 output=4096 tokens  est_cost=$0.0460  response_chars=0
+        ↳ running total: input=16628 output=16623 cost=$0.2304
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     🔒 Library locked 2 gloss(es):
+        · 시험: 'test' → 'test, exam' (locked)
+        · 포기하다: 'to give up' → 'to give up, forgo' (locked)
+     📚 Examples: 1 cached + 5 fresh = 6 total
+        ⚠ Uncovered vocab (no example): ['세상을 떠나다', '영감을 주다', '우주 비행사', '자원하다', '초대하다', '포기하다']
+   ✓ 70 turns, 57 clips across 3 sets
+━━━ [story_4] Young people are flocking to estate sales
+     📡 [script:story_4] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=10240  max_tokens=4096
+        ✓ usage: input=3278 output=1269 tokens  est_cost=$0.0289  response_chars=2460
+        ↳ running total: input=19906 output=17892 cost=$0.2592
+     📡 [qa:story_4] → openai
+        model=gpt-5.5  prompt_chars=8213  max_tokens=4096
+        ✓ usage: input=2334 output=4096 tokens  est_cost=$0.0456  response_chars=0
+        ↳ running total: input=22240 output=21988 cost=$0.3049
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 0 cached + 5 fresh = 5 total
+        ⚠ Uncovered vocab (no example): ['늘어나다', '유품 판매', '인기를 끌다', '줄을 서다']
+   ✓ 63 turns, 50 clips across 3 sets
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/script.json
+   Cost report: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/costs/2_generate_script.json
+   Total Claude usage: input=22240 output=21988 tokens  est_total_cost=$0.3049
+   📚 Library now: 789 vocab (+31), 466 examples (+18)
+[09:21:25] ✓ 2/7 generate script (ko)
+[09:21:25] ═══ 2b/7 translate easy (ko) ═══
+  📡 story_1: translating 9 sentences → anthropic/claude-haiku-4-5
+     ✓ input=361 output=127 tokens  est_cost=$0.0008
+  📡 story_2: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=372 output=134 tokens  est_cost=$0.0008
+  📡 story_3: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=354 output=128 tokens  est_cost=$0.0008
+  📡 story_4: translating 7 sentences → anthropic/claude-haiku-4-5
+     ✓ input=345 output=123 tokens  est_cost=$0.0008
+✅ Updated /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/script.json (4 stories translated, 0 skipped)
+[09:21:32] ✓ 2b/7 translate easy (ko)
+[09:21:32] ═══ 3/7 synthesize (ko) ═══
+═══ Synthesizing audio for 2026-07-10 (via voicebox) ═══
+  Provider:      elevenlabs/eleven_multilingual_v2 (from tts.yaml)
+  Cache:         /Users/matthewflood/.langpack/cache/audio
+  Stories:       4
+  Total turns:   270  (cache hits 92, to synthesize 178)
+  Chars to debit: 6164  (cap 20000)
+  Estimated cost: $1.6214
+  Output:        /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio
+
+  ▶ story-1/main span 000 synth ko chars=9 key=2f80abd3 est=$0.0030
+  ▶ story-1/main span 001 synth en chars=25 key=09a794a5 est=$0.0055
+  ⚡ story-1/main span 002 cache HIT key=4d364c1e
+  ⚡ story-1/main span 003 cache HIT key=315a2a4f
+  ▶ story-1/main span 004 synth ko chars=2 key=2a904b06 est=$0.0007
+  ▶ story-1/main span 005 synth en chars=11 key=82f27dc5 est=$0.0024
+  ▶ story-1/main span 006 synth ko chars=2 key=49124f27 est=$0.0007
+  ▶ story-1/main span 007 synth en chars=5 key=d66def71 est=$0.0011
+  ⚡ story-1/main span 008 cache HIT key=2748e8d3
+  ⚡ story-1/main span 009 cache HIT key=61f55cd7
+  ⚡ story-1/main span 010 cache HIT key=04f74c22
+  ⚡ story-1/main span 011 cache HIT key=072e801b
+  ⚡ story-1/main span 012 cache HIT key=ddd0721e
+  ⚡ story-1/main span 013 cache HIT key=7ba220e7
+  ▶ story-1/main span 014 synth ko chars=2 key=b39e9bc5 est=$0.0007
+  ▶ story-1/main span 015 synth en chars=13 key=7eedcf57 est=$0.0029
+  ▶ story-1/main span 016 synth ko chars=4 key=db474e4c est=$0.0013
+  ▶ story-1/main span 017 synth en chars=8 key=a1d491dc est=$0.0018
+  ⚡ story-1/main span 018 cache HIT key=4d71d3ca
+  ⚡ story-1/main span 019 cache HIT key=2ca02a71
+  ⚡ story-1/main span 020 cache HIT key=34a01d68
+  ⚡ story-1/main span 021 cache HIT key=1e536d00
+  ⚡ story-1/main span 022 cache HIT key=9414ddfe
+  ⚡ story-1/main span 023 cache HIT key=72b537ee
+  ▶ story-1/main span 024 synth ko chars=21 key=69783fc3 est=$0.0069
+  ▶ story-1/main span 025 synth en chars=39 key=592da247 est=$0.0086
+  ▶ story-1/main span 026 synth ko chars=18 key=e6ed6e5a est=$0.0059
+  ▶ story-1/main span 027 synth en chars=34 key=a311628b est=$0.0075
+  ⚡ story-1/main span 028 cache HIT key=f7115ac7
+  ⚡ story-1/main span 029 cache HIT key=4bf3c6e7
+  ⚡ story-1/main span 030 cache HIT key=770047bc
+  ⚡ story-1/main span 031 cache HIT key=296edcc3
+  ▶ story-1/main span 032 synth ko chars=14 key=9c65ef43 est=$0.0046
+  ▶ story-1/main span 033 synth en chars=38 key=3e31c996 est=$0.0084
+  ⚡ story-1/main span 034 cache HIT key=e44dc3b4
+  ⚡ story-1/main span 035 cache HIT key=ae261dea
+  ⚡ story-1/main span 036 cache HIT key=366f90a8
+  ⚡ story-1/main span 037 cache HIT key=7482a5c6
+  ▶ story-1/main span 038 synth ko chars=6 key=e0ccbda4 est=$0.0020
+  ▶ story-1/main span 039 synth en chars=26 key=b3193024 est=$0.0057
+  ▶ story-1/main span 040 synth ko chars=9 key=d7dc3198 est=$0.0030
+  ▶ story-1/main span 041 synth en chars=29 key=5a7f3dd5 est=$0.0064
+  ⚡ story-1/main span 042 cache HIT key=48468155
+  ⚡ story-1/main span 043 cache HIT key=98f22f62
+  ⚡ story-1/main span 044 cache HIT key=b49cd69c
+  ⚡ story-1/main span 045 cache HIT key=9c21df61
+  ▶ story-1/main span 046 synth ko chars=31 key=79e83992 est=$0.0102
+  ▶ story-1/main span 047 synth ko chars=21 key=ebaafa7e est=$0.0069
+  ▶ story-1/main span 048 synth ko chars=20 key=d950efc2 est=$0.0066
+  ▶ story-1/main span 049 synth ko chars=25 key=ed54b149 est=$0.0083
+  ▶ story-1/main span 050 synth ko chars=23 key=0ff2f05e est=$0.0076
+  ▶ story-1/main span 051 synth ko chars=19 key=02a2e7c6 est=$0.0063
+  ▶ story-1/main span 052 synth ko chars=22 key=5addb534 est=$0.0073
+  ▶ story-1/main span 053 synth ko chars=18 key=c9e6458b est=$0.0059
+  ▶ story-1/main span 054 synth ko chars=16 key=c8218cf1 est=$0.0053
+  ⚡ story-1/main span 055 cache HIT key=a74c5d89
+  ⚡ story-1/main span 056 cache HIT key=80849b6a
+  ▶ story-1/main span 057 synth en chars=274 key=6f2b825c est=$0.0603
+  ▶ story-1/main span 058 synth en chars=319 key=b3bddd1f est=$0.0702
+  ▶ story-1/main span 059 synth en chars=227 key=41f720da est=$0.0499
+  ⚡ story-1/main span 060 cache HIT key=f42ad9fb
+  ⚡ story-1/main span 061 cache HIT key=59d0f128
+  ▶ story-1/main span 062 synth ko chars=112 key=021967b1 est=$0.0370
+  ▶ story-1/main span 063 synth ko chars=135 key=e1bce672 est=$0.0445
+  ▶ story-1/main span 064 synth ko chars=80 key=07b3cc43 est=$0.0264
+  ✓ track story-1/main.mp3 (221575 ms, 65 spans)
+  ▶ story-2/main span 000 synth ko chars=12 key=a2a289fd est=$0.0040
+  ▶ story-2/main span 001 synth en chars=24 key=e4130974 est=$0.0053
+  ⚡ story-2/main span 002 cache HIT key=4d364c1e
+  ⚡ story-2/main span 003 cache HIT key=315a2a4f
+  ▶ story-2/main span 004 synth ko chars=4 key=8e9e7aae est=$0.0013
+  ▶ story-2/main span 005 synth en chars=19 key=b2dd20e4 est=$0.0042
+  ▶ story-2/main span 006 synth ko chars=2 key=f3ac3ab3 est=$0.0007
+  ▶ story-2/main span 007 synth en chars=10 key=e850cd9b est=$0.0022
+  ▶ story-2/main span 008 synth ko chars=3 key=351cc7b6 est=$0.0010
+  ▶ story-2/main span 009 synth en chars=34 key=92f7d3a1 est=$0.0075
+  ▶ story-2/main span 010 synth ko chars=2 key=0fb68884 est=$0.0007
+  ▶ story-2/main span 011 synth en chars=3 key=32a096a9 est=$0.0007
+  ⚡ story-2/main span 012 cache HIT key=064cd98a
+  ⚡ story-2/main span 013 cache HIT key=789d7ab0
+  ▶ story-2/main span 014 synth ko chars=3 key=515c906d est=$0.0010
+  ▶ story-2/main span 015 synth en chars=4 key=59e8a033 est=$0.0009
+  ▶ story-2/main span 016 synth ko chars=2 key=273f4440 est=$0.0007
+  ▶ story-2/main span 017 synth en chars=22 key=2c87f7c9 est=$0.0048
+  ⚡ story-2/main span 018 cache HIT key=cdc0eba5
+  ⚡ story-2/main span 019 cache HIT key=ff4f9bfa
+  ▶ story-2/main span 020 synth ko chars=2 key=50a4a89c est=$0.0007
+  ▶ story-2/main span 021 synth en chars=6 key=48f494d1 est=$0.0013
+  ▶ story-2/main span 022 synth ko chars=4 key=b4e37b9f est=$0.0013
+  ▶ story-2/main span 023 synth en chars=20 key=e59366aa est=$0.0044
+  ▶ story-2/main span 024 synth ko chars=2 key=7826a21d est=$0.0007
+  ▶ story-2/main span 025 synth en chars=10 key=d5c9e33a est=$0.0022
+  ⚡ story-2/main span 026 cache HIT key=ee53dbab
+  ⚡ story-2/main span 027 cache HIT key=fadfcf7a
+  ⚡ story-2/main span 028 cache HIT key=9414ddfe
+  ⚡ story-2/main span 029 cache HIT key=72b537ee
+  ▶ story-2/main span 030 synth ko chars=17 key=f70efc41 est=$0.0056
+  ▶ story-2/main span 031 synth en chars=42 key=4aecdd9c est=$0.0092
+  ▶ story-2/main span 032 synth ko chars=18 key=760de2fb est=$0.0059
+  ▶ story-2/main span 033 synth en chars=27 key=9029b0eb est=$0.0059
+  ⚡ story-2/main span 034 cache HIT key=799861e7
+  ⚡ story-2/main span 035 cache HIT key=5fb9bb39
+  ▶ story-2/main span 036 synth ko chars=19 key=adcb89cd est=$0.0063
+  ▶ story-2/main span 037 synth en chars=32 key=9f772115 est=$0.0070
+  ▶ story-2/main span 038 synth ko chars=15 key=72972b3e est=$0.0049
+  ▶ story-2/main span 039 synth en chars=26 key=53bd91c4 est=$0.0057
+  ⚡ story-2/main span 040 cache HIT key=530f8a86
+  ⚡ story-2/main span 041 cache HIT key=e9834d5e
+  ▶ story-2/main span 042 synth ko chars=17 key=5b2f191e est=$0.0056
+  ▶ story-2/main span 043 synth en chars=49 key=166d8838 est=$0.0108
+  ⚡ story-2/main span 044 cache HIT key=366f90a8
+  ⚡ story-2/main span 045 cache HIT key=7482a5c6
+  ▶ story-2/main span 046 synth ko chars=8 key=f001f52e est=$0.0026
+  ▶ story-2/main span 047 synth en chars=34 key=9c2a307d est=$0.0075
+  ▶ story-2/main span 048 synth ko chars=9 key=bca04cb3 est=$0.0030
+  ▶ story-2/main span 049 synth en chars=24 key=e9865a78 est=$0.0053
+  ⚡ story-2/main span 050 cache HIT key=48468155
+  ⚡ story-2/main span 051 cache HIT key=98f22f62
+  ⚡ story-2/main span 052 cache HIT key=b49cd69c
+  ⚡ story-2/main span 053 cache HIT key=9c21df61
+  ▶ story-2/main span 054 synth ko chars=28 key=7895e04c est=$0.0092
+  ▶ story-2/main span 055 synth ko chars=31 key=53be77bf est=$0.0102
+  ▶ story-2/main span 056 synth ko chars=22 key=8aa2b625 est=$0.0073
+  ▶ story-2/main span 057 synth ko chars=24 key=127313e7 est=$0.0079
+  ▶ story-2/main span 058 synth ko chars=23 key=b25494ac est=$0.0076
+  ▶ story-2/main span 059 synth ko chars=30 key=5c021487 est=$0.0099
+  ▶ story-2/main span 060 synth ko chars=26 key=26e6dd0b est=$0.0086
+  ▶ story-2/main span 061 synth ko chars=27 key=c97e76bd est=$0.0089
+  ⚡ story-2/main span 062 cache HIT key=a74c5d89
+  ⚡ story-2/main span 063 cache HIT key=80849b6a
+  ▶ story-2/main span 064 synth en chars=224 key=a7e7ffc1 est=$0.0493
+  ▶ story-2/main span 065 synth en chars=180 key=1fb76a22 est=$0.0396
+  ▶ story-2/main span 066 synth en chars=240 key=9f57e171 est=$0.0528
+  ⚡ story-2/main span 067 cache HIT key=f42ad9fb
+  ⚡ story-2/main span 068 cache HIT key=59d0f128
+  ▶ story-2/main span 069 synth ko chars=95 key=8069db29 est=$0.0314
+  ▶ story-2/main span 070 synth ko chars=86 key=b904d2b5 est=$0.0284
+  ▶ story-2/main span 071 synth ko chars=108 key=a71345a1 est=$0.0356
+  ✓ track story-2/main.mp3 (222472 ms, 72 spans)
+  ▶ story-3/main span 000 synth ko chars=12 key=f5976d69 est=$0.0040
+  ▶ story-3/main span 001 synth en chars=27 key=05d4949f est=$0.0059
+  ⚡ story-3/main span 002 cache HIT key=4d364c1e
+  ⚡ story-3/main span 003 cache HIT key=315a2a4f
+  ▶ story-3/main span 004 synth ko chars=3 key=fab8daa9 est=$0.0010
+  ▶ story-3/main span 005 synth en chars=6 key=dded69a2 est=$0.0013
+  ▶ story-3/main span 006 synth ko chars=6 key=a59753b6 est=$0.0020
+  ▶ story-3/main span 007 synth en chars=9 key=39bb32ac est=$0.0020
+  ▶ story-3/main span 008 synth ko chars=4 key=19318e89 est=$0.0013
+  ▶ story-3/main span 009 synth en chars=12 key=66f0c105 est=$0.0026
+  ⚡ story-3/main span 010 cache HIT key=ea4e8d83
+  ⚡ story-3/main span 011 cache HIT key=8de1573d
+  ▶ story-3/main span 012 synth ko chars=1 key=478c329c est=$0.0003
+  ▶ story-3/main span 013 synth en chars=5 key=a15beced est=$0.0011
+  ⚡ story-3/main span 014 cache HIT key=02e045b6
+  ⚡ story-3/main span 015 cache HIT key=93ba221e
+  ⚡ story-3/main span 016 cache HIT key=d613ccf8
+  ⚡ story-3/main span 017 cache HIT key=28c77cbc
+  ▶ story-3/main span 018 synth ko chars=2 key=df24adbd est=$0.0007
+  ▶ story-3/main span 019 synth en chars=6 key=102693ca est=$0.0013
+  ▶ story-3/main span 020 synth ko chars=7 key=f4afd4ca est=$0.0023
+  ▶ story-3/main span 021 synth en chars=12 key=e889e29a est=$0.0026
+  ▶ story-3/main span 022 synth ko chars=3 key=0422fe86 est=$0.0010
+  ▶ story-3/main span 023 synth en chars=7 key=c728deae est=$0.0015
+  ▶ story-3/main span 024 synth ko chars=6 key=9c3ed6fa est=$0.0020
+  ▶ story-3/main span 025 synth en chars=10 key=5d9be13b est=$0.0022
+  ▶ story-3/main span 026 synth ko chars=2 key=ac23de92 est=$0.0007
+  ▶ story-3/main span 027 synth en chars=7 key=d441fc8c est=$0.0015
+  ⚡ story-3/main span 028 cache HIT key=9414ddfe
+  ⚡ story-3/main span 029 cache HIT key=72b537ee
+  ▶ story-3/main span 030 synth ko chars=18 key=fac8739f est=$0.0059
+  ▶ story-3/main span 031 synth en chars=37 key=fee72a01 est=$0.0081
+  ⚡ story-3/main span 032 cache HIT key=d1cc83af
+  ⚡ story-3/main span 033 cache HIT key=2e85dcdc
+  ▶ story-3/main span 034 synth ko chars=13 key=b9450e3b est=$0.0043
+  ▶ story-3/main span 035 synth en chars=32 key=36d22d8b est=$0.0070
+  ▶ story-3/main span 036 synth ko chars=15 key=53ec6cfb est=$0.0049
+  ▶ story-3/main span 037 synth en chars=31 key=217a5632 est=$0.0068
+  ▶ story-3/main span 038 synth ko chars=17 key=55a50a0e est=$0.0056
+  ▶ story-3/main span 039 synth en chars=41 key=880acc2f est=$0.0090
+  ▶ story-3/main span 040 synth ko chars=15 key=daaa4cf1 est=$0.0049
+  ▶ story-3/main span 041 synth en chars=27 key=7a1dceb4 est=$0.0059
+  ⚡ story-3/main span 042 cache HIT key=366f90a8
+  ⚡ story-3/main span 043 cache HIT key=7482a5c6
+  ▶ story-3/main span 044 synth ko chars=8 key=6da5fa3d est=$0.0026
+  ▶ story-3/main span 045 synth en chars=17 key=3879466b est=$0.0037
+  ▶ story-3/main span 046 synth ko chars=10 key=864d9941 est=$0.0033
+  ▶ story-3/main span 047 synth en chars=31 key=63382adc est=$0.0068
+  ⚡ story-3/main span 048 cache HIT key=48468155
+  ⚡ story-3/main span 049 cache HIT key=98f22f62
+  ⚡ story-3/main span 050 cache HIT key=b49cd69c
+  ⚡ story-3/main span 051 cache HIT key=9c21df61
+  ▶ story-3/main span 052 synth ko chars=24 key=a6bf8813 est=$0.0079
+  ▶ story-3/main span 053 synth ko chars=12 key=fd96ab14 est=$0.0040
+  ▶ story-3/main span 054 synth ko chars=20 key=4fb000cf est=$0.0066
+  ▶ story-3/main span 055 synth ko chars=37 key=b4e799cb est=$0.0122
+  ▶ story-3/main span 056 synth ko chars=25 key=331c74f2 est=$0.0083
+  ▶ story-3/main span 057 synth ko chars=17 key=9ebbc882 est=$0.0056
+  ▶ story-3/main span 058 synth ko chars=25 key=bdf1e103 est=$0.0083
+  ▶ story-3/main span 059 synth ko chars=27 key=b7046932 est=$0.0089
+  ⚡ story-3/main span 060 cache HIT key=a74c5d89
+  ⚡ story-3/main span 061 cache HIT key=80849b6a
+  ▶ story-3/main span 062 synth en chars=114 key=2ce1874f est=$0.0251
+  ▶ story-3/main span 063 synth en chars=212 key=fe4aac01 est=$0.0466
+  ▶ story-3/main span 064 synth en chars=140 key=c67542e9 est=$0.0308
+  ⚡ story-3/main span 065 cache HIT key=f42ad9fb
+  ⚡ story-3/main span 066 cache HIT key=59d0f128
+  ▶ story-3/main span 067 synth ko chars=67 key=c1cca0cf est=$0.0221
+  ▶ story-3/main span 068 synth ko chars=103 key=09228331 est=$0.0340
+  ▶ story-3/main span 069 synth ko chars=71 key=39b7780b est=$0.0234
+  ✓ track story-3/main.mp3 (199800 ms, 70 spans)
+  ▶ story-4/main span 000 synth ko chars=16 key=f39029d0 est=$0.0053
+  ▶ story-4/main span 001 synth en chars=34 key=aa16ec3c est=$0.0075
+  ⚡ story-4/main span 002 cache HIT key=4d364c1e
+  ⚡ story-4/main span 003 cache HIT key=315a2a4f
+  ▶ story-4/main span 004 synth ko chars=5 key=00dfb3a9 est=$0.0016
+  ▶ story-4/main span 005 synth en chars=11 key=c4fca533 est=$0.0024
+  ▶ story-4/main span 006 synth ko chars=6 key=afe57b0c est=$0.0020
+  ▶ story-4/main span 007 synth en chars=29 key=88116ea7 est=$0.0064
+  ▶ story-4/main span 008 synth ko chars=6 key=6a2314bb est=$0.0020
+  ▶ story-4/main span 009 synth en chars=12 key=456e2511 est=$0.0026
+  ▶ story-4/main span 010 synth ko chars=2 key=52a89225 est=$0.0007
+  ▶ story-4/main span 011 synth en chars=9 key=8aefe5be est=$0.0020
+  ▶ story-4/main span 012 synth ko chars=3 key=9c189c2a est=$0.0010
+  ▶ story-4/main span 013 synth en chars=16 key=47553be5 est=$0.0035
+  ▶ story-4/main span 014 synth ko chars=5 key=7fae0a31 est=$0.0016
+  ▶ story-4/main span 015 synth en chars=16 key=1d384f1f est=$0.0035
+  ▶ story-4/main span 016 synth ko chars=3 key=6e0610db est=$0.0010
+  ▶ story-4/main span 017 synth en chars=8 key=922b9f30 est=$0.0018
+  ▶ story-4/main span 018 synth ko chars=1 key=a1ddd5c5 est=$0.0003
+  ▶ story-4/main span 019 synth en chars=5 key=15ead627 est=$0.0011
+  ▶ story-4/main span 020 synth ko chars=2 key=4fc2b363 est=$0.0007
+  ▶ story-4/main span 021 synth en chars=13 key=6d285e31 est=$0.0029
+  ⚡ story-4/main span 022 cache HIT key=798076ee
+  ⚡ story-4/main span 023 cache HIT key=5410e6e8
+  ⚡ story-4/main span 024 cache HIT key=9414ddfe
+  ⚡ story-4/main span 025 cache HIT key=72b537ee
+  ▶ story-4/main span 026 synth ko chars=21 key=47ac79d5 est=$0.0069
+  ▶ story-4/main span 027 synth en chars=41 key=73b335c9 est=$0.0090
+  ▶ story-4/main span 028 synth ko chars=16 key=5a18d43d est=$0.0053
+  ▶ story-4/main span 029 synth en chars=28 key=b664aabf est=$0.0062
+  ▶ story-4/main span 030 synth ko chars=24 key=6600837e est=$0.0079
+  ▶ story-4/main span 031 synth en chars=49 key=16a23a34 est=$0.0108
+  ▶ story-4/main span 032 synth ko chars=15 key=a2c8f29f est=$0.0049
+  ▶ story-4/main span 033 synth en chars=29 key=73307cbb est=$0.0064
+  ▶ story-4/main span 034 synth ko chars=14 key=2574cf2e est=$0.0046
+  ▶ story-4/main span 035 synth en chars=34 key=b884d47b est=$0.0075
+  ⚡ story-4/main span 036 cache HIT key=366f90a8
+  ⚡ story-4/main span 037 cache HIT key=7482a5c6
+  ▶ story-4/main span 038 synth ko chars=10 key=fff02814 est=$0.0033
+  ▶ story-4/main span 039 synth en chars=35 key=e44a0cd7 est=$0.0077
+  ▶ story-4/main span 040 synth ko chars=7 key=0035b014 est=$0.0023
+  ▶ story-4/main span 041 synth en chars=15 key=57a0714b est=$0.0033
+  ⚡ story-4/main span 042 cache HIT key=48468155
+  ⚡ story-4/main span 043 cache HIT key=98f22f62
+  ⚡ story-4/main span 044 cache HIT key=b49cd69c
+  ⚡ story-4/main span 045 cache HIT key=9c21df61
+  ▶ story-4/main span 046 synth ko chars=20 key=59f0b5ef est=$0.0066
+  ▶ story-4/main span 047 synth ko chars=25 key=4368984f est=$0.0083
+  ▶ story-4/main span 048 synth ko chars=24 key=8a3bfbc2 est=$0.0079
+  ▶ story-4/main span 049 synth ko chars=27 key=f7ebdd67 est=$0.0089
+  ▶ story-4/main span 050 synth ko chars=35 key=5ed37d3f est=$0.0116
+  ▶ story-4/main span 051 synth ko chars=28 key=d1b48763 est=$0.0092
+  ▶ story-4/main span 052 synth ko chars=30 key=753ac661 est=$0.0099
+  ⚡ story-4/main span 053 cache HIT key=a74c5d89
+  ⚡ story-4/main span 054 cache HIT key=80849b6a
+  ▶ story-4/main span 055 synth en chars=162 key=b10d5665 est=$0.0356
+  ▶ story-4/main span 056 synth en chars=197 key=f4772a03 est=$0.0433
+  ▶ story-4/main span 057 synth en chars=148 key=ea46c6ce est=$0.0326
+  ⚡ story-4/main span 058 cache HIT key=f42ad9fb
+  ⚡ story-4/main span 059 cache HIT key=59d0f128
+  ▶ story-4/main span 060 synth ko chars=74 key=854d736c est=$0.0244
+  ▶ story-4/main span 061 synth ko chars=94 key=7d3dafb2 est=$0.0310
+  ▶ story-4/main span 062 synth ko chars=81 key=aa856ce7 est=$0.0267
+  ✓ track story-4/main.mp3 (186782 ms, 63 spans)
+
+   ✓ story_1: 65 turns (30 cached), track 221575 ms
+   ✓ story_2: 72 turns (24 cached), track 222472 ms
+   ✓ story_3: 70 turns (22 cached), track 199800 ms
+   ✓ story_4: 63 turns (16 cached), track 186782 ms
+
+🎉 Synthesized 4 tracks via elevenlabs.
+   elevenlabs debit:   6164 chars across 178 freshly-synthesized turns  est_cost=$1.6214
+   📦 Shared cache:  92 hits / 270 total turns  (34.1% hit rate)  at /Users/matthewflood/.langpack/cache/audio
+   📚 Library:       vocab/example audio keys attached (library.json entries: 789 vocab, 466 examples)
+   Cost report:      /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/costs/3_synthesize.json
+[09:25:30] ✓ 3/7 synthesize (ko)
+[09:25:30] ═══ 4/7 assemble bundle (ko) ═══
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle.json
+   4 tracks, 218 total clips
+[09:25:30] ✓ 4/7 assemble bundle (ko)
+[09:25:30] ═══ 5/7 publish s3 (ko) ═══
+═══ Publishing news_2026_07_10 for 2026-07-10 ═══
+  Destination:   lmaudio (s3://turned.rip/)
+  Prefix:        lmaudio/news_2026_07_10/
+  Manifest URL:  https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_10/bundle.json
+  QR output:     /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/qr.png
+
+Upload plan (local → s3://turned.rip/):
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle.json
+          → lmaudio/news_2026_07_10/bundle.json
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_1.mp3
+          → lmaudio/news_2026_07_10/story_1.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_2.mp3
+          → lmaudio/news_2026_07_10/story_2.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_3.mp3
+          → lmaudio/news_2026_07_10/story_3.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_4.mp3
+          → lmaudio/news_2026_07_10/story_4.mp3
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle.json
+     → s3://turned.rip/lmaudio/news_2026_07_10/bundle.json
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_1.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_10/story_1.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_2.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_10/story_2.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_3.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_10/story_3.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio/story_4.mp3
+     → s3://turned.rip/lmaudio/news_2026_07_10/story_4.mp3
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_2026_07_10/bundle.json
+   ✓ s3://turned.rip/lmaudio/news_2026_07_10/story_1.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_10/story_2.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_10/story_3.mp3
+   ✓ s3://turned.rip/lmaudio/news_2026_07_10/story_4.mp3
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_2026_07_10/bundle.json
+   ✓ invalidation created: I2QMCH6W1YHXRLB0Z0K9ZQSCS8 (completes in a few minutes)
+
+🔗 Updating lmaudio/news_latest/bundle.json alias...
+Upload plan (local → s3://turned.rip/):
+  [OVERWRITE] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle.json
+          → lmaudio/news_latest/bundle.json (expected overwrite)
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle.json
+     → s3://turned.rip/lmaudio/news_latest/bundle.json
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_latest/bundle.json
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_latest/bundle.json
+   ✓ invalidation created: I6CJELGGJR4RPTBWJ0RPLVR1Z0 (completes in a few minutes)
+🔳 Generating QR code...
+✅ QR code: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/qr.png
+   App URL:      languagemirror://bundle?url=https%3A%2F%2Fd1ni0tk3ua6bwo.cloudfront.net%2Flmaudio%2Fnews_2026_07_10%2Fbundle.json
+   Manifest URL: https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_2026_07_10/bundle.json
+[09:25:47] ✓ 5/7 publish s3 (ko)
+[09:25:47] ═══ 2/7 generate script (en) ═══
+═══ Generating script for 2026-07-10 (edition: en) ═══
+  Pack ID:   news_en_2026_07_10
+  Title:     2026년 7월 10일 영어 뉴스 / Daily English News, July 10, 2026
+  Stories:   4
+  Output:    /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/script_en.json
+
+📡 Script LLM: anthropic/claude-sonnet-4-5  (max_tokens=4096)
+📡 QA LLM:     openai/gpt-5.5  (max_tokens=4096)  ← cross-model review
+
+📚 Lexicon (en-ko): 0 vocab, 0 examples
+
+━━━ [story_1] Man killed by ICE agents not intended target of immigration arrest, DH
+     📡 [script:story_1] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=7870  max_tokens=4096
+        ✓ usage: input=2064 output=1529 tokens  est_cost=$0.0291  response_chars=3378
+        ↳ running total: input=2064 output=1529 cost=$0.0291
+     📡 [qa:story_1] → openai
+        model=gpt-5.5  prompt_chars=8239  max_tokens=4096
+        ✓ usage: input=2227 output=4096 tokens  est_cost=$0.0454  response_chars=0
+        ↳ running total: input=4291 output=5625 cost=$0.0745
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 0 cached + 8 fresh = 8 total
+        ⚠ Uncovered vocab (no example): ['enforcement operation']
+   ✓ 68 turns, 55 clips across 3 sets
+━━━ [story_2] Taliban declares war on smartphones
+     📡 [script:story_2] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=8146  max_tokens=4096
+        ✓ usage: input=2066 output=1288 tokens  est_cost=$0.0255  response_chars=2964
+        ↳ running total: input=6357 output=6913 cost=$0.1001
+     📡 [qa:story_2] → openai
+        model=gpt-5.5  prompt_chars=7784  max_tokens=4096
+        ✓ usage: input=2011 output=4096 tokens  est_cost=$0.0450  response_chars=0
+        ↳ running total: input=8368 output=11009 cost=$0.1450
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 0 cached + 4 fresh = 4 total
+        ⚠ Uncovered vocab (no example): ['apply to', 'raise fears', 'take effect', 'violator']
+   ✓ 58 turns, 45 clips across 3 sets
+━━━ [story_3] Wally Funk, last of Mercury 13 and oldest woman in space, dies at 87
+     📡 [script:story_3] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=7149  max_tokens=4096
+        ✓ usage: input=1954 output=1399 tokens  est_cost=$0.0268  response_chars=3047
+        ↳ running total: input=10322 output=12408 cost=$0.1719
+     📡 [qa:story_3] → openai
+        model=gpt-5.5  prompt_chars=7861  max_tokens=4096
+        ✓ usage: input=2154 output=4096 tokens  est_cost=$0.0453  response_chars=0
+        ↳ running total: input=12476 output=16504 cost=$0.2172
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 0 cached + 6 fresh = 6 total
+        ⚠ Uncovered vocab (no example): ['break barriers', 'pass away']
+   ✓ 62 turns, 49 clips across 3 sets
+━━━ [story_4] Young people are flocking to estate sales
+     📡 [script:story_4] → anthropic
+        model=claude-sonnet-4-5  prompt_chars=8157  max_tokens=4096
+        ✓ usage: input=2234 output=1336 tokens  est_cost=$0.0267  response_chars=3006
+        ↳ running total: input=14710 output=17840 cost=$0.2439
+     📡 [qa:story_4] → openai
+        model=gpt-5.5  prompt_chars=7832  max_tokens=4096
+        ✓ usage: input=2090 output=4096 tokens  est_cost=$0.0451  response_chars=0
+        ↳ running total: input=16800 output=21936 cost=$0.2890
+     ⚠ QA review returned invalid JSON, keeping original. Error: Expecting value: line 1 column 1 (char 0)
+     ✓ QA: no changes needed
+     📚 Examples: 0 cached + 5 fresh = 5 total
+        ⚠ Uncovered vocab (no example): ['estate sale', 'flock to', 'get addicted']
+   ✓ 60 turns, 47 clips across 3 sets
+
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/script_en.json
+   Cost report: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/costs/2_generate_script_en.json
+   Total Claude usage: input=16800 output=21936 tokens  est_total_cost=$0.2890
+   📚 Library now: 34 vocab (+34), 23 examples (+23)
+[09:31:39] ✓ 2/7 generate script (en)
+[09:31:39] ═══ 2b/7 translate easy (en) ═══
+  📡 story_1: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=248 output=282 tokens  est_cost=$0.0013
+  📡 story_2: translating 6 sentences → anthropic/claude-haiku-4-5
+     ✓ input=191 output=227 tokens  est_cost=$0.0011
+  📡 story_3: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=251 output=280 tokens  est_cost=$0.0013
+  📡 story_4: translating 8 sentences → anthropic/claude-haiku-4-5
+     ✓ input=225 output=316 tokens  est_cost=$0.0014
+✅ Updated /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/script_en.json (4 stories translated, 0 skipped)
+[09:31:51] ✓ 2b/7 translate easy (en)
+[09:31:51] ═══ 3/7 synthesize (en) ═══
+═══ Synthesizing audio for 2026-07-10 (via voicebox) ═══
+  Provider:      elevenlabs/eleven_multilingual_v2 (from tts.yaml)
+  Cache:         /Users/matthewflood/.langpack/cache/audio
+  Stories:       4
+  Total turns:   248  (cache hits 34, to synthesize 214)
+  Chars to debit: 8080  (cap 20000)
+  Estimated cost: $2.0307
+  Output:        /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en
+
+  ▶ story-1/main span 000 synth en chars=34 key=dfa464c3 est=$0.0075
+  ▶ story-1/main span 001 synth ko chars=26 key=17e325b4 est=$0.0086
+  ⚡ story-1/main span 002 cache HIT key=315a2a4f
+  ⚡ story-1/main span 003 cache HIT key=4d364c1e
+  ▶ story-1/main span 004 synth en chars=15 key=e44a91ac est=$0.0033
+  ▶ story-1/main span 005 synth ko chars=13 key=a8ee6e34 est=$0.0043
+  ▶ story-1/main span 006 synth en chars=21 key=80b46a55 est=$0.0046
+  ▶ story-1/main span 007 synth ko chars=5 key=4c96a08e est=$0.0016
+  ▶ story-1/main span 008 synth en chars=12 key=a84bffb6 est=$0.0026
+  ▶ story-1/main span 009 synth ko chars=5 key=efc4ef1b est=$0.0016
+  ▶ story-1/main span 010 synth en chars=18 key=5c4ce20b est=$0.0040
+  ▶ story-1/main span 011 synth ko chars=10 key=69c65058 est=$0.0033
+  ▶ story-1/main span 012 synth en chars=8 key=cc24e880 est=$0.0018
+  ▶ story-1/main span 013 synth ko chars=12 key=31633621 est=$0.0040
+  ▶ story-1/main span 014 synth en chars=8 key=4d51f589 est=$0.0018
+  ▶ story-1/main span 015 synth ko chars=14 key=b8cbc99b est=$0.0046
+  ▶ story-1/main span 016 synth en chars=15 key=68b080e7 est=$0.0033
+  ▶ story-1/main span 017 synth ko chars=13 key=9fe36d63 est=$0.0043
+  ▶ story-1/main span 018 synth en chars=10 key=63dd59e7 est=$0.0022
+  ▶ story-1/main span 019 synth ko chars=10 key=7b41417c est=$0.0033
+  ▶ story-1/main span 020 synth en chars=12 key=ed47fbc6 est=$0.0026
+  ▶ story-1/main span 021 synth ko chars=12 key=b3daeaba est=$0.0040
+  ⚡ story-1/main span 022 cache HIT key=72b537ee
+  ⚡ story-1/main span 023 cache HIT key=9414ddfe
+  ▶ story-1/main span 024 synth en chars=48 key=87988c61 est=$0.0106
+  ▶ story-1/main span 025 synth ko chars=18 key=9f953885 est=$0.0059
+  ▶ story-1/main span 026 synth en chars=45 key=7cc81f83 est=$0.0099
+  ▶ story-1/main span 027 synth ko chars=23 key=9ee56419 est=$0.0076
+  ▶ story-1/main span 028 synth en chars=46 key=52f6e11e est=$0.0101
+  ▶ story-1/main span 029 synth ko chars=17 key=3f7e306f est=$0.0056
+  ▶ story-1/main span 030 synth en chars=36 key=49068f4f est=$0.0079
+  ▶ story-1/main span 031 synth ko chars=22 key=dde07806 est=$0.0073
+  ▶ story-1/main span 032 synth en chars=35 key=7a57b6c9 est=$0.0077
+  ▶ story-1/main span 033 synth ko chars=16 key=ff576688 est=$0.0053
+  ▶ story-1/main span 034 synth en chars=34 key=634ccda1 est=$0.0075
+  ▶ story-1/main span 035 synth ko chars=20 key=47cb968b est=$0.0066
+  ▶ story-1/main span 036 synth en chars=40 key=2750c58e est=$0.0088
+  ▶ story-1/main span 037 synth ko chars=23 key=24fa9e1b est=$0.0076
+  ▶ story-1/main span 038 synth en chars=43 key=ecbeee1a est=$0.0095
+  ▶ story-1/main span 039 synth ko chars=23 key=efd49d53 est=$0.0076
+  ⚡ story-1/main span 040 cache HIT key=7482a5c6
+  ⚡ story-1/main span 041 cache HIT key=366f90a8
+  ▶ story-1/main span 042 synth en chars=20 key=a9caab02 est=$0.0044
+  ▶ story-1/main span 043 synth ko chars=15 key=ca053de1 est=$0.0049
+  ▶ story-1/main span 044 synth en chars=18 key=1cf9eac9 est=$0.0040
+  ▶ story-1/main span 045 synth ko chars=27 key=5f116d78 est=$0.0089
+  ⚡ story-1/main span 046 cache HIT key=98f22f62
+  ⚡ story-1/main span 047 cache HIT key=48468155
+  ▶ story-1/main span 048 synth en chars=39 key=f4d23ae8 est=$0.0086
+  ▶ story-1/main span 049 synth ko chars=16 key=02934b3e est=$0.0053
+  ▶ story-1/main span 050 synth en chars=61 key=97ec6961 est=$0.0134
+  ▶ story-1/main span 051 synth en chars=42 key=a6a39f68 est=$0.0092
+  ▶ story-1/main span 052 synth en chars=37 key=2fa9027d est=$0.0081
+  ▶ story-1/main span 053 synth en chars=64 key=d0467d21 est=$0.0141
+  ▶ story-1/main span 054 synth en chars=55 key=d513656e est=$0.0121
+  ▶ story-1/main span 055 synth en chars=47 key=ccb7b06c est=$0.0103
+  ▶ story-1/main span 056 synth en chars=45 key=3f82eda9 est=$0.0099
+  ▶ story-1/main span 057 synth en chars=49 key=5b44f744 est=$0.0108
+  ▶ story-1/main span 058 synth en chars=35 key=8831a7cf est=$0.0077
+  ▶ story-1/main span 059 synth ko chars=14 key=29735b87 est=$0.0046
+  ▶ story-1/main span 060 synth ko chars=96 key=1fba2c78 est=$0.0317
+  ▶ story-1/main span 061 synth ko chars=103 key=d806c5a4 est=$0.0340
+  ▶ story-1/main span 062 synth ko chars=115 key=75c45c6f est=$0.0379
+  ▶ story-1/main span 063 synth en chars=37 key=c91f4a02 est=$0.0081
+  ▶ story-1/main span 064 synth ko chars=18 key=49cad835 est=$0.0059
+  ▶ story-1/main span 065 synth en chars=229 key=b53564ac est=$0.0504
+  ▶ story-1/main span 066 synth en chars=220 key=14af017f est=$0.0484
+  ▶ story-1/main span 067 synth en chars=224 key=36edff72 est=$0.0493
+  ✓ track story-1/main.mp3 (231830 ms, 68 spans)
+  ▶ story-2/main span 000 synth en chars=39 key=d12e0ccb est=$0.0086
+  ▶ story-2/main span 001 synth ko chars=21 key=d0a9130e est=$0.0069
+  ⚡ story-2/main span 002 cache HIT key=315a2a4f
+  ⚡ story-2/main span 003 cache HIT key=4d364c1e
+  ▶ story-2/main span 004 synth en chars=7 key=b5af7d0d est=$0.0015
+  ▶ story-2/main span 005 synth ko chars=10 key=f1fc18f8 est=$0.0033
+  ▶ story-2/main span 006 synth en chars=11 key=368a70cd est=$0.0024
+  ▶ story-2/main span 007 synth ko chars=13 key=468215fc est=$0.0043
+  ▶ story-2/main span 008 synth en chars=7 key=184af53f est=$0.0015
+  ▶ story-2/main span 009 synth ko chars=7 key=b768b985 est=$0.0023
+  ▶ story-2/main span 010 synth en chars=7 key=fdef0a8b est=$0.0015
+  ▶ story-2/main span 011 synth ko chars=4 key=d7f73d81 est=$0.0013
+  ▶ story-2/main span 012 synth en chars=8 key=ce56d7b3 est=$0.0018
+  ▶ story-2/main span 013 synth ko chars=3 key=b614d61d est=$0.0010
+  ▶ story-2/main span 014 synth en chars=12 key=8d3dbfba est=$0.0026
+  ▶ story-2/main span 015 synth ko chars=6 key=0f353646 est=$0.0020
+  ▶ story-2/main span 016 synth en chars=8 key=913f14fa est=$0.0018
+  ▶ story-2/main span 017 synth ko chars=7 key=0368092b est=$0.0023
+  ▶ story-2/main span 018 synth en chars=11 key=57baf5d1 est=$0.0024
+  ▶ story-2/main span 019 synth ko chars=10 key=2d46f151 est=$0.0033
+  ▶ story-2/main span 020 synth en chars=4 key=083bb1f3 est=$0.0009
+  ▶ story-2/main span 021 synth ko chars=16 key=b6c1e2bc est=$0.0053
+  ⚡ story-2/main span 022 cache HIT key=72b537ee
+  ⚡ story-2/main span 023 cache HIT key=9414ddfe
+  ▶ story-2/main span 024 synth en chars=46 key=56e40b9b est=$0.0101
+  ▶ story-2/main span 025 synth ko chars=23 key=3ee531b9 est=$0.0076
+  ▶ story-2/main span 026 synth en chars=32 key=ede64da8 est=$0.0070
+  ▶ story-2/main span 027 synth ko chars=19 key=273a5107 est=$0.0063
+  ▶ story-2/main span 028 synth en chars=47 key=7573c04e est=$0.0103
+  ▶ story-2/main span 029 synth ko chars=19 key=c4dce041 est=$0.0063
+  ▶ story-2/main span 030 synth en chars=48 key=e7ddf905 est=$0.0106
+  ▶ story-2/main span 031 synth ko chars=21 key=87d03510 est=$0.0069
+  ⚡ story-2/main span 032 cache HIT key=7482a5c6
+  ⚡ story-2/main span 033 cache HIT key=366f90a8
+  ▶ story-2/main span 034 synth en chars=11 key=3c974e45 est=$0.0024
+  ▶ story-2/main span 035 synth ko chars=7 key=6f7d74b7 est=$0.0023
+  ▶ story-2/main span 036 synth en chars=12 key=2aff7e31 est=$0.0026
+  ▶ story-2/main span 037 synth ko chars=7 key=0a05a4ea est=$0.0023
+  ⚡ story-2/main span 038 cache HIT key=98f22f62
+  ⚡ story-2/main span 039 cache HIT key=48468155
+  ⚡ story-2/main span 040 cache HIT key=f4d23ae8
+  ⚡ story-2/main span 041 cache HIT key=02934b3e
+  ▶ story-2/main span 042 synth en chars=69 key=9efa87a1 est=$0.0152
+  ▶ story-2/main span 043 synth en chars=38 key=de852258 est=$0.0084
+  ▶ story-2/main span 044 synth en chars=55 key=eff1a8ce est=$0.0121
+  ▶ story-2/main span 045 synth en chars=69 key=538f6685 est=$0.0152
+  ▶ story-2/main span 046 synth en chars=51 key=e4e2f2a7 est=$0.0112
+  ▶ story-2/main span 047 synth en chars=56 key=699354f2 est=$0.0123
+  ⚡ story-2/main span 048 cache HIT key=8831a7cf
+  ⚡ story-2/main span 049 cache HIT key=29735b87
+  ▶ story-2/main span 050 synth ko chars=61 key=a2e908e5 est=$0.0201
+  ▶ story-2/main span 051 synth ko chars=56 key=7cf4865c est=$0.0185
+  ▶ story-2/main span 052 synth ko chars=110 key=ffc37d0a est=$0.0363
+  ⚡ story-2/main span 053 cache HIT key=c91f4a02
+  ⚡ story-2/main span 054 cache HIT key=49cad835
+  ▶ story-2/main span 055 synth en chars=163 key=6f811622 est=$0.0359
+  ▶ story-2/main span 056 synth en chars=142 key=53e1b7d4 est=$0.0312
+  ▶ story-2/main span 057 synth en chars=208 key=7a3637db est=$0.0458
+  ✓ track story-2/main.mp3 (175497 ms, 58 spans)
+  ▶ story-3/main span 000 synth en chars=35 key=4009bf53 est=$0.0077
+  ▶ story-3/main span 001 synth ko chars=19 key=4b4fb200 est=$0.0063
+  ⚡ story-3/main span 002 cache HIT key=315a2a4f
+  ⚡ story-3/main span 003 cache HIT key=4d364c1e
+  ▶ story-3/main span 004 synth en chars=9 key=a5083464 est=$0.0020
+  ▶ story-3/main span 005 synth ko chars=13 key=83d218c2 est=$0.0043
+  ▶ story-3/main span 006 synth en chars=9 key=fb714b40 est=$0.0020
+  ▶ story-3/main span 007 synth ko chars=10 key=37fa37c8 est=$0.0033
+  ▶ story-3/main span 008 synth en chars=10 key=2c32906e est=$0.0022
+  ▶ story-3/main span 009 synth ko chars=8 key=8ec40a67 est=$0.0026
+  ▶ story-3/main span 010 synth en chars=11 key=a96e9cd8 est=$0.0024
+  ▶ story-3/main span 011 synth ko chars=17 key=30646242 est=$0.0056
+  ▶ story-3/main span 012 synth en chars=7 key=c1c41a0f est=$0.0015
+  ⚡ story-3/main span 013 cache HIT key=02e045b6
+  ▶ story-3/main span 014 synth en chars=3 key=65d43c41 est=$0.0007
+  ▶ story-3/main span 015 synth ko chars=13 key=45efc692 est=$0.0043
+  ▶ story-3/main span 016 synth en chars=14 key=25a988ca est=$0.0031
+  ▶ story-3/main span 017 synth ko chars=15 key=e7c64f3d est=$0.0049
+  ▶ story-3/main span 018 synth en chars=4 key=a227d82b est=$0.0009
+  ▶ story-3/main span 019 synth ko chars=8 key=6114e499 est=$0.0026
+  ⚡ story-3/main span 020 cache HIT key=72b537ee
+  ⚡ story-3/main span 021 cache HIT key=9414ddfe
+  ▶ story-3/main span 022 synth en chars=41 key=c3508182 est=$0.0090
+  ▶ story-3/main span 023 synth ko chars=26 key=cbcedbae est=$0.0086
+  ▶ story-3/main span 024 synth en chars=41 key=c0d3e859 est=$0.0090
+  ▶ story-3/main span 025 synth ko chars=21 key=f1975ff6 est=$0.0069
+  ▶ story-3/main span 026 synth en chars=50 key=de4e5522 est=$0.0110
+  ▶ story-3/main span 027 synth ko chars=20 key=8c461a18 est=$0.0066
+  ▶ story-3/main span 028 synth en chars=28 key=c53da087 est=$0.0062
+  ▶ story-3/main span 029 synth ko chars=21 key=2802eb65 est=$0.0069
+  ▶ story-3/main span 030 synth en chars=49 key=c91117d6 est=$0.0108
+  ▶ story-3/main span 031 synth ko chars=30 key=91499a97 est=$0.0099
+  ▶ story-3/main span 032 synth en chars=36 key=cee2cd3b est=$0.0079
+  ▶ story-3/main span 033 synth ko chars=19 key=e7891eb3 est=$0.0063
+  ⚡ story-3/main span 034 cache HIT key=7482a5c6
+  ⚡ story-3/main span 035 cache HIT key=366f90a8
+  ▶ story-3/main span 036 synth en chars=34 key=d2750e4c est=$0.0075
+  ▶ story-3/main span 037 synth ko chars=19 key=5ce23877 est=$0.0063
+  ▶ story-3/main span 038 synth en chars=19 key=e2969e47 est=$0.0042
+  ▶ story-3/main span 039 synth ko chars=13 key=7da18aa8 est=$0.0043
+  ⚡ story-3/main span 040 cache HIT key=98f22f62
+  ⚡ story-3/main span 041 cache HIT key=48468155
+  ⚡ story-3/main span 042 cache HIT key=f4d23ae8
+  ⚡ story-3/main span 043 cache HIT key=02934b3e
+  ▶ story-3/main span 044 synth en chars=46 key=c53ae3d9 est=$0.0101
+  ▶ story-3/main span 045 synth en chars=38 key=f92e5eaf est=$0.0084
+  ▶ story-3/main span 046 synth en chars=40 key=582d55d9 est=$0.0088
+  ▶ story-3/main span 047 synth en chars=43 key=da2c1203 est=$0.0095
+  ▶ story-3/main span 048 synth en chars=43 key=57a82b95 est=$0.0095
+  ▶ story-3/main span 049 synth en chars=55 key=64eccf42 est=$0.0121
+  ▶ story-3/main span 050 synth en chars=46 key=ed299d22 est=$0.0101
+  ▶ story-3/main span 051 synth en chars=57 key=0cfcf428 est=$0.0125
+  ⚡ story-3/main span 052 cache HIT key=8831a7cf
+  ⚡ story-3/main span 053 cache HIT key=29735b87
+  ▶ story-3/main span 054 synth ko chars=64 key=cac1854f est=$0.0211
+  ▶ story-3/main span 055 synth ko chars=93 key=f64a9759 est=$0.0307
+  ▶ story-3/main span 056 synth ko chars=98 key=091aa874 est=$0.0323
+  ⚡ story-3/main span 057 cache HIT key=c91f4a02
+  ⚡ story-3/main span 058 cache HIT key=49cad835
+  ▶ story-3/main span 059 synth en chars=108 key=2e4238c2 est=$0.0238
+  ▶ story-3/main span 060 synth en chars=214 key=e4bbf58d est=$0.0471
+  ▶ story-3/main span 061 synth en chars=202 key=a1bb9470 est=$0.0444
+  ✓ track story-3/main.mp3 (201936 ms, 62 spans)
+  ▶ story-4/main span 000 synth en chars=30 key=6ca9ca1b est=$0.0066
+  ▶ story-4/main span 001 synth ko chars=20 key=277a6696 est=$0.0066
+  ⚡ story-4/main span 002 cache HIT key=315a2a4f
+  ⚡ story-4/main span 003 cache HIT key=4d364c1e
+  ▶ story-4/main span 004 synth en chars=8 key=53c2909a est=$0.0018
+  ▶ story-4/main span 005 synth ko chars=7 key=70dce470 est=$0.0023
+  ⚡ story-4/main span 006 cache HIT key=c4fca533
+  ▶ story-4/main span 007 synth ko chars=36 key=8a0ec99c est=$0.0119
+  ▶ story-4/main span 008 synth en chars=8 key=adce334d est=$0.0018
+  ▶ story-4/main span 009 synth ko chars=20 key=45c11030 est=$0.0066
+  ▶ story-4/main span 010 synth en chars=12 key=68cbbe45 est=$0.0026
+  ▶ story-4/main span 011 synth ko chars=9 key=9ab5dd63 est=$0.0030
+  ▶ story-4/main span 012 synth en chars=6 key=63bcc732 est=$0.0013
+  ▶ story-4/main span 013 synth ko chars=15 key=94f41a5a est=$0.0049
+  ▶ story-4/main span 014 synth en chars=6 key=ebc111eb est=$0.0013
+  ▶ story-4/main span 015 synth ko chars=8 key=ed0c87c7 est=$0.0026
+  ▶ story-4/main span 016 synth en chars=10 key=774320f6 est=$0.0022
+  ▶ story-4/main span 017 synth ko chars=3 key=60f0554c est=$0.0010
+  ▶ story-4/main span 018 synth en chars=15 key=31e51c7c est=$0.0033
+  ▶ story-4/main span 019 synth ko chars=5 key=f7baa67f est=$0.0016
+  ⚡ story-4/main span 020 cache HIT key=72b537ee
+  ⚡ story-4/main span 021 cache HIT key=9414ddfe
+  ▶ story-4/main span 022 synth en chars=53 key=a1bd2492 est=$0.0117
+  ▶ story-4/main span 023 synth ko chars=26 key=351e3b30 est=$0.0086
+  ▶ story-4/main span 024 synth en chars=58 key=c2b1cd85 est=$0.0128
+  ▶ story-4/main span 025 synth ko chars=31 key=2cb3ea19 est=$0.0102
+  ▶ story-4/main span 026 synth en chars=35 key=3dda440b est=$0.0077
+  ▶ story-4/main span 027 synth ko chars=24 key=71ab869f est=$0.0079
+  ▶ story-4/main span 028 synth en chars=39 key=e0cd0633 est=$0.0086
+  ▶ story-4/main span 029 synth ko chars=19 key=1420a4ff est=$0.0063
+  ▶ story-4/main span 030 synth en chars=45 key=b78bcc24 est=$0.0099
+  ▶ story-4/main span 031 synth ko chars=23 key=6a89f2da est=$0.0076
+  ⚡ story-4/main span 032 cache HIT key=7482a5c6
+  ⚡ story-4/main span 033 cache HIT key=366f90a8
+  ▶ story-4/main span 034 synth en chars=13 key=958deec0 est=$0.0029
+  ▶ story-4/main span 035 synth ko chars=12 key=a2c46e2d est=$0.0040
+  ▶ story-4/main span 036 synth en chars=9 key=359a0467 est=$0.0020
+  ▶ story-4/main span 037 synth ko chars=11 key=bdfb0a1f est=$0.0036
+  ⚡ story-4/main span 038 cache HIT key=98f22f62
+  ⚡ story-4/main span 039 cache HIT key=48468155
+  ⚡ story-4/main span 040 cache HIT key=f4d23ae8
+  ⚡ story-4/main span 041 cache HIT key=02934b3e
+  ▶ story-4/main span 042 synth en chars=51 key=cb2f7b2d est=$0.0112
+  ▶ story-4/main span 043 synth en chars=57 key=bede2c61 est=$0.0125
+  ▶ story-4/main span 044 synth en chars=48 key=12ca467b est=$0.0106
+  ▶ story-4/main span 045 synth en chars=53 key=483eb402 est=$0.0117
+  ▶ story-4/main span 046 synth en chars=56 key=5b66578b est=$0.0123
+  ▶ story-4/main span 047 synth en chars=48 key=1d153dc4 est=$0.0106
+  ▶ story-4/main span 048 synth en chars=59 key=53f4c4b8 est=$0.0130
+  ▶ story-4/main span 049 synth en chars=67 key=7e272215 est=$0.0147
+  ⚡ story-4/main span 050 cache HIT key=8831a7cf
+  ⚡ story-4/main span 051 cache HIT key=29735b87
+  ▶ story-4/main span 052 synth ko chars=73 key=d653072b est=$0.0241
+  ▶ story-4/main span 053 synth ko chars=93 key=8eaa9d04 est=$0.0307
+  ▶ story-4/main span 054 synth ko chars=89 key=8656871c est=$0.0294
+  ⚡ story-4/main span 055 cache HIT key=c91f4a02
+  ⚡ story-4/main span 056 cache HIT key=49cad835
+  ▶ story-4/main span 057 synth en chars=138 key=a3a52dcd est=$0.0304
+  ▶ story-4/main span 058 synth en chars=168 key=8e89745b est=$0.0370
+  ▶ story-4/main span 059 synth en chars=199 key=907e53c5 est=$0.0438
+  ✓ track story-4/main.mp3 (195991 ms, 60 spans)
+
+   ✓ story_1: 68 turns (8 cached), track 231830 ms
+   ✓ story_2: 58 turns (14 cached), track 175497 ms
+   ✓ story_3: 62 turns (15 cached), track 201936 ms
+   ✓ story_4: 60 turns (15 cached), track 195991 ms
+
+🎉 Synthesized 4 tracks via elevenlabs.
+   elevenlabs debit:   7603 chars across 196 freshly-synthesized turns  est_cost=$1.9099
+   📦 Shared cache:  52 hits / 248 total turns  (21.0% hit rate)  at /Users/matthewflood/.langpack/cache/audio
+   📚 Library:       vocab/example audio keys attached (library.json entries: 34 vocab, 23 examples)
+   Cost report:      /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/costs/3_synthesize_en.json
+[09:35:51] ✓ 3/7 synthesize (en)
+[09:35:51] ═══ 4/7 assemble bundle (en) ═══
+✅ Wrote /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle_en.json
+   4 tracks, 196 total clips
+[09:35:52] ✓ 4/7 assemble bundle (en)
+[09:35:52] ═══ 5/7 publish s3 (en) ═══
+═══ Publishing news_en_2026_07_10 for 2026-07-10 ═══
+  Destination:   lmaudio (s3://turned.rip/)
+  Prefix:        lmaudio/news_en_2026_07_10/
+  Manifest URL:  https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_en_2026_07_10/bundle.json
+  QR output:     /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/qr_en.png
+
+Upload plan (local → s3://turned.rip/):
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle_en.json
+          → lmaudio/news_en_2026_07_10/bundle.json
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_1.mp3
+          → lmaudio/news_en_2026_07_10/story_1.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_2.mp3
+          → lmaudio/news_en_2026_07_10/story_2.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_3.mp3
+          → lmaudio/news_en_2026_07_10/story_3.mp3
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_4.mp3
+          → lmaudio/news_en_2026_07_10/story_4.mp3
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle_en.json
+     → s3://turned.rip/lmaudio/news_en_2026_07_10/bundle.json
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_1.mp3
+     → s3://turned.rip/lmaudio/news_en_2026_07_10/story_1.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_2.mp3
+     → s3://turned.rip/lmaudio/news_en_2026_07_10/story_2.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_3.mp3
+     → s3://turned.rip/lmaudio/news_en_2026_07_10/story_3.mp3
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/audio_en/story_4.mp3
+     → s3://turned.rip/lmaudio/news_en_2026_07_10/story_4.mp3
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_en_2026_07_10/bundle.json
+   ✓ s3://turned.rip/lmaudio/news_en_2026_07_10/story_1.mp3
+   ✓ s3://turned.rip/lmaudio/news_en_2026_07_10/story_2.mp3
+   ✓ s3://turned.rip/lmaudio/news_en_2026_07_10/story_3.mp3
+   ✓ s3://turned.rip/lmaudio/news_en_2026_07_10/story_4.mp3
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_en_2026_07_10/bundle.json
+   ✓ invalidation created: ICM9FL1ZPNN4YADIHTIBY4T1JQ (completes in a few minutes)
+
+🔗 Updating lmaudio/news_en_latest/bundle.json alias...
+Upload plan (local → s3://turned.rip/):
+  [create] /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle_en.json
+          → lmaudio/news_en_latest/bundle.json
+📤 Uploading to s3://turned.rip/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle_en.json
+     → s3://turned.rip/lmaudio/news_en_latest/bundle.json
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://turned.rip/lmaudio/news_en_latest/bundle.json
+🌀 CloudFront invalidation (E3TEDMCIJGEXOE): /lmaudio/news_en_latest/bundle.json
+   ✓ invalidation created: I1BOPRMCHE1KAV18ERGJ6SVBUO (completes in a few minutes)
+🔳 Generating QR code...
+✅ QR code: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/qr_en.png
+   App URL:      languagemirror://bundle?url=https%3A%2F%2Fd1ni0tk3ua6bwo.cloudfront.net%2Flmaudio%2Fnews_en_2026_07_10%2Fbundle.json
+   Manifest URL: https://d1ni0tk3ua6bwo.cloudfront.net/lmaudio/news_en_2026_07_10/bundle.json
+[09:36:03] ✓ 5/7 publish s3 (en)
+[09:36:04] ═══ 6/7 deploy web (ko) ═══
+[main 9ebf1e0] news: publish 2026-07-10
+ 4 files changed, 283 insertions(+)
+ create mode 100644 sixwands.com/news/2026-07-10/index.html
+ create mode 100644 sixwands.com/news/2026-07-10/meta.json
+ create mode 100644 sixwands.com/news/2026-07-10/qr.png
+📝 Wrote local site files under /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/index.html
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/qr.png
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/meta.json
+   /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+
+📦 Committing to git...
+   ✓ committed news: publish 2026-07-10
+Upload plan (local → s3://sixwandsstudios.com/):
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/index.html
+          → news/2026-07-10/index.html
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/qr.png
+          → news/2026-07-10/qr.png
+  [create] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/meta.json
+          → news/2026-07-10/meta.json
+  [OVERWRITE] /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+          → news/index.html (expected overwrite)
+🔍 Pre-flight: verifying integrity of s3://sixwandsstudios.com/
+   ✓ 12 protected keys all present
+📤 Uploading to s3://sixwandsstudios.com/ (cp-only, no deletes)...
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/index.html
+     → s3://sixwandsstudios.com/news/2026-07-10/index.html
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/qr.png
+     → s3://sixwandsstudios.com/news/2026-07-10/qr.png
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/2026-07-10/meta.json
+     → s3://sixwandsstudios.com/news/2026-07-10/meta.json
+   ↑ /Users/matthewflood/Desktop/sixwandsstudiosllc/sixwands.com/news/index.html
+     → s3://sixwandsstudios.com/news/index.html
+🔍 Post-flight: verifying uploaded keys...
+   ✓ s3://sixwandsstudios.com/news/2026-07-10/index.html
+   ✓ s3://sixwandsstudios.com/news/2026-07-10/qr.png
+   ✓ s3://sixwandsstudios.com/news/2026-07-10/meta.json
+   ✓ s3://sixwandsstudios.com/news/index.html
+🌀 CloudFront invalidation (E3FOHY8GP6GID3): /news/2026-07-10/* /news/index.html
+   ✓ invalidation created: I4A6SQWLCXT5M01786LK7S66NS (completes in a few minutes)
+
+🎉 Published https://sixwandsstudios.com/news/2026-07-10/
+[09:36:29] ✓ 6/7 deploy web (ko)
+💰 Cost ledger: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/cache/cost_history/2026/07/2026-07-10_133633.json
+[09:36:33] 🎉 Daily pipeline complete for 2026-07-10
+[09:36:33]    Manifests: /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/bundle.json + bundle_en.json
+[09:36:33]    QR:        /Users/matthewflood/workspace/six_wands_language_mirror/daily_news_pipeline/work/2026-07-10/qr.png + qr_en.png
+[09:36:33]    Web:      https://sixwandsstudios.com/news/2026-07-10/
