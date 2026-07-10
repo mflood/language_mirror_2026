@@ -117,6 +117,25 @@ enum NewsNotificationService {
     /// disagrees, and its inner id/audio URLs stay dated so imports dedup.
     static let latestNewsBundleURL = URL(string: "\(cloudFrontBase)/lmaudio/news_latest/bundle.json")!
 
+    /// The English-audio news edition (for Korean learners) — mirror of the
+    /// Korean edition above, at the pipeline's `news_en_latest` alias. The
+    /// app ships this pointer ahead of the pipeline filling the alias; the
+    /// row simply fails to import gracefully until content exists.
+    static let latestEnglishNewsBundleURL = URL(string: "\(cloudFrontBase)/lmaudio/news_en_latest/bundle.json")!
+
+    /// Whether this device's UI language suggests a Korean speaker (who wants
+    /// the English-audio edition). Used to order/choose the news editions.
+    /// Everyone else defaults to the Korean-audio edition.
+    static var localePrefersEnglishNews: Bool {
+        let base = String((Locale.preferredLanguages.first ?? "en").prefix(2))
+        return base == "ko"
+    }
+
+    /// The news edition most relevant to this device's language.
+    static var preferredNewsBundleURL: URL {
+        localePrefersEnglishNews ? latestEnglishNewsBundleURL : latestNewsBundleURL
+    }
+
     /// The news pack URL for a given day, following the pipeline's publish
     /// pattern lmaudio/news_YYYY_MM_DD/bundle.json. Retained for callers that
     /// need a specific day; the daily reminder uses `latestNewsBundleURL`.
@@ -137,7 +156,7 @@ enum NewsNotificationService {
         if let explicit = userInfo[userInfoBundleURLKey] as? String, let url = URL(string: explicit) {
             return url
         }
-        return latestNewsBundleURL
+        return preferredNewsBundleURL
     }
 
     /// A notification tapped on a COLD launch is delivered before the

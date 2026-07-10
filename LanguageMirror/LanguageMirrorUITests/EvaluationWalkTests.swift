@@ -374,6 +374,28 @@ final class EvaluationWalkTests: XCTestCase {
         shot("32-english-practice-gloss")
     }
 
+    /// The two daily-news editions order by device locale: a Korean-language
+    /// device (a Korean speaker) sees "Daily English News" first; everyone
+    /// else sees the Korean edition first.
+    @MainActor
+    func testNewsRowsFollowKoreanLocale() throws {
+        let app = XCUIApplication()
+        app.launchArguments += ["-forceEmbeddedCatalog", "-AppleLanguages", "(ko)", "-AppleLocale", "ko_KR"]
+        app.launch()
+        let skip = app.buttons["Skip"]
+        if skip.waitForExistence(timeout: 4) { skip.tap(); Thread.sleep(forTimeInterval: 1) }
+        app.tabBars.firstMatch.buttons.element(boundBy: 1).tap()  // Add tab
+        Thread.sleep(forTimeInterval: 1)
+        let featured = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] 'Featured' OR label CONTAINS %@", "추천")).firstMatch
+        if featured.waitForExistence(timeout: 5) { featured.tap() }
+        Thread.sleep(forTimeInterval: 2)
+        shot("33-news-rows-korean-locale")
+        // The English edition row must exist (Korean UI string).
+        let englishNews = app.staticTexts["매일 영어 뉴스"].firstMatch
+        XCTAssertTrue(englishNews.waitForExistence(timeout: 6),
+                      "English-news row (Korean locale) not shown")
+    }
+
     /// Read-only tour of every reachable screen WITHOUT mutating app state:
     /// no imports, no session starts, no persisted toggles. Safe to run on
     /// a lived-in simulator — this is the /brand-tour skill's quick mode.

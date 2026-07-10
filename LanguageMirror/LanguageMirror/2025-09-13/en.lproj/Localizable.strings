@@ -92,6 +92,8 @@
 "featured.section.starter" = "Starter Packs";
 "featured.news.title" = "Daily Korean News";
 "featured.news.subtitle" = "Fresh listening practice — %@";
+"featured.news_en.title" = "Daily English News";
+"featured.news_en.subtitle" = "Fresh listening practice — %@";
 "featured.title" = "Featured Packs";
 "featured.empty" = "No featured packs available right now.";
 "featured.error" = "Couldn't load the featured packs catalog.";

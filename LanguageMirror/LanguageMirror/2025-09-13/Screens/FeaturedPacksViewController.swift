@@ -203,29 +203,31 @@ final class FeaturedPacksViewController: UIViewController {
 // MARK: - Today's News
 
 extension FeaturedPacksViewController {
-    /// The daily news bundle, pinned above the catalog. Points at the
-    /// pipeline's stable `news_latest` alias so no date math is needed —
-    /// the same URL the daily-reminder notification resolves.
-    static func todaysNewsPack() -> FeaturedPack {
+    /// The daily news rows, pinned above the catalog. Both editions (Korean
+    /// audio and English audio) point at the pipeline's stable `news_latest`
+    /// / `news_en_latest` aliases — no date math — and are ordered by the
+    /// device locale so a user sees the edition matching their likely
+    /// learning direction first. Same URLs the daily reminder resolves.
+    static func todaysNewsPacks() -> [FeaturedPack] {
         let df = DateFormatter()
         df.dateStyle = .medium
         df.timeStyle = .none
-        return FeaturedPack(
-            id: "news_latest",
-            title: L10n("featured.news.title"),
-            subtitle: L10nf("featured.news.subtitle", df.string(from: Date())),
-            languageCode: "ko",
-            level: nil,
-            trackCount: nil,
-            durationSeconds: nil,
-            author: nil,
-            iconSymbol: nil,
-            accentColor: nil,
-            source: FeaturedPackSource(
-                kind: "remote",
-                bundleId: nil,
-                manifestUrl: NewsNotificationService.latestNewsBundleURL.absoluteString)
-        )
+        let dated = df.string(from: Date())
+        func pack(id: String, titleKey: String, subtitleKey: String, lang: String, url: URL) -> FeaturedPack {
+            FeaturedPack(
+                id: id, title: L10n(titleKey), subtitle: L10nf(subtitleKey, dated),
+                languageCode: lang, level: nil, trackCount: nil, durationSeconds: nil,
+                author: nil, iconSymbol: nil, accentColor: nil,
+                source: FeaturedPackSource(kind: "remote", bundleId: nil,
+                                           manifestUrl: url.absoluteString))
+        }
+        let korean = pack(id: "news_latest", titleKey: "featured.news.title",
+                          subtitleKey: "featured.news.subtitle", lang: "ko",
+                          url: NewsNotificationService.latestNewsBundleURL)
+        let english = pack(id: "news_en_latest", titleKey: "featured.news_en.title",
+                           subtitleKey: "featured.news_en.subtitle", lang: "en",
+                           url: NewsNotificationService.latestEnglishNewsBundleURL)
+        return NewsNotificationService.localePrefersEnglishNews ? [english, korean] : [korean, english]
     }
 }
 
@@ -234,7 +236,7 @@ extension FeaturedPacksViewController {
 extension FeaturedPacksViewController: UITableViewDataSource, UITableViewDelegate {
 
     private var sections: [(header: String, packs: [FeaturedPack])] {
-        [(L10n("featured.section.news"), [Self.todaysNewsPack()]),
+        [(L10n("featured.section.news"), Self.todaysNewsPacks()),
          (L10n("featured.section.starter"), packs)]
     }
 
