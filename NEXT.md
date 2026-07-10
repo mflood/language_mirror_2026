@@ -3,6 +3,24 @@
 The 3 things to do next, in priority order. See `PRODUCT_IDEAS.md` for the
 broader backlog and `LOG.md` for what's already shipped.
 
+## ⏳ Release gate: publish the remote featured_catalog.json AFTER the build ships
+
+The English starter pack ("Everyday English Greetings") is EMBEDDED
+(audio in the app) and registered in the *embedded* catalog copy. The
+app loads the catalog REMOTE-first (CloudFront), embedded is only the
+offline fallback. Do NOT publish the updated catalog to
+`s3://turned.rip/lmaudio/featured_catalog.json` until the app version
+containing the embedded English bundle is live on the App Store —
+otherwise current users see the pack, tap it, and the install fails
+(their installed build has no such embedded bundle). Sequence:
+ship the app build → THEN publish the remote catalog.
+
+English content status: pack 1 of 5 done (greetings). Remaining mirror
+packs to build via the same path (sample_bundle_pipeline step 1 →
+elevenlabs synth → assemble_conversation_bundle.py → 4_embed_in_app →
+catalog): directions, cafe, short story, poem. Plus the English news
+edition (pipeline).
+
 ## ⏳ Release gate: refresh App Store screenshots in the Six Wands language
 
 Before shipping the next version: retake all App Store screenshots
