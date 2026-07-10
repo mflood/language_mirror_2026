@@ -1,0 +1,80 @@
+{
+  "topic": "A customer orders at a neighborhood coffee shop and chats briefly with the friendly barista about the menu — what's popular, a pastry recommendation, and whether to have it for here or to go.",
+  "language": "en-US",
+  "title": "Ordering at the Coffee Shop",
+  "english_title": "Ordering at the Coffee Shop",
+  "turns": [
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "Hi, I'd like a coffee, but I'm not sure what to get.",
+      "translations": {
+        "ko": "안녕하세요, 커피를 마시고 싶은데 뭘 주문할지 잘 모르겠어요."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Our cappuccino is really popular, and so is the cold brew.",
+      "translations": {
+        "ko": "저희 카푸치노가 정말 인기가 많고, 콜드브루도 인기가 많아요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I'll try the cappuccino, please.",
+      "translations": {
+        "ko": "카푸치노로 할게요."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Great choice! Would you like a pastry with that?",
+      "translations": {
+        "ko": "좋은 선택이세요! 페이스트리도 함께 드시겠어요?"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "What do you recommend?",
+      "translations": {
+        "ko": "뭘 추천하시나요?"
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "The blueberry muffins are fresh this morning, and they're delicious.",
+      "translations": {
+        "ko": "블루베리 머핀이 오늘 아침에 나온 신선한 거고, 정말 맛있어요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "Perfect, I'll take one of those.",
+      "translations": {
+        "ko": "좋아요, 그것으로 하나 주세요."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Sounds good! Is this for here or to go?",
+      "translations": {
+        "ko": "좋아요! 매장에서 드시나요, 가져가시나요?"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "For here, thanks.",
+      "translations": {
+        "ko": "매장에서 먹을게요, 감사합니다."
+      }
+    }
+  ]
+}

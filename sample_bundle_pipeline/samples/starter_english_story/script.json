@@ -1,0 +1,72 @@
+{
+  "topic": "A gentle first-person slice-of-life story: a quiet rainy Sunday morning at home",
+  "language": "en-US",
+  "title": "A Rainy Sunday Morning",
+  "english_title": "A Rainy Sunday Morning",
+  "turns": [
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I wake up slowly to the sound of rain on the windows.",
+      "translations": {
+        "ko": "창문에 떨어지는 빗소리에 천천히 잠에서 깨어났어요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "It's Sunday, and I have nowhere to be.",
+      "translations": {
+        "ko": "일요일이라 갈 곳이 없어요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I make myself a cup of coffee in the quiet kitchen.",
+      "translations": {
+        "ko": "조용한 부엌에서 커피 한 잔을 만들었어요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I sit by the window and watch the rain fall.",
+      "translations": {
+        "ko": "창가에 앉아서 비가 내리는 걸 바라봤어요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "The street outside is empty and peaceful.",
+      "translations": {
+        "ko": "밖의 거리는 텅 비어 있고 평화로웠어요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I think about the busy week behind me.",
+      "translations": {
+        "ko": "지나간 바쁜 한 주를 생각했어요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "Right now, in this moment, everything feels perfectly still.",
+      "translations": {
+        "ko": "지금 이 순간, 모든 것이 완벽하게 고요하게 느껴져요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "I'm grateful for this quiet morning.",
+      "translations": {
+        "ko": "이 조용한 아침이 감사해요."
+      }
+    }
+  ]
+}

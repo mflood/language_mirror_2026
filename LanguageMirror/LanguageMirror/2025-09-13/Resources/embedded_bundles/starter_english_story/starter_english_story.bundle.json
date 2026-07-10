@@ -1,0 +1,225 @@
+{
+  "id": "starter_english_story",
+  "title": "A Rainy Sunday Morning",
+  "packs": [
+    {
+      "id": "starter_english_story",
+      "title": "A Rainy Sunday Morning",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "languageCode": "en-US",
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_english_story__track_001.mp3",
+          "durationMs": 24023,
+          "languageCode": "en-US",
+          "practiceSets": [
+            {
+              "id": "e209c00d-4ccc-49ae-b2ad-f235dbf90bee",
+              "trackId": "track_001.mp3",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "9e565605-54b4-4f2f-b76e-93b4e4095e13",
+                  "startMs": 0,
+                  "endMs": 24023,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ]
+            },
+            {
+              "id": "55d33c00-a78b-4afe-af6c-15c3ae2f7c4d",
+              "trackId": "track_001.mp3",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "6d523e46-404d-4089-96dd-2396a4bc28f6",
+                  "startMs": 0,
+                  "endMs": 3204,
+                  "kind": "drill",
+                  "title": "1. I wake up slowly to the sound of rain on the windows.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "0e408f7f-3870-48c7-9407-ab5c81aad53c",
+                  "startMs": 3604,
+                  "endMs": 5833,
+                  "kind": "drill",
+                  "title": "2. It's Sunday, and I have nowhere to be.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "373137af-c769-4c72-8caf-480a9b09c4f2",
+                  "startMs": 6233,
+                  "endMs": 9298,
+                  "kind": "drill",
+                  "title": "3. I make myself a cup of coffee in the quiet kitchen.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "ce62c840-861e-475c-9055-6c3509ad14c2",
+                  "startMs": 9698,
+                  "endMs": 12299,
+                  "kind": "drill",
+                  "title": "4. I sit by the window and watch the rain fall.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "00f05b68-a799-4316-816e-b7dbd8259024",
+                  "startMs": 12699,
+                  "endMs": 15021,
+                  "kind": "drill",
+                  "title": "5. The street outside is empty and peaceful.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "f51b6ca4-1abc-4b63-a9a1-166f2467e933",
+                  "startMs": 15421,
+                  "endMs": 17604,
+                  "kind": "drill",
+                  "title": "6. I think about the busy week behind me.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "bb372f73-fa15-4bd9-849a-58073f777e1f",
+                  "startMs": 18004,
+                  "endMs": 21626,
+                  "kind": "drill",
+                  "title": "7. Right now, in this moment, everything feels perfectly still.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "0e921b55-f35b-4b8c-b394-b0bfff9a10d4",
+                  "startMs": 22026,
+                  "endMs": 24023,
+                  "kind": "drill",
+                  "title": "8. I'm grateful for this quiet morning.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                }
+              ]
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 3204,
+              "text": "I wake up slowly to the sound of rain on the windows.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "창문에 떨어지는 빗소리에 천천히 잠에서 깨어났어요."
+              }
+            },
+            {
+              "startMs": 3604,
+              "endMs": 5833,
+              "text": "It's Sunday, and I have nowhere to be.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "일요일이라 갈 곳이 없어요."
+              }
+            },
+            {
+              "startMs": 6233,
+              "endMs": 9298,
+              "text": "I make myself a cup of coffee in the quiet kitchen.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "조용한 부엌에서 커피 한 잔을 만들었어요."
+              }
+            },
+            {
+              "startMs": 9698,
+              "endMs": 12299,
+              "text": "I sit by the window and watch the rain fall.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "창가에 앉아서 비가 내리는 걸 바라봤어요."
+              }
+            },
+            {
+              "startMs": 12699,
+              "endMs": 15021,
+              "text": "The street outside is empty and peaceful.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "밖의 거리는 텅 비어 있고 평화로웠어요."
+              }
+            },
+            {
+              "startMs": 15421,
+              "endMs": 17604,
+              "text": "I think about the busy week behind me.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "지나간 바쁜 한 주를 생각했어요."
+              }
+            },
+            {
+              "startMs": 18004,
+              "endMs": 21626,
+              "text": "Right now, in this moment, everything feels perfectly still.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "지금 이 순간, 모든 것이 완벽하게 고요하게 느껴져요."
+              }
+            },
+            {
+              "startMs": 22026,
+              "endMs": 24023,
+              "text": "I'm grateful for this quiet morning.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "이 조용한 아침이 감사해요."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

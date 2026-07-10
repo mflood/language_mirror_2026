@@ -1,0 +1,1 @@
+A gentle first-person slice-of-life story: a quiet rainy Sunday morning at home. The narrator wakes slowly, makes a cup of coffee, sits by the window watching the rain, thinks about the week, and finds a small moment of contentment and gratitude in the stillness. Warm, reflective, everyday American English at an intermediate level. Single narrator, complete short sentences.

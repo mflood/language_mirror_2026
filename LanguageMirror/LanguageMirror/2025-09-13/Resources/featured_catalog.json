@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "updatedAt": "2026-07-09T00:00:00Z",
   "packs": [
     {
@@ -16,6 +16,70 @@
       "source": {
         "kind": "embedded",
         "bundleId": "starter_english_greetings"
+      }
+    },
+    {
+      "id": "starter_english_directions",
+      "title": "Everyday English Directions",
+      "subtitle": "A visitor asks a local how to get to the science museum — with Korean translations",
+      "languageCode": "en-US",
+      "level": "beginner",
+      "trackCount": 1,
+      "durationSeconds": 23,
+      "author": "Six Wands Studios",
+      "iconSymbol": "map.fill",
+      "accentColor": "#2AA198",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_english_directions"
+      }
+    },
+    {
+      "id": "starter_english_cafe",
+      "title": "Everyday English at a Cafe",
+      "subtitle": "Ordering coffee and chatting with a friendly barista — with Korean translations",
+      "languageCode": "en-US",
+      "level": "beginner",
+      "trackCount": 1,
+      "durationSeconds": 24,
+      "author": "Six Wands Studios",
+      "iconSymbol": "cup.and.saucer.fill",
+      "accentColor": "#2AA198",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_english_cafe"
+      }
+    },
+    {
+      "id": "starter_english_story",
+      "title": "A Rainy Sunday Morning",
+      "subtitle": "A gentle first-person story for quiet listening — with Korean translations",
+      "languageCode": "en-US",
+      "level": "intermediate",
+      "trackCount": 1,
+      "durationSeconds": 24,
+      "author": "Six Wands Studios",
+      "iconSymbol": "cloud.rain.fill",
+      "accentColor": "#5A6FA5",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_english_story"
+      }
+    },
+    {
+      "id": "starter_english_poem",
+      "title": "Dreams — Langston Hughes",
+      "subtitle": "A short beloved poem: hold fast to your dreams — with Korean translations",
+      "languageCode": "en-US",
+      "level": "intermediate",
+      "trackCount": 1,
+      "durationSeconds": 12,
+      "author": "Langston Hughes",
+      "iconSymbol": "sparkles",
+      "accentColor": "#4A6FA5",
+      "source": {
+        "kind": "embedded",
+        "bundleId": "starter_english_poem"
       }
     },
     {

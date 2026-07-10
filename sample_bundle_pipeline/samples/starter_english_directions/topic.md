@@ -1,0 +1,1 @@
+A visitor asks a local how to get from downtown to the science museum. The local explains which bus to take, where to transfer to the train, roughly how many stops, and about how long it takes on foot from the station. Helpful, friendly, everyday American English at an intermediate level.

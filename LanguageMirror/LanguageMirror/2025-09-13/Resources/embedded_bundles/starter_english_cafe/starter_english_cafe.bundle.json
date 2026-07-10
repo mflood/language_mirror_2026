@@ -1,0 +1,246 @@
+{
+  "id": "starter_english_cafe",
+  "title": "Everyday English at a Cafe",
+  "packs": [
+    {
+      "id": "starter_english_cafe",
+      "title": "Everyday English at a Cafe",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "languageCode": "en-US",
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_english_cafe__track_001.mp3",
+          "durationMs": 23541,
+          "languageCode": "en-US",
+          "practiceSets": [
+            {
+              "id": "a5fc2fa2-bc56-4e02-ae34-b1804ece31e5",
+              "trackId": "track_001.mp3",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "f437b08a-89a8-4166-86b0-4ace44553888",
+                  "startMs": 0,
+                  "endMs": 23541,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ]
+            },
+            {
+              "id": "5bc08718-3968-42dd-80f2-4d7ff889d631",
+              "trackId": "track_001.mp3",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "291e167f-c3d3-40c9-a194-d3456de2ecd0",
+                  "startMs": 0,
+                  "endMs": 3019,
+                  "kind": "drill",
+                  "title": "1. Hi, I'd like a coffee, but I'm not sure what to get.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "8e8ff764-f633-4138-b00a-1adb4d065a4a",
+                  "startMs": 3419,
+                  "endMs": 6391,
+                  "kind": "drill",
+                  "title": "2. Our cappuccino is really popular, and so is the cold brew.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "c91fb10a-0233-4168-81bf-82c7dcb734df",
+                  "startMs": 6791,
+                  "endMs": 8509,
+                  "kind": "drill",
+                  "title": "3. I'll try the cappuccino, please.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "1ab2a89e-b21c-4ed1-8915-b4de45a54f76",
+                  "startMs": 8909,
+                  "endMs": 11092,
+                  "kind": "drill",
+                  "title": "4. Great choice! Would you like a pastry with that?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "217caa8f-e1a3-4864-9ba6-b56d0533e9b9",
+                  "startMs": 11492,
+                  "endMs": 12746,
+                  "kind": "drill",
+                  "title": "5. What do you recommend?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "95725c9a-e77b-4a3d-a7bf-6b13154bb665",
+                  "startMs": 13146,
+                  "endMs": 16722,
+                  "kind": "drill",
+                  "title": "6. The blueberry muffins are fresh this morning, and they're delicious.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "1b1c72f5-d533-4779-a0f3-2a6351afd0c2",
+                  "startMs": 17122,
+                  "endMs": 19072,
+                  "kind": "drill",
+                  "title": "7. Perfect, I'll take one of those.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "d3170d4b-ed80-4dbf-8a45-e1d74fd037fd",
+                  "startMs": 19472,
+                  "endMs": 21655,
+                  "kind": "drill",
+                  "title": "8. Sounds good! Is this for here or to go?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "188d13e6-6c7f-45a1-ac3c-224209e42452",
+                  "startMs": 22055,
+                  "endMs": 23541,
+                  "kind": "drill",
+                  "title": "9. For here, thanks.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                }
+              ]
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 3019,
+              "text": "Hi, I'd like a coffee, but I'm not sure what to get.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "안녕하세요, 커피를 마시고 싶은데 뭘 주문할지 잘 모르겠어요."
+              }
+            },
+            {
+              "startMs": 3419,
+              "endMs": 6391,
+              "text": "Our cappuccino is really popular, and so is the cold brew.",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "저희 카푸치노가 정말 인기가 많고, 콜드브루도 인기가 많아요."
+              }
+            },
+            {
+              "startMs": 6791,
+              "endMs": 8509,
+              "text": "I'll try the cappuccino, please.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "카푸치노로 할게요."
+              }
+            },
+            {
+              "startMs": 8909,
+              "endMs": 11092,
+              "text": "Great choice! Would you like a pastry with that?",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "좋은 선택이세요! 페이스트리도 함께 드시겠어요?"
+              }
+            },
+            {
+              "startMs": 11492,
+              "endMs": 12746,
+              "text": "What do you recommend?",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "뭘 추천하시나요?"
+              }
+            },
+            {
+              "startMs": 13146,
+              "endMs": 16722,
+              "text": "The blueberry muffins are fresh this morning, and they're delicious.",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "블루베리 머핀이 오늘 아침에 나온 신선한 거고, 정말 맛있어요."
+              }
+            },
+            {
+              "startMs": 17122,
+              "endMs": 19072,
+              "text": "Perfect, I'll take one of those.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "좋아요, 그것으로 하나 주세요."
+              }
+            },
+            {
+              "startMs": 19472,
+              "endMs": 21655,
+              "text": "Sounds good! Is this for here or to go?",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "좋아요! 매장에서 드시나요, 가져가시나요?"
+              }
+            },
+            {
+              "startMs": 22055,
+              "endMs": 23541,
+              "text": "For here, thanks.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "매장에서 먹을게요, 감사합니다."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

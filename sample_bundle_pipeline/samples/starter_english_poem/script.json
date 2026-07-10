@@ -1,0 +1,56 @@
+{
+  "topic": "Langston Hughes — 'Dreams' (public domain, 1922)",
+  "language": "en-US",
+  "title": "Dreams",
+  "english_title": "Dreams — Langston Hughes",
+  "turns": [
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "Hold fast to dreams",
+      "translations": {
+        "ko": "꿈을 꼭 붙잡아라"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "For if dreams die",
+      "translations": {
+        "ko": "꿈이 죽으면"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "Life is a broken-winged bird that cannot fly.",
+      "translations": {
+        "ko": "인생은 날 수 없는 부러진 날개의 새가 되니"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "Hold fast to dreams",
+      "translations": {
+        "ko": "꿈을 꼭 붙잡아라"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "For when dreams go",
+      "translations": {
+        "ko": "꿈이 사라지면"
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "narrator",
+      "text": "Life is a barren field frozen with snow.",
+      "translations": {
+        "ko": "인생은 눈으로 얼어붙은 메마른 들판이 되니"
+      }
+    }
+  ]
+}

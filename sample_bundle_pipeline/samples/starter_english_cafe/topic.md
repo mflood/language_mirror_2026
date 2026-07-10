@@ -1,0 +1,1 @@
+A customer orders at a neighborhood coffee shop and chats briefly with the friendly barista about the menu — what's popular, a pastry recommendation, and whether to have it for here or to go. Warm, natural everyday American English at an intermediate level.

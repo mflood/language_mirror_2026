@@ -1,0 +1,225 @@
+{
+  "id": "starter_english_directions",
+  "title": "Everyday English Directions",
+  "packs": [
+    {
+      "id": "starter_english_directions",
+      "title": "Everyday English Directions",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "languageCode": "en-US",
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_english_directions__track_001.mp3",
+          "durationMs": 22491,
+          "languageCode": "en-US",
+          "practiceSets": [
+            {
+              "id": "b3e0076a-e46a-4ee4-a24f-9523652830db",
+              "trackId": "track_001.mp3",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "ea6bb90f-a307-45ff-b946-28413341bf7a",
+                  "startMs": 0,
+                  "endMs": 22491,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ]
+            },
+            {
+              "id": "d9cd1e42-89ce-4cc8-ae19-e52977ebf62d",
+              "trackId": "track_001.mp3",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "37bdbef9-3898-4f31-827a-22af7ec38643",
+                  "startMs": 0,
+                  "endMs": 3297,
+                  "kind": "drill",
+                  "title": "1. Excuse me, how do I get to the science museum from here?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "904a0a6e-1b73-4da2-add5-d068b57f1b0a",
+                  "startMs": 3697,
+                  "endMs": 6808,
+                  "kind": "drill",
+                  "title": "2. Sure, take the number twelve bus heading north for about four stops.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "422d49f0-8e54-45db-96fb-7525c92191d6",
+                  "startMs": 7208,
+                  "endMs": 9902,
+                  "kind": "drill",
+                  "title": "3. Then transfer to the blue line train at Central Station.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "566dab33-b4be-41a1-8255-e28f6e4fa642",
+                  "startMs": 10302,
+                  "endMs": 11788,
+                  "kind": "drill",
+                  "title": "4. How many stops on the train?",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "aa5b8331-feed-4d6e-95cd-e8361929716e",
+                  "startMs": 12188,
+                  "endMs": 14789,
+                  "kind": "drill",
+                  "title": "5. Just three stops, get off at University Avenue.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "d8fb97e5-a73d-4629-b73c-5525d2d1cd9b",
+                  "startMs": 15189,
+                  "endMs": 17883,
+                  "kind": "drill",
+                  "title": "6. From there, it's about a ten minute walk to the museum.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "256f77f6-f85a-43ef-8a50-1235982936cf",
+                  "startMs": 18283,
+                  "endMs": 20466,
+                  "kind": "drill",
+                  "title": "7. That sounds easy enough, thank you so much!",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "9d7cf9e2-b466-4257-bc10-89bf668e95b8",
+                  "startMs": 20866,
+                  "endMs": 22491,
+                  "kind": "drill",
+                  "title": "8. No problem, have a great visit!",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                }
+              ]
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 3297,
+              "text": "Excuse me, how do I get to the science museum from here?",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "저기요, 여기서 과학 박물관까지 어떻게 가요?"
+              }
+            },
+            {
+              "startMs": 3697,
+              "endMs": 6808,
+              "text": "Sure, take the number twelve bus heading north for about four stops.",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "네, 북쪽으로 가는 12번 버스를 타고 약 네 정거장 가세요."
+              }
+            },
+            {
+              "startMs": 7208,
+              "endMs": 9902,
+              "text": "Then transfer to the blue line train at Central Station.",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "그 다음에 중앙역에서 파란색 라인 전철로 갈아타세요."
+              }
+            },
+            {
+              "startMs": 10302,
+              "endMs": 11788,
+              "text": "How many stops on the train?",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "전철은 몇 정거장이요?"
+              }
+            },
+            {
+              "startMs": 12188,
+              "endMs": 14789,
+              "text": "Just three stops, get off at University Avenue.",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "세 정거장만 가시면 되고, 유니버시티 애비뉴에서 내리세요."
+              }
+            },
+            {
+              "startMs": 15189,
+              "endMs": 17883,
+              "text": "From there, it's about a ten minute walk to the museum.",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "거기서 박물관까지는 걸어서 약 10분 걸려요."
+              }
+            },
+            {
+              "startMs": 18283,
+              "endMs": 20466,
+              "text": "That sounds easy enough, thank you so much!",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "충분히 쉬울 것 같네요, 정말 감사합니다!"
+              }
+            },
+            {
+              "startMs": 20866,
+              "endMs": 22491,
+              "text": "No problem, have a great visit!",
+              "speaker": "Speaker 2",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "별 말씀을요, 즐거운 관람 되세요!"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

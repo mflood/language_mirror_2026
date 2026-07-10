@@ -1,0 +1,183 @@
+{
+  "id": "starter_english_poem",
+  "title": "Dreams — Langston Hughes",
+  "packs": [
+    {
+      "id": "starter_english_poem",
+      "title": "Dreams — Langston Hughes",
+      "author": "Six Wands Studios",
+      "coverUrl": null,
+      "coverFilename": null,
+      "languageCode": "en-US",
+      "tracks": [
+        {
+          "id": "track_001.mp3",
+          "title": "Track 001",
+          "url": null,
+          "filename": "starter_english_poem__track_001.mp3",
+          "durationMs": 12309,
+          "languageCode": "en-US",
+          "practiceSets": [
+            {
+              "id": "ec478b19-f556-48fa-85e2-d7120c9e23e3",
+              "trackId": "track_001.mp3",
+              "displayOrder": 0,
+              "title": "Full Track",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "7ac43056-ee17-405c-bab0-20d526a1d8e1",
+                  "startMs": 0,
+                  "endMs": 12309,
+                  "kind": "drill",
+                  "title": "Full Track",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": null
+                }
+              ]
+            },
+            {
+              "id": "861ecef6-9b50-449a-990a-b57a8070a8fe",
+              "trackId": "track_001.mp3",
+              "displayOrder": 1,
+              "title": "Practice Set",
+              "isFavorite": false,
+              "clips": [
+                {
+                  "id": "9ae8ddc8-2aec-4fd6-8c29-b5c10771ec6a",
+                  "startMs": 0,
+                  "endMs": 1300,
+                  "kind": "drill",
+                  "title": "1. Hold fast to dreams",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "d65a2aca-6216-4f7d-80c6-11eef0bbcadd",
+                  "startMs": 1700,
+                  "endMs": 3047,
+                  "kind": "drill",
+                  "title": "2. For if dreams die",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "b88c4226-0c83-4bdb-93d2-bbd8575a929b",
+                  "startMs": 3447,
+                  "endMs": 6233,
+                  "kind": "drill",
+                  "title": "3. Life is a broken-winged bird that cannot fly.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "256b1f00-9a06-4326-b3d5-889f102a2084",
+                  "startMs": 6633,
+                  "endMs": 8026,
+                  "kind": "drill",
+                  "title": "4. Hold fast to dreams",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "7b514ea1-f95a-4edf-bc5f-a863f7f32027",
+                  "startMs": 8426,
+                  "endMs": 9587,
+                  "kind": "drill",
+                  "title": "5. For when dreams go",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                },
+                {
+                  "id": "c1b894d3-3cef-4275-b0ad-5d4d7dfa5599",
+                  "startMs": 9987,
+                  "endMs": 12309,
+                  "kind": "drill",
+                  "title": "6. Life is a barren field frozen with snow.",
+                  "repeats": null,
+                  "startSpeed": null,
+                  "endSpeed": null,
+                  "languageCode": "en-US"
+                }
+              ]
+            }
+          ],
+          "transcripts": [
+            {
+              "startMs": 0,
+              "endMs": 1300,
+              "text": "Hold fast to dreams",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "꿈을 꼭 붙잡아라"
+              }
+            },
+            {
+              "startMs": 1700,
+              "endMs": 3047,
+              "text": "For if dreams die",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "꿈이 죽으면"
+              }
+            },
+            {
+              "startMs": 3447,
+              "endMs": 6233,
+              "text": "Life is a broken-winged bird that cannot fly.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "인생은 날 수 없는 부러진 날개의 새가 되니"
+              }
+            },
+            {
+              "startMs": 6633,
+              "endMs": 8026,
+              "text": "Hold fast to dreams",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "꿈을 꼭 붙잡아라"
+              }
+            },
+            {
+              "startMs": 8426,
+              "endMs": 9587,
+              "text": "For when dreams go",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "꿈이 사라지면"
+              }
+            },
+            {
+              "startMs": 9987,
+              "endMs": 12309,
+              "text": "Life is a barren field frozen with snow.",
+              "speaker": "Speaker 1",
+              "languageCode": "en-US",
+              "translations": {
+                "ko": "인생은 눈으로 얼어붙은 메마른 들판이 되니"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

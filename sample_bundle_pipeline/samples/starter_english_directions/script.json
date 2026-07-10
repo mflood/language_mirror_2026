@@ -1,0 +1,72 @@
+{
+  "topic": "A visitor asks a local how to get from downtown to the science museum. The local explains which bus to take, where to transfer to the train, roughly how many stops, and about how long it takes on foot from the station.",
+  "language": "en-US",
+  "title": "Getting to the Science Museum",
+  "english_title": "Getting to the Science Museum",
+  "turns": [
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "Excuse me, how do I get to the science museum from here?",
+      "translations": {
+        "ko": "저기요, 여기서 과학 박물관까지 어떻게 가요?"
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Sure, take the number twelve bus heading north for about four stops.",
+      "translations": {
+        "ko": "네, 북쪽으로 가는 12번 버스를 타고 약 네 정거장 가세요."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Then transfer to the blue line train at Central Station.",
+      "translations": {
+        "ko": "그 다음에 중앙역에서 파란색 라인 전철로 갈아타세요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "How many stops on the train?",
+      "translations": {
+        "ko": "전철은 몇 정거장이요?"
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "Just three stops, get off at University Avenue.",
+      "translations": {
+        "ko": "세 정거장만 가시면 되고, 유니버시티 애비뉴에서 내리세요."
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "From there, it's about a ten minute walk to the museum.",
+      "translations": {
+        "ko": "거기서 박물관까지는 걸어서 약 10분 걸려요."
+      }
+    },
+    {
+      "speaker": "A",
+      "voice": "Joanna",
+      "text": "That sounds easy enough, thank you so much!",
+      "translations": {
+        "ko": "충분히 쉬울 것 같네요, 정말 감사합니다!"
+      }
+    },
+    {
+      "speaker": "B",
+      "voice": "Matthew",
+      "text": "No problem, have a great visit!",
+      "translations": {
+        "ko": "별 말씀을요, 즐거운 관람 되세요!"
+      }
+    }
+  ]
+}
