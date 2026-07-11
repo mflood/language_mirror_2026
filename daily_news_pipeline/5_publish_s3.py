@@ -25,6 +25,7 @@ import argparse
 import datetime as dt
 
 import edition
+import notify_email
 import json
 from pathlib import Path
 
@@ -116,6 +117,19 @@ def main() -> int:
     print(f"✅ QR code: {qr_path}")
     print(f"   App URL:      {build_app_url(manifest_url)}")
     print(f"   Manifest URL: {manifest_url}")
+
+    pack = manifest.get("packs", [{}])[0]
+    tracks = "\n".join(f"  · {t.get('title', '?')}" for t in pack.get("tracks", []))
+    edition_label = "Korean" if args.edition == "ko" else "English"
+    notify_email.send(
+        subject=f"✅ {pack_id} deployed ({edition_label} edition)",
+        body=(f"{pack.get('title', pack_id)}\n\n"
+              f"Tracks:\n{tracks}\n\n"
+              f"Manifest: {manifest_url}\n"
+              f"Alias:    {dest.public_url(latest_alias_key)}\n"
+              + (f"Web:      https://sixwandsstudios.com/news/{date}/\n"
+                 if args.edition == "ko" else "")),
+    )
     return 0
 
 

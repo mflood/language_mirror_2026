@@ -29,5 +29,11 @@ PYEOF
     notify "Daily News ✅" "$DATE published (cost $COST)"
 else
     notify "Daily News ❌ FAILED" "$DATE — check work/$DATE/run.log"
+    # Failure alert email (log tail attached). .env not needed: SES uses ~/.aws.
+    "$HOME/.pyenv/versions/six_wands_language_mirror/bin/python" \
+        "$HERE/notify_email.py" \
+        --subject "❌ Daily News pipeline FAILED — $DATE" \
+        --body "The scheduled run failed. Last 40 lines of the run log:" \
+        --body-file "$HERE/work/$DATE/run.log" --tail 40 || true
     exit 1
 fi

@@ -480,6 +480,12 @@ python, and prepends /opt/homebrew/bin (ffmpeg); step 3's large-spend
 confirmation auto-proceeds when non-interactive (the --max-chars hard cap
 still applies).
 
+Email notifications (notify_email.py, AWS SES us-east-1, sender
+news@sixwandsstudios.com → flood.today@gmail.com, override with
+NEWS_NOTIFY_EMAIL): step 5 emails on each pack deploy (per edition);
+scheduled_run.sh emails a failure alert with the last 40 log lines.
+Email failures never break a publish (send() warns and returns False).
+
 ## Publishing destinations
 
 | Artifact | URL pattern |
