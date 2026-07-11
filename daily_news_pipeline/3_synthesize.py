@@ -38,7 +38,7 @@ from pathlib import Path
 import yaml
 
 from studypack.adapters import news as news_adapter
-from voicebox import key_params, synth_pack
+from voicebox import key_params, remaining_credits, synth_pack
 
 from lexicon import Lexicon
 
@@ -201,6 +201,22 @@ def main() -> int:
         print(f"❌ Chars to debit {t['chars_debited']} exceeds cap {args.max_chars}.",
               file=sys.stderr)
         return 1
+
+    # Quota preflight (advisory — needs user_read on the API key; None = can't
+    # tell, proceed). Fail fast BEFORE synthesizing rather than mid-story.
+    if args.commit and t["chars_debited"] > 0:
+        remaining = remaining_credits(cfg)
+        if remaining is not None:
+            print(f"  Provider balance: {remaining} credits remaining")
+            if remaining < t["chars_debited"]:
+                shortfall = t["chars_debited"] - remaining
+                print(f"❌ Insufficient {plan['provider']} credits: {remaining} remaining, "
+                      f"~{t['chars_debited']} needed — top up ~{shortfall} credits "
+                      f"and re-run (already-synthesized turns are cached).",
+                      file=sys.stderr)
+                return 1
+        else:
+            print("  Provider balance: unknown (no user_read permission?) — proceeding")
 
     if not args.commit:
         print("--- DRY RUN — no TTS calls will be made ---")

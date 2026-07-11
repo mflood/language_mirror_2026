@@ -3,10 +3,9 @@
 The 3 things to do next, in priority order. See `PRODUCT_IDEAS.md` for the
 broader backlog and `LOG.md` for what's already shipped.
 
-## ElevenLabs quota preflight in step 3 (blocked on API key permission)
+## ✅ DONE (2026-07-11): ElevenLabs quota preflight in step 3
 
-Enable the `user_read` permission on the ElevenLabs API key (dashboard →
-API keys), then add a preflight to `3_synthesize.py`: compare remaining
+user_read enabled on the key; step 3 now compares remaining
 credits (`GET /v1/user/subscription`) against the run's estimated debit and
 fail fast with "top up ~N credits" BEFORE synthesizing — the 2026-07-11 run
 died mid-story instead. Recovery stays cheap either way (cache), but the
