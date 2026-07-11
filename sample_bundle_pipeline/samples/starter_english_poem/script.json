@@ -9,7 +9,7 @@
       "voice": "narrator",
       "text": "Hope is the thing with feathers",
       "translations": {
-        "ko": "희망은 깃털을 가진 것"
+        "ko": "희망은 깃털 달린 것"
       }
     },
     {
@@ -17,7 +17,7 @@
       "voice": "narrator",
       "text": "That perches in the soul,",
       "translations": {
-        "ko": "영혼 속에 앉아 있는"
+        "ko": "영혼에 내려앉아"
       }
     },
     {
@@ -25,7 +25,7 @@
       "voice": "narrator",
       "text": "And sings the tune without the words,",
       "translations": {
-        "ko": "그리고 말 없는 노래를 부르는"
+        "ko": "말 없는 노래를 부르며"
       }
     },
     {
@@ -33,7 +33,7 @@
       "voice": "narrator",
       "text": "And never stops at all,",
       "translations": {
-        "ko": "그리고 결코 멈추지 않는"
+        "ko": "결코 멈추지 않네"
       }
     },
     {
@@ -41,7 +41,7 @@
       "voice": "narrator",
       "text": "And sweetest in the gale is heard;",
       "translations": {
-        "ko": "그리고 폭풍 속에서 가장 달콤하게 들리는"
+        "ko": "모진 바람 속에서 가장 달게 들리고"
       }
     },
     {
@@ -49,7 +49,7 @@
       "voice": "narrator",
       "text": "And sore must be the storm",
       "translations": {
-        "ko": "그리고 얼마나 거센 폭풍이어야 할까"
+        "ko": "얼마나 사나운 폭풍이기에"
       }
     },
     {
@@ -57,7 +57,7 @@
       "voice": "narrator",
       "text": "That could abash the little bird",
       "translations": {
-        "ko": "그 작은 새를 주눅들게 할 수 있을"
+        "ko": "그 작은 새를 주눅 들게 할까"
       }
     },
     {
@@ -65,7 +65,7 @@
       "voice": "narrator",
       "text": "That kept so many warm.",
       "translations": {
-        "ko": "그토록 많은 이를 따뜻하게 해준"
+        "ko": "그토록 많은 이를 품어 준 새를"
       }
     },
     {
@@ -73,7 +73,7 @@
       "voice": "narrator",
       "text": "I've heard it in the chillest land,",
       "translations": {
-        "ko": "나는 그것을 가장 추운 땅에서 들었고"
+        "ko": "가장 추운 땅에서도 나는 들었고"
       }
     },
     {
@@ -81,7 +81,7 @@
       "voice": "narrator",
       "text": "And on the strangest sea;",
       "translations": {
-        "ko": "그리고 가장 낯선 바다 위에서도"
+        "ko": "가장 낯선 바다 위에서도"
       }
     },
     {
@@ -89,7 +89,7 @@
       "voice": "narrator",
       "text": "Yet, never, in extremity,",
       "translations": {
-        "ko": "하지만 결코, 극한의 순간에도"
+        "ko": "허나 그 어떤 극한에서도"
       }
     },
     {
@@ -97,7 +97,7 @@
       "voice": "narrator",
       "text": "It asked a crumb of me.",
       "translations": {
-        "ko": "그것은 내게 빵 부스러기 하나 요구하지 않았다"
+        "ko": "내게 부스러기 하나 바라지 않았네"
       }
     }
   ]

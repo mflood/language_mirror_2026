@@ -33,7 +33,7 @@
       "voice": "Matthew",
       "text": "Great choice! Would you like a pastry with that?",
       "translations": {
-        "ko": "좋은 선택이세요! 페이스트리도 함께 드시겠어요?"
+        "ko": "잘 고르셨어요! 페이스트리도 함께 드시겠어요?"
       }
     },
     {
@@ -57,7 +57,7 @@
       "voice": "Joanna",
       "text": "Perfect, I'll take one of those.",
       "translations": {
-        "ko": "좋아요, 그것으로 하나 주세요."
+        "ko": "좋아요, 그걸로 하나 주세요."
       }
     },
     {
@@ -73,7 +73,7 @@
       "voice": "Joanna",
       "text": "For here, thanks.",
       "translations": {
-        "ko": "매장에서 먹을게요, 감사합니다."
+        "ko": "여기서 먹을게요, 감사합니다."
       }
     }
   ]
