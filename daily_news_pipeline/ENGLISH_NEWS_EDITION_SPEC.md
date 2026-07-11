@@ -132,7 +132,7 @@ copying. Two layers close that gap:
    check.
 
 Note: the embedded `starter_english_*` packs are ORIGINAL works (topic-
-generated dialogue) or public domain (the Hughes poem) — no source article,
+generated dialogue) or public domain (the Dickinson poem) — no source article,
 no exposure. This guard is specifically for the news edition's article-derived
 text.
 

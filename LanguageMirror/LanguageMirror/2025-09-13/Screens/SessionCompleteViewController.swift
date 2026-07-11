@@ -73,8 +73,8 @@ final class SessionCompleteViewController: UIViewController {
         streakLabel.translatesAutoresizingMaskIntoConstraints = false
         if let streakDays, streakDays > 1 {
             streakLabel.text = L10nf("session_complete.streak", streakDays)
-            streakLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-            streakLabel.textColor = AppColors.primaryText
+            streakLabel.font = AppFont.plate(16, weight: .semibold)
+            streakLabel.textColor = AppColors.antiqueGold
             streakLabel.textAlignment = .center
         } else {
             streakLabel.isHidden = true

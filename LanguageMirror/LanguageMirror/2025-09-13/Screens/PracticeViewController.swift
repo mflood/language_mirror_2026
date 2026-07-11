@@ -194,6 +194,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         foreverButton.setTitle("∞", for: .normal)
         foreverButton.setTitleColor(AppColors.secondaryText, for: .normal)
         foreverButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        foreverButton.accessibilityLabel = L10n("a11y.loop_forever")
         foreverButton.addTarget(self, action: #selector(foreverButtonTapped), for: .touchUpInside)
         headerView.addSubview(foreverButton)
 
@@ -202,6 +203,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         let loopConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
         loopClipButton.setImage(UIImage(systemName: "repeat.1", withConfiguration: loopConfig), for: .normal)
         loopClipButton.tintColor = AppColors.secondaryText
+        loopClipButton.accessibilityLabel = L10n("a11y.repeat_clip")
         loopClipButton.addTarget(self, action: #selector(loopClipButtonTapped), for: .touchUpInside)
         headerView.addSubview(loopClipButton)
 
@@ -295,9 +297,10 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         let playConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
         playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: playConfig), for: .normal)
         playPauseButton.tintColor = AppColors.primaryAccent
+        playPauseButton.accessibilityLabel = L10n("a11y.play")
         playPauseButton.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
         bottomBar.addSubview(playPauseButton)
-        
+
         // Split button
         splitButton.translatesAutoresizingMaskIntoConstraints = false
         let splitConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
@@ -305,9 +308,10 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         splitButton.tintColor = AppColors.tertiaryText
         splitButton.isEnabled = false
         splitButton.alpha = 0.4
+        splitButton.accessibilityLabel = L10n("a11y.split")
         splitButton.addTarget(self, action: #selector(splitButtonTapped), for: .touchUpInside)
         bottomBar.addSubview(splitButton)
-        
+
         // Merge button
         mergeButton.translatesAutoresizingMaskIntoConstraints = false
         let mergeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
@@ -315,6 +319,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         mergeButton.tintColor = AppColors.tertiaryText
         mergeButton.isEnabled = false
         mergeButton.alpha = 0.4
+        mergeButton.accessibilityLabel = L10n("a11y.merge")
         mergeButton.addTarget(self, action: #selector(mergeButtonTapped), for: .touchUpInside)
         bottomBar.addSubview(mergeButton)
         
@@ -530,6 +535,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     private func updateForeverButton() {
         let isForever = currentSession?.foreverMode ?? false
         foreverButton.setTitleColor(isForever ? AppColors.primaryAccent : AppColors.secondaryText, for: .normal)
+        foreverButton.accessibilityTraits = isForever ? [.button, .selected] : .button
     }
     
     private func updateFavoriteButtonState() {
@@ -540,6 +546,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         let isFavorite = practiceSet.isFavorite
         favoriteButton.image = UIImage(systemName: isFavorite ? "heart.fill" : "heart")
         favoriteButton.tintColor = isFavorite ? .systemRed : AppColors.secondaryText
+        favoriteButton.accessibilityLabel = L10n(isFavorite ? "a11y.favorited" : "a11y.favorite")
     }
     
     private func updateProgressLabel() {
@@ -694,6 +701,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         avPlayer.loopCurrentClipOnly.toggle()
         let isOn = avPlayer.loopCurrentClipOnly
         loopClipButton.tintColor = isOn ? AppColors.primaryAccent : AppColors.secondaryText
+        loopClipButton.accessibilityTraits = isOn ? [.button, .selected] : .button
     }
 
     @objc private func modeToggleButtonTapped() {
@@ -1119,8 +1127,10 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
     
     private func updatePlayPauseButton() {
         let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
-        let imageName = (isPlaying && !isPaused) ? "pause.circle.fill" : "play.circle.fill"
+        let playing = isPlaying && !isPaused
+        let imageName = playing ? "pause.circle.fill" : "play.circle.fill"
         playPauseButton.setImage(UIImage(systemName: imageName, withConfiguration: config), for: .normal)
+        playPauseButton.accessibilityLabel = L10n(playing ? "a11y.pause" : "a11y.play")
     }
     
     // MARK: - AudioPlayerDelegate

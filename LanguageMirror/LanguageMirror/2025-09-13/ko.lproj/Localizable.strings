@@ -290,7 +290,7 @@
 "session_complete.stats" = "%@ · 재생 %d회";
 "session_complete.sentences" = "문장 %d개";
 "session_complete.sentences.one" = "문장 1개";
-"session_complete.streak" = "🔥 %d일 연속 연습";
+"session_complete.streak" = "%d일 연속 연습";
 "session_complete.again" = "다시 연습";
 "session_complete.done" = "완료";
 "settings.section.advanced" = "고급";
@@ -305,3 +305,13 @@
 "settings.news_reminder.help" = "가장 최신 한국어 뉴스 팩을 연습하고 연속 기록을 이어가도록 매일 알려드려요.";
 "settings.news_reminder.denied_title" = "알림 꺼짐";
 "settings.news_reminder.denied_message" = "설정 앱에서 Language Mirror 알림을 켜면 매일 알림을 받을 수 있어요.";
+
+/* Accessibility labels */
+"a11y.play" = "재생";
+"a11y.pause" = "일시정지";
+"a11y.loop_forever" = "무한 반복";
+"a11y.repeat_clip" = "이 문장 반복";
+"a11y.favorite" = "즐겨찾기 추가";
+"a11y.favorited" = "즐겨찾기 해제";
+"a11y.split" = "구간 나누기";
+"a11y.merge" = "구간 합치기";

@@ -290,7 +290,7 @@
 "session_complete.stats" = "%@ · %d plays";
 "session_complete.sentences" = "%d sentences";
 "session_complete.sentences.one" = "1 sentence";
-"session_complete.streak" = "🔥 %d-day streak";
+"session_complete.streak" = "%d-day streak";
 "session_complete.again" = "Practice Again";
 "session_complete.done" = "Done";
 "settings.section.advanced" = "Advanced";
@@ -305,3 +305,13 @@
 "settings.news_reminder.help" = "A daily nudge to practice the newest Korean news pack and keep your streak.";
 "settings.news_reminder.denied_title" = "Notifications Off";
 "settings.news_reminder.denied_message" = "Enable notifications for Language Mirror in the Settings app to get your daily reminder.";
+
+/* Accessibility labels for glyph-only transport controls */
+"a11y.play" = "Play";
+"a11y.pause" = "Pause";
+"a11y.loop_forever" = "Loop forever";
+"a11y.repeat_clip" = "Repeat this sentence";
+"a11y.favorite" = "Add to favorites";
+"a11y.favorited" = "Remove from favorites";
+"a11y.split" = "Split clip";
+"a11y.merge" = "Merge clip";

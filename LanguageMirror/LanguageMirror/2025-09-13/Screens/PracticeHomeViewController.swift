@@ -83,8 +83,9 @@ final class PracticeHomeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = L10nf("session_complete.streak", streak)
-        label.font = AppFont.rounded(17, weight: .semibold)
-        label.textColor = AppColors.primaryText
+        // Gold plate, not a 🔥 emoji — a quiet Six Wands reward, not a Duolingo streak.
+        label.font = AppFont.plate(16, weight: .semibold)
+        label.textColor = AppColors.antiqueGold
         return label
     }
 
