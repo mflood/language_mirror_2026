@@ -119,7 +119,32 @@ the brand guardian, the ADHD core value, and the new audience's own eyes.
   agents grep the source; linguist/pedagogy agents read the pack content +
   `sample_bundle_pipeline/samples/*/script.json`.
 
-## Next step
+## Status: BUILT (23 agents, 2 briefs)
 
-Approve the roster (all 13, the core 6, or an edited set) and I'll generate the
-agent files + the shared brief, then do a first panel pass on the current build.
+Built 2026-07-11 in `.claude/agents/` with two shared briefs
+(`.claude/review-brief.md` for design/learner/content, `.claude/code-review-brief.md`
+for engineering). The proposal's two engineering seats were expanded into a full
+**code-review sub-panel** (12 agents) covering codebase + repo health, matching the
+bagua-burn split.
+
+Models are explicit per agent, by the established convention:
+- **opus (9)** — deep correctness/authenticity/architecture: art-director, both
+  linguists, language-pedagogy, content-copyright, code-architect, code-concurrency,
+  code-frameworks, code-security.
+- **sonnet (10)** — substantive analysis: staff-ui-engineer, accessibility, aso, the
+  three learner personas, code-audio, code-persistence, code-testing, code-pipeline.
+- **haiku (4)** — mechanical sweeps: code-build, code-robustness, code-style,
+  repo-health.
+
+Design/learner/content panel (11): art-director · staff-ui-engineer ·
+accessibility-specialist · aso-screenshot-reviewer · learner-english-to-korean ·
+learner-korean-to-english · learner-adhd · language-pedagogy-reviewer ·
+korean-linguist · english-linguist · content-copyright-auditor.
+
+Code-review sub-panel (12): code-architect · code-concurrency · code-frameworks ·
+code-audio · code-persistence · code-security · code-robustness · code-style ·
+code-testing · code-build · code-pipeline · repo-health.
+
+Invoke any agent by name via the Agent tool, or fan out a panel on a build. The
+screenshot-driven seats read the `/brand-tour` output; linguist/pedagogy/copyright
+read the pack content; code seats grep the source.
