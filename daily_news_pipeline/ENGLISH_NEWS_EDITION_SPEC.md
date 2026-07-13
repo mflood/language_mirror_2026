@@ -113,23 +113,24 @@ copying. Two layers close that gap:
    reworded — but say it explicitly. The `summary_en_natural` (news register)
    is the highest-risk field; watch it hardest.
 
-2. **Deterministic gate (`check_verbatim_overlap.py`, added):** after step 2
-   (and the QA pass), run every English string (summaries + examples +
-   title) against the source body. It reports the longest run of consecutive
-   words each generated sentence shares with the source and flags any run ≥ 6
-   words. Wire it as a gate: on a flag, regenerate that story's script (or
-   the offending sentence) once; if it still flags, drop the story from the
-   day rather than ship a copy. It's deterministic, free, and doesn't rely on
-   the model policing itself.
+2. **Deterministic gate (`check_verbatim_overlap.py`) — WIRED
+   `2_generate_script.py`:** after the QA pass, `verbatim_flags(story, data)`
+   runs every English string (summaries + examples + title) against the source
+   body and flags any run ≥ 6 shared consecutive words. On the **en edition**
+   it's a hard gate: a flag triggers ONE rewrite (the offending phrases are fed
+   back into the prompt with an explicit reword instruction); if it still flags,
+   the story is DROPPED from the bundle rather than shipped. If every story is
+   dropped the step exits non-zero rather than write an empty bundle. It's
+   deterministic, free, and doesn't rely on the model policing itself.
 
    ```
    from check_verbatim_overlap import check_texts, english_texts_from_script
    flags = check_texts(source_body, english_texts_from_script(script), min_run=6)
    ```
 
-   Run it on the **ko edition's** English fields too (`summary_en`) as a light
-   safeguard — lower risk (those are translations of the Korean), but free to
-   check.
+   On the **ko edition** the same check runs on its English fields
+   (`summary_en`) but is **advisory** (logged, not dropped) — cross-language
+   narration can't be a verbatim copy, so only the gloss field is at issue.
 
 Note: the embedded `starter_english_*` packs are ORIGINAL works (topic-
 generated dialogue) or public domain (the Dickinson poem) — no source article,
@@ -145,6 +146,7 @@ text.
    span) and plays in the app via the "Daily English News" row.
 3. ✅ The Korean edition output is byte-for-byte unchanged when run without
    `--edition en` (no regression).
-4. Every published English news bundle passes `check_verbatim_overlap.py`
+4. ✅ Every published English news bundle passes `check_verbatim_overlap.py`
    against its source article (no 6+ word verbatim runs) — a copyright gate,
-   not advisory.
+   not advisory. Wired into `2_generate_script.py` as `verbatim_flags()`:
+   rewrite-once-then-drop for the en edition; advisory for ko's English fields.

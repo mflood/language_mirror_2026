@@ -34,6 +34,16 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6FAB0EC32E1067B300D3B9C4"
+               BuildableName = "LanguageMirrorTests.xctest"
+               BlueprintName = "LanguageMirrorTests"
+               ReferencedContainer = "container:LanguageMirror.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "6FAB0ECD2E1067B300D3B9C4"
                BuildableName = "LanguageMirrorUITests.xctest"
                BlueprintName = "LanguageMirrorUITests"

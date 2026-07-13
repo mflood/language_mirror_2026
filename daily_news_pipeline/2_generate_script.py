@@ -63,6 +63,7 @@ CACHE_ROOT = HERE / "cache"
 DEFAULT_LLM_CONFIG = HERE / "llm.yaml"
 
 import edition
+from check_verbatim_overlap import check_texts, english_texts_from_script
 
 
 KO_MONTHS = ["", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
@@ -575,6 +576,16 @@ def qa_review_story(story: dict, generated: dict, ed: str = "ko") -> tuple[dict,
         print(f"     ⚠ QA review output missing keys {missing}, keeping original")
         return generated, []
     return reviewed, changes
+
+
+def verbatim_flags(story: dict, data: dict, *, min_run: int = 6) -> list[dict]:
+    """Copyright gate: the longest run of consecutive words each generated
+    English learner sentence shares with the SOURCE article. A run of `min_run`+
+    words is copied expression (not fact), and gets flagged. Returns the flagged
+    entries worst-first (empty list = clean)."""
+    return check_texts(story.get("body", ""),
+                       english_texts_from_script(data),
+                       min_run=min_run)
 
 
 def apply_library_reuse(data: dict, library: Lexicon,
@@ -1180,27 +1191,67 @@ def main() -> int:
     print()
 
     story_outputs = []
+    dropped_for_copyright = 0
     for s in stories:
         print(f"━━━ [{s['story_id']}] {s['headline'][:70]}")
-        prompt = prompt_builder(s)
-        raw = call_llm(_llm_script, _max_tokens_script, prompt, label=f"script:{s['story_id']}")
-        cleaned = strip_fences(raw)
+
+        def produce_story(extra_instruction: str = ""):
+            """Generate + QA one story. `extra_instruction` is appended to the
+            prompt on a copyright-rewrite retry."""
+            raw = call_llm(_llm_script, _max_tokens_script,
+                           prompt_builder(s) + extra_instruction,
+                           label=f"script:{s['story_id']}")
+            data_local = json.loads(strip_fences(raw))
+            changes: list[str] = []
+            if not args.no_qa:
+                data_local, changes = qa_review_story(s, data_local, ed)
+            return data_local, changes
+
         try:
-            data = json.loads(cleaned)
+            data, qa_changes = produce_story()
         except json.JSONDecodeError as e:
             print(f"   ❌ JSON parse error: {e}", file=sys.stderr)
-            print(cleaned, file=sys.stderr)
             raise SystemExit(1)
+        if qa_changes:
+            print(f"     ✎ QA made {len(qa_changes)} change(s):")
+            for c in qa_changes:
+                print(f"        · {c}")
+        elif not args.no_qa:
+            print(f"     ✓ QA: no changes needed")
 
-        qa_changes: list[str] = []
-        if not args.no_qa:
-            data, qa_changes = qa_review_story(s, data, ed)
-            if qa_changes:
-                print(f"     ✎ QA made {len(qa_changes)} change(s):")
-                for c in qa_changes:
-                    print(f"        · {c}")
+        # ── Verbatim copyright gate (deterministic, no API cost) ──────────
+        # English learner text must state facts in our OWN words. A 6+ word run
+        # shared with the source article is copied EXPRESSION, not fact.
+        flags = verbatim_flags(s, data)
+        if flags:
+            worst = flags[0]
+            print(f"     ⚠ Verbatim overlap: {len(flags)} sentence(s) share up to a "
+                  f"{worst['run']}-word run with the source (e.g. \"{worst['phrase']}\")")
+            if ed == "en":
+                # Hard gate: rewrite ONCE, then drop rather than publish a copy.
+                reword = (
+                    "\n\n⚠️ REWRITE REQUIRED: an earlier draft reused exact phrasing "
+                    "from the source article (e.g. "
+                    + "; ".join(f"\"{f['phrase']}\"" for f in flags[:5])
+                    + "). Rewrite ALL English learner text in your OWN words — do not "
+                    "reuse any run of 6 or more consecutive words from the source. "
+                    "Convey the facts, not the source's sentences."
+                )
+                try:
+                    data, qa_changes = produce_story(reword)
+                    flags = verbatim_flags(s, data)
+                except json.JSONDecodeError:
+                    pass  # keep original flags → dropped below
+                if flags:
+                    print(f"     ❌ COPYRIGHT GATE: {len(flags)} verbatim run(s) remain "
+                          f"after one rewrite — DROPPING [{s['story_id']}] from the "
+                          f"English bundle rather than publish copied text.")
+                    dropped_for_copyright += 1
+                    continue
+                print(f"     ✓ Rewrite cleared the overlap")
             else:
-                print(f"     ✓ QA: no changes needed")
+                print(f"       (ko edition: advisory — the English gloss can echo, but "
+                      f"cross-language narration is not a verbatim copy)")
 
         # ── Library reuse: lock glosses + opportunistic example reuse ─────
         reuse_report = apply_library_reuse(data, library, key_lang, gloss_lang)
@@ -1241,6 +1292,14 @@ def main() -> int:
             "practice_sets": practice_sets,
         })
         print(f"   ✓ {len(turns)} turns, {sum(len(ps['clips']) for ps in practice_sets)} clips across 3 sets")
+
+    if dropped_for_copyright:
+        print()
+        print(f"⚠ Copyright gate dropped {dropped_for_copyright} story(ies) that still "
+              f"copied the source after a rewrite. {len(story_outputs)} remain.")
+    if not story_outputs:
+        raise SystemExit("❌ No stories survived the copyright gate — refusing to write "
+                         "an empty bundle. Re-run (fresh sources) or lower the risk.")
 
     payload = {
         "date": date,
