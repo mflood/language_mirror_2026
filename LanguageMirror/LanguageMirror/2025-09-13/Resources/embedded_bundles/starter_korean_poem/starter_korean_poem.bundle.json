@@ -108,35 +108,50 @@
               "endMs": 6200,
               "text": "서시. 윤동주. 죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를,",
               "speaker": "윤동주",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Prologue. Yun Dong-ju. Until the day I die, may I look up at the sky with not a single point of shame,"
+              }
             },
             {
               "startMs": 6200,
               "endMs": 9360,
               "text": "잎새에 이는 바람에도 나는 괴로워했다.",
               "speaker": "윤동주",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "I suffered even at the wind stirring the leaves."
+              }
             },
             {
               "startMs": 10000,
               "endMs": 14300,
               "text": "별을 노래하는 마음으로 모든 죽어 가는 것을 사랑해야지.",
               "speaker": "윤동주",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "With a heart that sings the stars, I must love all things that are dying."
+              }
             },
             {
               "startMs": 14860,
               "endMs": 17640,
               "text": "그리고 나한테 주어진 길을 걸어가야겠다.",
               "speaker": "윤동주",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "And I must walk the path given to me."
+              }
             },
             {
               "startMs": 18120,
               "endMs": 21160,
               "text": "오늘 밤에도 별이 바람에 스치운다.",
               "speaker": "윤동주",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Tonight too, the stars are brushed by the wind."
+              }
             }
           ]
         }

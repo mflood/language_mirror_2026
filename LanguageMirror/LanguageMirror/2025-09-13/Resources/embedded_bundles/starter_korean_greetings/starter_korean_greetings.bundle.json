@@ -229,112 +229,160 @@
               "endMs": 2200,
               "text": "안녕하세요 날씨가 참 좋네요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Hello, the weather is really nice."
+              }
             },
             {
               "startMs": 2740,
               "endMs": 6040,
               "text": "네 안녕하세요. 정말 화창한 날이에요.",
               "speaker": "Speaker 2",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Yes, hello. It's really a beautiful day."
+              }
             },
             {
               "startMs": 6760,
               "endMs": 10340,
               "text": "저는 김민지 라고 해요. 부산에서 올라왔어요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "I'm Kim Minji. I came up from Busan."
+              }
             },
             {
               "startMs": 11140,
               "endMs": 14660,
               "text": "반갑습니다. 저는 이지훈이고 서울 사람이에요.",
               "speaker": "Speaker 2",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Nice to meet you. I'm Lee Jihoon and I'm from Seoul."
+              }
             },
             {
               "startMs": 15400,
               "endMs": 16500,
               "text": "서울에서 일하세요?",
               "speaker": "Speaker 2",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Do you work in Seoul?"
+              }
             },
             {
               "startMs": 17320,
               "endMs": 19720,
               "text": "네 강남에서 회사원으로 일해요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Yes, I work as an office worker in Gangnam."
+              }
             },
             {
               "startMs": 20360,
               "endMs": 21140,
               "text": "민지 씨는요?",
               "speaker": "Speaker 2",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "How about you, Minji?"
+              }
             },
             {
               "startMs": 21860,
               "endMs": 23040,
               "text": "저는 디자이너예요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "I'm a designer."
+              }
             },
             {
               "startMs": 23880,
               "endMs": 25660,
               "text": "홍대에 있는 회사에 다녀요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "I go to a company in Hongdae."
+              }
             },
             {
               "startMs": 26360,
               "endMs": 27660,
               "text": "와 멋지네요.",
               "speaker": "Speaker 2",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Wow, that's cool."
+              }
             },
             {
               "startMs": 27440,
               "endMs": 29620,
               "text": "디자인 일은 재미있겠어요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Design work must be interesting."
+              }
             },
             {
               "startMs": 30180,
               "endMs": 32540,
               "text": "네 바쁘지만 즐겁게 하고 있어요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Yes, it's busy but I'm enjoying it."
+              }
             },
             {
               "startMs": 33260,
               "endMs": 35120,
               "text": "다음 여기 제 목적지예요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Well, here's my destination."
+              }
             },
             {
               "startMs": 35660,
               "endMs": 37040,
               "text": "만나서 반가웠어요.",
               "speaker": "Speaker 2",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "It was nice meeting you."
+              }
             },
             {
               "startMs": 37680,
               "endMs": 38840,
               "text": "저도 반가웠어요.",
               "speaker": "Speaker 1",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "It was nice meeting you too."
+              }
             },
             {
               "startMs": 39560,
               "endMs": 40860,
               "text": "좋은 하루 보내세요.",
               "speaker": "Speaker 2",
-              "languageCode": "ko-KR"
+              "languageCode": "ko-KR",
+              "translations": {
+                "en": "Have a good day."
+              }
             }
           ]
         }
