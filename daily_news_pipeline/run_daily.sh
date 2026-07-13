@@ -75,6 +75,15 @@ log "  Daily news pipeline · date=$DATE · commit=${COMMIT_FLAG:-NO}"
 log "  Log: $LOG"
 log "═══════════════════════════════════════════════════════════"
 
+# Idempotence guard: launchd can fire twice on unusual sleep/wake patterns
+# (e.g. a suspended run resuming + the missed 08:00 event coalescing on a
+# later wake, seen 2026-07-13). If today already completed, exit quietly.
+STAMP="$WORK_DIR/.completed"
+if [ -f "$STAMP" ] && [ "${FORCE_RERUN:-}" != "1" ]; then
+    log "⏭ $DATE already completed at $(cat "$STAMP") — skipping duplicate run (FORCE_RERUN=1 overrides)"
+    exit 0
+fi
+
 step "0/7 fetch feeds"   "$PY" "$HERE/0_fetch_feeds.py" --date "$DATE"
 step "1/7 curate"        "$PY" "$HERE/1_curate.py" --date "$DATE" $COMMIT_FLAG
 [ -n "$COMMIT_FLAG" ] || { log "(dry-run mode — stopping after step 1; re-run with --commit to continue)"; exit 0; }
@@ -98,6 +107,7 @@ out = finalize_run(Path('$WORK_DIR'), Path('$HERE/cache'), '$DATE')
 print(f'💰 Cost ledger: {out}')
 " 2>&1 | tee -a "$LOG"
 
+date > "$STAMP"
 log "🎉 Daily pipeline complete for $DATE"
 log "   Manifests: $WORK_DIR/bundle.json + bundle_en.json"
 log "   QR:        $WORK_DIR/qr.png + qr_en.png"
