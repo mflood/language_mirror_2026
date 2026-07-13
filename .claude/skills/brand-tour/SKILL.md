@@ -12,7 +12,7 @@ bundle, builds labeled contact sheets, and sends them with SendUserFile.
 ## Constants
 
 ```
-SIM=24D7D410-B299-45AF-9CD3-A80F30096644          # iPhone 17 Pro (check simctl list if missing)
+SIM=A193232F-3147-4F1A-BB4B-9A5CEA13253F          # "Language Mirror – iPhone 17 Pro" — dedicated standing clone (avoids contention with other projects' sims; check simctl list if missing)
 XCTESTRUN=/tmp/xcode_DerivedData/Build/Products/LanguageMirror_LanguageMirror_iphonesimulator26.2-arm64.xctestrun
 BUNDLE_ID=sixwandsstudios.LanguageMirror
 OUT=<scratchpad>/brand_tour_<date>                # one folder per run
