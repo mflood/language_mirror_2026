@@ -71,7 +71,7 @@ final class ImportViewController: UITableViewController, UIDocumentPickerDelegat
         // and grain live in backgroundView (which doesn't scroll).
         let field = UIView()
         field.backgroundColor = AppColors.primaryBackground
-        field.addGrainField()
+        field.addAtmosphereBackdrop()
         tableView.backgroundView = field
         tableView.register(ImportOptionCell.self, forCellReuseIdentifier: "importCell")
         tableView.separatorStyle = .none

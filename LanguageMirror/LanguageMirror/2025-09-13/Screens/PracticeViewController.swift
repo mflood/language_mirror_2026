@@ -109,7 +109,7 @@ final class PracticeViewController: UIViewController, AudioPlayerDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = AppColors.calmBackground
-        view.addGrainField()
+        view.addAtmosphereBackdrop()
         setupUI()
         restoreLastTrackOrPickFirst()
     }

@@ -88,7 +88,7 @@ final class LibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.primaryBackground
-        view.addGrainField()
+        view.addAtmosphereBackdrop()
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
@@ -663,7 +663,7 @@ final class LibraryViewController: UIViewController {
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             view.backgroundColor = AppColors.primaryBackground
-            view.addGrainField()
+            view.addAtmosphereBackdrop()
             collectionView.backgroundColor = .clear
         }
     }

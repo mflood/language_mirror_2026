@@ -48,7 +48,7 @@ final class PracticeHomeViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = AppColors.primaryBackground
-        view.addGrainField()
+        view.addAtmosphereBackdrop()
         title = L10n("tab.practice")
         navigationItem.largeTitleDisplayMode = .always
 

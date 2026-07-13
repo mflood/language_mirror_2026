@@ -18,7 +18,7 @@ enum AppColors {
     static let primaryBackground = UIColor { traitCollection in
         traitCollection.userInterfaceStyle == .dark
             ? UIColor(red: 0.15, green: 0.11, blue: 0.14, alpha: 1.0)  // Plum dusk
-            : UIColor(red: 0.965, green: 0.945, blue: 0.955, alpha: 1.0) // Morning fog
+            : UIColor(red: 0.945, green: 0.915, blue: 0.935, alpha: 1.0) // Morning fog (deeper plum-fog)
     }
     
     /// Secondary background - adapts to system
@@ -41,7 +41,7 @@ enum AppColors {
     static let calmBackground = UIColor { traitCollection in
         traitCollection.userInterfaceStyle == .dark
             ? UIColor(red: 0.15, green: 0.11, blue: 0.14, alpha: 1.0)  // Plum dusk
-            : UIColor(red: 0.965, green: 0.945, blue: 0.955, alpha: 1.0) // Morning fog
+            : UIColor(red: 0.945, green: 0.915, blue: 0.935, alpha: 1.0) // Morning fog (deeper plum-fog)
     }
     
     // MARK: - Text Colors

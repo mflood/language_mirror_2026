@@ -1,6 +1,6 @@
 {
-  "version": 6,
-  "updatedAt": "2026-07-10T00:00:00Z",
+  "version": 7,
+  "updatedAt": "2026-07-13T00:00:00Z",
   "packs": [
     {
       "id": "starter_english_greetings",
@@ -73,9 +73,9 @@
     {
       "id": "starter_english_poem",
       "title": "Hope is the Thing with Feathers",
-      "subtitle": "Emily Dickinson's beloved poem — hope as a bird that never stops singing — with Korean translations",
+      "subtitle": "Emily Dickinson's beloved poem — a beautiful piece to listen to and grow into (advanced) — with Korean translations",
       "languageCode": "en-US",
-      "level": "intermediate",
+      "level": "advanced",
       "trackCount": 1,
       "durationSeconds": 23,
       "author": "Emily Dickinson",
