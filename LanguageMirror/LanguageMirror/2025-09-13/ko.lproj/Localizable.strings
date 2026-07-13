@@ -295,6 +295,8 @@
 "session_complete.done" = "완료";
 "settings.section.advanced" = "고급";
 "settings.practice_mode.help" = "심플은 한 가지 속도로, 프로그레션은 느리게 시작해 반복할수록 빨라져요.";
+"settings.echo_mode" = "따라 말하기 모드";
+"settings.echo_mode.help" = "매 반복 뒤에 문장 길이만큼 정적이 생겨요 — 다시 듣기 전에 직접 소리 내어 따라 말할 차례예요.";
 
 /* Daily news reminder */
 "news_reminder.title" = "오늘의 뉴스 · Today's News";

@@ -15,7 +15,12 @@ protocol SettingsService: AnyObject {
     var prerollMs: Int { get set }                     // 0..300 typical
     var duckOthers: Bool { get set }                     // duck other audio when playing
     // With duck ON, other audio dips under yours; with duck OFF, other audio keeps normal volume (but still mixed).
-    
+
+    // Echo mode: after each loop, leave a silence sized to the clip (your
+    // turn to say it aloud) before replaying — turns passive listening into
+    // active output practice. Off by default (a distinct practice style).
+    var echoMode: Bool { get set }
+
     // Practice mode settings
     var useProgressionMode: Bool { get set }           // toggle between simple and progression modes
     var progressionMinRepeats: Int { get set }         // M repeats at minimum speed (1-100)

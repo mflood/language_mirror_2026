@@ -295,6 +295,8 @@
 "session_complete.done" = "Done";
 "settings.section.advanced" = "Advanced";
 "settings.practice_mode.help" = "Simple keeps one speed. Progression starts slow and speeds up as you repeat.";
+"settings.echo_mode" = "Echo mode";
+"settings.echo_mode.help" = "After each loop, a silence as long as the clip — your turn to say it aloud before you hear it again.";
 
 /* Daily news reminder */
 "news_reminder.title" = "오늘의 뉴스 · Today's News";

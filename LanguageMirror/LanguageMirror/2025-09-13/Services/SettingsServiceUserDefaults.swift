@@ -15,6 +15,7 @@ final class SettingsServiceUserDefaults: SettingsService {
         case interGap = "settings.interSegmentGapSeconds"
         case preroll = "settings.prerollMs"
         case duckOthers = "settings.duckOthers"
+        case echoMode = "settings.echoMode"
         case useProgressionMode = "settings.useProgressionMode"
         case progressionMinRepeats = "settings.progressionMinRepeats"
         case progressionLinearRepeats = "settings.progressionLinearRepeats"
@@ -77,7 +78,12 @@ final class SettingsServiceUserDefaults: SettingsService {
         get { d.object(forKey: Key.duckOthers.rawValue) as? Bool ?? defaultDuck }
         set { d.set(newValue, forKey: Key.duckOthers.rawValue) }
     }
-    
+
+    var echoMode: Bool {
+        get { d.object(forKey: Key.echoMode.rawValue) as? Bool ?? false }
+        set { d.set(newValue, forKey: Key.echoMode.rawValue) }
+    }
+
     var simpleSpeed: Float {
         get {
             let v = d.object(forKey: Key.simpleSpeed.rawValue) as? Float

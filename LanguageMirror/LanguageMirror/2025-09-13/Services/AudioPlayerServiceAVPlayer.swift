@@ -151,6 +151,16 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         delegate?.audioPlayerDidStop()
     }
 
+    /// Gap before replaying the current clip. In echo mode this is a silence
+    /// sized to the clip itself (capped at 4s) — your turn to say it aloud
+    /// before you hear it again — turning the loop into output practice.
+    /// Otherwise the fixed inter-repeat gap.
+    private func repeatGapSeconds() -> TimeInterval {
+        guard settings.echoMode else { return gapSeconds }
+        let clipDuration = max(0, currentSegmentEnd.seconds - currentSegmentStart.seconds)
+        return max(gapSeconds, min(4.0, clipDuration))
+    }
+
     // MARK: - Whole track
 
     private func startWholeTrack(track: Track, repeats: Int, gap: TimeInterval) throws {
@@ -532,7 +542,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                         }
                     }
                     pendingWorkItem = work
-                    DispatchQueue.main.asyncAfter(deadline: .now() + gapSeconds, execute: work)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + repeatGapSeconds(), execute: work)
                 } else {
                     // advance to next incomplete clip after inter-clip gap
                     let work = DispatchWorkItem { [weak self] in
@@ -598,7 +608,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
                         }
                     }
                     pendingWorkItem = work
-                    DispatchQueue.main.asyncAfter(deadline: .now() + gapSeconds, execute: work)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + repeatGapSeconds(), execute: work)
                 } else {
                     currentSegmentIndex += 1
                     let work = DispatchWorkItem { [weak self] in

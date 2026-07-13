@@ -49,6 +49,8 @@ final class SettingsViewController: UIViewController {
     private let prerollSeg = UISegmentedControl(items: ["0ms", "100ms", "200ms", "300ms"])
     private let duckSwitch = UISwitch()
     private let duckValueLabel = UILabel()
+    private let echoSwitch = UISwitch()
+    private let echoValueLabel = UILabel()
 
     init(settings: SettingsService) {
         self.settings = settings
@@ -114,6 +116,10 @@ final class SettingsViewController: UIViewController {
         practiceModeSeg.translatesAutoresizingMaskIntoConstraints = false
         modeSection.addArrangedSubview(practiceModeSeg)
         modeSection.addArrangedSubview(makeHelperText(L10n("settings.practice_mode.help")))
+        let echoRow = makeSwitchRow(title: L10n("settings.echo_mode"),
+                                    valueLabel: echoValueLabel, toggle: echoSwitch)
+        modeSection.addArrangedSubview(echoRow)
+        modeSection.addArrangedSubview(makeHelperText(L10n("settings.echo_mode.help")))
         contentStack.addArrangedSubview(modeSection)
 
         // --- Simple Mode Section ---
@@ -315,6 +321,12 @@ final class SettingsViewController: UIViewController {
         duckSwitch.onTintColor = .systemTeal
         duckSwitch.addTarget(self, action: #selector(duckToggled(_:)), for: .valueChanged)
         duckValueLabel.text = settings.duckOthers ? L10n("settings.enabled") : L10n("settings.disabled")
+
+        // Echo mode
+        echoSwitch.isOn = settings.echoMode
+        echoSwitch.onTintColor = AppColors.primaryAccent
+        echoSwitch.addTarget(self, action: #selector(echoToggled(_:)), for: .valueChanged)
+        echoValueLabel.text = settings.echoMode ? L10n("settings.enabled") : L10n("settings.disabled")
 
         // Daily news reminder
         reminderSwitch.isOn = NewsNotificationService.isEnabled
@@ -575,6 +587,12 @@ final class SettingsViewController: UIViewController {
     @objc private func duckToggled(_ sw: UISwitch) {
         settings.duckOthers = sw.isOn
         duckValueLabel.text = sw.isOn ? L10n("settings.enabled") : L10n("settings.disabled")
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+
+    @objc private func echoToggled(_ sw: UISwitch) {
+        settings.echoMode = sw.isOn
+        echoValueLabel.text = sw.isOn ? L10n("settings.enabled") : L10n("settings.disabled")
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
 
