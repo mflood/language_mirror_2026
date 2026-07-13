@@ -32,10 +32,14 @@ final class SettingsServiceUserDefaults: SettingsService {
     private let defaultInterGap: TimeInterval = 0.5
     private let defaultPrerollMs = 0
     private let defaultDuck = false
-    private let defaultUseProgressionMode = false
-    private let defaultProgressionMinRepeats = 5
-    private let defaultProgressionLinearRepeats = 15
-    private let defaultProgressionMaxRepeats = 10
+    // The slow→fast progression IS the app's method — on by default so new
+    // users meet the ramp, not full native speed at loop 1. Counts are calm
+    // (3 slow → 6 ramping → 3 native = 12 loops), not the old grinding 30,
+    // which risked ADHD disengagement past the point of prosody gains.
+    private let defaultUseProgressionMode = true
+    private let defaultProgressionMinRepeats = 3
+    private let defaultProgressionLinearRepeats = 6
+    private let defaultProgressionMaxRepeats = 3
     private let defaultSimpleSpeed: Float = 1.0
     private let defaultMinSpeed: Float = 0.6
     private let defaultMaxSpeed: Float = 1.0

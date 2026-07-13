@@ -80,9 +80,10 @@ final class ClipCell: UITableViewCell {
         indexIconView.alpha = 0  // Hidden by default
         indexCircle.addSubview(indexIconView)
         
-        // Title label
+        // Title label — the practice sentence; scales with Dynamic Type.
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        titleLabel.font = AppFont.body(16, weight: .medium)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = AppColors.primaryText
         titleLabel.numberOfLines = 1
         cardView.addSubview(titleLabel)

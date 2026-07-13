@@ -75,7 +75,8 @@ final class TranscriptBannerView: UIView {
         iconView.setContentHuggingPriority(.required, for: .horizontal)
 
         textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.font = .systemFont(ofSize: bannerFontSize, weight: .regular)
+        textLabel.font = AppFont.body(bannerFontSize)
+        textLabel.adjustsFontForContentSizeCategory = true
         textLabel.textColor = AppColors.primaryText
         textLabel.numberOfLines = 2
         textLabel.lineBreakMode = .byTruncatingTail
@@ -83,7 +84,8 @@ final class TranscriptBannerView: UIView {
         // Separate label so the translation always gets its own space — a
         // single label would let a long source sentence push it out of view.
         translationLabel.translatesAutoresizingMaskIntoConstraints = false
-        translationLabel.font = .systemFont(ofSize: max(11, bannerFontSize - 2), weight: .regular)
+        translationLabel.font = AppFont.body(max(11, bannerFontSize - 2))
+        translationLabel.adjustsFontForContentSizeCategory = true
         translationLabel.textColor = AppColors.secondaryText
         translationLabel.numberOfLines = 2
         translationLabel.lineBreakMode = .byTruncatingTail
@@ -163,9 +165,9 @@ final class TranscriptBannerView: UIView {
     /// label (also up to 2 lines) — each guaranteed its own space.
     private func renderText() {
         let size = bannerFontSize
-        textLabel.font = .systemFont(ofSize: size, weight: .regular)
+        textLabel.font = AppFont.body(size)
         textLabel.text = currentText
-        translationLabel.font = .systemFont(ofSize: max(11, size - 2), weight: .regular)
+        translationLabel.font = AppFont.body(max(11, size - 2))
         translationLabel.text = currentTranslation
         translationLabel.isHidden = currentTranslation == nil
     }
