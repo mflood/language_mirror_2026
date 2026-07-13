@@ -21,7 +21,7 @@ final class SharedImportManager {
     
     /// The App Group identifier - must match in both main app and extension
     /// IMPORTANT: Change this to match your actual App Group ID in Xcode
-    static let appGroupIdentifier = "group.com.sixwandsstudios.LanguageMirror"
+    static let appGroupIdentifier = "group.sixwandsstudios.LanguageMirror"
     
     private static let pendingImportsFileName = "pending_imports.json"
     private static let sharedFilesDirectoryName = "SharedFiles"

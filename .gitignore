@@ -26,3 +26,30 @@ daily_news_pipeline/work/
 
 # translate_bundle.py output (enriched bundle copies)
 bundle_pipeline/translate_work/
+
+# Xcode build artifacts & derived data
+build/
+DerivedData/
+*.xcresult
+*.xctestrun
+xcuserdata/
+*.xcuserstate
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Python virtualenvs & build metadata
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Stray screen recordings dropped at repo root (not source assets)
+*.mov
+
+# Runtime logs (launchd.log is currently tracked — untrack with
+# `git rm --cached daily_news_pipeline/launchd.log` for this to take effect)
+daily_news_pipeline/launchd.log
+*.log

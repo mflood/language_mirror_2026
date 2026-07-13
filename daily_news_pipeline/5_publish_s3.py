@@ -77,10 +77,14 @@ def main() -> int:
 
     dest = load_destination(DESTINATION)
     mp3_files = sorted(p for p in audio_dir.glob("*.mp3") if p.is_file())
-    # The S3 key is always bundle.json even when the local file is bundle_en.json
-    plan = [(bundle_path, f"{prefix}/bundle.json")]
-    plan += [(f, f"{prefix}/{f.name}") for f in mp3_files]
-    files_to_upload = [bundle_path] + mp3_files
+    # Upload audio FIRST and the manifest LAST. publish() uploads plan entries
+    # in order, so this guarantees there is never a window where a live
+    # bundle.json points at MP3s that haven't landed yet (a client hitting
+    # CloudFront mid-publish would otherwise 404 on every clip).
+    # The S3 key is always bundle.json even when the local file is bundle_en.json.
+    plan = [(f, f"{prefix}/{f.name}") for f in mp3_files]
+    plan.append((bundle_path, f"{prefix}/bundle.json"))
+    files_to_upload = mp3_files + [bundle_path]
 
     manifest_url = dest.public_url(f"{prefix}/bundle.json")
     qr_path = work_dir / f"qr{sfx}.png"

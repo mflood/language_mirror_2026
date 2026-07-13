@@ -77,14 +77,14 @@ final class PracticeServiceJSON: PracticeService {
         
         // Encode on current thread (fast)
         let data = try encoder.encode(mutableSession)
-        
-        // Write to disk on background queue (slow I/O)
-        ioQueue.async {
-            do {
-                try data.write(to: url, options: .atomic)
-            } catch {
-                print("Failed to save practice session: \(error)")
-            }
+
+        // Write synchronously on the serial I/O queue so a failure actually
+        // reaches the caller. `saveSession` is `throws` and callers wrap it in
+        // do/catch — but the old fire-and-forget `ioQueue.async` caught the
+        // write error inside the closure and reported success regardless,
+        // silently losing practice progress on any disk failure.
+        try ioQueue.sync {
+            try data.write(to: url, options: .atomic)
         }
     }
     
@@ -94,35 +94,28 @@ final class PracticeServiceJSON: PracticeService {
         guard fileManager.fileExists(atPath: url.path) else {
             return // Nothing to delete
         }
-        
-        // Delete on background queue
-        ioQueue.async {
-            do {
-                try self.fileManager.removeItem(at: url)
-            } catch {
-                print("Failed to delete practice session: \(error)")
-            }
+
+        // Delete synchronously on the serial I/O queue and surface failures to
+        // the caller rather than swallowing them — a silently-failed delete
+        // leaves a stale session file that resurfaces on next load.
+        try ioQueue.sync {
+            try self.fileManager.removeItem(at: url)
         }
     }
     
     func deleteSessionsForPack(packId: String) throws {
         let dir = try sessionsDirectoryURL()
         let prefix = "session_\(packId)_"
-        
-        // Delete on background queue
-        ioQueue.async { [weak self] in
-            guard let self = self else { return }
-            do {
-                let contents = try self.fileManager.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)
-                
-                for fileURL in contents {
-                    let filename = fileURL.lastPathComponent
-                    if filename.hasPrefix(prefix) && filename.hasSuffix(".json") {
-                        try self.fileManager.removeItem(at: fileURL)
-                    }
+
+        // Delete synchronously on the serial I/O queue and surface failures.
+        try ioQueue.sync {
+            let contents = try self.fileManager.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)
+
+            for fileURL in contents {
+                let filename = fileURL.lastPathComponent
+                if filename.hasPrefix(prefix) && filename.hasSuffix(".json") {
+                    try self.fileManager.removeItem(at: fileURL)
                 }
-            } catch {
-                print("Failed to delete pack sessions: \(error)")
             }
         }
     }
@@ -217,7 +210,10 @@ final class PracticeServiceJSON: PracticeService {
             // First M loops at minimum speed
             return minSpeed
         } else if currentLoop < M + N {
-            // Next N loops with linear progression from min to max
+            // Next N loops with linear progression from min to max.
+            // A single ramp step (N == 1) has no interval to interpolate over —
+            // guard the 0/0 that would otherwise make the rate NaN and stall AVPlayer.
+            guard N > 1 else { return maxSpeed }
             let progressIndex = currentLoop - M
             let progressRatio = Float(progressIndex) / Float(N - 1)
             return minSpeed + (maxSpeed - minSpeed) * progressRatio

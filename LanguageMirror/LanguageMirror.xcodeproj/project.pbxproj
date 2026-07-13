@@ -669,7 +669,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = LanguageMirrorShare/LanguageMirrorShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LanguageMirror/2025-09-13/ShareExtension/Info.plist";
@@ -699,7 +699,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = LanguageMirrorShare/LanguageMirrorShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 56NV24927H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LanguageMirror/2025-09-13/ShareExtension/Info.plist";

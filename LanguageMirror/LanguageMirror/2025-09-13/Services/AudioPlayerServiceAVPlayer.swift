@@ -21,6 +21,12 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
     // Scheduling
     private var pendingWorkItem: DispatchWorkItem?
 
+    /// Monotonic guard against stale async seek callbacks. Each `startCurrentSegment`
+    /// captures the current value before seeking; `stop()` bumps it. A seek that
+    /// completes after a stop finds a mismatched token and returns without
+    /// resurrecting playing state (the "ghost didStart" bug).
+    private var playbackToken: UInt = 0
+
     // Whole-track mode
     private var wholeTrackRepeatsRemaining: Int = 0
     private var wholeTrackGapSeconds: TimeInterval = 0.5
@@ -133,6 +139,7 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
 
     func stop() {
         pendingWorkItem?.cancel(); pendingWorkItem = nil
+        playbackToken &+= 1     // invalidate any in-flight seek callback
         removeObservers()
         
         // MEDIA PLAYER
@@ -387,8 +394,16 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         
         // Seek precisely to start and play
         print("    Seeking to \(seekTime.seconds)s...")
+        let token = playbackToken
         player.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] finished in
             guard let self else { return }
+            // If stop() ran while this seek was in flight, the token no longer
+            // matches — bail before touching isPlaying or firing didStart, so a
+            // stopped player can't be resurrected into a silent "playing" UI.
+            guard self.playbackToken == token else {
+                print("    ⏹️ Seek completed after stop — ignoring stale callback")
+                return
+            }
             print("    ✅ Seek completed (finished: \(finished))")
             print("    Setting playback rate to \(speed)x and starting...")
             self.player?.rate = speed
@@ -734,8 +749,11 @@ final class AudioPlayerServiceAVPlayer: NSObject, AudioPlayerService {
         print("  🔊 [AudioPlayerServiceAVPlayer] Configuring audio session...")
         
         // Configure audio session for background playback and media controls
-        // Read duck others preference from settings
-        let duck = (AppContainer().settings.duckOthers)
+        // Read duck others preference from the injected settings service.
+        // (Do NOT build a fresh AppContainer here — it allocates a throwaway
+        //  player + filesystem-touching JSON services on every play, and ignores
+        //  the settings this instance was constructed with.)
+        let duck = settings.duckOthers
         
         // For .playback category, we don't use .mixWithOthers (that's for playAndRecord)
         // Instead, use .duckOthers if requested, plus Bluetooth/AirPlay support
