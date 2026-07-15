@@ -53,9 +53,12 @@ final class AtmosphereBackdropView: UIView {
 
         // Two ridgelines rising from the lower third — a fixed, calm skyline.
         // Peaks are gentle; the whole field never rises above ~55% height.
+        // Light-mode alphas run LOWER than dark: the mauve ridge contrasts more
+        // against the pale fog than the dark ridge does against the dark field,
+        // so equal alpha would read heavier in light. Kept subliminal.
         let ridgelines: [(baseFrac: CGFloat, peaks: [(CGFloat, CGFloat)], alpha: CGFloat)] = [
-            (0.72, [(0.14, 0.60), (0.40, 0.52), (0.66, 0.63), (0.88, 0.55)], dark ? 0.22 : 0.16),
-            (0.84, [(0.24, 0.70), (0.52, 0.62), (0.80, 0.72)],               dark ? 0.30 : 0.22),
+            (0.72, [(0.14, 0.60), (0.40, 0.52), (0.66, 0.63), (0.88, 0.55)], dark ? 0.22 : 0.10),
+            (0.84, [(0.24, 0.70), (0.52, 0.62), (0.80, 0.72)],               dark ? 0.30 : 0.13),
         ]
         for line in ridgelines {
             let p = UIBezierPath()
