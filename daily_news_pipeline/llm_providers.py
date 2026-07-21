@@ -12,8 +12,36 @@ Adding a new provider: subclass `LLMProvider`, implement `chat`, register in
 from __future__ import annotations
 
 import os
+import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+
+# Retry transient API failures (2026-07-20: back-to-back Anthropic 529s and a
+# read timeout each killed a daily run that would have succeeded minutes later).
+MAX_ATTEMPTS = 4
+RETRY_DELAYS = (10, 30, 90)  # seconds between attempts
+
+
+def _with_retries(call, label: str):
+    """Run `call()` with retries on transient failures.
+
+    Retryable: 429, any 5xx (incl. Anthropic 529 overloaded), and exceptions
+    carrying no HTTP status (read timeouts, connection resets). Client errors
+    (4xx auth/validation) raise immediately. Only the SDK request belongs
+    inside `call` — retrying is billed.
+    """
+    for attempt in range(MAX_ATTEMPTS):
+        try:
+            return call()
+        except Exception as e:
+            status = getattr(e, "status_code", None) or getattr(e, "status", None)
+            retryable = status is None or status == 429 or (isinstance(status, int) and 500 <= status < 600)
+            if attempt == MAX_ATTEMPTS - 1 or not retryable:
+                raise
+            delay = RETRY_DELAYS[attempt]
+            print(f"     ⚠ {label}: transient error ({status or type(e).__name__}); "
+                  f"retrying in {delay}s (attempt {attempt + 2}/{MAX_ATTEMPTS})", flush=True)
+            time.sleep(delay)
 
 
 @dataclass
@@ -52,10 +80,13 @@ class AnthropicProvider(LLMProvider):
         self._client = Anthropic(api_key=api_key)
 
     def chat(self, prompt: str, max_tokens: int) -> LLMResponse:
-        msg = self._client.messages.create(
-            model=self.model,
-            max_tokens=max_tokens,
-            messages=[{"role": "user", "content": prompt}],
+        msg = _with_retries(
+            lambda: self._client.messages.create(
+                model=self.model,
+                max_tokens=max_tokens,
+                messages=[{"role": "user", "content": prompt}],
+            ),
+            label=f"{self.name}/{self.model}",
         )
         parts = []
         for block in msg.content:
@@ -102,7 +133,10 @@ class OpenAIProvider(LLMProvider):
         else:
             kwargs["max_tokens"] = max_tokens
 
-        resp = self._client.chat.completions.create(**kwargs)
+        resp = _with_retries(
+            lambda: self._client.chat.completions.create(**kwargs),
+            label=f"{self.name}/{self.model}",
+        )
         text = (resp.choices[0].message.content or "").strip()
         usage = getattr(resp, "usage", None)
         in_tok = getattr(usage, "prompt_tokens", 0) if usage else 0
